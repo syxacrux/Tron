@@ -93,6 +93,59 @@ function decrypt($str, $key = 'kls8in1e')
     return unserialize($str); 
 }
 
+/**
+ * 去除字符串包含的空格
+ * @author zjs 2018-01-25
+ */
+function trimall($str){
+    $front = array(" ","　","\t","\n","\r");
+    $back = array("","","","","");
+    return str_replace($front,$back,$str);
+}
+
+/**
+ * 对二维数组内的字段进行从大到小的排序
+ * $arrays   必需 规定输入的数组。
+ * $sort_key 二维数组内键名
+ * int $sort_order 可选 规定排序类型 1.SORT_ASC - 默认，按升序排列(A-Z) 2.SORT_DESC - 按降序排列。(Z-A)
+ * int $sort_type 以指定排序的类型 可能的值是SORT_REGULAR、SORT_NUMERIC和SORT_STRING
+ * @return bool
+ * @author zjs 2018/2/28
+ */
+function my_sort($arrays,$sort_key,$sort_order=SORT_DSC,$sort_type=SORT_NUMERIC ){
+    if(is_array($arrays)){
+        foreach ($arrays as $array){
+            if(is_array($array)){
+                $key_arrays[] = $array[$sort_key];
+            }else{
+                return false;
+            }
+        }
+    }else{
+        return false;
+    }
+    array_multisort($key_arrays,$sort_order,$sort_type,$arrays);
+    return $arrays;
+}
+
+/**
+ * redis实例化 php需有此组件
+ * @return mixed
+ * @author zjs 2018/3/1
+ */
+function RDS(){
+    return S(array('type'=>'Redis','host'=>'127.0.0.1','port'=>'6379','timeout'=>false));
+}
+
+/**
+ * 执行python外部命令
+ * @author zjs 2018/3/1
+ */
+function exec_python_file($str){
+    $redis = new RedisPackage();
+    $cmd = "python /var/www/html/tronPipelineScript/createDirPath/parser.py $str ";
+    $redis::LPush("pyFile",$cmd);
+}
 
 
 

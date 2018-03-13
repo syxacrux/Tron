@@ -1,72 +1,71 @@
 <?php
 namespace app\admin\controller;
-use app\admin\model\Studio;
-use app\common\controller\ApiCommon;
+use app\common\controller\BaseCommon;
+use app\admin\model\Tache;
 
-class Studios extends ApiCommon{
-    //列表
+class Taches extends BaseCommon{
+    //首页
     public function index(){
-        $studio_model = new Studio();
+        $tache_model = new Tache();
+        $uid = $this->uid;
         $param = $this->param;
         $keywords = !empty($param['keywords']) ? $param['keywords']: '';
         $page = !empty($param['page']) ? $param['page']: '';
         $limit = !empty($param['limit']) ? $param['limit']: '';
-        $data = $studio_model->getDataList($keywords, $page, $limit);
+        $data = $tache_model->getDataList($keywords, $page, $limit,$uid);
         return resultArray(['data' => $data]);
     }
 
-    //详情
     public function read(){
-        $studio_model = new Studio();
+        $tache_model = new Tache();
         $param = $this->param;
-        $data = $studio_model->getDataById($param['id']);
+        $data = $tache_model->getDataById($param['id']);
         if (!$data) {
-            return resultArray(['error' => $studio_model->getError()]);
+            return resultArray(['error' => $tache_model->getError()]);
         }
         return resultArray(['data' => $data]);
     }
 
     //新增
     public function save(){
-        $studio_model = new Studio();
+        $tache_model = new Tache();
         $param = $this->param;
-        $data = $studio_model->addData($param);
+        $data = $tache_model->addData($param);
         if (!$data) {
-            return resultArray(['error' => $studio_model->getError()]);
+            return resultArray(['error' => $tache_model->getError()]);
         }
         return resultArray(['data' => '添加成功']);
     }
 
     //编辑
     public function update(){
-        $studio_model = new Studio();
+        $tache_model = new Tache();
         $param = $this->param;
-        $data = $studio_model->updateDataById($param, $param['id']);
+        $data = $tache_model->updateDataById($param, $param['id']);
         if (!$data) {
-            return resultArray(['error' => $studio_model->getError()]);
+            return resultArray(['error' => $tache_model->getError()]);
         }
         return resultArray(['data' => '编辑成功']);
     }
 
     //删除
     public function delete(){
-        $studio_model = new Studio();
+        $tache_model = new Tache();
         $param = $this->param;
-
-        $data = $studio_model->delStudio($param['id']);
+        $data = $tache_model->delTache($param['id']);
         if (!$data) {
-            return resultArray(['error' => $studio_model->getError()]);
+            return resultArray(['error' => $tache_model->getError()]);
         }
         return resultArray(['data' => '删除成功']);
     }
 
     //批量删除
     public function deletes(){
-        $studio_model = new Studio();
+        $tache_model = new Tache();
         $param = $this->param;
-        $data = $studio_model->delDatas($param['ids'], true);
+        $data = $tache_model->delTaches($param['ids']);
         if (!$data) {
-            return resultArray(['error' => $studio_model->getError()]);
+            return resultArray(['error' => $tache_model->getError()]);
         }
         return resultArray(['data' => '删除成功']);
     }

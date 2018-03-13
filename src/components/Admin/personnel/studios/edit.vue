@@ -26,6 +26,7 @@
 <script>
     import http from '../../../../assets/js/http'
     import fomrMixin from '../../../../assets/js/form_com'
+    import _g from '../../../../assets/js/global'
 
     export default {
         data() {
@@ -57,14 +58,14 @@
                         this.isLoading = !this.isLoading
                         this.apiPut('admin/studios/', this.id, this.form).then((res) => {
                             this.handelResponse(res, (data) => {
-                                _g.toastMsg('success', '编辑成功')
-                                setTimeout(() => {
-                                    this.goback()
-                                }, 1500)
-                            }, () => {
-                                this.isLoading = !this.isLoading
-                            })
+                            _g.toastMsg('success', '编辑成功')
+                        setTimeout(() => {
+                            this.goback()
+                    }, 1500)
+                    }, () => {
+                            this.isLoading = !this.isLoading
                         })
+                    })
                     }
                 })
             },
@@ -73,11 +74,11 @@
                 this.form.id = this.$route.params.id        //工作室id
                 this.apiGet('admin/studios/' + this.form.id).then((res) => {
                     this.handelResponse(res, (data) => {
-                        this.form.id = data.id
-                        this.form.studio_name = data.studio_name
-                        this.form.explain = data.explain
-                    })
-                })
+                    this.form.id = data.id
+                this.form.studio_name = data.studio_name
+                this.form.explain = data.explain
+            })
+            })
             }
         },
         created() {

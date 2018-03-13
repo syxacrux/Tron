@@ -37,6 +37,9 @@ import mailEdit from '@/components/Busi/mail/mail/edit.vue'
 import studiosList from '@/components/Admin/personnel/studios/list.vue'
 import studiosAdd from '@/components/Admin/personnel/studios/add.vue'
 import studiosEdit from '@/components/Admin/personnel/studios/edit.vue'
+import tachesList from '@/components/Admin/personnel/taches/list.vue'
+import tachesAdd from '@/components/Admin/personnel/taches/add.vue'
+import tachesEdit from '@/components/Admin/personnel/taches/edit.vue'
 
 Vue.use(VueRouter)
 
@@ -135,6 +138,15 @@ const routes = [
           { path: 'studios/add', component: studiosAdd, name: 'studiosAdd', meta: { hideLeft: false, module: 'Admin', menu: 'studios' }},
           { path: 'studios/edit/:id', component: studiosEdit, name: 'studiosEdit', meta: { hideLeft: false, module: 'Admin', menu: 'studios' }}
       ]
+  },
+  {
+	path: '/admin',
+	component: Home,
+	children: [
+	  { path: 'taches/list', component: tachesList, name: 'tachesList', meta: { hideLeft: false, module: 'Admin', menu: 'taches' }},
+	  { path: 'taches/add', component: tachesAdd, name: 'tachesAdd', meta: { hideLeft: false, module: 'Admin', menu: 'taches' }},
+	  { path: 'taches/edit/:id', component: tachesEdit, name: 'tachesEdit', meta: { hideLeft: false, module: 'Admin', menu: 'taches' }}
+	]
   },
 ]
 
