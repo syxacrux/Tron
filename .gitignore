@@ -1,0 +1,9 @@
+.idea
+composer.lock
+*.log
+/node_modules
+/config
+/runtime/log
+/src/main.js
+/public
+/runtime/cache
