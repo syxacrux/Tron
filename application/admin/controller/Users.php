@@ -8,8 +8,7 @@
 namespace app\admin\controller;
 use app\common\controller\ApiCommon;
 
-class Users extends ApiCommon
-{
+class Users extends ApiCommon{
 
     public function index()
     {
@@ -22,8 +21,7 @@ class Users extends ApiCommon
         return resultArray(['data' => $data]);
     }
 
-    public function read()
-    {   
+    public function read(){
         $userModel = model('User');
         $param = $this->param;
         $data = $userModel->getDataById($param['id']);
