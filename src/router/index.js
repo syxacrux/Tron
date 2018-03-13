@@ -34,6 +34,9 @@ import usersEdit from '@/components/Admin/personnel/users/edit.vue'
 import mailList from '@/components/Busi/mail/mail/list.vue'
 import mailAdd from '@/components/Busi/mail/mail/add.vue'
 import mailEdit from '@/components/Busi/mail/mail/edit.vue'
+import studiosList from '@/components/Admin/personnel/studios/list.vue'
+import studiosAdd from '@/components/Admin/personnel/studios/add.vue'
+import studiosEdit from '@/components/Admin/personnel/studios/edit.vue'
 
 Vue.use(VueRouter)
 
@@ -123,7 +126,16 @@ const routes = [
       { path: 'mail/add', component: mailAdd, name: 'mailAdd', meta: { hideLeft: false, module: 'Busi', menu: 'mail' }},
       { path: 'mail/edit/:id', component: mailEdit, name: 'mailEdit', meta: { hideLeft: false, module: 'Busi', menu: 'mail' }}
     ]
-  }
+  },
+  {
+      path: '/admin',
+      component: Home,
+      children: [
+          { path: 'studios/list', component: studiosList, name: 'studiosList', meta: { hideLeft: false, module: 'Admin', menu: 'studios' }},
+          { path: 'studios/add', component: studiosAdd, name: 'studiosAdd', meta: { hideLeft: false, module: 'Admin', menu: 'studios' }},
+          { path: 'studios/edit/:id', component: studiosEdit, name: 'studiosEdit', meta: { hideLeft: false, module: 'Admin', menu: 'studios' }}
+      ]
+  },
 ]
 
 const router = new VueRouter({

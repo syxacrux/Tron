@@ -6,7 +6,6 @@
 // +----------------------------------------------------------------------
 
 namespace app\admin\controller;
-
 use app\common\controller\ApiCommon;
 
 class Users extends ApiCommon

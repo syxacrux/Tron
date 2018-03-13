@@ -51,7 +51,7 @@ module.exports = {
   },
   module: {
     rules: [
-      ...(config.dev.useEslint ? [createLintingRule()] : []),
+      //...(config.dev.useEslint ? [createLintingRule()] : []),//注释掉可忽略严格模式
       {
         test: /\.vue$/,
         loader: 'vue-loader',
