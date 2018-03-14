@@ -23,10 +23,10 @@
         <template slot-scope="props">
           <el-form label-position="left" inline class="demo-table-expand">
             <el-form-item label="所属工作室">
-              <span>{{ props.row.studio_names }}</span>
+              <span>{{ props.row.studio_name }}</span>
             </el-form-item>
             <el-form-item label="所属环节">
-              <span>{{ props.row.tache_names }}</span>
+              <span>{{ props.row.tache_name }}</span>
             </el-form-item>
           </el-form>
         </template>
@@ -85,7 +85,6 @@
     },
     methods: {
       search() {
-        console.log('search')
         this.getAllUsers(1)
       },
       selectItem(val) {
@@ -170,3 +169,17 @@
     mixins: [http]
   }
 </script>
+<style>
+  .demo-table-expand {
+    font-size: 0;
+  }
+  .demo-table-expand label {
+    width: 90px;
+    color: #99a9bf;
+  }
+  .demo-table-expand .el-form-item {
+    margin-right: 0;
+    margin-bottom: 0;
+    width: 50%;
+  }
+</style>
