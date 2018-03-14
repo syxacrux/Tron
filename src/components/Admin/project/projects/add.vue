@@ -34,7 +34,7 @@
         <el-row :gutter="20">
           <el-form-item label="所属工作室:" prop="studio_ids"  class="is-required">
             <el-select :span="8" v-model="studio_ids" multiple placeholder="可多选" class="ts-studio_id">
-              <el-option v-for="item in studiosOptions" :key="item.id" :label="item.studio_name"
+              <el-option v-for="item in studiosOptions" :key="item.id" :label="item.name"
                          :value="item.id"></el-option>
             </el-select>
           </el-form-item>
@@ -55,7 +55,7 @@
         <el-row :gutter="20">
           <el-form-item label="遮幅比:" prop="aspect_ratio" class="is-required">
             <el-select v-model="form.aspect_ratio" placeholder="请选择">
-              <el-option label="请选择" value=""></el-option>
+              <!--<el-option label="请选择" value=""></el-option>-->
               <el-option label="16：9" value="1"></el-option>
               <el-option label="10：5" value="2"></el-option>
               <el-option label="1：1" value="3"></el-option>
@@ -66,7 +66,7 @@
           <!--</el-form-item>-->
           <el-form-item label="分辨率:" prop="resolutic" class="is-required">
             <el-select v-model="form.resolutic" placeholder="请选择">
-              <el-option label="请选择" value=""></el-option>
+              <!--<el-option label="请选择" value=""></el-option>-->
               <el-option label="1024*768" value="1"></el-option>
               <el-option label="2560*1680" value="2"></el-option>
             </el-select>
@@ -414,7 +414,7 @@
       },
       //获取工作室
       getAllStudios() {
-        this.apiGet('admin/studios?type=tree').then((res) => {
+        this.apiGet('admin/studios').then((res) => {
           this.handelResponse(res, (data) => {
             this.studiosOptions = data.list
             // this.nodes = this.nodes.concat(data)
