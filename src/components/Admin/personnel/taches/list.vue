@@ -15,7 +15,7 @@
             <el-table-column type="selection" width="50"></el-table-column>
             <el-table-column label="环节名称" prop="tache_name"></el-table-column>
             <el-table-column label="备注" prop="explain"></el-table-column>
-            <el-table-column label="创建时间" prop="create_time"></el-table-column>
+            <!-- <el-table-column label="创建时间" prop="create_time"></el-table-column> -->
             <el-table-column label="操作" width="200">
                 <template slot-scope="scope">
                     <div>
@@ -51,6 +51,7 @@
 <script>
   import btnGroup from '../../../Common/btn-group.vue'
   import http from '../../../../assets/js/http'
+	import _g from '@/assets/js/global'
 
   export default {
 	data() {
@@ -70,24 +71,24 @@
 	  },
 	  //      删除环节执行方法
 	  confirmDelete(item) {
-		this.$confirm('确认删除该环节?', '提示', {
-		  confirmButtonText: '确定',
-		  cancelButtonText: '取消',
-		  type: 'warning'
-		}).then(() => {
-		  _g.openGlobalLoading()
-		  this.apiDelete('admin/taches/', item.id).then((res) => {
-			_g.closeGlobalLoading()
-			this.handelResponse(res, (data) => {
-			  _g.toastMsg('success', '删除成功')
-			  setTimeout(() => {
-				_g.shallowRefresh(this.$route.name)
-			  }, 1500)
+			this.$confirm('确认删除该环节?', '提示', {
+				confirmButtonText: '确定',
+				cancelButtonText: '取消',
+				type: 'warning'
+			}).then(() => {
+				_g.openGlobalLoading()
+				this.apiDelete('admin/taches/', item.id).then((res) => {				
+					_g.closeGlobalLoading()
+					this.handelResponse(res, (data) => {
+						_g.toastMsg('success', '删除成功')
+						setTimeout(() => {
+						_g.shallowRefresh(this.$route.name)
+						}, 1500)
+					})
+				})
+			}).catch(() => {
+				// handle error
 			})
-		  })
-		}).catch(() => {
-		  // handle error
-		})
 	  },
 	  //      切换页码
 	  handleCurrentChange(page) {
