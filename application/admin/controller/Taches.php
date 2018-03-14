@@ -51,7 +51,7 @@ class Taches extends BaseCommon{
     public function delete(){
         $tache_model = model('tache');
         $param = $this->param;
-        $data = $tache_model->delDataById($param['id'],true);
+        $data = $tache_model->delTache($param['id']);
         if (!$data) {
             return resultArray(['error' => $tache_model->getError()]);
         }

@@ -1,6 +1,7 @@
 <?php
 namespace app\admin\model;
 use app\common\model\Common;
+use redis\RedisPackage;
 
 class Project extends Common{
     protected $name = "admin_project";
@@ -53,8 +54,10 @@ class Project extends Common{
                 return false;
             }else{
                 $str = 'Project '.$param['project_byname'];
-                //执行外部程序-开启队列 //common.php
-                exec_python_file($str);
+                //执行外部程序-开启队列
+                $redis = new RedisPackage();
+                $cmd = "python /var/www/html/tronPipelineScript/createDirPath/parser.py $str ";
+                $redis::LPush("pyFile",$cmd);
                 return true;
             }
         }catch(\Exception $e){

@@ -44,18 +44,12 @@ class Tache extends Common{
     }
 
     public function delTache($id){
-        $userCount_byTache = Access::where('tache_ids','like','%'.$id.'%')->count();
-        if($userCount_byTache != 0){
-            $this->error = "请先编辑或删除所属成员的环节";
+        try{
+            $this->where('id', $id)->delete();
+            return true;
+        }catch( \Exception $e){
+            $this->error = '删除失败';
             return false;
-        }else{
-            try{
-                $this->where('id', $id)->delete();
-                return true;
-            }catch( \Exception $e){
-                $this->error = '删除失败';
-                return false;
-            }
         }
     }
 
