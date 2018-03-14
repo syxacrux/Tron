@@ -37,11 +37,11 @@ class Upload extends Controller{
             return resultArray(['error' => '请上传文件']);
         }
         $project_images_dir = ROOT_PATH.DS.'uploads'.DS.'Projects'.DS.'images';
-        $host_project_image_path = 'Projects'.DS.'images';
+        $host_project_image_path = 'uploads'. DS .'Projects'.DS.'images';
         //移动文件
-        $info = $file->validate(['ext'=>'jpg,png,gif'])->rule('Y-m-d')->move($project_images_dir);
+        $info = $file->validate(['ext'=>'jpg,png,gif'])->move($project_images_dir);
         if ($info) {
-            return resultArray(['data' =>  $host_project_image_path. DS .$info->getSaveName()]);
+            return resultArray(['data' =>$host_project_image_path.DS.$info->getSaveName()]);
         }
     }
 }
