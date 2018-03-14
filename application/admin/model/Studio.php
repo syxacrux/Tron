@@ -3,7 +3,8 @@ namespace app\admin\model;
 use app\common\model\Common;
 
 class Studio extends Common{
-    protected $name = 'studio';
+
+    protected $name = 'admin_studio';
 
     /**
      * 获取列表
@@ -19,7 +20,7 @@ class Studio extends Common{
     public function getDataList($keyword, $page, $limit){
         $where = [];
         if ($keyword) {
-            $where['studio_name'] = ['like', '%'.$keyword.'%'];
+            $where['name'] = ['like', '%'.$keyword.'%'];
         }
         $dataCount = $this->where($where)->count('id');
         $list = $this->where($where);

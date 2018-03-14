@@ -5,10 +5,10 @@
 				<el-input v-model.trim="form.name" class="h-40 w-200"></el-input>
 			</el-form-item>
 			<el-form-item label="上级部门" prop="pid">
-        <el-select v-model="form.pid" placeholder="上级部门" class="w-200">
-          <el-option v-for="item in options" :label="item.title" :value="item.id" :key="item.id"></el-option>
-        </el-select>
-      </el-form-item>
+				<el-select v-model="form.pid" placeholder="上级部门" class="w-200">
+				  <el-option v-for="item in options" :label="item.title" :value="item.id" :key="item.id"></el-option>
+				</el-select>
+      		</el-form-item>
 			<el-form-item>
 				<el-button type="primary" @click="add('form')" :loading="isLoading">提交</el-button>
 				<el-button @click="goback()">返回</el-button>

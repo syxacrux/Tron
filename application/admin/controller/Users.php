@@ -9,9 +9,7 @@ namespace app\admin\controller;
 use app\common\controller\ApiCommon;
 
 class Users extends ApiCommon{
-
-    public function index()
-    {
+    public function index(){
         $userModel = model('User');
         $param = $this->param;
         $keywords = !empty($param['keywords']) ? $param['keywords']: '';
@@ -31,8 +29,7 @@ class Users extends ApiCommon{
         return resultArray(['data' => $data]);
     }
 
-    public function save()
-    {
+    public function save(){
         $userModel = model('User');
         $param = $this->param;
         $data = $userModel->createData($param);

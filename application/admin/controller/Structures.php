@@ -6,11 +6,9 @@
 // +----------------------------------------------------------------------
 
 namespace app\admin\controller;
-
 use app\common\controller\ApiCommon;
 
-class Structures extends ApiCommon
-{
+class Structures extends ApiCommon{
     
     public function index()
     {   

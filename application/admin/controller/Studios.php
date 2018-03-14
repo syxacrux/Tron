@@ -1,12 +1,17 @@
 <?php
+// +----------------------------------------------------------------------
+// | Description: 组织架构
+// +----------------------------------------------------------------------
+// | Author: linchuangbin <linchuangbin@honraytech.com>
+// +----------------------------------------------------------------------
+
 namespace app\admin\controller;
-use app\admin\model\Studio;
 use app\common\controller\ApiCommon;
 
 class Studios extends ApiCommon{
-    //列表
+
     public function index(){
-        $studio_model = new Studio();
+        $studio_model = model('Studio');
         $param = $this->param;
         $keywords = !empty($param['keywords']) ? $param['keywords']: '';
         $page = !empty($param['page']) ? $param['page']: '';
@@ -15,9 +20,8 @@ class Studios extends ApiCommon{
         return resultArray(['data' => $data]);
     }
 
-    //详情
     public function read(){
-        $studio_model = new Studio();
+        $studio_model = model('Studio');
         $param = $this->param;
         $data = $studio_model->getDataById($param['id']);
         if (!$data) {
@@ -26,20 +30,18 @@ class Studios extends ApiCommon{
         return resultArray(['data' => $data]);
     }
 
-    //新增
     public function save(){
-        $studio_model = new Studio();
+        $studio_model = model('Studio');
         $param = $this->param;
-        $data = $studio_model->addData($param);
+        $data = $studio_model->createData($param);
         if (!$data) {
             return resultArray(['error' => $studio_model->getError()]);
         }
         return resultArray(['data' => '添加成功']);
     }
 
-    //编辑
     public function update(){
-        $studio_model = new Studio();
+        $studio_model = model('Studio');
         $param = $this->param;
         $data = $studio_model->updateDataById($param, $param['id']);
         if (!$data) {
@@ -48,26 +50,33 @@ class Studios extends ApiCommon{
         return resultArray(['data' => '编辑成功']);
     }
 
-    //删除
     public function delete(){
-        $studio_model = new Studio();
+        $studio_model = model('Studio');
         $param = $this->param;
-
-        $data = $studio_model->delStudio($param['id']);
+        $data = $studio_model->delDataById($param['id'], true);
         if (!$data) {
             return resultArray(['error' => $studio_model->getError()]);
         }
         return resultArray(['data' => '删除成功']);
     }
 
-    //批量删除
     public function deletes(){
-        $studio_model = new Studio();
+        $studio_model = model('Studio');
         $param = $this->param;
         $data = $studio_model->delDatas($param['ids'], true);
         if (!$data) {
             return resultArray(['error' => $studio_model->getError()]);
         }
         return resultArray(['data' => '删除成功']);
+    }
+
+    public function enables(){
+        $studio_model = model('Studio');
+        $param = $this->param;
+        $data = $studio_model->enableDatas($param['ids'], $param['status'], true);
+        if (!$data) {
+            return resultArray(['error' => $studio_model->getError()]);
+        }
+        return resultArray(['data' => '操作成功']);
     }
 }
