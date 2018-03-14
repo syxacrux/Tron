@@ -17,7 +17,7 @@
             <el-table-column label="备注" prop="explain"></el-table-column>
             <el-table-column label="启用" prop="create_time"></el-table-column>
             <el-table-column label="操作" width="200">
-                <template scope="scope">
+                <template slot-scope="scope">
                     <div>
   					<span>
               <el-button size="mini" type="primary">

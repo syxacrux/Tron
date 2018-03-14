@@ -19,8 +19,8 @@ const createLintingRule = () => ({
   }
 })
 
-const DEV_HOST = JSON.stringify('http://127.0.0.1/tron/index.php');
-const PUB_HOST = JSON.stringify('http://127.0.0.1/tron/index.php/');
+const DEV_HOST = JSON.stringify('http://127.0.0.1:8888/');
+const PUB_HOST = JSON.stringify('http://127.0.0.1:8888/');
 
 module.exports = {
   context: path.resolve(__dirname, '../'),
