@@ -9,14 +9,15 @@ namespace app\admin\controller;
 
 use app\common\controller\ApiCommon;
 
-class Groups extends ApiCommon
-{
+class Groups extends ApiCommon{
     
-    public function index()
-    {   
+    public function index(){
         $groupModel = model('Group');
         $param = $this->param;
-        $data = $groupModel->getDataList();
+        $keywords = !empty($param['keywords']) ? $param['keywords']: '';
+        $page = !empty($param['page']) ? $param['page']: '';
+        $limit = !empty($param['limit']) ? $param['limit']: '';
+        $data = $groupModel->getDataList($keywords,$page,$limit);
         return resultArray(['data' => $data]);
     }
 

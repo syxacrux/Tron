@@ -64,7 +64,6 @@ class User extends Common{
 		}
 
 		$list = $list->select();
-
 		$studio_model = new Studio();
 		$tache_model = new Tache();
 		foreach($list as $key=>$value){
@@ -78,15 +77,14 @@ class User extends Common{
 		return $data;
 	}
 
-	/**
-	 * [getDataById 根据主键获取详情]
-	 * @linchuangbin
-	 * @DateTime  2017-02-10T21:16:34+0800
-	 * @param     string                   $id [主键]
-	 * @return    [array]                       
-	 */
-	public function getDataById($id = '')
-	{
+    /**
+     * 根据主键获取详情
+     * @param string $id
+     * @return bool|static
+     * @throws \think\exception\DbException
+     * @author zjs 2018/3/14
+     */
+	public function getDataById($id = ''){
 		$data = $this->get($id);
 		if (!$data) {
 			$this->error = '暂无此数据';
@@ -171,6 +169,28 @@ class User extends Common{
 			return false;
 		}
 	}
+
+    /**
+     * 根据用户ID删除记录
+     * @param $id
+     * @author zjs 2018/3/14
+     */
+	public function delById($id){
+        // 不能操作超级管理员
+        if ($id == 1) {
+            $this->error = '非法操作';
+            return false;
+        }
+        $this->startTrans();
+	    try{
+            $this->where('id',$id)->delete();
+            Db::name('admin_access')->where('user_id',$id)->delete();
+            return true;
+        }catch(\Exception $e){
+            $this->error= "删除失败";
+            return false;
+        }
+    }
 
     /**
      * 获取用户信息

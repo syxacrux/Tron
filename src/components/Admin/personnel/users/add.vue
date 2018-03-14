@@ -30,7 +30,7 @@
 				</el-form-item>
 				<el-form-item label="角色" prop="group_id">
 					<el-select v-model="form.group_id" placeholder="请选择角色">
-						<el-option v-for="item in groupsOptions" :label="item.title" :value="item.id" :key="item.id"></el-option>
+						<el-option v-for="item in groupsOptions" :label="item.remark" :value="item.id" :key="item.id"></el-option>
 					</el-select>
 				</el-form-item>
 				<el-form-item label="备注">
@@ -102,7 +102,6 @@
         let temp = false
         this.selectedStudios = this.form.studio_ids
         this.selectedStudioIds = []
-        console.log(this.studiosOptions)
         _(this.studiosOptions).forEach((res) => {
           if (this.selectedStudios.toString().indexOf(res.name) > -1) {
             this.selectedStudioIds.push(res.id)
@@ -111,7 +110,6 @@
         if (this.selectedStudioIds.length) {
           this.form.studio_ids = _.cloneDeep(this.selectedStudioIds)
           temp = true
-          console.log(this.form.studio_ids, 'tacheid')
         }
         this.selectedStudioIds = []
         return temp
@@ -128,7 +126,6 @@
         })
         if (this.selectedTacheIds.length) {
           this.form.tache_ids = _.cloneDeep(this.selectedTacheIds)
-          console.log(this.form.tache_ids, 'tacheid')
           temp = true
         }
         this.selectedTacheIds = []
@@ -163,7 +160,6 @@
 //			获取所有角色
       getAllGroups() {
         let data = store.state.Groups
-				console.log(data)
         if (data.list && data.list.length) {
           this.groupsOptions = data.list
         } else {

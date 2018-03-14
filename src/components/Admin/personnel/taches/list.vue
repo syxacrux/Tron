@@ -105,7 +105,6 @@
 		  }
 		}
 		this.apiGet('admin/taches', data).then((res) => {
-		  //   console.log('res = ', _g.j2s(res))
 		  this.handelResponse(res, (data) => {
 			this.tableData = data.list
 			this.dataCount = data.dataCount
