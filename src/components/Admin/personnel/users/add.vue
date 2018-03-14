@@ -19,21 +19,19 @@
 					<el-input v-model.trim="form.realname" class="h-40 w-200"></el-input>
 				</el-form-item>
 				<el-form-item label="所属工作室" prop="studio_ids">
-					<el-checkbox-group v-model="form.studio_ids">
-						<el-checkbox v-for="item in studiosOptions" :label="item.name" :value="item.id" :key="item.id" class="form-checkbox"
-												 name="name"></el-checkbox>
+					<el-checkbox-group v-model="form.studio_ids" size="small">
+						<el-checkbox-button v-for="item in studiosOptions" :label="item.name" :value="item.id" :key="item.id"></el-checkbox-button>
 					</el-checkbox-group>
 				</el-form-item>
 				<el-form-item label="环节" prop="tache_ids">
-					<el-checkbox-group v-model="form.tache_ids">
-						<el-checkbox v-for="item in tachesOptions" :label="item.explain" :value="item.id" :key="item.id" class="form-checkbox"
-												 name="tache_name"></el-checkbox>
+					<el-checkbox-group v-model="form.tache_ids" size="small">
+						<el-checkbox-button v-for="item in tachesOptions" :label="item.explain" :value="item.id" :key="item.id">{{item.explain}}</el-checkbox-button>
 					</el-checkbox-group>
 				</el-form-item>
 				<el-form-item label="角色" prop="group_id">
-					<el-radio-group v-model="form.group_id">
-						<el-radio v-for="item in groupsOptions" :label="item.id" :key="item.id">{{ item.title }}</el-radio>
-					</el-radio-group>
+					<el-select v-model="form.group_id" placeholder="请选择角色">
+						<el-option v-for="item in groupsOptions" :label="item.title" :value="item.id" :key="item.id"></el-option>
+					</el-select>
 				</el-form-item>
 				<el-form-item label="备注">
 					<el-input v-model.trim="form.remark" class="h-40 w-200"></el-input>
