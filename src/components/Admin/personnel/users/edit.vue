@@ -2,8 +2,8 @@
   <div>
     <div class="m-b-20">
       <el-breadcrumb separator="/">
-        <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
-        <el-breadcrumb-item :to="{ path: '/home/users/list' }">成员管理</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ path: '/admin' }">首页</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ path: '/admin/users/list' }">成员管理</el-breadcrumb-item>
         <el-breadcrumb-item>编辑成员</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
@@ -20,7 +20,7 @@
         </el-form-item>
         <el-form-item label="所属工作室" prop="studio_ids">
           <el-checkbox-group v-model="form.studio_ids">
-            <el-checkbox v-for="item in studiosOptions" :label="item.studio_name" :value="item.id" :key="item.id" class="form-checkbox"
+            <el-checkbox v-for="item in studiosOptions" :label="item.name" :value="item.id" :key="item.id" class="form-checkbox"
                          name="studio_name"></el-checkbox>
           </el-checkbox-group>
         </el-form-item>
@@ -32,7 +32,7 @@
         </el-form-item>
         <el-form-item label="角色" prop="group_id">
           <el-radio-group v-model="form.group_id">
-            <el-radio v-for="item in groupsOptions" :label="item.id" :key="item.id">{{ item.group_name }}</el-radio>
+            <el-radio v-for="item in groupsOptions" :label="item.id" :key="item.id">{{ item.title }}</el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item label="备注">
@@ -168,11 +168,11 @@
         return new Promise((resolve, reject) => {
           let data = store.state.Groups
           if (data.list && data.list.length) {
-            resolve(data.list)
+            resolve(data)
           } else {
             this.apiGet('admin/groups').then((res) => {
               this.handelResponse(res, (data) => {
-                resolve(data.list)
+                resolve(data)
               })
             })
           }
