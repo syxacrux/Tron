@@ -6,7 +6,7 @@
 // +----------------------------------------------------------------------
 
 namespace app\admin\model;
-
+use think\Db;
 use app\common\model\Common;
 
 class Group extends Common 
@@ -39,4 +39,10 @@ class Group extends Common
         $data['dataCount'] = $dataCount;
         return $data;
 	}
+
+	public static function get_vlue_by_id($user_id,$value){
+        $group_id = Db::name('admin_access')->where('user_id',$user_id)->value('group_id');
+        $data = self::where('id',$group_id)->value($value);
+        return $data;
+    }
 }

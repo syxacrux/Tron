@@ -75,16 +75,16 @@ class Tache extends Common{
      * @throws \think\exception\DbException
      * @author zjs 2018/3/13
      */
-    public function get_tache_names($ids,$tag){
+    public static function get_tache_names($ids,$value,$tag){
         if(!empty($ids)){
             $tache_ids = explode(',',$ids);
-            foreach($tache_ids as $key=>$value){
-                $res[] = $this->field('explain')->where('id',$value)->find()->data['explain'];
+            foreach($tache_ids as $key=>$val){
+                $res[] = self::where('id',$val)->value($value);
             }
-            $tache_names = implode($tag,$res);
+            $data = implode($tag,$res);
         }else{
-            $tache_names = '';
+            $data = '';
         }
-        return $tache_names;
+        return $data;
     }
 }
