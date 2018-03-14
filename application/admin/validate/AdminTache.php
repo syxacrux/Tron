@@ -5,7 +5,7 @@ use think\Validate;
 /**
  * 设置模型
  */
-class Tache extends Validate{
+class AdminTache extends Validate{
 
     protected $rule = array(
         'tache_name'      => 'require',

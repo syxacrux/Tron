@@ -1,5 +1,5 @@
 <?php
-
+use redis\RedisPackage;
 /**
  * 行为绑定
  */
@@ -9,8 +9,7 @@
  * 返回对象
  * @param $array 响应数据
  */
-function resultArray($array)
-{
+function resultArray($array){
     if(isset($array['data'])) {
         $array['error'] = '';
         $code = 200;
@@ -47,4 +46,17 @@ function user_md5($str, $auth_key = '')
 {
     return '' === $str ? '' : md5(sha1($str) . $auth_key);
 }
+
+
+/**
+ * 对象转换成数组
+ * @param $obj
+ * @return mixed
+ * @author zjs 2018/3/6
+ */
+function objToArray($obj){
+    return json_decode(json_encode($obj), true);
+}
+
+
 

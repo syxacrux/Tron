@@ -44,30 +44,34 @@ class User extends Common{
      * @author zjs 2018/3/14
      */
 	public function getDataList($keywords, $page, $limit){
-		$map = [];
+		$where = [];
 		if ($keywords) {
-			$map['username|realname'] = ['like', '%'.$keywords.'%'];
+            $where['username|realname'] = ['like', '%'.$keywords.'%'];
 		}
 
 		// 默认除去超级管理员
-		$map['user.id'] = array('neq', 1);
-		$dataCount = $this->alias('user')->where($map)->count('id');
+        $where['user.id'] = array('neq', 1);
+		$dataCount = $this->alias('user')->where($where)->count('id');
 		
 		$list = $this
-				->where($map)
+				->where($where)
 				->alias('user')
-				->join('__ADMIN_STRUCTURE__ structure', 'structure.id=user.structure_id', 'LEFT')
-				->join('__ADMIN_POST__ post', 'post.id=user.post_id', 'LEFT');
+				->join('__ADMIN_ACCESS__ user_access', 'user_access.user_id=user.id', 'LEFT');
 		
 		// 若有分页
 		if ($page && $limit) {
 			$list = $list->page($page, $limit);
 		}
 
-		$list = $list 
-				->field('user.*,structure.name as s_name, post.name as p_name')
-				->select();
-		
+		$list = $list->select();
+
+		$studio_model = new Studio();
+		$tache_model = new Tache();
+		foreach($list as $key=>$value){
+            $list[$key]['role_name'] = Group::where('id',$value['group_id'])->find()->remark;
+            $list[$key]['studio_name'] = $studio_model->get_studio_names($value['studio_ids'],',');
+            $list[$key]['tache_name'] = $tache_model->get_tache_names($value['tache_ids'],',');
+        }
 		$data['list'] = $list;
 		$data['dataCount'] = $dataCount;
 		
@@ -91,36 +95,32 @@ class User extends Common{
 		$data['groups'] = $this->get($id)->groups;
 		return $data;
 	}
-	/**
-	 * 创建用户
-	 * @param  array   $param  [description]
-	 */
-	public function createData($param)
-	{
-		if (empty($param['groups'])) {
-			$this->error = '请至少勾选一个用户组';
-			return false;
-		}
 
+    /**
+     * 创建用户
+     * @param array $param
+     * @return bool
+     * @throws \think\exception\PDOException
+     * @author zjs 2018/3/14
+     */
+	public function createData($param){
 		// 验证
 		$validate = validate($this->name);
 		if (!$validate->check($param)) {
 			$this->error = $validate->getError();
 			return false;
 		}
-
+        //开启事务
 		$this->startTrans();
 		try {
 			$param['password'] = user_md5($param['password']);
+			$param['studio_ids'] = implode(",",array_unique($param['studio_ids']));
+			$param['tache_ids'] = implode(",",array_unique($param['tache_ids']));
 			$this->data($param)->allowField(true)->save();
-
-			foreach ($param['groups'] as $k => $v) {
-				$userGroup['user_id'] = $this->id;
-				$userGroup['group_id'] = $v;
-				$userGroups[] = $userGroup;
-			}
-			Db::name('admin_access')->insertAll($userGroups);
-
+            //将关联项加入用户关联表
+            $userGroup['user_id'] = $this->id;
+            $userGroup['group_id'] = $param['group_id'];
+			Db::name('admin_access')->insert($userGroup);
 			$this->commit();
 			return true;
 		} catch(\Exception $e) {
@@ -130,12 +130,16 @@ class User extends Common{
 		}
 	}
 
-	/**
-	 * 通过id修改用户
-	 * @param  array   $param  [description]
-	 */
-	public function updateDataById($param, $id)
-	{
+    /**
+     * 通过id修改用户
+     * @param $param
+     * @param $id
+     * @return bool
+     * @throws \think\exception\DbException
+     * @throws \think\exception\PDOException
+     * @author zjs 2018/3/14
+     */
+	public function updateDataById($param, $id){
 		// 不能操作超级管理员
 		if ($id == 1) {
 			$this->error = '非法操作';
@@ -146,54 +150,53 @@ class User extends Common{
 			$this->error = '暂无此数据';
 			return false;
 		}
-		if (empty($param['groups'])) {
-			$this->error = '请至少勾选一个用户组';
-			return false;
-		}
 		$this->startTrans();
 
 		try {
-			Db::name('admin_access')->where('user_id', $id)->delete();
-			foreach ($param['groups'] as $k => $v) {
-				$userGroup['user_id'] = $id;
-				$userGroup['group_id'] = $v;
-				$userGroups[] = $userGroup;
-			}
-			Db::name('admin_access')->insertAll($userGroups);
+			$userGroups['user_id'] = $id;
+			$userGroups['group_id'] = $param['group_id'];
+			Db::name('admin_access')->insert($userGroups);
 
 			if (!empty($param['password'])) {
 				$param['password'] = user_md5($param['password']);
 			}
+            $param['studio_ids'] = implode(",",$param['studio_ids']);
+            $param['tache_ids'] = implode(",",$param['tache_ids']);
 			 $this->allowField(true)->save($param, ['id' => $id]);
 			 $this->commit();
 			 return true;
-
 		} catch(\Exception $e) {
 			$this->rollback();
 			$this->error = '编辑失败';
 			return false;
 		}
 	}
-	/**
-	 * [getUserById 获取用户信息]
-	 * @AuthorHTL
-	 * @DateTime  2018-02-11
-	 * @param     [string]                   $uid [账号id]
-	 * @return    [type]                               [description]
-	 */
+
+    /**
+     * 获取用户信息
+     * @param $uid
+     * @return array|false|\PDOStatement|string|\think\Model
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     * @author zjs 2018/3/14
+     */
 	public function getUserById($uid){
 		$map = array(
 			'id' => $uid,
 		);
 		return $this->where($map)->find();
 	}
-	/**
-	 * [根据uid返回用户信息(权限，菜单，用户信息)]
-	 * @AuthorHTL
-	 * @DateTime  2018-02-12
-	 * @param     [string]                   $uid [账号id]
-	 * @return    [type]                               [description]
-	 */
+
+    /**
+     * 根据uid返回用户信息(权限，菜单，用户信息)
+     * @param $uid
+     * @return mixed
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     * @author zjs 2018/3/14
+     */
 	public function getInfo($uid){
 		$map['id'] = $uid;
 		$userInfo = $this->where($map)->find();
@@ -203,19 +206,21 @@ class User extends Common{
 		$data['menusList']		= $dataList['menusList'];
 		return $data;
 	}
-	/**
-	 * [login 登录]
-	 * @AuthorHTL
-	 * @DateTime  2017-02-10T22:37:49+0800
-	 * @param     [string]                   $u_username [账号]
-	 * @param     [string]                   $u_pwd      [密码]
-	 * @param     [string]                   $verifyCode [验证码]
-	 * @param     Boolean                  	 $isRemember [是否记住密码]
-	 * @param     Boolean                    $type       [是否重复登录]
-	 * @return    [type]                               [description]
-	 */
-	public function login($username, $password, $verifyCode = '', $isRemember = false, $type = false)
-	{
+
+    /**
+     * 登录
+     * @param $username
+     * @param $password
+     * @param string $verifyCode
+     * @param bool $isRemember
+     * @param bool $type
+     * @return array|bool
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     * @author zjs 2018/3/14
+     */
+	public function login($username, $password, $verifyCode = '', $isRemember = false, $type = false){
         if (!$username) {
 			$this->error = '帐号不能为空';
 			return false;
@@ -270,10 +275,13 @@ class User extends Common{
 		$data = array_merge($data,$jwt);
         return $data;
 	}
-	/**
-	 * 通过jwt获取uid
-	 * @param  string   $jwt  [jwt]
-	 */
+
+    /**
+     * 通过jwt获取uid
+     * @param $jwt
+     * @return bool|mixed
+     * @author zjs 2018/3/14
+     */
 	public function getUid($jwt){
         $token = (new Parser())->parse((string)$jwt);
         $valid = new ValidationData();
@@ -284,10 +292,13 @@ class User extends Common{
 			return false;
 		}
 	}
-	/**
-	 * 生成jwt
-	 * @param  int   $uid  [用户id]
-	 */
+
+    /**
+     * 生成jwt
+     * @param $uid
+     * @return array
+     * @author zjs 2018/3/14
+     */
 	public function createJwt($uid){
 		$nbf = time();
 		$expire = time() + config('LOGIN_SESSION_VALID');
@@ -305,12 +316,15 @@ class User extends Common{
 		return $result;
 	}
 
-	/**
-	 * 修改密码
-	 * @param  array   $param  [description]
-	 */
-    public function setInfo($auth_key, $old_pwd, $new_pwd)
-    {
+    /**
+     * 修改密码
+     * @param $auth_key
+     * @param $old_pwd
+     * @param $new_pwd
+     * @return bool
+     * @author zjs 2018/3/14
+     */
+    public function setInfo($auth_key, $old_pwd, $new_pwd){
         $uid = $this->getUid($auth_key);
         if (!$uid) {
 			$this->error = '请先进行登录';
@@ -346,12 +360,16 @@ class User extends Common{
 		return false;
     }
 
-	/**
-	 * 获取菜单和权限
-	 * @param  array   $param  [description]
-	 */
-    protected function getMenuAndRule($u_id)
-    {
+    /**
+     * 获取菜单和权限
+     * @param $u_id
+     * @return null
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     * @author zjs 2018/3/14
+     */
+    protected function getMenuAndRule($u_id){
     	if ($u_id === 1) {
             $map['status'] = 1;            
     		$menusList = Db::name('admin_menu')->where($map)->order('sort asc')->select();
