@@ -13,9 +13,9 @@
         </div>
         <el-table :data="tableData" style="width: 100%" @selection-change="handleSelectionChange">
             <el-table-column type="selection" width="50"></el-table-column>
-            <el-table-column label="工作室名称" prop="studio_name"></el-table-column>
+            <el-table-column label="工作室名称" prop="name"></el-table-column>
             <el-table-column label="备注" prop="explain"></el-table-column>
-            <el-table-column label="创建时间" prop="create_time"></el-table-column>
+            <el-table-column label="启用" prop="create_time"></el-table-column>
             <el-table-column label="操作" width="200">
                 <template scope="scope">
                     <div>

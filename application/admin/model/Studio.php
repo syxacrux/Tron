@@ -29,9 +29,6 @@ class Studio extends Common{
             $list = $list->page($page, $limit);
         }
         $list = $list ->select();
-        foreach($list as $key=>$value){
-            $list[$key]['create_time'] = date("Y-m-d H:i:s",$value['create_time']);
-        }
         $data['list'] = $list;
         $data['dataCount'] = $dataCount;
         return $data;
