@@ -143,9 +143,8 @@ class User extends Common{
 		$this->startTrans();
 
 		try {
-			$userGroups['user_id'] = $id;
 			$userGroups['group_id'] = $param['group_id'];
-			Db::name('admin_access')->insert($userGroups);
+			Db::name('admin_access')->where('user_id',$id)->update($userGroups);
 
 			if (!empty($param['password'])) {
 				$param['password'] = user_md5($param['password']);
