@@ -33,12 +33,11 @@
         </el-row>
         <el-row :gutter="20">
           <el-form-item label="所属工作室:" prop="studio_ids" class="is-required">
-            <el-select :span="8" v-model="studio_ids" multiple placeholder="可多选" class="ts-studio_id">
+            <el-select v-model="studio_ids" multiple placeholder="请选择工作室" class="form_studio_id">
               <el-option v-for="item in studiosOptions" :key="item.id" :label="item.name"
                          :value="item.id"></el-option>
             </el-select>
           </el-form-item>
-
           <!--<el-form-item label="总时长:" prop="duration">-->
           <!--<el-input v-model.trim="form.duration" class="h-40 w-200"></el-input>-->
           <!--</el-form-item>-->
@@ -236,6 +235,9 @@
     resize: none;
   }
 
+  .form_studio_id {
+    width: 350px;
+  }
   .block {
     /* margin-top: 20px; */
   }
@@ -325,6 +327,7 @@
         return isJPG && isLt2M;
       },
       add(form) {
+        console.log(this.studio_ids)
         if (!this.form.project_image) {
           _g.toastMsg('warning', '请选择项目缩略图')
           return
