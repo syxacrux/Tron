@@ -3,7 +3,7 @@ namespace app\admin\model;
 use app\common\model\Common;
 
 class Tache extends Common{
-    protected $name = "tache";
+    protected $name = "admin_tache";
 
     public function getDataList($keyword, $page, $limit,$uid){
         $where = [];

@@ -6,7 +6,6 @@
 // +----------------------------------------------------------------------
 
 namespace app\admin\model;
-
 use think\Db;
 use app\common\model\Common;
 use com\verify\HonrayVerify;
@@ -15,12 +14,7 @@ use Lcobucci\JWT\Signer\Hmac\Sha256;
 use Lcobucci\JWT\Parser;
 use Lcobucci\JWT\ValidationData;
 
-class User extends Common 
-{	
-    /**
-     * 为了数据库的整洁，同时又不影响Model和Controller的名称
-     * 我们约定每个模块的数据表都加上相同的前缀，比如微信模块用weixin作为数据表前缀
-     */
+class User extends Common{
 	protected $name = 'admin_user';
     protected $createTime = 'create_time';
     protected $updateTime = false;
@@ -28,26 +22,28 @@ class User extends Common
 	protected $insert = [
 		'status' => 1,
 	];  
-	/**
-	 * 获取用户所属所有用户组
-	 * @param  array   $param  [description]
-	 */
-    public function groups()
-    {
+
+    /**
+     * 获取用户所属所有用户组
+     * @return \think\model\relation\BelongsToMany
+     * @author zjs 2018/3/14
+     */
+    public function groups(){
         return $this->belongsToMany('group', '__ADMIN_ACCESS__', 'group_id', 'user_id');
     }
 
     /**
-     * [getDataList 列表]
-     * @AuthorHTL
-     * @DateTime  2017-02-10T22:19:57+0800
-     * @param     [string]                   $keywords [关键字]
-     * @param     [number]                   $page     [当前页数]
-     * @param     [number]                   $limit    [t每页数量]
-     * @return    [array]                             [description]
+     * 列表
+     * @param $keywords
+     * @param $page
+     * @param $limit
+     * @return mixed
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     * @author zjs 2018/3/14
      */
-	public function getDataList($keywords, $page, $limit)
-	{
+	public function getDataList($keywords, $page, $limit){
 		$map = [];
 		if ($keywords) {
 			$map['username|realname'] = ['like', '%'.$keywords.'%'];

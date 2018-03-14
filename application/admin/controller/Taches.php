@@ -1,12 +1,11 @@
 <?php
 namespace app\admin\controller;
 use app\common\controller\BaseCommon;
-use app\admin\model\Tache;
 
 class Taches extends BaseCommon{
     //首页
     public function index(){
-        $tache_model = new Tache();
+        $tache_model = model('tache');
         $uid = $this->uid;
         $param = $this->param;
         $keywords = !empty($param['keywords']) ? $param['keywords']: '';
@@ -17,7 +16,7 @@ class Taches extends BaseCommon{
     }
 
     public function read(){
-        $tache_model = new Tache();
+        $tache_model = model('tache');
         $param = $this->param;
         $data = $tache_model->getDataById($param['id']);
         if (!$data) {
@@ -28,9 +27,9 @@ class Taches extends BaseCommon{
 
     //新增
     public function save(){
-        $tache_model = new Tache();
+        $tache_model = model('tache');
         $param = $this->param;
-        $data = $tache_model->addData($param);
+        $data = $tache_model->createData($param);
         if (!$data) {
             return resultArray(['error' => $tache_model->getError()]);
         }
@@ -39,7 +38,7 @@ class Taches extends BaseCommon{
 
     //编辑
     public function update(){
-        $tache_model = new Tache();
+        $tache_model = model('tache');
         $param = $this->param;
         $data = $tache_model->updateDataById($param, $param['id']);
         if (!$data) {
@@ -50,9 +49,9 @@ class Taches extends BaseCommon{
 
     //删除
     public function delete(){
-        $tache_model = new Tache();
+        $tache_model = model('tache');
         $param = $this->param;
-        $data = $tache_model->delTache($param['id']);
+        $data = $tache_model->delDataById($param['id'],true);
         if (!$data) {
             return resultArray(['error' => $tache_model->getError()]);
         }
@@ -61,9 +60,9 @@ class Taches extends BaseCommon{
 
     //批量删除
     public function deletes(){
-        $tache_model = new Tache();
+        $tache_model = model('tache');
         $param = $this->param;
-        $data = $tache_model->delTaches($param['ids']);
+        $data = $tache_model->delDatas($param['ids'],true);
         if (!$data) {
             return resultArray(['error' => $tache_model->getError()]);
         }

@@ -6,12 +6,12 @@
 // +----------------------------------------------------------------------
 
 namespace app\admin\controller;
-use app\common\controller\ApiCommon;
+use app\common\controller\BaseCommon;
 
-class Studios extends ApiCommon{
+class Studios extends BaseCommon{
 
     public function index(){
-        $studio_model = model('Studio');
+        $studio_model = model('studio');
         $param = $this->param;
         $keywords = !empty($param['keywords']) ? $param['keywords']: '';
         $page = !empty($param['page']) ? $param['page']: '';
