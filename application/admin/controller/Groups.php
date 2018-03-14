@@ -7,12 +7,13 @@
 
 namespace app\admin\controller;
 
+use app\admin\model\Group;
 use app\common\controller\ApiCommon;
 
 class Groups extends ApiCommon{
     
     public function index(){
-        $groupModel = model('Group');
+        $groupModel = new Group();
         $param = $this->param;
         $keywords = !empty($param['keywords']) ? $param['keywords']: '';
         $page = !empty($param['page']) ? $param['page']: '';
