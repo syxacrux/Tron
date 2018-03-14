@@ -54,7 +54,7 @@ class Users extends ApiCommon{
     {
         $userModel = model('User');
         $param = $this->param;
-        $data = $userModel->delDataById($param['id']);       
+        $data = $userModel->delById($param['id']);
         if (!$data) {
             return resultArray(['error' => $userModel->getError()]);
         } 

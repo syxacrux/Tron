@@ -23,11 +23,20 @@ class Group extends Common
 	 * @DateTime  2017-02-10T21:07:18+0800
 	 * @return    [array]                         
 	 */
-	public function getDataList()
-	{
-		$cat = new \com\Category('admin_group', array('id', 'pid', 'title', 'title'));
-		$data = $cat->getList('', 0, 'id');
-		
-		return $data;
+	public function getDataList($keyword, $page, $limit){
+        $where = [];
+        if ($keyword) {
+            $where['title'] = ['like', '%'.$keyword.'%'];
+        }
+        $dataCount = $this->where($where)->count('id');
+        $list = $this->where($where);
+        // 若有分页
+        if ($page && $limit) {
+            $list = $list->page($page, $limit);
+        }
+        $list = $list ->select();
+        $data['list'] = $list;
+        $data['dataCount'] = $dataCount;
+        return $data;
 	}
 }
