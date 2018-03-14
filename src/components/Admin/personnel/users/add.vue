@@ -104,16 +104,18 @@
         let temp = false
         this.selectedStudios = this.form.studio_ids
         this.selectedStudioIds = []
+        console.log(this.studiosOptions)
         _(this.studiosOptions).forEach((res) => {
-          if (this.selectedStudios.toString().indexOf(res.studio_name) > -1) {
+          if (this.selectedStudios.toString().indexOf(res.name) > -1) {
             this.selectedStudioIds.push(res.id)
           }
         })
         if (this.selectedStudioIds.length) {
           this.form.studio_ids = _.cloneDeep(this.selectedStudioIds)
           temp = true
+          console.log(this.form.studio_ids, 'tacheid')
         }
-        this.selectedIds = []
+        this.selectedStudioIds = []
         return temp
       },
 //			检查环节复选框
@@ -128,7 +130,7 @@
         })
         if (this.selectedTacheIds.length) {
           this.form.tache_ids = _.cloneDeep(this.selectedTacheIds)
-          console.log(this.form.tache_ids, 4)
+          console.log(this.form.tache_ids, 'tacheid')
           temp = true
         }
         this.selectedTacheIds = []
@@ -182,7 +184,6 @@
         } else {
           this.apiGet('admin/studios').then((res) => {
             this.handelResponse(res, (data) => {
-              console.log(data, 'stdio')
               this.studiosOptions = data.list
             })
           })}

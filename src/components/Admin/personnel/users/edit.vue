@@ -106,15 +106,16 @@
         this.selectedStudios = this.form.studio_ids
         this.selectedStudioIds = []
         _(this.studiosOptions).forEach((res) => {
-          if (this.selectedStudios.toString().indexOf(res.studio_name) > -1) {
+          if (this.selectedStudios.toString().indexOf(res.name) > -1) {
             this.selectedStudioIds.push(res.id)
           }
         })
         if (this.selectedStudioIds.length) {
           this.form.studio_ids = _.cloneDeep(this.selectedStudioIds)
           temp = true
+          console.log(this.form.studio_ids, 'studioid')
         }
-        this.selectedIds = []
+        this.selectedStudioIds = []
         return temp
       },
 //			检查环节复选框
@@ -130,6 +131,7 @@
         if (this.selectedTacheIds.length) {
           this.form.tache_ids = _.cloneDeep(this.selectedTacheIds)
           temp = true
+          console.log(this.form.tache_ids, 'tacheid')
         }
         this.selectedTacheIds = []
         return temp
