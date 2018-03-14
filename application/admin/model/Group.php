@@ -26,7 +26,7 @@ class Group extends Common
 	public function getDataList($keyword, $page, $limit){
         $where = [];
         if ($keyword) {
-            $where['title'] = ['like', '%'.$keyword.'%'];
+            $where['title|remark'] = ['like', '%'.$keyword.'%'];
         }
         $dataCount = $this->where($where)->count('id');
         $list = $this->where($where);
@@ -34,7 +34,7 @@ class Group extends Common
         if ($page && $limit) {
             $list = $list->page($page, $limit);
         }
-        $list = $list ->select();
+        $list = $list->select();
         $data['list'] = $list;
         $data['dataCount'] = $dataCount;
         return $data;

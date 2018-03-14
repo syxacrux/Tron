@@ -2,8 +2,8 @@
   <div>
     <div class="m-b-20">
       <el-breadcrumb separator="/">
-        <el-breadcrumb-item :to="{ path: '/home' }">项目</el-breadcrumb-item>
-        <el-breadcrumb-item :to="{ path: '/home/projects/list' }">项目管理</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ path: '/admin' }">项目</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ path: '/admin/projects/list' }">项目管理</el-breadcrumb-item>
         <el-breadcrumb-item>添加项目</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
@@ -32,7 +32,7 @@
           </el-form-item>
         </el-row>
         <el-row :gutter="20">
-          <el-form-item label="所属工作室:" prop="studio_ids"  class="is-required">
+          <el-form-item label="所属工作室:" prop="studio_ids" class="is-required">
             <el-select :span="8" v-model="studio_ids" multiple placeholder="可多选" class="ts-studio_id">
               <el-option v-for="item in studiosOptions" :key="item.id" :label="item.name"
                          :value="item.id"></el-option>
@@ -223,12 +223,15 @@
   .project_add .el-form-item {
     display: inline-block;
   }
+
   .el-transfer-panel {
     width: 150px;
   }
+
   .el-transfer__buttons {
     padding: 0 15px;
   }
+
   .el-textarea__inner {
     resize: none;
   }

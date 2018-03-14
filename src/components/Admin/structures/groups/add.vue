@@ -1,46 +1,55 @@
 <template>
-	<div class="m-l-50 m-t-30 w-900">
-		<el-form ref="form" :model="form" :rules="rules" label-width="130px">
-			<el-form-item label="用户组名称" prop="title">
-				<el-input v-model.trim="form.title" class="h-40 w-200"></el-input>
-			</el-form-item>
-			<el-form-item label="父级用户组" prop="pid">
-        <el-select v-model="form.pid" placeholder="父级用户组" class="w-200">
-          <el-option v-for="item in options" :label="item.title" :value="item.group_id" :key="item.id"></el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item label="备注">
-        <el-input
-          type="textarea"
-          :rows="2"
-          placeholder="备注"
-          v-model="form.remark"
-          class="w-200">
-        </el-input>
-      </el-form-item>
-      <el-form-item label="权限分配">
-        <div class="bor-gray h-400 ovf-y-auto bor-ra-5 bg-wh">
-          <div v-for="item in nodes" :key="item.id">
-            <div class="bor-b-ccc bg-gra p-l-10 p-r-10">
-              <el-checkbox v-model="item.check" @change="selectProjectRule(item)">{{item.else}}</el-checkbox>
-            </div>
-            <div v-for="childItem in item.child" :key="childItem.id">
-              <div class="p-l-20 bor-b-ccc">
-                <el-checkbox v-model="childItem.check" @change="selectModuleRule(childItem, item, childItem.child)">{{childItem.else}}</el-checkbox>
+  <div>
+    <div class="m-b-20">
+			<el-breadcrumb separator="/">
+				<el-breadcrumb-item :to="{ path: '/admin' }">首页</el-breadcrumb-item>
+				<el-breadcrumb-item :to="{ path: '/admin/groups/list' }">角色管理</el-breadcrumb-item>
+				<el-breadcrumb-item>添加角色</el-breadcrumb-item>
+			</el-breadcrumb>
+		</div>
+    <div class="m-l-50 m-t-30 w-900">
+      <el-form ref="form" :model="form" :rules="rules" label-width="130px">
+        <el-form-item label="用户组名称" prop="title">
+          <el-input v-model.trim="form.title" class="h-40 w-200"></el-input>
+        </el-form-item>
+        <el-form-item label="父级用户组" prop="pid">
+          <el-select v-model="form.pid" placeholder="父级用户组" class="w-200">
+            <el-option v-for="item in options" :label="item.title" :value="item.id" :key="item.id"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="备注">
+          <el-input
+            type="textarea"
+            :rows="2"
+            placeholder="备注"
+            v-model="form.remark"
+            class="w-200">
+          </el-input>
+        </el-form-item>
+        <el-form-item label="权限分配" prop="rules">
+          <div class="bor-gray h-400 ovf-y-auto bor-ra-5 bg-wh">
+            <div v-for="item in nodes" :key="item.id">
+              <div class="bor-b-ccc bg-gra p-l-10 p-r-10">
+                <el-checkbox v-model="item.check" @change="selectProjectRule(item)">{{item.else}}</el-checkbox>
               </div>
-              <div class="p-l-40 bor-b-ccc bg-gra">
-                <el-checkbox v-for="grandChildItem in childItem.child" :key="grandChildItem.id" v-model="grandChildItem.check" @change="selectActionRule(grandChildItem, childItem, item)">{{grandChildItem.else}}</el-checkbox>
+              <div v-for="childItem in item.child" :key="childItem.id">
+                <div class="p-l-20 bor-b-ccc">
+                  <el-checkbox v-model="childItem.check" @change="selectModuleRule(childItem, item, childItem.child)">{{childItem.else}}</el-checkbox>
+                </div>
+                <div class="p-l-40 bor-b-ccc bg-gra">
+                  <el-checkbox v-for="grandChildItem in childItem.child" :key="grandChildItem.id" v-model="grandChildItem.check" @change="selectActionRule(grandChildItem, childItem, item)">{{grandChildItem.else}}</el-checkbox>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </el-form-item>
-			<el-form-item>
-				<el-button type="primary" @click="add('form')" :loading="isLoading">提交</el-button>
-				<el-button @click="goback()">返回</el-button>
-			</el-form-item>
-		</el-form>
-	</div>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="add('form')" :loading="isLoading">提交</el-button>
+          <el-button @click="goback()">返回</el-button>
+        </el-form-item>
+      </el-form>
+    </div>
+  </div>
 </template>
 <script>
   import http from '../../../../assets/js/http'
@@ -64,11 +73,18 @@
         rules: {
           title: [
             { required: true, message: '请输入用户组名称', trigger: 'blur' }
+          ],
+          pid: [
+            { required: true, message: '请选择父级用户', trigger: 'blur' }
+          ],
+          rules: [
+            { required: true, message: '请选择权限分配', trigger: 'blur' }
           ]
         }
       }
     },
     methods: {
+      //添加角色
       add(form) {
         this.form.rules = this.selectedNodes.toString()
         this.$refs[form].validate((valid) => {
@@ -88,6 +104,7 @@
           }
         })
       },
+      //获取权限
       getRules() {
         this.apiGet('admin/rules?type=tree').then((res) => {
           this.handelResponse(res, (data) => {
@@ -95,10 +112,11 @@
           })
         })
       },
+      //获取父级用户组
       getGroups() {
         this.apiGet('admin/groups').then((res) => {
           this.handelResponse(res, (data) => {
-            this.options = this.options.concat(data)
+            this.options = this.options.concat(data.list)
           })
         })
       },
