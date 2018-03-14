@@ -37,7 +37,7 @@
 		  explain: ''
 		},
 		rules: {
-		  studio_name: [
+		  tache_name: [
 			{required: true, message: '请输入环节', trigger: 'blur'}
 		  ]
 		}

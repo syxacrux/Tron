@@ -46,11 +46,15 @@ class Studio extends Common{
      * @author zjs 2018/3/13
      */
     public function get_studio_names($ids,$tag){
-        $studio_ids = explode(',',$ids);
-        foreach($studio_ids as $key=>$value){
-            $res[] = $this->field('name')->where('id',$value)->find()->data['name'];
+        if(!empty($ids)){
+            $studio_ids = explode(',',$ids);
+            foreach($studio_ids as $key=>$value){
+                $res[] = $this->field('name')->where('id',$value)->find()->data['name'];
+            }
+            $studio_names = implode($tag,$res);
+        }else{
+            $studio_names = '';
         }
-        $studio_names = implode($tag,$res);
         return $studio_names;
     }
 }

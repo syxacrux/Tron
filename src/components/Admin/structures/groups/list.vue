@@ -59,6 +59,15 @@
 		</el-table>
 		<div class="pos-rel p-t-20">
 			<btnGroup :selectedData="multipleSelection" :type="'groups'"></btnGroup>
+      <div class="block pages">
+        <el-pagination
+                @current-change="handleCurrentChange"
+                layout="prev, pager, next"
+                :page-size="limit"
+                :current-page="currentPage"
+                :total="dataCount">
+        </el-pagination>
+      </div>
 		</div>
 	</div>
 </template>
@@ -72,15 +81,20 @@
     data() {
       return {
         tableData: [],
-        multipleSelection: []
+        multipleSelection: [],
+        limit: 10,
+        currentPage: 1,
+        dataCount: null,
       }
     },
     methods: {
+      //      当表格列表选项发生改变时出发
       selectItem(val) {
         this.multipleSelection = val
       },
+       //      删除角色执行方法
       confirmDelete(item) {
-        this.$confirm('确认删除该用户组?', '提示', {
+        this.$confirm('确认删除该角色?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
@@ -99,16 +113,29 @@
           // handle error
         })
       },
-      getgroups() {
-        this.apiGet('admin/groups').then((res) => {
+      //      切换页码
+      handleCurrentChange(page) {
+      this.getGroups(page)
+      },
+      getGroups(page) {
+        this.loading = true
+        const data = {
+          params: {
+          keywords: this.keywords,
+          page: page,
+          limit: this.limit
+          }
+        }
+        this.apiGet('admin/groups', data).then((res) => {
           this.handelResponse(res, (data) => {
             this.tableData = data
+            this.dataCount = data.dataCount
           })
         })
       }
     },
     created() {
-      this.getgroups()
+      this.getGroups(1)
     },
     computed: {
       addShow() {

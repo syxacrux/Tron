@@ -48,45 +48,38 @@ class User extends Common{
 		if ($keywords) {
             $where['username|realname'] = ['like', '%'.$keywords.'%'];
 		}
-
 		// 默认除去超级管理员
         $where['user.id'] = array('neq', 1);
 		$dataCount = $this->alias('user')->where($where)->count('id');
 		
 		$list = $this
-				->where($where)
-				->alias('user')
+				->where($where)->alias('user')
 				->join('__ADMIN_ACCESS__ user_access', 'user_access.user_id=user.id', 'LEFT');
-		
 		// 若有分页
 		if ($page && $limit) {
 			$list = $list->page($page, $limit);
 		}
-
 		$list = $list->select();
-
 		$studio_model = new Studio();
 		$tache_model = new Tache();
 		foreach($list as $key=>$value){
-            $list[$key]['role_name'] = Group::where('id',$value['group_id'])->find()->remark;
+            $list[$key]['role_name'] = Group::where('id',$value['group_id'])->find()->data['remark'];
             $list[$key]['studio_name'] = $studio_model->get_studio_names($value['studio_ids'],',');
             $list[$key]['tache_name'] = $tache_model->get_tache_names($value['tache_ids'],',');
         }
 		$data['list'] = $list;
 		$data['dataCount'] = $dataCount;
-		
 		return $data;
 	}
 
-	/**
-	 * [getDataById 根据主键获取详情]
-	 * @linchuangbin
-	 * @DateTime  2017-02-10T21:16:34+0800
-	 * @param     string                   $id [主键]
-	 * @return    [array]                       
-	 */
-	public function getDataById($id = '')
-	{
+    /**
+     * 根据主键获取详情
+     * @param string $id
+     * @return bool|static
+     * @throws \think\exception\DbException
+     * @author zjs 2018/3/14
+     */
+	public function getDataById($id = ''){
 		$data = $this->get($id);
 		if (!$data) {
 			$this->error = '暂无此数据';
@@ -171,6 +164,28 @@ class User extends Common{
 			return false;
 		}
 	}
+
+    /**
+     * 根据用户ID删除记录
+     * @param $id
+     * @author zjs 2018/3/14
+     */
+	public function delById($id){
+        // 不能操作超级管理员
+        if ($id == 1) {
+            $this->error = '非法操作';
+            return false;
+        }
+        $this->startTrans();
+	    try{
+            $this->where('id',$id)->delete();
+            Db::name('admin_access')->where('user_id',$id)->delete();
+            return true;
+        }catch(\Exception $e){
+            $this->error= "删除失败";
+            return false;
+        }
+    }
 
     /**
      * 获取用户信息
