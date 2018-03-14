@@ -48,7 +48,7 @@ class Studio extends Common{
     public function get_studio_names($ids,$tag){
         $studio_ids = explode(',',$ids);
         foreach($studio_ids as $key=>$value){
-            $res[] = $this->field('studio_name')->where('id',$value)->find()->studio_name;
+            $res[] = $this->field('name')->where('id',$value)->find()->data['name'];
         }
         $studio_names = implode($tag,$res);
         return $studio_names;

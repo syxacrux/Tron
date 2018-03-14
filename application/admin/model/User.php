@@ -44,30 +44,34 @@ class User extends Common{
      * @author zjs 2018/3/14
      */
 	public function getDataList($keywords, $page, $limit){
-		$map = [];
+		$where = [];
 		if ($keywords) {
-			$map['username|realname'] = ['like', '%'.$keywords.'%'];
+            $where['username|realname'] = ['like', '%'.$keywords.'%'];
 		}
 
 		// 默认除去超级管理员
-		$map['user.id'] = array('neq', 1);
-		$dataCount = $this->alias('user')->where($map)->count('id');
+        $where['user.id'] = array('neq', 1);
+		$dataCount = $this->alias('user')->where($where)->count('id');
 		
 		$list = $this
-				->where($map)
+				->where($where)
 				->alias('user')
-				->join('__ADMIN_STRUCTURE__ structure', 'structure.id=user.structure_id', 'LEFT')
-				->join('__ADMIN_POST__ post', 'post.id=user.post_id', 'LEFT');
+				->join('__ADMIN_ACCESS__ user_access', 'user_access.user_id=user.id', 'LEFT');
 		
 		// 若有分页
 		if ($page && $limit) {
 			$list = $list->page($page, $limit);
 		}
 
-		$list = $list 
-				->field('user.*,structure.name as s_name, post.name as p_name')
-				->select();
-		
+		$list = $list->select();
+
+		$studio_model = new Studio();
+		$tache_model = new Tache();
+		foreach($list as $key=>$value){
+            $list[$key]['role_name'] = Group::where('id',$value['group_id'])->find()->remark;
+            $list[$key]['studio_name'] = $studio_model->get_studio_names($value['studio_ids'],',');
+            $list[$key]['tache_name'] = $tache_model->get_tache_names($value['tache_ids'],',');
+        }
 		$data['list'] = $list;
 		$data['dataCount'] = $dataCount;
 		

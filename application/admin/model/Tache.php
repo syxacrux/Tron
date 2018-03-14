@@ -78,7 +78,7 @@ class Tache extends Common{
     public function get_tache_names($ids,$tag){
         $tache_ids = explode(',',$ids);
         foreach($tache_ids as $key=>$value){
-            $res[] = $this->field('explain')->where('id',$value)->find()->explain;
+            $res[] = $this->field('explain')->where('id',$value)->find()->data['explain'];
         }
         $studio_names = implode($tag,$res);
         return $studio_names;
