@@ -10,6 +10,7 @@ import config from '@/assets/js/config.js'
 import baseHttp from '@/assets/js/base_http.js'
 
 window.store = store
+window.HOST = "http://127.0.0.1:8888/"
 
 axios.defaults.baseURL = config.HOST
 axios.defaults.timeout = 1000 * 15
