@@ -344,7 +344,8 @@
           _g.toastMsg('warning', '请选择项目帧率')
           return
         }
-        if (this.form.handle_frame.handle_frame1 && this.form.handle_frame.handle_frame2) {
+        console.log(this.form.handle_frame.handle_frame1)
+        if (!this.form.handle_frame.handle_frame1 || !this.form.handle_frame.handle_frame2) {
           _g.toastMsg('warning', '请输入手柄帧')
           return
         }
@@ -435,7 +436,7 @@
             data.list.forEach((name, index) => {
               temp.push({
                 label: name.realname,
-                key: name.user_id,
+                key: name.id,
                 pinyin: name.username
               });
             });

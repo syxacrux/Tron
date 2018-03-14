@@ -7,6 +7,16 @@ const commonFn = {
   j2s(obj) {
     return JSON.stringify(obj)
   },
+  //时间转换
+  j2time(obj) {
+    let year = obj.getFullYear()
+    let month = obj.getMonth() + 1 < 10 ? '0' + (obj.getMonth() + 1) : obj.getMonth() + 1
+    let date = obj.getDate()  < 10 ? '0' + obj.getDate() : obj.getDate()
+    let hour = obj.getHours() < 10 ? '0' + obj.getHours() : obj.getHours()
+    let min = obj.getMinutes() < 10 ? '0' + obj.getMinutes() : obj.getMinutes()
+    let seconds = obj.getSeconds() < 10 ? '0' + obj.getSeconds() : obj.getSeconds()
+    return year + '-' + month + '-' + date + ' ' + hour + ':' + min + ':' + seconds
+  },
   shallowRefresh(name) {
     router.replace({ path: '/refresh', query: { name: name }})
   },
