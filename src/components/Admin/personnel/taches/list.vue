@@ -19,15 +19,16 @@
             <el-table-column label="操作" width="200">
                 <template slot-scope="scope">
                     <div>
-            <span>
-              <el-button size="mini" type="primary">
-                <router-link :to="{ name: 'tachesEdit', params: { id: scope.row.id }}"
-                             class="">编辑</router-link>
-              </el-button>
-  					</span>
-                        <span>
-  						<el-button size="mini" type="danger" @click="confirmDelete(scope.row)">删除</el-button>
-  					</span>
+											<span v-if="addShow">
+													<router-link :to="{ name: 'tachesEdit', params: { id: scope.row.id }}">
+														<el-button size="mini" type="primary">
+															编辑
+														</el-button>
+												</router-link>
+											</span>
+											<span v-if="deleteShow">
+												<el-button size="mini" type="danger" @click="confirmDelete(scope.row)">删除</el-button>
+											</span>
                     </div>
                 </template>
             </el-table-column>
