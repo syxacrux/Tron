@@ -102,10 +102,11 @@
       getGroups() {
         this.apiGet('admin/groups').then((res) => {
           this.handelResponse(res, (data) => {
-            _(data).forEach((ret) => {
+            _(data.list).forEach((ret) => {
               ret.id = ret.id.toString()
             })
-            this.options = this.options.concat(data)
+            this.options = this.options.concat(data.list)
+
           })
         })
       },

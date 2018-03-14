@@ -128,7 +128,7 @@
         }
         this.apiGet('admin/groups', data).then((res) => {
           this.handelResponse(res, (data) => {
-            this.tableData = data
+            this.tableData = data.list
             this.dataCount = data.dataCount
           })
         })
