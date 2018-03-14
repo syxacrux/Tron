@@ -1,60 +1,46 @@
 <template>
-	<div>
-		<div class="m-b-20 ovf-hd">
-			<div class="fl" v-if="addShow">
-				<router-link class="btn-link-large add-btn" to="add">
-					<i class="el-icon-plus"></i>&nbsp;&nbsp;添加用户
-				</router-link>
-			</div>
-			<div class="fl w-200" :class="{'m-l-30':addShow}">
-				<el-input placeholder="请输入用户名" v-model="keywords">
-					<el-button slot="append" icon="el-icon-search" @click="search()"></el-button>
-				</el-input>
-			</div>
-		</div>
-		<el-table
-		:data="tableData"
-		style="width: 100%"
-		@selection-change="selectItem">
-			<el-table-column
-			type="selection"
-			width="50">
-			</el-table-column>
-			<el-table-column
-			prop="s_name"
-			label="所属组织架构">
-			</el-table-column>
-			<el-table-column
-			label="用户名"
-			prop="username"
-			width="200">
-			</el-table-column>
-			<el-table-column
-			label="备注"
-			prop="remark"
-			width="200">
-			</el-table-column>
-			<el-table-column
-			label="状态"
-			width="100">
-        <template slot-scope="scope">
-          <div>
-            {{ scope.row.status | status }}
-          </div>
+  <div>
+    <div class="m-b-20">
+      <el-breadcrumb separator="/">
+        <el-breadcrumb-item :to="{ path: '/admin' }">首页</el-breadcrumb-item>
+        <el-breadcrumb-item>成员管理</el-breadcrumb-item>
+      </el-breadcrumb>
+    </div>
+    <div class="m-b-20 ovf-hd">
+      <div class="fl" v-if="addShow">
+        <router-link class="btn-link-large add-btn" to="add">
+          <i class="el-icon-plus"></i>&nbsp;&nbsp;添加成员
+        </router-link>
+      </div>
+      <div class="fl w-200" :class="{'m-l-30':addShow}">
+        <el-input placeholder="请输入成员" v-model="keywords.name">
+          <el-button slot="append" icon="el-icon-search" @click="search()"></el-button>
+        </el-input>
+      </div>
+    </div>
+    <el-table :data="tableData" style="width: 100%" @selection-change="selectItem">
+      <el-table-column type="expand">
+        <template slot-scope="props">
+          <el-form label-position="left" inline class="demo-table-expand">
+            <el-form-item label="所属工作室">
+              <span>{{ props.row.studio_names }}</span>
+            </el-form-item>
+            <el-form-item label="所属环节">
+              <span>{{ props.row.tache_names }}</span>
+            </el-form-item>
+          </el-form>
         </template>
-			</el-table-column>
-			<el-table-column
-			label="操作"
-			width="200">
+      </el-table-column>
+      <!--<el-table-column type="selection" width="50"></el-table-column>-->
+      <el-table-column label="成员姓名" prop="realname"></el-table-column>
+      <el-table-column label="用户名" prop="username"></el-table-column>
+      <el-table-column label="角色" prop="remark"></el-table-column>
+      <el-table-column label="操作" width="200">
         <template slot-scope="scope">
           <div>
             <span v-if="editShow">
               <router-link :to="{ name: 'usersEdit', params: { id: scope.row.id }}">
-                <el-button
-                size="small"
-                type="primary">
-                编辑
-                </el-button>
+                <el-button size="small" type="primary">编辑</el-button>
               </router-link>
             </span>
             <span v-if="deleteShow">
@@ -62,21 +48,21 @@
             </span>
           </div>
         </template>
-			</el-table-column>
-		</el-table>
-		<div class="pos-rel p-t-20">
-			<btnGroup :selectedData="multipleSelection" :type="'users'"></btnGroup>
-			<div class="block pages">
-				<el-pagination
-				@current-change="handleCurrentChange"
-				layout="prev, pager, next"
-				:page-size="limit"
-				:current-page="currentPage"
-				:total="dataCount">
-				</el-pagination>
-			</div>
-		</div>
-	</div>
+      </el-table-column>
+    </el-table>
+    <div class="pos-rel p-t-20">
+      <btnGroup :selectedData="multipleSelection" :type="'users'"></btnGroup>
+      <div class="block pages">
+        <el-pagination
+            @current-change="handleCurrentChange"
+            layout="prev, pager, next"
+            :page-size="limit"
+            :current-page="currentPage"
+            :total="dataCount">
+        </el-pagination>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -89,24 +75,27 @@
       return {
         tableData: [],
         dataCount: null,
-        currentPage: null,
-        keywords: '',
+        currentPage: 1,
+        keywords: {
+          name: ''
+        },
         multipleSelection: [],
-        limit: 15
+        limit: 10
       }
     },
     methods: {
       search() {
-        this.$router.push({ path: this.$route.path, query: { keywords: this.keywords, page: 1 }})
+        console.log('search')
+        this.getAllUsers(1)
       },
       selectItem(val) {
         this.multipleSelection = val
       },
       handleCurrentChange(page) {
-        this.$router.push({ path: this.$route.path, query: { keywords: this.keywords, page: page }})
+        this.getAllUsers(page)
       },
       confirmDelete(item) {
-        this.$confirm('确认删除该用户?', '提示', {
+        this.$confirm('确认删除该成员?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
@@ -125,12 +114,12 @@
           // catch error
         })
       },
-      getAllUsers() {
+      getAllUsers(page) {
         this.loading = true
         const data = {
           params: {
             keywords: this.keywords,
-            page: this.currentPage,
+            page: page,
             limit: this.limit
           }
         }
@@ -140,16 +129,6 @@
             this.dataCount = data.dataCount
           })
         })
-      },
-      getCurrentPage() {
-        let data = this.$route.query
-        if (data) {
-          if (data.page) {
-            this.currentPage = parseInt(data.page)
-          } else {
-            this.currentPage = 1
-          }
-        }
       },
       getKeywords() {
         let data = this.$route.query
@@ -163,7 +142,6 @@
       },
       init() {
         this.getKeywords()
-        this.getCurrentPage()
         this.getAllUsers()
       }
     },
@@ -182,7 +160,7 @@
       }
     },
     watch: {
-      '$route' (to, from) {
+      '$route'(to, from) {
         this.init()
       }
     },

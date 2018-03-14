@@ -13,8 +13,8 @@
     </div>
     <el-table :data="tableData" style="width: 100%" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="50"></el-table-column>
-      <el-table-column label="工作室结构" prop="name"></el-table-column>
-      <el-table-column label="工作室名称" prop="studio_name"></el-table-column>
+      <el-table-column label="工作室名称" prop="name"></el-table-column>
+      <el-table-column label="备注" prop="explain"></el-table-column>
       <el-table-column label="状态" prop="status">
         <template slot-scope="scope">
           <div>
@@ -22,7 +22,6 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column label="备注" prop="explain"></el-table-column>
       <el-table-column label="操作" width="200">
         <template slot-scope="scope">
           <div>
@@ -138,13 +137,13 @@
     },
     computed: {
       addShow() {
-        return _g.getHasRule('studios-save')
+        return _g.getHasRule('users-save')
       },
       editShow() {
-        return _g.getHasRule('studios-update')
+        return _g.getHasRule('users-update')
       },
       deleteShow() {
-        return _g.getHasRule('studios-delete')
+        return _g.getHasRule('users-delete')
       }
     },
     components: {

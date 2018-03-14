@@ -1,45 +1,59 @@
 <template>
-	<div class="m-l-50 m-t-30 w-500">
-		<el-form ref="form" :model="form" :rules="rules" label-width="130px">
-			<el-form-item label="用户名" prop="username">
-				<el-input v-model.trim="form.username" class="h-40 w-200" :maxlength=12 :disabled="true"></el-input>
-			</el-form-item>
-			<el-form-item label="密码">
-				<el-input v-model.trim="password" class="h-40 w-200"></el-input>
-			</el-form-item>
-			<el-form-item label="真实姓名" prop="realname">
-				<el-input v-model.trim="form.realname" class="h-40 w-200"></el-input>
-			</el-form-item>
-			<el-form-item label="所属组织架构" prop="structure_id">
-				<el-select v-model="form.structure_id" placeholder="请选择组织架构" class="w-200">
-					<el-option v-for="item in orgsOptions" :label="item.title" :value="item.id" :key="item.id"></el-option>
-				</el-select>
-			</el-form-item>
-			<el-form-item label="备注">
-				<el-input v-model.trim="form.remark" class="h-40 w-200"></el-input>
-			</el-form-item>
-			<el-form-item label="用户组">
-				<el-checkbox-group v-model="selectedGroups">
-					<el-checkbox v-for="item in groupOptions" :label="item.else" class="form-checkbox" :key="item.id"></el-checkbox>
-				</el-checkbox-group>
-			</el-form-item>
-			<el-form-item>
-				<el-button type="primary" @click="add()" :loading="isLoading">提交</el-button>
-				<el-button @click="goback()">返回</el-button>
-			</el-form-item>
-		</el-form>
-	</div>
+  <div>
+    <div class="m-b-20">
+      <el-breadcrumb separator="/">
+        <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ path: '/home/users/list' }">成员管理</el-breadcrumb-item>
+        <el-breadcrumb-item>编辑成员</el-breadcrumb-item>
+      </el-breadcrumb>
+    </div>
+    <div class="m-l-50 m-t-30 w-800">
+      <el-form ref="form" :model="form" :rules="rules" label-width="130px">
+        <el-form-item label="用户名" prop="username">
+          <el-input v-model.trim="form.username" class="h-40 w-200" :maxlength=12 :disabled="true"></el-input>
+        </el-form-item>
+        <el-form-item label="密码">
+          <el-input v-model.trim="password" class="h-40 w-200"></el-input>
+        </el-form-item>
+        <el-form-item label="真实姓名" prop="realname">
+          <el-input v-model.trim="form.realname" class="h-40 w-200"></el-input>
+        </el-form-item>
+        <el-form-item label="所属工作室" prop="studio_ids">
+          <el-checkbox-group v-model="form.studio_ids">
+            <el-checkbox v-for="item in studiosOptions" :label="item.studio_name" :value="item.id" :key="item.id" class="form-checkbox"
+                         name="studio_name"></el-checkbox>
+          </el-checkbox-group>
+        </el-form-item>
+        <el-form-item label="环节" prop="tache_ids">
+          <el-checkbox-group v-model="form.tache_ids">
+            <el-checkbox v-for="item in tachesOptions" :label="item.explain" :value="item.id" :key="item.id" class="form-checkbox"
+                         name="tache_name"></el-checkbox>
+          </el-checkbox-group>
+        </el-form-item>
+        <el-form-item label="角色" prop="group_id">
+          <el-radio-group v-model="form.group_id">
+            <el-radio v-for="item in groupsOptions" :label="item.id" :key="item.id">{{ item.group_name }}</el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item label="备注">
+          <el-input v-model.trim="form.remark" class="h-40 w-200"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="add()" :loading="isLoading">提交</el-button>
+          <el-button @click="goback()">返回</el-button>
+        </el-form-item>
+      </el-form>
+    </div>
+  </div>
 </template>
 <style>
-	.form-checkbox:first-child{
-		margin-left: 15px;
-	}
+  .form-checkbox:first-child {
+    margin-left: 15px;
+  }
 </style>
 <script>
   import http from '../../../../assets/js/http'
   import fomrMixin from '../../../../assets/js/form_com'
-  import _ from 'lodash'
-  import _g from '@/assets/js/global'
 
   export default {
     data() {
@@ -48,107 +62,166 @@
         id: null,
         form: {
           username: '',
+          password: '',
           realname: '',
-          structure_id: null,
-          remark: '',
-          groups: []
+          studio_ids: [],
+          tache_ids: [],
+          group_id: '',
+          remark: ''
         },
+        studiosOptions: [],
+        tachesOptions: [],
+        groupsOptions: [],
+        selectedStudios: [],
+        selectedTaches: [],
+        selectedStudioIds: [],
+        selectedTacheIds: [],
         password: '',
-        orgsOptions: [],
-        groupOptions: [],
-        selectedGroups: [],
-        selectedIds: [],
         rules: {
           username: [
-            { required: true, message: '请输入用户名' }
+            {required: true, message: '请输入用户名'}
+          ],
+          password: [
+            {required: true, message: '请输入密码'}
           ],
           realname: [
-            { required: true, message: '请输入真实姓名' }
+            {required: true, message: '请输入真实姓名'}
           ],
-          structure_id: [
-            { required: true, message: '请选择用户所属组织架构' }
+          studio_ids: [
+            {required: true, message: '请选择至少一个工作室'}
+          ],
+          tache_ids: [
+            {required: true, message: '请选择至少一个环节'}
+          ],
+          group_id: [
+            {required: true, message: '请选择角色'}
           ]
         }
       }
     },
     methods: {
-      selectCheckbox() {
+//      检查工作室复选框
+      selectStudiosCheckbox() {
         let temp = false
-        _(this.groupOptions).forEach((res) => {
-          if (this.selectedGroups.toString().indexOf(res.else) > -1) {
-            this.selectedIds.push(res.id)
+        this.selectedStudios = this.form.studio_ids
+        this.selectedStudioIds = []
+        _(this.studiosOptions).forEach((res) => {
+          if (this.selectedStudios.toString().indexOf(res.studio_name) > -1) {
+            this.selectedStudioIds.push(res.id)
           }
         })
-        if (this.selectedIds.length) {
-          this.form.groups = _.cloneDeep(this.selectedIds)
+        if (this.selectedStudioIds.length) {
+          this.form.studio_ids = _.cloneDeep(this.selectedStudioIds)
           temp = true
         }
         this.selectedIds = []
         return temp
       },
+//			检查环节复选框
+      selectTachesCheckbox() {
+        let temp = false
+        this.selectedTaches = this.form.tache_ids
+        this.selectedTacheIds = []
+        _(this.tachesOptions).forEach((res) => {
+          if (this.selectedTaches.toString().indexOf(res.explain) > -1) {
+            this.selectedTacheIds.push(res.id)
+          }
+        })
+        if (this.selectedTacheIds.length) {
+          this.form.tache_ids = _.cloneDeep(this.selectedTacheIds)
+          temp = true
+        }
+        this.selectedTacheIds = []
+        return temp
+      },
       add() {
-        if (!this.selectCheckbox()) {
-          _g.toastMsg('warning', '请选择用户组')
+        if (!this.selectStudiosCheckbox()) {
+          _g.toastMsg('warning', '请选择至少一个工作室')
+          return
+        }
+        if (!this.selectTachesCheckbox()) {
+          _g.toastMsg('warning', '请选择至少一个环节')
           return
         }
         this.$refs.form.validate((pass) => {
           if (pass) {
-            this.isLoading = true
+            this.isLoading = !this.isLoading
             if (this.password) {
               this.form.password = this.password
             }
             this.apiPut('admin/users/', this.id, this.form).then((res) => {
               this.handelResponse(res, (data) => {
-                this.isLoading = false
-                _g.toastMsg('success', '添加成功')
+                _g.toastMsg('success', '编辑成功')
                 _g.clearVuex('setUsers')
                 setTimeout(() => {
                   this.goback()
                 }, 1500)
               }, () => {
-                this.isLoading = false
+                this.isLoading = !this.isLoading
               })
             })
           }
         })
       },
+//			获取所有角色
       getAllGroups() {
         return new Promise((resolve, reject) => {
-          let data = this.$store.state.userGroups
-          if (data && data.length) {
-            resolve(data)
+          let data = store.state.Groups
+          if (data.list && data.list.length) {
+            resolve(data.list)
           } else {
             this.apiGet('admin/groups').then((res) => {
               this.handelResponse(res, (data) => {
-                resolve(data)
+                resolve(data.list)
               })
             })
           }
         })
       },
-      getAllOrgs() {
-        this.apiGet('admin/structures').then((res) => {
-          this.handelResponse(res, (data) => {
-            this.orgsOptions = data
-          })
+//			获取所有工作室
+      getAllStudios() {
+        return new Promise((resolve, reject) => {
+          let data = store.state.Studios
+          if (data.list && data.list.length) {
+            resolve(data.list)
+          } else {
+            this.apiGet('admin/studios').then((res) => {
+              this.handelResponse(res, (data) => {
+                resolve(data.list)
+              })
+            })
+          }
+        })
+      },
+//			获取所有环节
+      getAllTaches() {
+        return new Promise((resolve, reject) => {
+          let data = store.state.Taches
+          if (data.list && data.list.length) {
+            resolve(data.list)
+          } else {
+            this.apiGet('admin/taches').then((res) => {
+              this.handelResponse(res, (data) => {
+                resolve(data.list)
+              })
+            })
+          }
         })
       },
       async getCompleteData() {
-        this.getAllOrgs()
-        this.groupOptions = await this.getAllGroups()
+        this.groupsOptions = await this.getAllGroups()
+        this.studiosOptions = await this.getAllStudios()
+        this.tachesOptions = await this.getAllTaches()
         this.apiGet('admin/users/' + this.id).then((res) => {
           this.handelResponse(res, (data) => {
+            console.log(data)
             this.form.username = data.username
+            this.form.password = data.password
             this.form.realname = data.realname
-            this.form.structure_id = data.structure_id
+            this.form.studio_ids = data.groups["0"].pivot.studio_names.split(",")
+            this.form.tache_ids = data.groups["0"].pivot.tache_names.split(",")
+            this.form.group_id = data.groups["0"].pivot.group_id
             this.form.remark = data.remark
-            _(data.groups).forEach((res1) => {
-              _(this.groupOptions).forEach((res2) => {
-                if (res1.title == res2.else) {
-                  this.selectedGroups.push(res1.title)
-                }
-              })
-            })
           })
         })
       }

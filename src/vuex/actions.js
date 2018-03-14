@@ -19,6 +19,15 @@ const actions = {
   },
   setOrganizes({ commit }, organizes) {
     commit('setOrganizes', organizes)
+  },
+  setGroups({ commit }, Groups) {
+    commit('setGroups', Groups)
+  },
+  setStudios({ commit }, Studios) {
+    commit('setStudios', Studios)
+  },
+  setTaches({ commit }, Taches) {
+    commit('setTaches', Taches)
   }
 }
 

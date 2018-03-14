@@ -9,6 +9,8 @@ import bus from '@/assets/js/bus.js'
 import config from '@/assets/js/config.js'
 import baseHttp from '@/assets/js/base_http.js'
 
+window.store = store
+
 axios.defaults.baseURL = config.HOST
 axios.defaults.timeout = 1000 * 15
 axios.defaults.headers.authKey = Lockr.get('authKey')

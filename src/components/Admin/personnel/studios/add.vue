@@ -2,8 +2,8 @@
   <div>
     <div class="m-b-20">
       <el-breadcrumb separator="/">
-        <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
-        <el-breadcrumb-item :to="{ path: '/home/studios/list' }">工作室管理</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ path: '/admin' }">首页</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ path: '/admin/studios/list' }">工作室管理</el-breadcrumb-item>
         <el-breadcrumb-item>添加工作室</el-breadcrumb-item>
       </el-breadcrumb>
     </div>

@@ -19,6 +19,18 @@ const mutations = {
   },
   setOrganizes(state, organizes) {
     state.organizes = organizes
+  },
+  setGroups(state, Groups) {
+    state.Groups = Groups
+  },
+  setStudios(state, Studios) {
+    state.Studios = Studios
+  },
+  setTaches(state, Taches) {
+    state.Taches = Taches
+  },
+  setOrganizes(state, organizes) {
+    state.organizes = organizes
   }
 }
 
