@@ -27,7 +27,7 @@ class Upload extends Controller{
         return resultArray(['error' =>  $file->getError()]);
     }
 
-    //项目缩略图上传图片 移动到框架应用根目录/public/uploads/ 目录下
+    //项目缩略图上传图片 移动到框架应用根目录/uploads/Projects/images 目录下
     public function project_images_add(){
         header('Access-Control-Allow-Origin: *');
         header('Access-Control-Allow-Methods: POST');
