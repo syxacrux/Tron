@@ -165,7 +165,7 @@
         } else {
           this.apiGet('admin/groups').then((res) => {
             this.handelResponse(res, (data) => {
-              this.groupsOptions = data
+              this.groupsOptions = data.list
             })
           })
         }

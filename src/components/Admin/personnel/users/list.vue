@@ -34,7 +34,7 @@
       <!--<el-table-column type="selection" width="50"></el-table-column>-->
       <el-table-column label="成员姓名" prop="realname"></el-table-column>
       <el-table-column label="用户名" prop="username"></el-table-column>
-      <el-table-column label="角色" prop="remark"></el-table-column>
+      <el-table-column label="角色" prop="role_name"></el-table-column>
       <el-table-column label="操作" width="200">
         <template slot-scope="scope">
           <div>
@@ -51,7 +51,7 @@
       </el-table-column>
     </el-table>
     <div class="pos-rel p-t-20">
-      <btnGroup :selectedData="multipleSelection" :type="'users'"></btnGroup>
+      <!--<btnGroup :selectedData="multipleSelection" :type="'users'"></btnGroup>-->
       <div class="block pages">
         <el-pagination
             @current-change="handleCurrentChange"
