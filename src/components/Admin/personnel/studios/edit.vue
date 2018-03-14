@@ -40,6 +40,9 @@
         rules: {
           name: [
             {required: true, message: '请输入部门名称', trigger: 'blur'}
+          ],
+          pid: [
+            {required: true, message: '请选择父级部门', trigger: 'blur'}
           ]
         }
       }
