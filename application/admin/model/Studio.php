@@ -34,52 +34,6 @@ class Studio extends Common{
         return $data;
     }
 
-    /**
-     * 新增数据
-     * @param $param
-     * @return bool
-     * @author zjs 2018/3/13
-     */
-    public function addData($param){
-        try{
-            $param['studio_name'] = trimall($param['studio_name']);
-            $param['explain'] = trimall($param['explain']);
-            $param['create_time'] = time();
-            $result =  $this->validate($this->name)->save($param);
-            if(false === $result){
-                $this->error = $this->getError();
-                return false;
-            }else{
-                return true;
-            }
-        }catch(\Exception $e){
-            $this->error = '添加失败';
-            return false;
-        }
-    }
-
-    /**
-     * 删除
-     * @param $id
-     * @return bool
-     * @author zjs 2018/3/13
-     */
-    public function delStudio($id){
-        //根据工作写给ID查询用户关联表内是否存在所属工作室的用户
-        $userCount_byStudio = Access::where('studio_ids','like','%'.$id.'%')->count();
-        if($userCount_byStudio != 0){
-            $this->error = '请先编辑或删除所属成员的工作室';
-            return false;
-        }else{
-            try{
-                $this->where('id', $id)->delete();
-                return true;
-            }catch( \Exception $e){
-                $this->error = '删除失败';
-                return false;
-            }
-        }
-    }
 
     /**
      * 多工作室ID字符串转换相对应的工作室名称，以逗号分割
