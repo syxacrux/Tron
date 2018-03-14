@@ -45,16 +45,16 @@ class Studio extends Common{
      * @throws \think\exception\DbException
      * @author zjs 2018/3/13
      */
-    public function get_studio_names($ids,$tag){
+    public static function get_studio_names($ids,$value,$tag){
         if(!empty($ids)){
             $studio_ids = explode(',',$ids);
-            foreach($studio_ids as $key=>$value){
-                $res[] = $this->field('name')->where('id',$value)->find()->data['name'];
+            foreach($studio_ids as $key=>$val){
+                $res[] = self::where('id',$val)->value($value);
             }
-            $studio_names = implode($tag,$res);
+            $data = implode($tag,$res);
         }else{
-            $studio_names = '';
+            $data = '';
         }
-        return $studio_names;
+        return $data;
     }
 }

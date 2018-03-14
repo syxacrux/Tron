@@ -171,7 +171,7 @@
           } else {
             this.apiGet('admin/groups').then((res) => {
               this.handelResponse(res, (data) => {
-                resolve(data)
+                resolve(data.list)
               })
             })
           }
@@ -216,8 +216,23 @@
             this.form.username = data.username
             this.form.password = data.password
             this.form.realname = data.realname
-            this.form.studio_ids = data.groups[0].studio_names.split(",")
-            this.form.tache_ids = data.groups[0].tache_names.split(",")
+            console.log(data.studio_ids.split(","))
+            _(this.studiosOptions).forEach((key) => {
+              _(data.studio_ids.split(",")).forEach((key1) => {
+                if(key1 == key.id) {
+                  console.log(key)
+                  this.form.studio_ids.push(key.name)
+                }
+              })
+            })
+            _(this.tachesOptions).forEach((key) => {
+              _(data.tache_ids.split(",")).forEach((key1) => {
+                if(key1 == key.id) {
+                  console.log(key)
+                  this.form.tache_ids.push(key.explain)
+                }
+              })
+            })
             this.form.group_id = data.groups[0].id
             this.form.remark = data.remark
           })

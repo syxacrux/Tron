@@ -6,7 +6,7 @@
 // +----------------------------------------------------------------------
 
 namespace app\admin\model;
-
+use think\Db;
 use app\common\model\Common;
 
 class Group extends Common 
@@ -26,7 +26,7 @@ class Group extends Common
 	public function getDataList($keyword, $page, $limit){
         $where = [];
         if ($keyword) {
-            $where['title'] = ['like', '%'.$keyword.'%'];
+            $where['title|remark'] = ['like', '%'.$keyword.'%'];
         }
         $dataCount = $this->where($where)->count('id');
         $list = $this->where($where);
@@ -34,9 +34,15 @@ class Group extends Common
         if ($page && $limit) {
             $list = $list->page($page, $limit);
         }
-        $list = $list ->select();
+        $list = $list->select();
         $data['list'] = $list;
         $data['dataCount'] = $dataCount;
         return $data;
 	}
+
+	public static function get_vlue_by_id($user_id,$value){
+        $group_id = Db::name('admin_access')->where('user_id',$user_id)->value('group_id');
+        $data = self::where('id',$group_id)->value($value);
+        return $data;
+    }
 }

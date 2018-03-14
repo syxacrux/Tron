@@ -53,6 +53,7 @@ return [
 	'admin/menus/deletes' => ['admin/menus/deletes', ['method' => 'POST']],
 	// 【菜单】批量启用/禁用
 	'admin/menus/enables' => ['admin/menus/enables', ['method' => 'POST']],
+
     // 【工作室】批量删除
     'admin/studios/deletes' => ['admin/studios/deletes', ['method' => 'POST']],
     // 【工作室】批量启用/禁用

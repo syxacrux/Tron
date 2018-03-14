@@ -9,7 +9,15 @@ import bus from '@/assets/js/bus.js'
 import config from '@/assets/js/config.js'
 import baseHttp from '@/assets/js/base_http.js'
 
+window.router = router
 window.store = store
+window.HOST = 'http://127.0.0.1:8888'
+window.axios = axios
+window._ = _
+window.Lockr = Lockr
+window.Cookies = Cookies
+window._g = _g
+window.pageSize = 10
 
 axios.defaults.baseURL = config.HOST
 axios.defaults.timeout = 1000 * 15
