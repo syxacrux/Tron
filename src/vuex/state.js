@@ -6,7 +6,10 @@ const state = {
   users: {},
   userGroups: [],
   organizes: [],
-  pageSize: 15
+  pageSize: 10,
+  Groups: [],
+  Studios: [],
+  Taches: []
 }
 
 export default state
