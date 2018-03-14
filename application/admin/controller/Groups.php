@@ -21,8 +21,7 @@ class Groups extends ApiCommon{
         return resultArray(['data' => $data]);
     }
 
-    public function read()
-    {   
+    public function read(){
         $groupModel = model('Group');
         $param = $this->param;
         $data = $groupModel->getDataById($param['id']);
@@ -32,8 +31,7 @@ class Groups extends ApiCommon{
         return resultArray(['data' => $data]);
     }
 
-    public function save()
-    {
+    public function save(){
         $groupModel = model('Group');
         $param = $this->param;
         $data = $groupModel->createData($param);
@@ -43,8 +41,7 @@ class Groups extends ApiCommon{
         return resultArray(['data' => '添加成功']);
     }
 
-    public function update()
-    {
+    public function update(){
         $groupModel = model('Group');
         $param = $this->param;
         $data = $groupModel->updateDataById($param, $param['id']);
@@ -54,8 +51,7 @@ class Groups extends ApiCommon{
         return resultArray(['data' => '编辑成功']);
     }
 
-    public function delete()
-    {
+    public function delete(){
         $groupModel = model('Group');
         $param = $this->param;
         $data = $groupModel->delDataById($param['id'], true);       
@@ -65,8 +61,7 @@ class Groups extends ApiCommon{
         return resultArray(['data' => '删除成功']);    
     }
 
-    public function deletes()
-    {
+    public function deletes(){
         $groupModel = model('Group');
         $param = $this->param;
         $data = $groupModel->delDatas($param['ids'], true);  
@@ -76,8 +71,7 @@ class Groups extends ApiCommon{
         return resultArray(['data' => '删除成功']); 
     }
 
-    public function enables()
-    {
+    public function enables(){
         $groupModel = model('Group');
         $param = $this->param;
         $data = $groupModel->enableDatas($param['ids'], $param['status'], true);  

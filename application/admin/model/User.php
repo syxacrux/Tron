@@ -48,32 +48,27 @@ class User extends Common{
 		if ($keywords) {
             $where['username|realname'] = ['like', '%'.$keywords.'%'];
 		}
-
 		// 默认除去超级管理员
         $where['user.id'] = array('neq', 1);
 		$dataCount = $this->alias('user')->where($where)->count('id');
 		
 		$list = $this
-				->where($where)
-				->alias('user')
+				->where($where)->alias('user')
 				->join('__ADMIN_ACCESS__ user_access', 'user_access.user_id=user.id', 'LEFT');
-		
 		// 若有分页
 		if ($page && $limit) {
 			$list = $list->page($page, $limit);
 		}
-
 		$list = $list->select();
 		$studio_model = new Studio();
 		$tache_model = new Tache();
 		foreach($list as $key=>$value){
-            $list[$key]['role_name'] = Group::where('id',$value['group_id'])->find()->remark;
+            $list[$key]['role_name'] = Group::where('id',$value['group_id'])->find()->data['remark'];
             $list[$key]['studio_name'] = $studio_model->get_studio_names($value['studio_ids'],',');
             $list[$key]['tache_name'] = $tache_model->get_tache_names($value['tache_ids'],',');
         }
 		$data['list'] = $list;
 		$data['dataCount'] = $dataCount;
-		
 		return $data;
 	}
 
