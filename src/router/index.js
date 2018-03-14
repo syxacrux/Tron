@@ -40,6 +40,9 @@ import studiosEdit from '@/components/Admin/personnel/studios/edit.vue'
 import tachesList from '@/components/Admin/personnel/taches/list.vue'
 import tachesAdd from '@/components/Admin/personnel/taches/add.vue'
 import tachesEdit from '@/components/Admin/personnel/taches/edit.vue'
+import projectsList from '@/components/Admin/project/projects/list.vue'
+import projectsAdd from '@/components/Admin/project/projects/add.vue'
+import projectsEdit from '@/components/Admin/project/projects/edit.vue'
 
 Vue.use(VueRouter)
 
@@ -51,28 +54,43 @@ Vue.use(VueRouter)
  */
 
 const routes = [
-  { path: '/', component: Login, name: 'Login' },
+  {path: '/', component: Login, name: 'Login'},
   {
     path: '/admin',
     component: Home,
     children: [
-      { path: '/refresh', component: refresh, name: 'refresh' }
+      {path: '/refresh', component: refresh, name: 'refresh'}
     ]
   },
   {
     path: '/admin',
     component: Home,
     children: [
-      { path: 'menu/list', component: menuList, name: 'menuList', meta: { hideLeft: false, module: 'Admin', menu: 'menu' }},
-      { path: 'menu/add', component: menuAdd, name: 'menuAdd', meta: { hideLeft: false, module: 'Admin', menu: 'menu' }},
-      { path: 'menu/edit/:id', component: menuEdit, name: 'menuEdit', meta: { hideLeft: false, module: 'Admin', menu: 'menu' }}
+      {
+        path: 'menu/list',
+        component: menuList,
+        name: 'menuList',
+        meta: {hideLeft: false, module: 'Admin', menu: 'menu'}
+      },
+      {path: 'menu/add', component: menuAdd, name: 'menuAdd', meta: {hideLeft: false, module: 'Admin', menu: 'menu'}},
+      {
+        path: 'menu/edit/:id',
+        component: menuEdit,
+        name: 'menuEdit',
+        meta: {hideLeft: false, module: 'Admin', menu: 'menu'}
+      }
     ]
   },
   {
     path: '/admin',
     component: Home,
     children: [
-      { path: 'config/add', component: systemConfig, name: 'systemConfig', meta: { hideLeft: false, module: 'Admin', menu: 'systemConfig' }}
+      {
+        path: 'config/add',
+        component: systemConfig,
+        name: 'systemConfig',
+        meta: {hideLeft: false, module: 'Admin', menu: 'systemConfig'}
+      }
     ]
   },
 
@@ -80,73 +98,202 @@ const routes = [
     path: '/admin',
     component: Home,
     children: [
-      { path: 'rule/list', component: ruleList, name: 'ruleList', meta: { hideLeft: false, module: 'Admin', menu: 'rule' }},
-      { path: 'rule/add', component: ruleAdd, name: 'ruleAdd', meta: { hideLeft: false, module: 'Admin', menu: 'rule' }},
-      { path: 'rule/edit/:id', component: ruleEdit, name: 'ruleEdit', meta: { hideLeft: false, module: 'Admin', menu: 'rule' }}
+      {
+        path: 'rule/list',
+        component: ruleList,
+        name: 'ruleList',
+        meta: {hideLeft: false, module: 'Admin', menu: 'rule'}
+      },
+      {path: 'rule/add', component: ruleAdd, name: 'ruleAdd', meta: {hideLeft: false, module: 'Admin', menu: 'rule'}},
+      {
+        path: 'rule/edit/:id',
+        component: ruleEdit,
+        name: 'ruleEdit',
+        meta: {hideLeft: false, module: 'Admin', menu: 'rule'}
+      }
     ]
   },
   {
     path: '/admin',
     component: Home,
     children: [
-      { path: 'position/list', component: positionList, name: 'positionList', meta: { hideLeft: false, module: 'Admin', menu: 'position' }},
-      { path: 'position/add', component: positionAdd, name: 'positionAdd', meta: { hideLeft: false, module: 'Admin', menu: 'position' }},
-      { path: 'position/edit/:id', component: positionEdit, name: 'positionEdit', meta: { hideLeft: false, module: 'Admin', menu: 'position' }}
+      {
+        path: 'position/list',
+        component: positionList,
+        name: 'positionList',
+        meta: {hideLeft: false, module: 'Admin', menu: 'position'}
+      },
+      {
+        path: 'position/add',
+        component: positionAdd,
+        name: 'positionAdd',
+        meta: {hideLeft: false, module: 'Admin', menu: 'position'}
+      },
+      {
+        path: 'position/edit/:id',
+        component: positionEdit,
+        name: 'positionEdit',
+        meta: {hideLeft: false, module: 'Admin', menu: 'position'}
+      }
     ]
   },
   {
     path: '/admin',
     component: Home,
     children: [
-      { path: 'structures/list', component: structuresList, name: 'structuresList', meta: { hideLeft: false, module: 'Admin', menu: 'structures' }},
-      { path: 'structures/add', component: structuresAdd, name: 'structuresAdd', meta: { hideLeft: false, module: 'Admin', menu: 'structures' }},
-      { path: 'structures/edit/:id', component: structuresEdit, name: 'structuresEdit', meta: { hideLeft: false, module: 'Admin', menu: 'structures' }}
+      {
+        path: 'structures/list',
+        component: structuresList,
+        name: 'structuresList',
+        meta: {hideLeft: false, module: 'Admin', menu: 'structures'}
+      },
+      {
+        path: 'structures/add',
+        component: structuresAdd,
+        name: 'structuresAdd',
+        meta: {hideLeft: false, module: 'Admin', menu: 'structures'}
+      },
+      {
+        path: 'structures/edit/:id',
+        component: structuresEdit,
+        name: 'structuresEdit',
+        meta: {hideLeft: false, module: 'Admin', menu: 'structures'}
+      }
     ]
   },
   {
     path: '/admin',
     component: Home,
     children: [
-      { path: 'groups/list', component: groupsList, name: 'groupsList', meta: { hideLeft: false, module: 'Admin', menu: 'groups' }},
-      { path: 'groups/add', component: groupsAdd, name: 'groupsAdd', meta: { hideLeft: false, module: 'Admin', menu: 'groups' }},
-      { path: 'groups/edit/:id', component: groupsEdit, name: 'groupsEdit', meta: { hideLeft: false, module: 'Admin', menu: 'groups' }}
+      {
+        path: 'groups/list',
+        component: groupsList,
+        name: 'groupsList',
+        meta: {hideLeft: false, module: 'Admin', menu: 'groups'}
+      },
+      {
+        path: 'groups/add',
+        component: groupsAdd,
+        name: 'groupsAdd',
+        meta: {hideLeft: false, module: 'Admin', menu: 'groups'}
+      },
+      {
+        path: 'groups/edit/:id',
+        component: groupsEdit,
+        name: 'groupsEdit',
+        meta: {hideLeft: false, module: 'Admin', menu: 'groups'}
+      }
     ]
   },
   {
     path: '/admin',
     component: Home,
     children: [
-      { path: 'users/list', component: usersList, name: 'usersList', meta: { hideLeft: false, module: 'Admin', menu: 'users' }},
-      { path: 'users/add', component: usersAdd, name: 'usersAdd', meta: { hideLeft: false, module: 'Admin', menu: 'users' }},
-      { path: 'users/edit/:id', component: usersEdit, name: 'usersEdit', meta: { hideLeft: false, module: 'Admin', menu: 'users' }}
+      {
+        path: 'users/list',
+        component: usersList,
+        name: 'usersList',
+        meta: {hideLeft: false, module: 'Admin', menu: 'users'}
+      },
+      {
+        path: 'users/add',
+        component: usersAdd,
+        name: 'usersAdd',
+        meta: {hideLeft: false, module: 'Admin', menu: 'users'}
+      },
+      {
+        path: 'users/edit/:id',
+        component: usersEdit,
+        name: 'usersEdit',
+        meta: {hideLeft: false, module: 'Admin', menu: 'users'}
+      }
     ]
   },
   {
     path: '/busi',
     component: Home,
     children: [
-      { path: 'mail/list', component: mailList, name: 'mailList', meta: { hideLeft: false, module: 'Busi', menu: 'mail' }},
-      { path: 'mail/add', component: mailAdd, name: 'mailAdd', meta: { hideLeft: false, module: 'Busi', menu: 'mail' }},
-      { path: 'mail/edit/:id', component: mailEdit, name: 'mailEdit', meta: { hideLeft: false, module: 'Busi', menu: 'mail' }}
+      {path: 'mail/list', component: mailList, name: 'mailList', meta: {hideLeft: false, module: 'Busi', menu: 'mail'}},
+      {path: 'mail/add', component: mailAdd, name: 'mailAdd', meta: {hideLeft: false, module: 'Busi', menu: 'mail'}},
+      {
+        path: 'mail/edit/:id',
+        component: mailEdit,
+        name: 'mailEdit',
+        meta: {hideLeft: false, module: 'Busi', menu: 'mail'}
+      }
     ]
   },
   {
-      path: '/admin',
-      component: Home,
-      children: [
-          { path: 'studios/list', component: studiosList, name: 'studiosList', meta: { hideLeft: false, module: 'Admin', menu: 'studios' }},
-          { path: 'studios/add', component: studiosAdd, name: 'studiosAdd', meta: { hideLeft: false, module: 'Admin', menu: 'studios' }},
-          { path: 'studios/edit/:id', component: studiosEdit, name: 'studiosEdit', meta: { hideLeft: false, module: 'Admin', menu: 'studios' }}
-      ]
+    path: '/admin',
+    component: Home,
+    children: [
+      {
+        path: 'studios/list',
+        component: studiosList,
+        name: 'studiosList',
+        meta: {hideLeft: false, module: 'Admin', menu: 'studios'}
+      },
+      {
+        path: 'studios/add',
+        component: studiosAdd,
+        name: 'studiosAdd',
+        meta: {hideLeft: false, module: 'Admin', menu: 'studios'}
+      },
+      {
+        path: 'studios/edit/:id',
+        component: studiosEdit,
+        name: 'studiosEdit',
+        meta: {hideLeft: false, module: 'Admin', menu: 'studios'}
+      }
+    ]
   },
   {
-	path: '/admin',
-	component: Home,
-	children: [
-	  { path: 'taches/list', component: tachesList, name: 'tachesList', meta: { hideLeft: false, module: 'Admin', menu: 'taches' }},
-	  { path: 'taches/add', component: tachesAdd, name: 'tachesAdd', meta: { hideLeft: false, module: 'Admin', menu: 'taches' }},
-	  { path: 'taches/edit/:id', component: tachesEdit, name: 'tachesEdit', meta: { hideLeft: false, module: 'Admin', menu: 'taches' }}
-	]
+    path: '/admin',
+    component: Home,
+    children: [
+      {
+        path: 'taches/list',
+        component: tachesList,
+        name: 'tachesList',
+        meta: {hideLeft: false, module: 'Admin', menu: 'taches'}
+      },
+      {
+        path: 'taches/add',
+        component: tachesAdd,
+        name: 'tachesAdd',
+        meta: {hideLeft: false, module: 'Admin', menu: 'taches'}
+      },
+      {
+        path: 'taches/edit/:id',
+        component: tachesEdit,
+        name: 'tachesEdit',
+        meta: {hideLeft: false, module: 'Admin', menu: 'taches'}
+      }
+    ]
+  },
+  {
+    path: '/admin',
+    component: Home,
+    children: [
+      {
+        path: 'projects/list',
+        component: projectsList,
+        name: 'projectsList',
+        meta: {hideLeft: false, module: 'Admin', menu: 'projects'}
+      },
+      {
+        path: 'projects/add',
+        component: projectsAdd,
+        name: 'projectsAdd',
+        meta: {hideLeft: false, module: 'Admin', menu: 'projects'}
+      },
+      {
+        path: 'projects/edit/:id',
+        component: projectsEdit,
+        name: 'projectsEdit',
+        meta: {hideLeft: false, module: 'Admin', menu: 'projects'}
+      }
+    ]
   },
 ]
 
@@ -155,7 +302,7 @@ const router = new VueRouter({
   base: __dirname,
   routes
 })
-router.beforeEach(async(to, from, next) => {
+router.beforeEach(async (to, from, next) => {
   const hideLeft = to.meta.hideLeft
   store.dispatch('showLeftMenu', hideLeft)
   // 如果跳转去登录页
@@ -184,7 +331,8 @@ router.beforeEach(async(to, from, next) => {
         }, 1500)
         return
       }
-    };
+    }
+    ;
     // 如果请求多于2个(获取用户信息，刷新token)
     if (result.length >= 2) {
       if (result[0].code === 200) {
