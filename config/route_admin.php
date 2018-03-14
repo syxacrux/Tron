@@ -8,17 +8,14 @@
 return [
     // 定义资源路由
     '__rest__'=>[
+        'admin/upload'         =>'admin/upload',
         'admin/rules'		   =>'admin/rules',
         'admin/groups'		   =>'admin/groups',
         'admin/users'		   =>'admin/users',
         'admin/menus'		   =>'admin/menus',
-        'admin/structures'	   =>'admin/structures',
-        'admin/posts'          =>'admin/posts',
         'admin/studios'        =>'admin/studios',
         'admin/taches'         =>'admin/taches',
-        'admin/roles'          =>'admin/roles',
         'admin/projects'       =>'admin/projects',
-        'admin/upload'         =>'admin/upload'
     ],
 	// 【获取信息】
 	'admin/infos/index' =>['admin/infos/index',['method' => 'POST']],
@@ -56,14 +53,6 @@ return [
 	'admin/menus/deletes' => ['admin/menus/deletes', ['method' => 'POST']],
 	// 【菜单】批量启用/禁用
 	'admin/menus/enables' => ['admin/menus/enables', ['method' => 'POST']],
-	// 【组织架构】批量删除
-	'admin/structures/deletes' => ['admin/structures/deletes', ['method' => 'POST']],
-	// 【组织架构】批量启用/禁用
-	'admin/structures/enables' => ['admin/structures/enables', ['method' => 'POST']],
-	// 【部门】批量删除
-	'admin/posts/deletes' => ['admin/posts/deletes', ['method' => 'POST']],
-	// 【部门】批量启用/禁用
-	'admin/posts/enables' => ['admin/posts/enables', ['method' => 'POST']],
     // 【工作室】批量删除
     'admin/studios/deletes' => ['admin/studios/deletes', ['method' => 'POST']],
     // 【工作室】批量启用/禁用
