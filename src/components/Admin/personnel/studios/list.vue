@@ -72,7 +72,6 @@
 //      表格发生改变时触发
       handleSelectionChange(val) {
         this.multipleSelection = val;
-        console.log(this.multipleSelection)
       },
 //      删除工作室执行方法
       confirmDelete(item) {

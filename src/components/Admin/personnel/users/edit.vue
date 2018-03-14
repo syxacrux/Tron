@@ -30,7 +30,7 @@
         </el-form-item>
         <el-form-item label="角色" prop="group_id">
           <el-select v-model="form.group_id" placeholder="请选择角色" class="w-200">
-            <el-option v-for="item in groupsOptions" :label="item.title" :value="item.id" :key="item.id"></el-option>
+            <el-option v-for="item in groupsOptions" :label="item.remark" :value="item.id" :key="item.id"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="备注">
@@ -52,6 +52,7 @@
 <script>
   import http from '../../../../assets/js/http'
   import fomrMixin from '../../../../assets/js/form_com'
+  import _g from '@/assets/js/global'
 
   export default {
     data() {
@@ -111,7 +112,6 @@
         if (this.selectedStudioIds.length) {
           this.form.studio_ids = _.cloneDeep(this.selectedStudioIds)
           temp = true
-          console.log(this.form.studio_ids, 'studioid')
         }
         this.selectedStudioIds = []
         return temp
@@ -129,7 +129,6 @@
         if (this.selectedTacheIds.length) {
           this.form.tache_ids = _.cloneDeep(this.selectedTacheIds)
           temp = true
-          console.log(this.form.tache_ids, 'tacheid')
         }
         this.selectedTacheIds = []
         return temp
@@ -214,13 +213,12 @@
         this.tachesOptions = await this.getAllTaches()
         this.apiGet('admin/users/' + this.id).then((res) => {
           this.handelResponse(res, (data) => {
-            console.log(data)
             this.form.username = data.username
             this.form.password = data.password
             this.form.realname = data.realname
-            this.form.studio_ids = data.groups["0"].pivot.studio_names.split(",")
-            this.form.tache_ids = data.groups["0"].pivot.tache_names.split(",")
-            this.form.group_id = data.groups["0"].pivot.group_id
+            this.form.studio_ids = data.groups[0].studio_names.split(",")
+            this.form.tache_ids = data.groups[0].tache_names.split(",")
+            this.form.group_id = data.groups[0].id
             this.form.remark = data.remark
           })
         })
