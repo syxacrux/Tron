@@ -108,22 +108,11 @@
       },
 //      初始化项目列表内容
       init() {
-        this.getAllProjects()
+        this.getAllProjects(0)
       }
     },
     created() {
       this.init()
-    },
-    computed: {
-      addShow() {
-        return _g.getHasRule('studios-save')
-      },
-      editShow() {
-        return _g.getHasRule('studios-update')
-      },
-      deleteShow() {
-        return _g.getHasRule('studios-delete')
-      }
     },
     components: {
       btnGroup

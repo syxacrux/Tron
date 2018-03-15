@@ -395,7 +395,7 @@
             data.list.forEach((name, index) => {
               temp.push({
                 label: name.realname,
-                key: name.user_id,
+                key: name.id,
                 pinyin: name.username
               });
             });
@@ -403,6 +403,7 @@
           })
         })
       },
+
       getCompleteData() {
         //   this.apiGet('admin/project/' + this.id).then((res) => {
         //     this.handelResponse(res, (data) => {
