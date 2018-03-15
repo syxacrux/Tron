@@ -73,7 +73,8 @@
         <!--</el-form-item>-->
         <el-form-item label="所属工作室:" prop="studio_ids">
           <el-select :span="8" v-model="form.studio_ids" multiple placeholder="可多选" class="ts-studio_id">
-            <el-option v-for="item in studiosOptions" :key="item.id" :label="item.studio_name" :value="item.id"></el-option>
+            <el-option v-for="item in studiosOptions" :key="item.id" :label="item.studio_name"
+                       :value="item.id"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="现场指导:" prop="scene_director">
@@ -379,49 +380,54 @@
       },
       //获取工作室
       getAllStudios() {
-        this.apiGet('admin/studios?type=tree').then((res) => {
-          this.handelResponse(res, (data) => {
-            console.log(data.list)
-            this.studiosOptions = data.list
-            // this.nodes = this.nodes.concat(data)
-          })
+        return new Promise((resolve, reject) => {
+          let data = store.state.Studios
+          if (data.list && data.list.length) {
+            resolve(data.list)
+          } else {
+            this.apiGet('admin/studios').then((res) => {
+              this.handelResponse(res, (data) => {
+                resolve(data.list)
+              })
+            })
+          }
         })
       },
       getAllUsers() {
-        this.loading = true
-        this.apiGet('admin/users').then((res) => {
-          this.handelResponse(res, (data) => {
-            const temp = [];
-            data.list.forEach((name, index) => {
-              temp.push({
-                label: name.realname,
-                key: name.id,
-                pinyin: name.username
+        return new Promise((resolve, reject) => {
+          this.apiGet('admin/users').then((res) => {
+            this.handelResponse(res, (data) => {
+              const temp = [];
+              (data.list).forEach((name, index) => {
+                temp.push({
+                  label: name.realname,
+                  key: name.id,
+                  pinyin: name.username
+                });
               });
-            });
-            this.userList = temp
+              resolve(temp)
+            })
           })
         })
       },
+      async getCompleteData() {
+        this.userList = await this.getAllUsers()
+        this.studiosOptions = await this.getAllStudios()
+        this.apiGet('admin/projects/' + this.id).then((res) => {
+          this.handelResponse(res, (data) => {
+            console.log(data)
+//            this.form.project_name = '1'
+//            this.form.project_byname = data.project_byname
+//            this.form.project_image = data.project_image
+//            this.form.status = data.status
+//            this.form.aspect_ratio = data.aspect_ratio
 
-      getCompleteData() {
-        //   this.apiGet('admin/project/' + this.id).then((res) => {
-        //     this.handelResponse(res, (data) => {
-        //       console.log(data)
-        this.form.project_name='1'
-        //       this.form.project_byname=data.project_byname
-        //       this.form.project_image=data.project_image
-        //       this.form.status=data.status
-        //       this.form.aspect_ratio=data.aspect_ratio
-
-        //     })
-        //   })
+          })
+        })
       }
     },
     created() {
       this.id = this.$route.params.id
-      this.getAllStudios()
-      this.getAllUsers()
       this.getCompleteData()
     },
     mixins: [http, fomrMixin]

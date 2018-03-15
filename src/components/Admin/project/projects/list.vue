@@ -29,12 +29,12 @@
     <!--<el-col :span="11" v-for="(item, index) in tableData" :key="item" :offset="index > 0 ? 1 : 0">-->
     <div>
       <el-col :span="11" :key="" :offset="1">
-        <el-card :body-style="{ padding: '0px' }">
-          <img src="/src/assets/images/demo.jpg" class="image">
+        <el-card :body-style="{ padding: '0px' }" v-for="item in tableData" :key="item.id">
+          <img :src="address + item.project_image" class="image">
           <div style="padding: 14px;">
             <div class="content">
               <p><span>总时长：20'16'33</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>遮幅比：16:9</span></p>
-              <p><span>计划开始：2018-03-09</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>计划结束：2018-03-10</span></p>
+              <!--<p><span>计划开始：{{ _g.j2time(item.plan_start_timestamp) }}</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>计划结束：{{ _g.j2time(item.plan_end_timestamp) }}</span></p>-->
               <p><span>项目帧率：25fps</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>分辨率：2048*1152</span></p>
               <p><span>视效总监：马丁</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>视效总制片：滕世飞</span></p>
               <p><span>现场制片：宋雨昕</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>现场指导：苗依</span></p>
@@ -43,11 +43,11 @@
             </div>
             <div class="bottom clearfix tx-r">
               <span v-if="editShow">
-                <router-link :to="{ name: 'projectsEdit', params: { id: '' }}">
+                <router-link :to="{ name: 'projectsEdit', params: { id: item.id }}">
                   <el-button size="small" type="primary">编辑</el-button>
                 </router-link>
               </span>
-              <el-button size="small" type="danger" @click="confirmDelete()">删除</el-button>
+              <el-button size="small" type="danger" @click="confirmDelete(item)">删除</el-button>
             </div>
           </div>
         </el-card>
@@ -67,7 +67,8 @@
   export default {
     data() {
       return {
-//        currentDate: new Date()
+        address: window.HOST + '/',
+        tableData: []
       }
     },
     methods: {
@@ -102,6 +103,7 @@
         }
         this.apiGet('admin/projects', data).then((res) => {
           this.handelResponse(res, (data) => {
+            console.log(data.list)
             this.tableData = data.list
           })
         })
@@ -112,6 +114,7 @@
       }
     },
     created() {
+      console.log(window.HOST)
       this.init()
     },
     components: {
