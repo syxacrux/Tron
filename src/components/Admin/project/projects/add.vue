@@ -315,14 +315,14 @@
         this.form.project_image = res.data;
       },
       beforeAvatarUpload(file) {
-       const isJPG = file.type === 'image/jpeg';
+      //  const isJPG = file.type === 'image/jpeg';
        const isLt2M = file.size / 1024 / 1024 < 0.195;
               console.log(isLt2M)
       //  if (!isJPG) {
       //    this.$message.error('上传头像图片只能是 JPG 格式!');
       //  }
        if (!isLt2M) {
-         this.$message.error('上传头像图片大小不能超过 200kB!');
+         this.$message.error('上传头像图片大小不能超过 200KB!');
        }
        return isJPG && isLt2M;
       },
