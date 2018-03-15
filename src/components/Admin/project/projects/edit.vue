@@ -238,6 +238,7 @@
   .form_studio_id {
     width: 350px;
   }
+
   .block {
     /* margin-top: 20px; */
   }
@@ -251,6 +252,7 @@
     data() {
       return {
         isLoading: false,
+
         uploadImageUrl: window.HOST + '/admin/upload_project_image',
         userList: [],
         studiosOptions: [],
@@ -455,11 +457,35 @@
         this.apiGet('admin/projects/' + this.id).then((res) => {
           this.handelResponse(res, (data) => {
             console.log(data)
-//            this.form.project_name = '1'
-//            this.form.project_byname = data.project_byname
-//            this.form.project_image = data.project_image
-//            this.form.status = data.status
-//            this.form.aspect_ratio = data.aspect_ratio
+            this.form = data
+            this.image = window.HOST + '/' + this.form.project_image
+
+//            this.form.handle_frame = this.form.handle_frame.handle_frame1 + ',' + this.form.handle_frame.handle_frame2
+            let handle_frame = data.handle_frame.split(',')
+            console.log(handle_frame[0])
+//            this.form.handle_frame.handle_frame1 = handle_frame[0]
+//            this.form.handle_frame.handle_frame2 = handle_frame[1]
+//            this.form.resolutic = parseInt(this.form.resolutic) ? parseInt(this.form.resolutic) : ''
+//            this.form.frame_rate = parseInt(this.form.frame_rate) ? parseInt(this.form.frame_rate) : ''
+//            this.form.aspect_ratio = parseInt(this.form.aspect_ratio) ? parseInt(this.form.aspect_ratio) : ''
+            function str2num(str) {
+              let arr = str.split(',')
+              let temp = []
+              _(arr).forEach((key, index) => {
+                temp.push(parseInt(key))
+              })
+              return temp
+            }
+
+            this.studio_ids = str2num(data.studio_ids)
+            this.scene_director = str2num(data.scene_director)
+            this.producer = str2num(data.producer)
+            this.scene_producer = str2num(data.scene_producer)
+            this.visual_effects_boss = str2num(data.visual_effects_boss)
+            this.visual_effects_producer = str2num(data.visual_effects_producer)
+            this.second_company_producer = str2num(data.second_company_producer)
+            this.inside_coordinate = str2num(data.inside_coordinate)
+            this.plan_time = [data.plan_start_timestamp, data.plan_end_timestamp]
 
           })
         })
