@@ -457,7 +457,8 @@
             this.form.project_name = data.project_name
             this.form.project_byname = data.project_byname
             this.form.project_explain = data.project_explain
-            this.image = window.HOST + '/' + data.project_image
+            this.form.project_image = this.image = window.HOST + '/' + data.project_image
+            console.log(this.image)
             this.form.handle_frame.handle_frame1 = data.handle_frame.split(',')[0]
             this.form.handle_frame.handle_frame2 = data.handle_frame.split(',')[1]
             this.form.resolutic = data.resolutic.toString()
