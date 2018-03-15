@@ -456,14 +456,11 @@
         this.studiosOptions = await this.getAllStudios()
         this.apiGet('admin/projects/' + this.id).then((res) => {
           this.handelResponse(res, (data) => {
-            console.log(data)
-            this.form = data
+            this.form.project_name = data.project_name
+            this.form.project_byname = data.project_byname
             this.image = window.HOST + '/' + this.form.project_image
-            // let handle_frames = data.handle_frame.split(',')
-            // console.log(handle_frames[0])
-            // console.log(handle_frames[1])
-            this.form.handle_frame.handle_frame1='1'
-
+            this.form.handle_frame.handle_frame1 = data.handle_frame.split(',')[0]
+            this.form.handle_frame.handle_frame2 = data.handle_frame.split(',')[1]
             this.form.resolutic = data.resolutic.toString()
             this.form.frame_rate = data.frame_rate.toString()
             this.form.aspect_ratio = data.aspect_ratio.toString()
@@ -475,7 +472,6 @@
               })
               return temp
             }
-
             this.studio_ids = str2num(data.studio_ids)
             this.scene_director = str2num(data.scene_director)
             this.producer = str2num(data.producer)

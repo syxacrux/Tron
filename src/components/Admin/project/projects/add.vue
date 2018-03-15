@@ -315,16 +315,16 @@
         this.form.project_image = res.data;
       },
       beforeAvatarUpload(file) {
-        const isJPG = file.type === 'image/jpeg';
-        const isLt2M = file.size / 1024 / 1024 < 2;
-
-        if (!isJPG) {
-          this.$message.error('上传头像图片只能是 JPG 格式!');
-        }
-        if (!isLt2M) {
-          this.$message.error('上传头像图片大小不能超过 2MB!');
-        }
-        return isJPG && isLt2M;
+//        const isJPG = file.type === 'image/jpeg';
+//        const isLt2M = file.size / 1024 / 1024 < 2;
+//
+//        if (!isJPG) {
+//          this.$message.error('上传头像图片只能是 JPG 格式!');
+//        }
+//        if (!isLt2M) {
+//          this.$message.error('上传头像图片大小不能超过 2MB!');
+//        }
+//        return isJPG && isLt2M;
       },
       add(form) {
         console.log(this.studio_ids)
@@ -385,7 +385,7 @@
           _g.toastMsg('warning', '请选择内部协调制片')
           return
         }
-
+        console.log(this.form.resolutic, typeof this.form.resolutic)
         this.form.handle_frame = this.form.handle_frame.handle_frame1 + ',' + this.form.handle_frame.handle_frame2
         this.form.resolutic = parseInt(this.form.resolutic) ? parseInt(this.form.resolutic) : ''
         this.form.frame_rate = parseInt(this.form.frame_rate) ? parseInt(this.form.frame_rate) : ''
