@@ -459,15 +459,14 @@
             console.log(data)
             this.form = data
             this.image = window.HOST + '/' + this.form.project_image
+            // let handle_frames = data.handle_frame.split(',')
+            // console.log(handle_frames[0])
+            // console.log(handle_frames[1])
+            this.form.handle_frame.handle_frame1='1'
 
-//            this.form.handle_frame = this.form.handle_frame.handle_frame1 + ',' + this.form.handle_frame.handle_frame2
-            let handle_frame = data.handle_frame.split(',')
-            console.log(handle_frame[0])
-//            this.form.handle_frame.handle_frame1 = handle_frame[0]
-//            this.form.handle_frame.handle_frame2 = handle_frame[1]
-//            this.form.resolutic = parseInt(this.form.resolutic) ? parseInt(this.form.resolutic) : ''
-//            this.form.frame_rate = parseInt(this.form.frame_rate) ? parseInt(this.form.frame_rate) : ''
-//            this.form.aspect_ratio = parseInt(this.form.aspect_ratio) ? parseInt(this.form.aspect_ratio) : ''
+            this.form.resolutic = data.resolutic.toString()
+            this.form.frame_rate = data.frame_rate.toString()
+            this.form.aspect_ratio = data.aspect_ratio.toString()
             function str2num(str) {
               let arr = str.split(',')
               let temp = []
@@ -485,8 +484,7 @@
             this.visual_effects_producer = str2num(data.visual_effects_producer)
             this.second_company_producer = str2num(data.second_company_producer)
             this.inside_coordinate = str2num(data.inside_coordinate)
-            this.plan_time = [data.plan_start_timestamp, data.plan_end_timestamp]
-
+            this.plan_time = [new Date(data.plan_start_timestamp * 1000), new Date(data.plan_end_timestamp * 1000)]
           })
         })
       }
