@@ -75,6 +75,13 @@ class Tache extends Common{
      * @throws \think\exception\DbException
      * @author zjs 2018/3/13
      */
+    /**
+     * @param $ids
+     * @param $value
+     * @param $tag
+     * @return string
+     * @author zjs 2018/3/15
+     */
     public static function get_tache_names($ids,$value,$tag){
         if(!empty($ids)){
             $tache_ids = explode(',',$ids);

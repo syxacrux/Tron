@@ -421,4 +421,22 @@ class User extends Common{
 
         return $ret;
     }
+
+    //根据多个ID获取值内容
+
+    /**
+     * 根据多个ID获取值内容
+     * @param $ids string
+     * @param $value string 字段
+     * @param $tag string 分割符号
+     * @author zjs 2018/3/15
+     */
+    public static function getName_ById($ids,$value,$tag){
+        $ids_arr = explode(",",$ids);
+        foreach($ids_arr as $key=>$val){
+            $res[] = self::where('id',$val)->value($value);
+        }
+        $data = implode($tag,$res);
+        return $data;
+    }
 }

@@ -1,11 +1,12 @@
 <?php
 namespace app\admin\controller;
+use app\admin\model\Tache;
 use app\common\controller\BaseCommon;
 
 class Taches extends BaseCommon{
     //首页
     public function index(){
-        $tache_model = model('tache');
+        $tache_model = new Tache();
         $uid = $this->uid;
         $param = $this->param;
         $keywords = !empty($param['keywords']) ? $param['keywords']: '';
@@ -16,7 +17,7 @@ class Taches extends BaseCommon{
     }
 
     public function read(){
-        $tache_model = model('tache');
+        $tache_model = new Tache();
         $param = $this->param;
         $data = $tache_model->getDataById($param['id']);
         if (!$data) {

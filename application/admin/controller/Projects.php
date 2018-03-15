@@ -21,7 +21,7 @@ class Projects extends ApiCommon{
     public function read(){
         $project_model = new Project();
         $param = $this->param;
-        $data = $project_model->getDataById($param['id']);
+        $data = $project_model->getData_ById($param['id']);
         if (!$data) {
             return resultArray(['error' => $project_model->getError()]);
         }
