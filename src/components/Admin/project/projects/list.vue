@@ -33,12 +33,12 @@
           <img :src="address + item.project_image" class="image">
           <div style="padding: 14px;">
             <div class="content">
-              <p><span>总时长：20'16'33</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>遮幅比：16:9</span></p>
-              <!--<p><span>计划开始：{{ _g.j2time(item.plan_start_timestamp) }}</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>计划结束：{{ _g.j2time(item.plan_end_timestamp) }}</span></p>-->
-              <p><span>项目帧率：25fps</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>分辨率：2048*1152</span></p>
-              <p><span>视效总监：马丁</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>视效总制片：滕世飞</span></p>
-              <p><span>现场制片：宋雨昕</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>现场指导：苗依</span></p>
-              <p><span title="二级公司制片：迪丽热巴，滕世飞，迪丽热巴，滕世飞">二级公司制片：迪丽热巴，滕世飞，迪丽热巴，滕世飞</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>内部协调：迪丽热巴，滕世飞，迪丽热巴，滕世飞</span>
+              <p><span>总时长：{{ item.duration }}</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>遮幅比：{{ item.aspect_ratio }}</span></p>
+              <p><span>计划开始：{{ item.plan_start_time }}</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>计划结束：{{ item.plan_end_time }}</span></p>
+              <p><span>项目帧率：{{ item.frame_rate }}</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>分辨率：{{ item.resolutic }}</span></p>
+              <p><span>视效总监：{{ item.visual_effects_boss }}</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>视效总制片：{{ item.visual_effects_producer }}</span></p>
+              <p><span>现场制片：{{ item.scene_producer }}</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>现场指导：{{ item.scene_director }}</span></p>
+              <p><span :title="'二级公司制片：' + item.second_company_producer">二级公司制片：{{ item.second_company_producer }}</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>内部协调：{{ item.inside_coordinate }}</span>
               </p>
             </div>
             <div class="bottom clearfix tx-r">
