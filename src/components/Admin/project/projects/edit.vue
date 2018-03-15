@@ -403,7 +403,7 @@
         this.$refs.form.validate((pass) => {
           if (pass) {
             this.isLoading = !this.isLoading
-            this.apiPut('admin/projects', this.id, this.form).then((res) => {
+            this.apiPut('admin/projects/', this.id, this.form).then((res) => {
               this.handelResponse(res, (data) => {
                 _g.toastMsg('success', '编辑成功')
                 _g.clearVuex('setUsers')
