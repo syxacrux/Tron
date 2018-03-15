@@ -74,7 +74,7 @@
         <el-row :gutter="20">
           <el-form-item label="项目帧率:" prop="frame_rate" class="is-required">
             <el-select v-model="form.frame_rate" placeholder="请选择">
-              <el-option label="请选择" value=""></el-option>
+              <!--<el-option label="请选择" value=""></el-option>-->
               <el-option label="24fps" value="1"></el-option>
               <el-option label="25fps" value="2"></el-option>
             </el-select>

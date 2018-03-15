@@ -43,6 +43,7 @@ class Upload extends Controller{
         if ($info) {
             return resultArray(['data' =>$host_project_image_path.DS.$info->getSaveName()]);
         }
+        return resultArray(['error'=>$file->getError()]);
     }
 }
  
