@@ -57,10 +57,6 @@ class Project extends Common{
      * @author zjs 2018/3/6
      */
     public function addData($param){
-        $aspect_ratio_arr = [1=>'16:9',2=>'10:5',3=>'1:1'];//遮幅比
-        $resolutic_arr = [1=>'1024*768',2=>'2560*1680'];  //分辨率
-        $frame_rate_arr = [1=>'24fps',2=>'25fps']; //项目帧率
-        file_put_contents('aa.txt',var_export($param,true));
         try{
             $param['project_image'] = str_replace('\\','/',$param['project_image']);
             $param['plan_start_timestamp'] = strtotime($param['plan_start_timestamp']);
