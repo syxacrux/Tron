@@ -74,9 +74,9 @@
           title: [
             { required: true, message: '请输入用户组名称', trigger: 'blur' }
           ],
-          pid: [
-            { required: true, message: '请选择父级用户', trigger: 'blur' }
-          ],
+          // pid: [
+          //   { required: true, message: '请选择父级用户', trigger: 'blur' }
+          // ],
           rules: [
             { required: true, message: '请选择权限分配', trigger: 'blur' }
           ]
