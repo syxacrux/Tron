@@ -30,7 +30,7 @@ class Project extends Common{
         }
         $list = $list ->select();
         foreach($list as $key=>$value){
-            $list[$key]['resolutic'] = $this->aspect_ratio_arr[$value['resolutic']];   //分辨率
+            $list[$key]['resolutic'] = $this->resolutic_arr[$value['resolutic']];   //分辨率
             $list[$key]['frame_rate'] = $this->frame_rate_arr[$value['frame_rate']];   //项目帧率
             $list[$key]['aspect_ratio'] = $this->aspect_ratio_arr[$value['aspect_ratio']]; //遮幅比
             $list[$key]['producer'] = !empty($value['producer']) ? : ''; //负责制片人
