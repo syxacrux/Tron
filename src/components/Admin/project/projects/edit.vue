@@ -456,18 +456,14 @@
         this.studiosOptions = await this.getAllStudios()
         this.apiGet('admin/projects/' + this.id).then((res) => {
           this.handelResponse(res, (data) => {
-            console.log(data)
-            this.form = data
+            this.form.project_name = data.project_name
+            this.form.project_byname = data.project_byname
             this.image = window.HOST + '/' + this.form.project_image
-
-//            this.form.handle_frame = this.form.handle_frame.handle_frame1 + ',' + this.form.handle_frame.handle_frame2
-            let handle_frame = data.handle_frame.split(',')
-            console.log(handle_frame[0])
-//            this.form.handle_frame.handle_frame1 = handle_frame[0]
-//            this.form.handle_frame.handle_frame2 = handle_frame[1]
-//            this.form.resolutic = parseInt(this.form.resolutic) ? parseInt(this.form.resolutic) : ''
-//            this.form.frame_rate = parseInt(this.form.frame_rate) ? parseInt(this.form.frame_rate) : ''
-//            this.form.aspect_ratio = parseInt(this.form.aspect_ratio) ? parseInt(this.form.aspect_ratio) : ''
+            this.form.handle_frame.handle_frame1 = data.handle_frame.split(',')[0]
+            this.form.handle_frame.handle_frame2 = data.handle_frame.split(',')[1]
+            this.form.resolutic = data.resolutic.toString()
+            this.form.frame_rate = data.frame_rate.toString()
+            this.form.aspect_ratio = data.aspect_ratio.toString()
             function str2num(str) {
               let arr = str.split(',')
               let temp = []
@@ -476,7 +472,6 @@
               })
               return temp
             }
-
             this.studio_ids = str2num(data.studio_ids)
             this.scene_director = str2num(data.scene_director)
             this.producer = str2num(data.producer)
@@ -485,8 +480,7 @@
             this.visual_effects_producer = str2num(data.visual_effects_producer)
             this.second_company_producer = str2num(data.second_company_producer)
             this.inside_coordinate = str2num(data.inside_coordinate)
-            this.plan_time = [data.plan_start_timestamp, data.plan_end_timestamp]
-
+            this.plan_time = [new Date(data.plan_start_timestamp * 1000), new Date(data.plan_end_timestamp * 1000)]
           })
         })
       }
