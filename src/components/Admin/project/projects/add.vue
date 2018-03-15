@@ -327,7 +327,6 @@
 //        return isJPG && isLt2M;
       },
       add(form) {
-        console.log(this.studio_ids)
         if (!this.form.project_image) {
           _g.toastMsg('warning', '请选择项目缩略图')
           return
@@ -344,7 +343,6 @@
           _g.toastMsg('warning', '请选择项目帧率')
           return
         }
-        console.log(this.form.handle_frame.handle_frame1)
         if (!this.form.handle_frame.handle_frame1 || !this.form.handle_frame.handle_frame2) {
           _g.toastMsg('warning', '请输入手柄帧')
           return
@@ -385,7 +383,6 @@
           _g.toastMsg('warning', '请选择内部协调制片')
           return
         }
-        console.log(this.form.resolutic, typeof this.form.resolutic)
         this.form.handle_frame = this.form.handle_frame.handle_frame1 + ',' + this.form.handle_frame.handle_frame2
         this.form.resolutic = parseInt(this.form.resolutic) ? parseInt(this.form.resolutic) : ''
         this.form.frame_rate = parseInt(this.form.frame_rate) ? parseInt(this.form.frame_rate) : ''

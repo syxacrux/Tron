@@ -345,7 +345,6 @@
           _g.toastMsg('warning', '请选择项目帧率')
           return
         }
-        console.log(this.form.handle_frame.handle_frame1)
         if (!this.form.handle_frame.handle_frame1 || !this.form.handle_frame.handle_frame2) {
           _g.toastMsg('warning', '请输入手柄帧')
           return
@@ -386,7 +385,6 @@
           _g.toastMsg('warning', '请选择内部协调制片')
           return
         }
-        // console.log(form)
         this.form.handle_frame = this.form.handle_frame.handle_frame1 + ',' + this.form.handle_frame.handle_frame2
         this.form.resolutic = parseInt(this.form.resolutic) ? parseInt(this.form.resolutic) : ''
         this.form.frame_rate = parseInt(this.form.frame_rate) ? parseInt(this.form.frame_rate) : ''
@@ -407,7 +405,7 @@
             this.isLoading = !this.isLoading
             this.apiPost('admin/projects', this.form).then((res) => {
               this.handelResponse(res, (data) => {
-                _g.toastMsg('success', '添加成功')
+                _g.toastMsg('success', '编辑成功')
                 _g.clearVuex('setUsers')
                 setTimeout(() => {
                   this.goback()
@@ -458,7 +456,8 @@
           this.handelResponse(res, (data) => {
             this.form.project_name = data.project_name
             this.form.project_byname = data.project_byname
-            this.image = window.HOST + '/' + this.form.project_image
+            this.form.project_explain = data.project_explain
+            this.image = window.HOST + '/' + data.project_image
             this.form.handle_frame.handle_frame1 = data.handle_frame.split(',')[0]
             this.form.handle_frame.handle_frame2 = data.handle_frame.split(',')[1]
             this.form.resolutic = data.resolutic.toString()

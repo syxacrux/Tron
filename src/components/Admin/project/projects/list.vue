@@ -28,8 +28,8 @@
     </div>
     <!--<el-col :span="11" v-for="(item, index) in tableData" :key="item" :offset="index > 0 ? 1 : 0">-->
     <div>
-      <el-col :span="11" :key="" :offset="1">
-        <el-card :body-style="{ padding: '0px' }" v-for="item in tableData" :key="item.id">
+      <el-col :span="11" v-for="(item, index) in tableData" :key="item.id" :offset="index > 0 ? 1 : 0">
+        <el-card :body-style="{ padding: '0px' }">
           <img :src="address + item.project_image" class="image">
           <div style="padding: 14px;">
             <div class="content">
@@ -103,7 +103,6 @@
         }
         this.apiGet('admin/projects', data).then((res) => {
           this.handelResponse(res, (data) => {
-            console.log(data.list)
             this.tableData = data.list
           })
         })
@@ -114,7 +113,6 @@
       }
     },
     created() {
-      console.log(window.HOST)
       this.init()
     },
     components: {
