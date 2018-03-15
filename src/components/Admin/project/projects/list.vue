@@ -28,7 +28,7 @@
     </div>
     <!--<el-col :span="11" v-for="(item, index) in tableData" :key="item" :offset="index > 0 ? 1 : 0">-->
     <div>
-      <el-col :span="11" v-for="(item, index) in tableData" :key="item.id" :offset="index > 0 ? 1 : 0">
+      <el-col class="project_list" :span="11" v-for="(item, index) in tableData" :key="item.id">
         <el-card :body-style="{ padding: '0px' }">
           <img :src="address + item.project_image" class="image">
           <div style="padding: 14px;">
@@ -170,6 +170,11 @@
     width: 100%;
     height: 300px;
     display: block;
+  }
+
+  .project_list{
+    margin-bottom: 30px;
+    margin-right: 45px;
   }
 
   .clearfix:before,
