@@ -43,9 +43,10 @@
             </div>
             <div class="bottom clearfix tx-r">
               <span v-if="editShow">
-                <router-link :to="{ name: 'projectsEdit', params: { id: item.id }}">
+                <!-- <router-link :to="{ name: 'projectsEdit', params: { id: item.id }}">
                   <el-button size="small" type="primary">编辑</el-button>
-                </router-link>
+                </router-link> -->
+                 <el-button size="small" type="primary" @click="ProjectEdit(item.id)">编辑</el-button>
               </span>
               <el-button size="small" type="danger" @click="confirmDelete(item)">删除</el-button>
             </div>
@@ -68,7 +69,8 @@
     data() {
       return {
         address: window.HOST + '/',
-        tableData: []
+        tableData: [],
+        uid:''
       }
     },
     methods: {
@@ -93,6 +95,13 @@
           // handle error
         })
       },
+      //项目编辑跳转
+      ProjectEdit(ids){
+        this.apiPost('admin/check_auth').then((res) => {
+            this.$router.push({name: 'projectsEdit', params: {id:ids}})
+        })
+        
+      },
 //      获取项目列表
       getAllProjects(status) {
         this.loading = true
@@ -104,6 +113,7 @@
         this.apiGet('admin/projects', data).then((res) => {
           this.handelResponse(res, (data) => {
             this.tableData = data.list
+            this.uid=data.uid
           })
         })
       },
