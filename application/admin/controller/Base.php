@@ -7,6 +7,7 @@
 
 namespace app\admin\controller;
 
+use app\admin\model\Access;
 use com\verify\HonrayVerify;
 use app\common\controller\Common;
 
@@ -94,10 +95,19 @@ class Base extends Common
         $param = $this->param;
         $table = $param['table'];//数据表名
         $uid = $param['uid']; //当前登陆人
-        $table_id = $param['table_id'];//查询数据表名主键
-        if(!$uid){
-            return resultArray(['code' => '400','error'=>'uid为空']);
+        $group_id = Access::where('user_id',$uid)->value('group_id');
+        if(!$group_id){
+            return ['code' => '400','error'=>'uid不存在'];
         }
+        //过滤admin
+        if($uid ==1){
+            return ['code'=>200];
+        }else{
+            if($group_id == 1 || $group_id == 2 || $group_id==3){
+                return ['code'=>200];
+            }
+        }
+        $table_id = $param['table_id'];//查询数据表名主键
         switch ($table) {
             case 'project':
                 $table_model = model('Project')->where('id',$table_id)->where('scene_producer|scene_director|second_company_producer|inside_coordinate','like','%'.$uid.'%');
