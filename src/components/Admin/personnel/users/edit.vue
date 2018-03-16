@@ -12,8 +12,8 @@
         <el-form-item label="用户名" prop="username">
           <el-input v-model.trim="form.username" class="h-40 w-200" :maxlength=12 :disabled="true"></el-input>
         </el-form-item>
-        <el-form-item label="密码">
-          <el-input v-model.trim="password" class="h-40 w-200"></el-input>
+        <el-form-item label="密码" prop="password">
+          <el-input v-model.trim="form.password" class="h-40 w-200"></el-input>
         </el-form-item>
         <el-form-item label="真实姓名" prop="realname">
           <el-input v-model.trim="form.realname" class="h-40 w-200"></el-input>
@@ -145,9 +145,9 @@
         this.$refs.form.validate((pass) => {
           if (pass) {
             this.isLoading = !this.isLoading
-            if (this.password) {
-              this.form.password = this.password
-            }
+//            if (this.password) {
+//              this.form.password = this.password
+//            }
             this.apiPut('admin/users/', this.id, this.form).then((res) => {
               this.handelResponse(res, (data) => {
                 _g.toastMsg('success', '编辑成功')
@@ -214,7 +214,7 @@
         this.apiGet('admin/users/' + this.id).then((res) => {
           this.handelResponse(res, (data) => {
             this.form.username = data.username
-            this.form.password = data.password
+            this.form.password = data.password ? '' : ''
             this.form.realname = data.realname
             this.form.studio_id = data.studio_id
 //            _(this.studiosOptions).forEach((key) => {
