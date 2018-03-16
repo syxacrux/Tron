@@ -317,16 +317,16 @@
         this.form.project_image = res.data;
       },
       beforeAvatarUpload(file) {
-        const isJPG = file.type === 'image/jpeg';
-        const isLt2M = file.size / 1024 / 1024 < 2;
+        // const isJPG = file.type === 'image/jpeg';
+        const isLt2M = file.size / 1024 / 1024 < 0.195;
 
-        if (!isJPG) {
-          this.$message.error('上传头像图片只能是 JPG 格式!');
-        }
+        // if (!isJPG) {
+        //   this.$message.error('上传头像图片只能是 JPG 格式!');
+        // }
         if (!isLt2M) {
-          this.$message.error('上传头像图片大小不能超过 2MB!');
+          this.$message.error('上传头像图片大小不能超过 200KB!');
         }
-        return isJPG && isLt2M;
+        return isLt2M;
       },
       add(form) {
         if (!this.form.project_image) {
