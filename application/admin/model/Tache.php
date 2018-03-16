@@ -43,6 +43,12 @@ class Tache extends Common{
         }
     }
 
+    /**
+     * 删除
+     * @param $id
+     * @return bool
+     * @author zjs 2018/3/15
+     */
     public function delTache($id){
         try{
             $this->where('id', $id)->delete();
@@ -53,6 +59,12 @@ class Tache extends Common{
         }
     }
 
+    /**
+     * 批量删除
+     * @param $ids
+     * @return bool
+     * @author zjs 2018/3/15
+     */
     public function delTaches($ids){
         //数组转字符串用,分割
         $ids_str = implode(',',$ids);
@@ -67,15 +79,6 @@ class Tache extends Common{
 
     /**
      * 多环节ID字符串转换相对应的环节名称，以逗号分割
-     * @param $ids  string 多环节ID
-     * @param $tag  string 分割符号
-     * @return string
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
-     * @throws \think\exception\DbException
-     * @author zjs 2018/3/13
-     */
-    /**
      * @param $ids
      * @param $value
      * @param $tag

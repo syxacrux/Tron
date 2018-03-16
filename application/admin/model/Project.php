@@ -11,7 +11,7 @@ class Project extends Common{
     protected $status_arr = [0=>'未开始',1=>'等待中',2=>'制作中',3=>'暂停',4=>'完成']; //项目状态
 
     //获取列表
-    public function getDataList($keyword, $page, $limit,$uid){
+    public function getDataList($keyword,$uid){
         //差一个根据用户查看能看的项目 根据项目创建的工作室，与用户所属的工作室关联，可能需要两层遍历
         $group_id = Access::where('user_id',$uid)->value('group_id');
         $where = [];
@@ -23,12 +23,18 @@ class Project extends Common{
             $where['status'] = $keyword['status'];
         }
         $dataCount = $this->where($where)->count('id');
-        $list = $this->where($where);
-        // 若有分页
-        if ($page && $limit) {
-            $list = $list->page($page, $limit);
-        }
-        $list = $list ->select();
+        $nobeginCount = $this->where('status',0)->count('id');  //未开始
+        $waitingCount = $this->where('status',1)->count('id');  //等待中
+        $workingCount = $this->where('status',2)->count('id');  //制作中
+        $suspendCount = $this->where('status',3)->count('id');  //暂停
+        $finishCount = $this->where('status',4)->count('id');   //完成
+
+        $big_time_where['plan_end_timestamp'] = ['>=',time()];   //大于的当前时间
+        $small_time_where['plan_end_timestamp'] = ['<=',time()]; //小于当前时间
+        $big_project_data = $this->where($where)->where($big_time_where)->select();
+        $small_project_data = $this->where($where)->where($small_time_where)->select();
+        //合成数据 当前时间与计划结束时间最小的，排前边
+        $list = array_merge($big_project_data,$small_project_data);
         foreach($list as $key=>$value){
             $list[$key]['resolutic'] = $this->resolutic_arr[$value['resolutic']];   //分辨率
             $list[$key]['frame_rate'] = $this->frame_rate_arr[$value['frame_rate']];   //项目帧率
@@ -47,6 +53,11 @@ class Project extends Common{
         }
         $data['list'] = $list;
         $data['dataCount'] = $dataCount;
+        $data['nobeginCount'] = $nobeginCount;
+        $data['waitingCount'] = $waitingCount;
+        $data['workingCount'] = $workingCount;
+        $data['suspendCount'] = $suspendCount;
+        $data['finishCount'] = $finishCount;
         return $data;
     }
 
@@ -96,6 +107,24 @@ class Project extends Common{
             return false;
         }
         return $data;
+    }
+
+    /**
+     * 删除单个项目
+     * @param $id
+     * @return bool
+     * @author zjs 2018/3/15
+     */
+    public function delProject($id){
+        try{
+            $this->where('id', $id)->delete();
+            //删除所属项目的所有镜头
+            //删除所属镜头的所有任务
+            return true;
+        }catch( \Exception $e){
+            $this->error = '删除失败';
+            return false;
+        }
     }
 
 

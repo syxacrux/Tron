@@ -11,9 +11,7 @@ class Projects extends ApiCommon{
         $uid = $this->uid;
         $param = $this->param;
         $keywords = !empty($param['keywords']) ? $param['keywords']: '';
-        $page = !empty($param['page']) ? $param['page']: '';
-        $limit = !empty($param['limit']) ? $param['limit']: '';
-        $data = $project_model->getDataList($keywords, $page, $limit,$uid);
+        $data = $project_model->getDataList($keywords,$uid);
         return resultArray(['data' => $data]);
     }
 
@@ -55,21 +53,11 @@ class Projects extends ApiCommon{
     public function delete(){
         $project_model = new Project();
         $param = $this->param;
-        $data = $project_model->delTache($param['id']);
+        $data = $project_model->delProject($param['id']);
         if (!$data) {
             return resultArray(['error' => $project_model->getError()]);
         }
         return resultArray(['data' => '删除成功']);
     }
 
-    //批量删除
-    public function deletes(){
-        $project_model = new Project();
-        $param = $this->param;
-        $data = $project_model->delDatas($param['ids'],true);
-        if (!$data) {
-            return resultArray(['error' => $project_model->getError()]);
-        }
-        return resultArray(['data' => '删除成功']);
-    }
 }

@@ -9,11 +9,11 @@
 		</div>
     <div class="m-l-50 m-t-30 w-900">
       <el-form ref="form" :model="form" :rules="rules" label-width="130px">
-        <el-form-item label="用户组名称" prop="title">
+        <el-form-item label="角色名称" prop="title">
           <el-input v-model.trim="form.title" class="h-40 w-200"></el-input>
         </el-form-item>
-        <el-form-item label="父级用户组" prop="pid">
-          <el-select v-model="form.pid" placeholder="父级用户组" class="w-200">
+        <el-form-item label="父级用户角色" prop="pid">
+          <el-select v-model="form.pid" placeholder="父级用户角色" class="w-200">
             <el-option v-for="item in options" :label="item.title" :value="item.id" :key="item.id"></el-option>
           </el-select>
         </el-form-item>
@@ -74,10 +74,10 @@
         selectedNodes: [],
         rules: {
           title: [
-            { required: true, message: '请输入用户组名称', trigger: 'blur' }
+            { required: true, message: '请输入角色名称', trigger: 'blur' }
           ],
           pid: [
-            { required: true, message: '请选择父级用户', trigger: 'blur' }
+            { required: true, message: '请选择父级用户角色', trigger: 'blur' }
           ],
           rules: [
             { required: true, message: '请选择权限分配', trigger: 'blur' }

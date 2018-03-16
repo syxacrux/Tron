@@ -19,12 +19,6 @@ import systemConfig from '@/components/Admin/system/config/add.vue'
 import ruleList from '@/components/Admin/system/rule/list.vue'
 import ruleAdd from '@/components/Admin/system/rule/add.vue'
 import ruleEdit from '@/components/Admin/system/rule/edit.vue'
-import positionList from '@/components/Admin/structures/position/list.vue'
-import positionAdd from '@/components/Admin/structures/position/add.vue'
-import positionEdit from '@/components/Admin/structures/position/edit.vue'
-import structuresList from '@/components/Admin/structures/structures/list.vue'
-import structuresAdd from '@/components/Admin/structures/structures/add.vue'
-import structuresEdit from '@/components/Admin/structures/structures/edit.vue'
 import groupsList from '@/components/Admin/structures/groups/list.vue'
 import groupsAdd from '@/components/Admin/structures/groups/add.vue'
 import groupsEdit from '@/components/Admin/structures/groups/edit.vue'
@@ -110,54 +104,6 @@ const routes = [
         component: ruleEdit,
         name: 'ruleEdit',
         meta: {hideLeft: false, module: 'Admin', menu: 'rule'}
-      }
-    ]
-  },
-  {
-    path: '/admin',
-    component: Home,
-    children: [
-      {
-        path: 'position/list',
-        component: positionList,
-        name: 'positionList',
-        meta: {hideLeft: false, module: 'Admin', menu: 'position'}
-      },
-      {
-        path: 'position/add',
-        component: positionAdd,
-        name: 'positionAdd',
-        meta: {hideLeft: false, module: 'Admin', menu: 'position'}
-      },
-      {
-        path: 'position/edit/:id',
-        component: positionEdit,
-        name: 'positionEdit',
-        meta: {hideLeft: false, module: 'Admin', menu: 'position'}
-      }
-    ]
-  },
-  {
-    path: '/admin',
-    component: Home,
-    children: [
-      {
-        path: 'structures/list',
-        component: structuresList,
-        name: 'structuresList',
-        meta: {hideLeft: false, module: 'Admin', menu: 'structures'}
-      },
-      {
-        path: 'structures/add',
-        component: structuresAdd,
-        name: 'structuresAdd',
-        meta: {hideLeft: false, module: 'Admin', menu: 'structures'}
-      },
-      {
-        path: 'structures/edit/:id',
-        component: structuresEdit,
-        name: 'structuresEdit',
-        meta: {hideLeft: false, module: 'Admin', menu: 'structures'}
       }
     ]
   },
