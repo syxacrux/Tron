@@ -11,14 +11,20 @@ class Studio extends Common{
      * @param $keyword
      * @param $page
      * @param $limit
+     * @param $uid
+     * @param $group_id int 所属角色
      * @return mixed
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
-     * @author zjs 2018/3/13
+     * @author zjs 2018/3/16
      */
-    public function getDataList($keyword, $page, $limit){
+    public function getList($keyword, $page, $limit,$uid,$group_id){
         $where = [];
+        //区分工作室总监只能查看所属工作室
+        if($group_id == 5){
+            $where['id'] = User::get($uid)->studio_id;
+        }
         if ($keyword) {
             $where['name'] = ['like', '%'.$keyword.'%'];
         }
@@ -57,4 +63,5 @@ class Studio extends Common{
         }
         return $data;
     }
+
 }

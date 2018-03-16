@@ -97,4 +97,16 @@ class Tache extends Common{
         }
         return $data;
     }
+
+    /**
+     * 根据用户ID获取字段的值
+     * @param $id
+     * @param $value
+     * @return mixed
+     * @author zjs 2018/3/16
+     */
+    public static function getData_ById($id,$value){
+        $data = self::where('id',$id)->value($value);
+        return $data;
+    }
 }

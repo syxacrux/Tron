@@ -17,12 +17,16 @@ class Group extends Common
      */
 	protected $name = 'admin_group';
 
-	/**
-	 * [getDataList 获取列表]
-	 * @linchuangbin
-	 * @DateTime  2017-02-10T21:07:18+0800
-	 * @return    [array]                         
-	 */
+    /**
+     * @param $keyword
+     * @param $page
+     * @param $limit
+     * @return mixed
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     * @author zjs 2018/3/16
+     */
 	public function getDataList($keyword, $page, $limit){
         $where = [];
         if ($keyword) {
@@ -40,9 +44,15 @@ class Group extends Common
         return $data;
 	}
 
-	public static function get_vlue_by_id($user_id,$value){
-        $group_id = Db::name('admin_access')->where('user_id',$user_id)->value('group_id');
-        $data = self::where('id',$group_id)->value($value);
-        return $data;
+    /**
+     * 根据用户ID获取角色的值
+     * @param $user_id int 用户主键
+     * @return mixed
+     * @author zjs 2018/3/16
+     */
+	public static function getGroupData($user_id,$value){
+        $group_id = Access::where('user_id',$user_id)->value('group_id');
+        $group_data = self::where('id',$group_id)->value($value);
+        return $group_data;
     }
 }
