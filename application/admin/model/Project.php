@@ -11,9 +11,7 @@ class Project extends Common{
     protected $status_arr = [0=>'未开始',1=>'等待中',2=>'制作中',3=>'暂停',4=>'完成']; //项目状态
 
     //获取列表
-    public function getDataList($keyword,$uid){
-        //差一个根据用户查看能看的项目 根据项目创建的工作室，与用户所属的工作室关联，可能需要两层遍历
-        $group_id = Access::where('user_id',$uid)->value('group_id');
+    public function getList($keyword,$uid,$group_id){
         $where = [];
         if (!empty($keyword['studio_ids'])) {   //工作室
             $studio_ids = implode(",",$keyword['studio_ids']);
@@ -95,10 +93,13 @@ class Project extends Common{
     }
 
     /**
+     * 根据项目ID获取所有数据
      * @param string $id
+     * @param string $uid
+     * @param string $group_id
      * @return bool|static
      * @throws \think\exception\DbException
-     * @author zjs 2018/3/15
+     * @author zjs 2018/3/16
      */
     public function getData_ById($id = ''){
         $data = $this->get($id);

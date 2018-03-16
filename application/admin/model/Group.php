@@ -46,12 +46,14 @@ class Group extends Common
 
     /**
      * 根据用户ID获取角色的值
-     * @param $user_id int 用户主键
+     * @param $user_id  int 用户主键
+     * @param $value string 角色表的字段名称
      * @return mixed
+     * @throws \think\exception\DbException
      * @author zjs 2018/3/16
      */
 	public static function getGroupData($user_id,$value){
-        $group_id = Access::where('user_id',$user_id)->value('group_id');
+        $group_id = Access::get($user_id)->group_id;
         $group_data = self::where('id',$group_id)->value($value);
         return $group_data;
     }

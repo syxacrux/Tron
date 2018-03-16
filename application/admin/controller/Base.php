@@ -69,8 +69,7 @@ class Base extends Common
         return $captcha->entry();
     }
 
-    public function setInfo()
-    {
+    public function setInfo(){
         $userModel = model('User');
         $param = $this->param;
         $old_pwd = $param['old_pwd'];
@@ -81,6 +80,35 @@ class Base extends Common
             return resultArray(['error' => $userModel->getError()]);
         } 
         return resultArray(['data' => $data]);
+    }
+
+    /**
+     * 根据当前登陆人获取模块内容的一行数据是否存在这个人
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     * @return array 200/400
+     * @author zjs 2018/3/16
+     */
+    public function getAuth_byUid(){
+        $param = $this->param;
+        $table = $param['table'];//数据表名
+        $uid = $param['uid']; //当前登陆人
+        $table_id = $param['table_id'];//查询数据表名主键
+        if(!$uid){
+            return resultArray(['error' => 'uid为空']);
+        }
+        switch ($table) {
+            case 'project':
+                $table_model = model('Project')->where('id',$table_id)->where('scene_producer|scene_director|second_company_producer|inside_coordinate','like','%'.$uid.'%');
+                break;
+        }
+        $check_uid = $table_model->find();
+        if(!empty($check_uid)){
+            return ['code'  => 200];
+        }else{
+            return ['code'  => 400];
+        }
     }
 
     // miss 路由：处理没有匹配到的路由规则

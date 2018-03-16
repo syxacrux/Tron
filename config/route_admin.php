@@ -65,6 +65,8 @@ return [
     'admin/roles/enables' => ['admin/roles/enables', ['method' => 'POST']],
     // 【项目】 上传缩略图
     'admin/upload_project_image' => ['admin/upload/project_images_add', ['method' => 'POST']],
+    // 【项目】 获取登陆者是否属于当前项目 应用于编辑操作的权限
+    'admin/check_auth'   =>  ['admin/base/getAuth_byUid', ['method'=> 'POST']],
 	
 	// MISS路由
 	'__miss__'  => 'admin/base/miss',
