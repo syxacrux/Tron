@@ -94,17 +94,10 @@ class User extends Common{
      * @author zjs 2018/3/14
      */
 	public function createData($param){
-		// 验证
-		$validate = validate($this->name);
-		if (!$validate->check($param)) {
-			$this->error = $validate->getError();
-			return false;
-		}
         //开启事务
 		$this->startTrans();
 		try {
 			$param['password'] = user_md5($param['password']);
-			$param['studio_id'] = array_unique($param['studio_ids']);
 			$param['tache_ids'] = implode(",",array_unique($param['tache_ids']));
 			$this->data($param)->allowField(true)->save();
             //将关联项加入用户关联表
