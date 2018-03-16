@@ -97,14 +97,14 @@ class Base extends Common
         $uid = $param['uid']; //当前登陆人
         $group_id = Access::where('user_id',$uid)->value('group_id');
         if(!$group_id){
-            return ['code' => '400','error'=>'uid不存在'];
+            return ['code' => '400','error'=>'没有当前用户'];
         }
         //过滤admin
         if($uid ==1){
-            return ['code'=>200];
+            return ['code'=>200,'error'=>''];
         }else{
             if($group_id == 1 || $group_id == 2 || $group_id==3){
-                return ['code'=>200];
+                return ['code'=>200,'error'=>''];
             }
         }
         $table_id = $param['table_id'];//查询数据表名主键
@@ -115,9 +115,9 @@ class Base extends Common
         }
         $check_uid = $table_model->find();
         if(!empty($check_uid)){
-            return ['code'  => 200];
+            return ['code'  => 200,'error'=>''];
         }else{
-            return ['code'  => 400];
+            return ['code'  => 400,'error'=>'没有权限'];
         }
     }
 
