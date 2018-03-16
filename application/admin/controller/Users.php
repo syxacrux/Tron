@@ -6,6 +6,7 @@
 // +----------------------------------------------------------------------
 
 namespace app\admin\controller;
+use app\admin\model\User;
 use app\common\controller\ApiCommon;
 
 class Users extends ApiCommon{
@@ -30,7 +31,7 @@ class Users extends ApiCommon{
     }
 
     public function save(){
-        $userModel = model('User');
+        $userModel = new User();
         $param = $this->param;
         $data = $userModel->createData($param);
         if (!$data) {
