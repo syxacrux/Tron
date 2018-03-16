@@ -18,10 +18,13 @@
 				<el-form-item label="真实姓名" prop="realname">
 					<el-input v-model.trim="form.realname" class="h-40 w-200"></el-input>
 				</el-form-item>
-				<el-form-item label="所属工作室" prop="studio_ids">
-					<el-checkbox-group v-model="form.studio_ids" size="small">
-						<el-checkbox-button v-for="item in studiosOptions" :label="item.name" :value="item.id" :key="item.id"></el-checkbox-button>
-					</el-checkbox-group>
+				<el-form-item label="所属工作室" prop="studio_id">
+					<!--<el-radio-group v-model="form.studio_ids" size="small">-->
+						<!--<el-radio-button v-for="item in studiosOptions" :label="item.name" :value="item.id" :key="item.id"></el-radio-button>-->
+					<!--</el-radio-group>-->
+					<el-select v-model="form.studio_id" placeholder="请选择">
+						<el-option v-for="item in studiosOptions" :label="item.name" :value="item.id" :key="item.id"></el-option>
+					</el-select>
 				</el-form-item>
 				<el-form-item label="环节" prop="tache_ids">
 					<el-checkbox-group v-model="form.tache_ids" size="small">
@@ -62,7 +65,7 @@
           username: '',
           password: '',
           realname: '',
-          studio_ids: [],
+          studio_id: [],
           tache_ids: [],
           group_id: '',
           remark: ''
@@ -84,8 +87,8 @@
           realname: [
             {required: true, message: '请输入真实姓名'}
           ],
-          studio_ids: [
-            {required: true, message: '请选择至少一个工作室'}
+          studio_id: [
+            {required: true, message: '请选择所属工作室'}
           ],
           tache_ids: [
             {required: true, message: '请选择至少一个环节'}
@@ -98,22 +101,22 @@
     },
     methods: {
 //      检查工作室复选框
-      selectStudiosCheckbox() {
-        let temp = false
-        this.selectedStudios = this.form.studio_ids
-        this.selectedStudioIds = []
-        _(this.studiosOptions).forEach((res) => {
-          if (this.selectedStudios.toString().indexOf(res.name) > -1) {
-            this.selectedStudioIds.push(res.id)
-          }
-        })
-        if (this.selectedStudioIds.length) {
-          this.form.studio_ids = _.cloneDeep(this.selectedStudioIds)
-          temp = true
-        }
-        this.selectedStudioIds = []
-        return temp
-      },
+//      selectStudiosCheckbox() {
+//        let temp = false
+//        this.selectedStudios = this.form.studio_ids
+//        this.selectedStudioIds = []
+//        _(this.studiosOptions).forEach((res) => {
+//          if (this.selectedStudios.toString().indexOf(res.name) > -1) {
+//            this.selectedStudioIds.push(res.id)
+//          }
+//        })
+//        if (this.selectedStudioIds.length) {
+//          this.form.studio_ids = _.cloneDeep(this.selectedStudioIds)
+//          temp = true
+//        }
+//        this.selectedStudioIds = []
+//        return temp
+//      },
 //			检查环节复选框
       selectTachesCheckbox() {
         let temp = false
@@ -132,10 +135,10 @@
         return temp
       },
       add(form) {
-        if (!this.selectStudiosCheckbox()) {
-          _g.toastMsg('warning', '请选择至少一个工作室')
-          return
-        }
+//        if (!this.selectStudiosCheckbox()) {
+//          _g.toastMsg('warning', '请选择至少一个工作室')
+//          return
+//        }
         if (!this.selectTachesCheckbox()) {
           _g.toastMsg('warning', '请选择至少一个环节')
           return
