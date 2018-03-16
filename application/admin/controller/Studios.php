@@ -6,17 +6,21 @@
 // +----------------------------------------------------------------------
 
 namespace app\admin\controller;
+use app\admin\model\Access;
+use app\admin\model\Group;
 use app\common\controller\BaseCommon;
 
 class Studios extends BaseCommon{
 
     public function index(){
-        $studio_model = model('studio');
+        $studio_model = model('Studio');
+        $uid = $this->uid;
+        $group_id = Access::get($uid)->group_id; //所属角色
         $param = $this->param;
         $keywords = !empty($param['keywords']) ? $param['keywords']: '';
         $page = !empty($param['page']) ? $param['page']: '';
         $limit = !empty($param['limit']) ? $param['limit']: '';
-        $data = $studio_model->getDataList($keywords, $page, $limit);
+        $data = $studio_model->getList($keywords, $page, $limit,$uid,$group_id);
         return resultArray(['data' => $data]);
     }
 

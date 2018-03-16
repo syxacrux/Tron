@@ -8,7 +8,7 @@
       </el-breadcrumb>
     </div>
     <div class="m-b-20">
-      <router-link class="btn-link-large add-btn" to="add">
+      <router-link class="btn-link-large add-btn" to="add" v-if="addShow">
         <i class="el-icon-plus"></i>&nbsp;&nbsp;添加项目
       </router-link>
       <div class="pos-abs">

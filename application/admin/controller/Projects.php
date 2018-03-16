@@ -1,5 +1,6 @@
 <?php
 namespace app\admin\controller;
+use app\admin\model\Access;
 use app\admin\model\Project;
 use app\common\controller\ApiCommon;
 
@@ -9,9 +10,11 @@ class Projects extends ApiCommon{
     public function index(){
         $project_model = new Project();
         $uid = $this->uid;
+        $group_id = Access::get($uid)->group_id;
         $param = $this->param;
         $keywords = !empty($param['keywords']) ? $param['keywords']: '';
-        $data = $project_model->getDataList($keywords,$uid);
+        $data = $project_model->getList($keywords,$uid,$group_id);
+        $data['uid'] = $uid;
         return resultArray(['data' => $data]);
     }
 
@@ -60,4 +63,8 @@ class Projects extends ApiCommon{
         return resultArray(['data' => '删除成功']);
     }
 
+    //获取当前登陆人是否存在于所属项目ID的项目中
+    public function get_uid_rule(){
+        echo 123;
+    }
 }

@@ -60,8 +60,8 @@ class User extends Common{
 		}
 		$list = $list->select();
 		foreach($list as $key=>$value){
-            $list[$key]['role_name'] = Group::get_vlue_by_id($value['id'],'remark');
-            $list[$key]['studio_name'] = Studio::where('id',$value['studio_id'])->value('name');
+            $list[$key]['role_name'] = Group::getGroupData($value['id'],'remark');
+            $list[$key]['studio_name'] = Studio::get($value['studio_id'])->name;
             $list[$key]['tache_name'] = Tache::get_tache_names($value['tache_ids'],'explain',',');
         }
 		$data['list'] = $list;
@@ -420,14 +420,13 @@ class User extends Common{
         return $ret;
     }
 
-    //根据多个ID获取值内容
-
     /**
      * 根据多个ID获取值内容
-     * @param $ids string
-     * @param $value string 字段
-     * @param $tag string 分割符号
-     * @author zjs 2018/3/15
+     * @param $ids
+     * @param $value
+     * @param $tag
+     * @return string
+     * @author zjs 2018/3/16
      */
     public static function getName_ById($ids,$value,$tag){
         $ids_arr = explode(",",$ids);
