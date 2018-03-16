@@ -12,21 +12,20 @@
         <i class="el-icon-plus"></i>&nbsp;&nbsp;添加项目
       </router-link>
       <div class="pos-abs">
-        <el-badge :value="12" class="item" @click="getAllProjects(1)">
-          <el-button size="large">等待中</el-button>
+        <el-badge :value="waitingCount" :max="10" class="item">
+          <el-button size="large" @click="getAllProjects(1)">等待中</el-button>
         </el-badge>
-        <el-badge :value="3" class="item" @click="getAllProjects(2)">
-          <el-button size="large">制作中</el-button>
+        <el-badge :value="workingCount" :max="10" class="item">
+          <el-button size="large" @click="getAllProjects(2)">制作中</el-button>
         </el-badge>
-        <el-badge :value="12" class="item" @click="getAllProjects(3)">
-          <el-button size="large">暂停</el-button>
+        <el-badge :value="suspendCount" :max="10" class="item">
+          <el-button size="large" @click="getAllProjects(3)">暂停</el-button>
         </el-badge>
-        <el-badge :value="3" class="item" @click="getAllProjects(4)">
-          <el-button size="large">完成</el-button>
+        <el-badge :value="finishCount" :max="10" class="item">
+          <el-button size="large" @click="getAllProjects(4)">完成</el-button>
         </el-badge>
       </div>
     </div>
-    <!--<el-col :span="11" v-for="(item, index) in tableData" :key="item" :offset="index > 0 ? 1 : 0">-->
     <div>
       <el-col class="project_list" :span="11" v-for="(item, index) in tableData" :key="item.id">
         <el-card :body-style="{ padding: '0px' }">
@@ -70,7 +69,11 @@
       return {
         address: window.HOST + '/',
         tableData: [],
-        uid:''
+        uid: '',
+        waitingCount: '',
+        workingCount: '',
+        suspendCount: '',
+        finishCount: ''
       }
     },
     methods: {
@@ -96,11 +99,17 @@
         })
       },
       //项目编辑跳转
-      ProjectEdit(ids){
-        this.apiPost('admin/check_auth').then((res) => {
-            this.$router.push({name: 'projectsEdit', params: {id:ids}})
+      ProjectEdit(id){
+        const data = {
+          table: 'project',
+          table_id: id,
+          uid: this.uid
+        }
+        this.apiPost('admin/check_auth', data).then((res) => {
+          this.handelResponse(res, (data) => {
+            this.$router.push({name: 'projectsEdit', params: { id: id }})
+          })
         })
-        
       },
 //      获取项目列表
       getAllProjects(status) {
@@ -113,7 +122,11 @@
         this.apiGet('admin/projects', data).then((res) => {
           this.handelResponse(res, (data) => {
             this.tableData = data.list
-            this.uid=data.uid
+            this.uid = data.uid
+            this.waitingCount = data.waitingCount
+            this.workingCount = data.workingCount
+            this.suspendCount = data.suspendCount
+            this.finishCount = data.finishCount
           })
         })
       },

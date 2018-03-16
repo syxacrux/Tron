@@ -1,5 +1,6 @@
 import axios from 'axios'
 import bus from '@/assets/js/bus.js'
+
 export default {
   apiGet(url, data) {
     return new Promise((resolve, reject) => {
@@ -20,6 +21,7 @@ export default {
       axios.post(url, data).then((response) => {
         resolve(response.data)
       }).catch((response) => {
+        console.log(response, 'e')
         resolve(response)
         bus.$message({
           message: '请求超时，请检查网络',
