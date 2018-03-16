@@ -96,7 +96,7 @@ class Base extends Common
         $uid = $param['uid']; //当前登陆人
         $table_id = $param['table_id'];//查询数据表名主键
         if(!$uid){
-            return resultArray(['error' => 'uid为空']);
+            return resultArray(['code' => '400','error'=>'uid为空']);
         }
         switch ($table) {
             case 'project':
