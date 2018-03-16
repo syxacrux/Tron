@@ -61,7 +61,7 @@ class User extends Common{
 		$list = $list->select();
 		foreach($list as $key=>$value){
             $list[$key]['role_name'] = Group::get_vlue_by_id($value['id'],'remark');
-            $list[$key]['studio_name'] = Studio::get_studio_names($value['studio_ids'],'name',',');
+            $list[$key]['studio_name'] = Studio::where('id',$value['studio_id'])->value('name');
             $list[$key]['tache_name'] = Tache::get_tache_names($value['tache_ids'],'explain',',');
         }
 		$data['list'] = $list;
@@ -104,7 +104,7 @@ class User extends Common{
 		$this->startTrans();
 		try {
 			$param['password'] = user_md5($param['password']);
-			$param['studio_ids'] = implode(",",array_unique($param['studio_ids']));
+			$param['studio_id'] = array_unique($param['studio_ids']);
 			$param['tache_ids'] = implode(",",array_unique($param['tache_ids']));
 			$this->data($param)->allowField(true)->save();
             //将关联项加入用户关联表
@@ -149,11 +149,10 @@ class User extends Common{
 			if (!empty($param['password'])) {
 				$param['password'] = user_md5($param['password']);
 			}
-            $param['studio_ids'] = implode(",",$param['studio_ids']);
             $param['tache_ids'] = implode(",",$param['tache_ids']);
-			 $this->allowField(true)->save($param, ['id' => $id]);
-			 $this->commit();
-			 return true;
+			$this->allowField(true)->save($param, ['id' => $id]);
+			$this->commit();
+			return true;
 		} catch(\Exception $e) {
 			$this->rollback();
 			$this->error = '编辑失败';
