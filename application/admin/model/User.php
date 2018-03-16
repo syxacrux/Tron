@@ -94,6 +94,12 @@ class User extends Common{
      * @author zjs 2018/3/14
      */
 	public function createData($param){
+        // 验证
+        $validate = validate($this->name);
+        if (!$validate->check($param)) {
+            $this->error = $validate->getError();
+            return false;
+        }
         //开启事务
 		$this->startTrans();
 		try {
