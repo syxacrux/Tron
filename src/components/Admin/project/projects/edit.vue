@@ -16,6 +16,13 @@
           <el-form-item label="项目简称:" prop="project_byname">
             <el-input v-model.trim="form.project_byname" class="h-40 w-200"></el-input>
           </el-form-item>
+          <el-form-item label="影视类型:" prop="movies_type">
+            <el-select v-model="form.movies_type" placeholder="请选择">
+              <!--<el-option label="请选择" value=""></el-option>-->
+              <el-option label="电影" value="1"></el-option>
+              <el-option label="电视剧" value="2"></el-option>
+            </el-select>
+          </el-form-item>
         </el-row>
         <el-row :gutter="20">
           <el-form-item class="is-required" label="项目缩略图:" prop="image">
@@ -259,6 +266,7 @@
         form: {
           project_name: "", //项目名称
           project_byname: '', //项目简称
+          movies_type:'',//影视类型
           project_image: '', //项目缩略图
           status: 0, //项目状态
 //          duration: '',//总时长
@@ -300,6 +308,9 @@
         rules: {
           project_name: [
             {required: true, message: '请输入项目名称'}
+          ],
+          movies_type: [
+            {required: true, message: '请选择影视类型'}
           ],
           project_byname: [
             {required: true, message: '请输入项目简称'}, {min: 3, max: 5, message: '长度在 3 到 5 个字符'}, {
@@ -385,6 +396,7 @@
           return
         }
         this.form.handle_frame = this.form.handle_frame.handle_frame1 + ',' + this.form.handle_frame.handle_frame2
+        this.form.movies_type = parseInt(this.form.movies_type) ? parseInt(this.form.movies_type) : ''
         this.form.resolutic = parseInt(this.form.resolutic) ? parseInt(this.form.resolutic) : ''
         this.form.frame_rate = parseInt(this.form.frame_rate) ? parseInt(this.form.frame_rate) : ''
         this.form.aspect_ratio = parseInt(this.form.aspect_ratio) ? parseInt(this.form.aspect_ratio) : ''
@@ -460,6 +472,7 @@
             console.log(this.image)
             this.form.handle_frame.handle_frame1 = data.handle_frame.split(',')[0]
             this.form.handle_frame.handle_frame2 = data.handle_frame.split(',')[1]
+            this.form.movies_type = data.movies_type.toString()
             this.form.resolutic = data.resolutic.toString()
             this.form.frame_rate = data.frame_rate.toString()
             this.form.aspect_ratio = data.aspect_ratio.toString()
