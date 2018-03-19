@@ -260,16 +260,16 @@ const routes = [
   },
   // 工作台管理-工作台列表
   {
-	path: '/admin',
-	component: Home,
-	children: [
-	  {
-		path: 'workbenches/list',
-		component: workbenchesList,
-		name: 'workbenchesList',
-		meta: { hideLeft: false, module: 'Admin', menu: 'workbenches' }
-	  }
-	]
+    path: '/admin',
+    component: Home,
+    children: [
+      {
+        path: 'workbenches/list',
+        component: workbenchesList,
+        name: 'workbenchesList',
+        meta: { hideLeft: false, module: 'Admin', menu: 'workbenches' }
+      }
+    ]
   }
 ]
 
