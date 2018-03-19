@@ -53,6 +53,7 @@
         </el-card>
       </el-col>
     </div>
+    <kanban-board :stages="stages" :blocks="blocks" @update-block="updateBlock"></kanban-board>
     <div class="pos-rel p-t-20">
       <!--<btnGroup :selectedData="multipleSelection" :type="'studios'"></btnGroup>-->
     </div>
@@ -74,10 +75,25 @@
         waitingCount: '',
         workingCount: '',
         suspendCount: '',
-        finishCount: ''
+        finishCount: '',
+        stages: ['on-hold', 'in-progress', 'needs-review', 'approved'],
+        blocks: [
+          {
+            id: 1,
+            status: 'on-hold',
+            title: 'Test',
+          },{
+            id: 2,
+            status: 'on-hold',
+            title: 'Test',
+          },
+        ],
       }
     },
     methods: {
+      updateBlock(id, status) {
+        this.blocks.find(b => b.id === Number(id)).status = status;
+      },
 //      删除项目执行方法
       confirmDelete(item) {
         this.$confirm('确认删除该项目?', '提示', {
