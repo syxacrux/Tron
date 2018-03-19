@@ -43,6 +43,9 @@
 		rules: {
 		  tache_name: [
 			{required: true, message: '请输入环节', trigger: 'blur'}
+			],
+			sort: [
+			{required: true, message: '请输入排序', trigger: 'blur'}
 		  ]
 		}
 	  }
