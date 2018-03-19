@@ -20,6 +20,7 @@ class Project extends Common{
         if(!empty($keyword['status'])){ //项目状态
             $where['status'] = $keyword['status'];
         }
+        file_put_contents('aa.txt',var_export($keyword,true));
         $dataCount = $this->where($where)->count('id');
         $nobeginCount = $this->where('status',0)->count('id');  //未开始
         $waitingCount = $this->where('status',1)->count('id');  //等待中
