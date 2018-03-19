@@ -4,7 +4,7 @@
       <el-breadcrumb separator="/">
         <el-breadcrumb-item :to="{ path: '/admin' }">首页</el-breadcrumb-item>
         <el-breadcrumb-item :to="{ path: '/admin/projects/list' }">项目管理</el-breadcrumb-item>
-        <el-breadcrumb-item>项目</el-breadcrumb-item>
+        <el-breadcrumb-item>项目汇总</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
     <div class="m-b-20">
