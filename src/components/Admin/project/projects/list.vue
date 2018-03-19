@@ -70,6 +70,7 @@
         address: window.baseUrl + '/',
         tableData: [],
         uid: '',
+        keywords: {},
         waitingCount: '',
         workingCount: '',
         suspendCount: '',
@@ -116,7 +117,9 @@
         this.loading = true
         const data = {
           params: {
-            status: status
+            keywords: {
+              status: status
+            }
           }
         }
         this.apiGet('admin/projects', data).then((res) => {
