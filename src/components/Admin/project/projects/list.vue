@@ -52,11 +52,10 @@
           </div>
         </el-card>
       </el-col>
-    </div>
-    <kanban-board :stages="stages" :blocks="blocks" @update-block="updateBlock"></kanban-board>
     <div class="pos-rel p-t-20">
       <!--<btnGroup :selectedData="multipleSelection" :type="'studios'"></btnGroup>-->
     </div>
+  </div>
   </div>
 </template>
 
@@ -68,7 +67,7 @@
   export default {
     data() {
       return {
-        address: window.baseUrl + '/',
+        address: window.HOST + '/',
         tableData: [],
         uid: '',
         keywords: {},
@@ -76,18 +75,6 @@
         workingCount: '',
         suspendCount: '',
         finishCount: '',
-        stages: ['on-hold', 'in-progress', 'needs-review', 'approved'],
-        blocks: [
-          {
-            id: 1,
-            status: 'on-hold',
-            title: 'Test',
-          },{
-            id: 1,
-            status: 'on-hold',
-            title: 'Test',
-          },
-        ],
       }
     },
     methods: {

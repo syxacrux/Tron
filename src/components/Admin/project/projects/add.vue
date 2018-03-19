@@ -258,7 +258,7 @@
     data() {
       return {
         isLoading: false,
-        uploadImageUrl: window.baseUrl + '/admin/upload_project_image',
+        uploadImageUrl: window.HOST + '/admin/upload_project_image',
         userList: [],
         studiosOptions: [],
         plan_time: [],
