@@ -12,7 +12,7 @@ class Projects extends ApiCommon{
         $uid = $this->uid;
         $group_id = Access::get($uid)->group_id;
         $param = $this->param;
-        $keywords = !empty($param['keywords']) ? $param['keywords']: '';
+        $keywords = !empty($param['keywords']) ? json_decode($param['keywords'],true): '';
         $data = $project_model->getList($keywords,$uid,$group_id);
         $data['uid'] = $uid;
         return resultArray(['data' => $data]);

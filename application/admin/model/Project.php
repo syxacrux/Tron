@@ -12,14 +12,14 @@ class Project extends Common{
     protected $movies_type_arr = [0=>'未选择',1=>'电影',2=>'电视剧'];
 
     //获取列表
-    public function getList($keyword){
+    public function getList($keywords){
         $where = [];
-        if (!empty($keyword['studio_ids'])) {   //工作室
-            $studio_ids = implode(",",$keyword['studio_ids']);
+        if (!empty($keywords['studio_ids'])) {   //工作室
+            $studio_ids = implode(",",$keywords['studio_ids']);
             $where['studio_ids'] = ['in', $studio_ids];
         }
-        if(!empty($keyword['status'])){ //项目状态
-            $where['status'] = $keyword['status'];
+        if(!empty($keywords['status'])){ //项目状态
+            $where['status'] = $keywords['status'];
         }
         $dataCount = $this->where($where)->count('id');
         $nobeginCount = $this->where('status',0)->count('id');  //未开始

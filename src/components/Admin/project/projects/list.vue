@@ -68,7 +68,7 @@
   export default {
     data() {
       return {
-        address: window.HOST + '/',
+        address: window.baseUrl + '/',
         tableData: [],
         uid: '',
         keywords: {},
