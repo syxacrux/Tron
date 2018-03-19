@@ -30,7 +30,7 @@ class Taches extends BaseCommon{
     public function save(){
         $tache_model = model('tache');
         $param = $this->param;
-        $data = $tache_model->createData($param);
+        $data = $tache_model->addData($param);
         if (!$data) {
             return resultArray(['error' => $tache_model->getError()]);
         }
@@ -41,7 +41,7 @@ class Taches extends BaseCommon{
     public function update(){
         $tache_model = model('tache');
         $param = $this->param;
-        $data = $tache_model->updateDataById($param, $param['id']);
+        $data = $tache_model->updateData($param, $param['id']);
         if (!$data) {
             return resultArray(['error' => $tache_model->getError()]);
         }

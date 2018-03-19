@@ -8,7 +8,7 @@ class Tache extends Common{
     public function getDataList($keyword, $page, $limit,$uid){
         $where = [];
         if ($keyword) {
-            $where['tache_name'] = ['like', '%'.$keyword.'%'];
+            $where['tache_name|explain'] = ['like', '%'.$keyword.'%'];
         }
         $dataCount = $this->where($where)->count('id');
         $list = $this->where($where);
@@ -29,6 +29,7 @@ class Tache extends Common{
         try{
             $param['tache_name'] = trimall($param['tache_name']);
             $param['explain'] = trimall($param['explain']);
+            $param['sort'] = intval($param['sort']);
             $param['create_time'] = time();
             $result =  $this->validate($this->name)->save($param);
             if(false === $result){
@@ -39,6 +40,41 @@ class Tache extends Common{
             }
         }catch(\Exception $e){
             $this->error = '添加失败';
+            return false;
+        }
+    }
+
+    /**
+     * 更新
+     * @param $data
+     * @param $id
+     * @return bool
+     * @throws \think\exception\DbException
+     * @author zjs 2018/3/19
+     */
+    public function updateData($data,$id){
+        $checkData = $this->get($id);
+        if (!$checkData) {
+            $this->error = '暂无此数据';
+            return false;
+        }
+        // 验证
+        $validate = validate($this->name);
+        if (!$validate->check($data)) {
+            $this->error = $validate->getError();
+            return false;
+        }
+        try{
+            $check_sort = $this->where('sort',$data['sort'])->find();
+            if(!empty($check_sort)){
+                $this->error = '该序号已存在，请重新赋予序号!';
+                return false;
+            }else{
+                $this->allowField(true)->save($data, [$this->getPk() => $id]);
+                return true;
+            }
+        }catch(\Exception $e){
+            $this->eror = '编辑失败';
             return false;
         }
     }
