@@ -96,7 +96,7 @@ class Base extends Common
         $table = $param['table'];//数据表名
         $uid = $param['uid']; //当前登陆人
         $group_id = Access::where('user_id',$uid)->value('group_id');
-        if(!$group_id){
+        if((!$group_id) || ($uid != 1)){
             return ['code' => '400','error'=>'没有当前用户'];
         }
         //过滤admin
