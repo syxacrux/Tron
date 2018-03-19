@@ -12,28 +12,36 @@ import _g from '@/assets/js/global.js'
 import Login from '@/components/Account/Login.vue'
 import refresh from '@/components/refresh.vue'
 import Home from '@/components/Home.vue'
+// 系统配置-菜单管理
 import menuList from '@/components/Admin/system/menu/list.vue'
 import menuAdd from '@/components/Admin/system/menu/add.vue'
 import menuEdit from '@/components/Admin/system/menu/edit.vue'
+// 系统配置-权限参数
 import systemConfig from '@/components/Admin/system/config/add.vue'
+// 系统配置-权限规则
 import ruleList from '@/components/Admin/system/rule/list.vue'
 import ruleAdd from '@/components/Admin/system/rule/add.vue'
 import ruleEdit from '@/components/Admin/system/rule/edit.vue'
+// 账户管理-角色管理
 import groupsList from '@/components/Admin/structures/groups/list.vue'
 import groupsAdd from '@/components/Admin/structures/groups/add.vue'
 import groupsEdit from '@/components/Admin/structures/groups/edit.vue'
+// 账户管理-成员管理
 import usersList from '@/components/Admin/personnel/users/list.vue'
 import usersAdd from '@/components/Admin/personnel/users/add.vue'
 import usersEdit from '@/components/Admin/personnel/users/edit.vue'
 import mailList from '@/components/Busi/mail/mail/list.vue'
 import mailAdd from '@/components/Busi/mail/mail/add.vue'
 import mailEdit from '@/components/Busi/mail/mail/edit.vue'
+// 账户管理-工作室管理
 import studiosList from '@/components/Admin/personnel/studios/list.vue'
 import studiosAdd from '@/components/Admin/personnel/studios/add.vue'
 import studiosEdit from '@/components/Admin/personnel/studios/edit.vue'
+// 账户管理-环节管理
 import tachesList from '@/components/Admin/personnel/taches/list.vue'
 import tachesAdd from '@/components/Admin/personnel/taches/add.vue'
 import tachesEdit from '@/components/Admin/personnel/taches/edit.vue'
+// 项目管理-项目列表
 import projectsList from '@/components/Admin/project/projects/list.vue'
 import projectsAdd from '@/components/Admin/project/projects/add.vue'
 import projectsEdit from '@/components/Admin/project/projects/edit.vue'
@@ -48,14 +56,15 @@ Vue.use(VueRouter)
  */
 
 const routes = [
-  {path: '/', component: Login, name: 'Login'},
+  { path: '/', component: Login, name: 'Login' },
   {
     path: '/admin',
     component: Home,
     children: [
-      {path: '/refresh', component: refresh, name: 'refresh'}
+      { path: '/refresh', component: refresh, name: 'refresh' }
     ]
   },
+  // 系统配置-菜单管理
   {
     path: '/admin',
     component: Home,
@@ -64,17 +73,18 @@ const routes = [
         path: 'menu/list',
         component: menuList,
         name: 'menuList',
-        meta: {hideLeft: false, module: 'Admin', menu: 'menu'}
+        meta: { hideLeft: false, module: 'Admin', menu: 'menu' }
       },
-      {path: 'menu/add', component: menuAdd, name: 'menuAdd', meta: {hideLeft: false, module: 'Admin', menu: 'menu'}},
+      { path: 'menu/add', component: menuAdd, name: 'menuAdd', meta: { hideLeft: false, module: 'Admin', menu: 'menu' }},
       {
         path: 'menu/edit/:id',
         component: menuEdit,
         name: 'menuEdit',
-        meta: {hideLeft: false, module: 'Admin', menu: 'menu'}
+        meta: { hideLeft: false, module: 'Admin', menu: 'menu' }
       }
     ]
   },
+  // 系统配置-权限参数
   {
     path: '/admin',
     component: Home,
@@ -83,11 +93,11 @@ const routes = [
         path: 'config/add',
         component: systemConfig,
         name: 'systemConfig',
-        meta: {hideLeft: false, module: 'Admin', menu: 'systemConfig'}
+        meta: { hideLeft: false, module: 'Admin', menu: 'systemConfig' }
       }
     ]
   },
-
+  // 系统配置-权限规则
   {
     path: '/admin',
     component: Home,
@@ -96,17 +106,18 @@ const routes = [
         path: 'rule/list',
         component: ruleList,
         name: 'ruleList',
-        meta: {hideLeft: false, module: 'Admin', menu: 'rule'}
+        meta: { hideLeft: false, module: 'Admin', menu: 'rule' }
       },
-      {path: 'rule/add', component: ruleAdd, name: 'ruleAdd', meta: {hideLeft: false, module: 'Admin', menu: 'rule'}},
+      { path: 'rule/add', component: ruleAdd, name: 'ruleAdd', meta: { hideLeft: false, module: 'Admin', menu: 'rule' }},
       {
         path: 'rule/edit/:id',
         component: ruleEdit,
         name: 'ruleEdit',
-        meta: {hideLeft: false, module: 'Admin', menu: 'rule'}
+        meta: { hideLeft: false, module: 'Admin', menu: 'rule' }
       }
     ]
   },
+  // 账户管理-角色管理
   {
     path: '/admin',
     component: Home,
@@ -115,22 +126,23 @@ const routes = [
         path: 'groups/list',
         component: groupsList,
         name: 'groupsList',
-        meta: {hideLeft: false, module: 'Admin', menu: 'groups'}
+        meta: { hideLeft: false, module: 'Admin', menu: 'groups' }
       },
       {
         path: 'groups/add',
         component: groupsAdd,
         name: 'groupsAdd',
-        meta: {hideLeft: false, module: 'Admin', menu: 'groups'}
+        meta: { hideLeft: false, module: 'Admin', menu: 'groups' }
       },
       {
         path: 'groups/edit/:id',
         component: groupsEdit,
         name: 'groupsEdit',
-        meta: {hideLeft: false, module: 'Admin', menu: 'groups'}
+        meta: { hideLeft: false, module: 'Admin', menu: 'groups' }
       }
     ]
   },
+  // 账户管理-成员管理
   {
     path: '/admin',
     component: Home,
@@ -139,19 +151,19 @@ const routes = [
         path: 'users/list',
         component: usersList,
         name: 'usersList',
-        meta: {hideLeft: false, module: 'Admin', menu: 'users'}
+        meta: { hideLeft: false, module: 'Admin', menu: 'users' }
       },
       {
         path: 'users/add',
         component: usersAdd,
         name: 'usersAdd',
-        meta: {hideLeft: false, module: 'Admin', menu: 'users'}
+        meta: { hideLeft: false, module: 'Admin', menu: 'users' }
       },
       {
         path: 'users/edit/:id',
         component: usersEdit,
         name: 'usersEdit',
-        meta: {hideLeft: false, module: 'Admin', menu: 'users'}
+        meta: { hideLeft: false, module: 'Admin', menu: 'users' }
       }
     ]
   },
@@ -159,16 +171,17 @@ const routes = [
     path: '/busi',
     component: Home,
     children: [
-      {path: 'mail/list', component: mailList, name: 'mailList', meta: {hideLeft: false, module: 'Busi', menu: 'mail'}},
-      {path: 'mail/add', component: mailAdd, name: 'mailAdd', meta: {hideLeft: false, module: 'Busi', menu: 'mail'}},
+      { path: 'mail/list', component: mailList, name: 'mailList', meta: { hideLeft: false, module: 'Busi', menu: 'mail' }},
+      { path: 'mail/add', component: mailAdd, name: 'mailAdd', meta: { hideLeft: false, module: 'Busi', menu: 'mail' }},
       {
         path: 'mail/edit/:id',
         component: mailEdit,
         name: 'mailEdit',
-        meta: {hideLeft: false, module: 'Busi', menu: 'mail'}
+        meta: { hideLeft: false, module: 'Busi', menu: 'mail' }
       }
     ]
   },
+  // 账户管理-工作室管理
   {
     path: '/admin',
     component: Home,
@@ -177,22 +190,23 @@ const routes = [
         path: 'studios/list',
         component: studiosList,
         name: 'studiosList',
-        meta: {hideLeft: false, module: 'Admin', menu: 'studios'}
+        meta: { hideLeft: false, module: 'Admin', menu: 'studios' }
       },
       {
         path: 'studios/add',
         component: studiosAdd,
         name: 'studiosAdd',
-        meta: {hideLeft: false, module: 'Admin', menu: 'studios'}
+        meta: { hideLeft: false, module: 'Admin', menu: 'studios' }
       },
       {
         path: 'studios/edit/:id',
         component: studiosEdit,
         name: 'studiosEdit',
-        meta: {hideLeft: false, module: 'Admin', menu: 'studios'}
+        meta: { hideLeft: false, module: 'Admin', menu: 'studios' }
       }
     ]
   },
+  // 账户管理-环节管理
   {
     path: '/admin',
     component: Home,
@@ -201,22 +215,23 @@ const routes = [
         path: 'taches/list',
         component: tachesList,
         name: 'tachesList',
-        meta: {hideLeft: false, module: 'Admin', menu: 'taches'}
+        meta: { hideLeft: false, module: 'Admin', menu: 'taches' }
       },
       {
         path: 'taches/add',
         component: tachesAdd,
         name: 'tachesAdd',
-        meta: {hideLeft: false, module: 'Admin', menu: 'taches'}
+        meta: { hideLeft: false, module: 'Admin', menu: 'taches' }
       },
       {
         path: 'taches/edit/:id',
         component: tachesEdit,
         name: 'tachesEdit',
-        meta: {hideLeft: false, module: 'Admin', menu: 'taches'}
+        meta: { hideLeft: false, module: 'Admin', menu: 'taches' }
       }
     ]
   },
+  // 项目管理-项目列表
   {
     path: '/admin',
     component: Home,
@@ -225,22 +240,22 @@ const routes = [
         path: 'projects/list',
         component: projectsList,
         name: 'projectsList',
-        meta: {hideLeft: false, module: 'Admin', menu: 'projects'}
+        meta: { hideLeft: false, module: 'Admin', menu: 'projects' }
       },
       {
         path: 'projects/add',
         component: projectsAdd,
         name: 'projectsAdd',
-        meta: {hideLeft: false, module: 'Admin', menu: 'projects'}
+        meta: { hideLeft: false, module: 'Admin', menu: 'projects' }
       },
       {
         path: 'projects/edit/:id',
         component: projectsEdit,
         name: 'projectsEdit',
-        meta: {hideLeft: false, module: 'Admin', menu: 'projects'}
+        meta: { hideLeft: false, module: 'Admin', menu: 'projects' }
       }
     ]
-  },
+  }
 ]
 
 const router = new VueRouter({
