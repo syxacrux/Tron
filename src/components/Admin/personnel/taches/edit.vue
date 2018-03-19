@@ -12,6 +12,9 @@
                 <el-form-item label="环节名称" prop="tache_name">
                     <el-input v-model.trim="form.tache_name" class="h-40 w-200"></el-input>
                 </el-form-item>
+								 <el-form-item label="排序" prop="sort">
+                    <el-input v-model.trim="form.sort" class="h-40 w-200"></el-input>
+                </el-form-item>
                 <el-form-item label="备注" prop="explain">
                     <el-input v-model.trim="form.explain" class="h-40 w-200"></el-input>
                 </el-form-item>
@@ -34,7 +37,8 @@
 		isLoading: false,
 		form: {
 		  tache_name: '',
-		  explain: ''
+		  explain: '',
+			sort:''
 		},
 		rules: {
 		  tache_name: [
@@ -77,6 +81,7 @@
 			this.form.id = data.id
 			this.form.tache_name = data.tache_name
 			this.form.explain = data.explain
+			this.form.sort = data.sort
 		  })
 		})
 	  }

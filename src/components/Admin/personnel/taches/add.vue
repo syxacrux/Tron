@@ -12,6 +12,9 @@
                 <el-form-item label="环节名称" prop="tache_name">
                     <el-input v-model.trim="form.tache_name" class="h-40 w-200"></el-input>
                 </el-form-item>
+								<el-form-item label="排序" prop="sort">
+                    <el-input v-model.trim="form.sort" class="h-40 w-200"></el-input>
+                </el-form-item>
                 <el-form-item label="备注" prop="explain">
                     <el-input v-model.trim="form.explain" class="h-40 w-200"></el-input>
                 </el-form-item>
@@ -34,11 +37,15 @@
 		isLoading: false,
 		form: {
 		  explain: '',
-		  tache_name: ''
+		  tache_name: '',
+			sort:''
 		},
 		rules: {
 		  tache_name: [
 			{required: true, message: '请输入择环节'}
+		  ],
+			sort: [
+			{required: true, message: '请输入排序'}
 		  ]
 		}
 	  }
