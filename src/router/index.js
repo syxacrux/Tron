@@ -45,6 +45,8 @@ import tachesEdit from '@/components/Admin/personnel/taches/edit.vue'
 import projectsList from '@/components/Admin/project/projects/list.vue'
 import projectsAdd from '@/components/Admin/project/projects/add.vue'
 import projectsEdit from '@/components/Admin/project/projects/edit.vue'
+// 工作台管理-工作台列表
+import workbenchesList from '@/components/Admin/workbench/workbenches/list.vue'
 
 Vue.use(VueRouter)
 
@@ -255,6 +257,19 @@ const routes = [
         meta: { hideLeft: false, module: 'Admin', menu: 'projects' }
       }
     ]
+  },
+  // 工作台管理-工作台列表
+  {
+	path: '/admin',
+	component: Home,
+	children: [
+	  {
+		path: 'workbenches/list',
+		component: workbenchesList,
+		name: 'workbenchesList',
+		meta: { hideLeft: false, module: 'Admin', menu: 'workbenches' }
+	  }
+	]
   }
 ]
 
