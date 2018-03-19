@@ -1,23 +1,21 @@
 <?php
-//目录我放在thinkphp5.0/extend/redis
 namespace redis;
-
 class RedisPackage{
     protected static $handler = null;
     protected $options = [
-        'host'      => '127.0.0.1',
-        'port'      => 6379,
-        'password'  => '',
-        'select'    => 0,
-        'timeout'   => 0,     //关闭时间 0:代表不关闭
-        'expire'    => 0,
-        'persistent'=>false,
-        'prefix'    => '',
+        'host' => '127.0.0.1',
+        'port' => 6379,
+        'password' => '',
+        'select' => 0,
+        'timeout' => 0, //关闭时间 0:代表不关闭
+        'expire' => 0,
+        'persistent' => false,
+        'prefix' => '',
     ];
 
-    public function __construct($options = []){
-        //判断是否有扩展(如果apache没reids扩展就会抛出这个异常)
-        if (!extension_loaded('redis')) {
+    public function __construct($options = [])
+    {
+        if (!extension_loaded('redis')) {   //判断是否有扩展(如果你的apache没reids扩展就会抛出这个异常)
             throw new \BadFunctionCallException('not support: redis');
         }
         if (!empty($options)) {
@@ -38,13 +36,13 @@ class RedisPackage{
 
     /**
      * 写入缓存
-     * @param $key  string $key 键名
-     * @param $value    string $value 键值
-     * @param int $exprie   int $exprie 过期时间 0:永不过期
+     * @param string $key 键名
+     * @param string $value 键值
+     * @param int $exprie 过期时间 0:永不过期
      * @return bool
-     * @author zjs 2018/3/13
      */
-    public static function set($key, $value, $exprie = 0){
+    public static function set($key, $value, $exprie = 0)
+    {
         if ($exprie == 0) {
             $set = self::$handler->set($key, $value);
         } else {
@@ -55,22 +53,22 @@ class RedisPackage{
 
     /**
      * 读取缓存
-     * @param $key  string $key 键值
+     * @param string $key 键值
      * @return mixed
-     * @author zjs 2018/3/13
      */
-    public static function get($key){
+    public static function get($key)
+    {
         $fun = is_array($key) ? 'Mget' : 'get';
         return self::$handler->{$fun}($key);
     }
 
     /**
      * 获取值长度
-     * @param $key  string $key
+     * @param string $key
      * @return int
-     * @author zjs 2018/3/13
      */
-    public static function lLen($key){
+    public static function lLen($key)
+    {
         return self::$handler->lLen($key);
     }
 
@@ -79,9 +77,9 @@ class RedisPackage{
      * @param $key
      * @param $value
      * @return int
-     * @author zjs 2018/3/13
      */
-    public static function LPush($key, $value, $value2 = null, $valueN = null){
+    public static function LPush($key, $value, $value2 = null, $valueN = null)
+    {
         return self::$handler->lPush($key, $value, $value2, $valueN);
     }
 
@@ -89,9 +87,9 @@ class RedisPackage{
      * 移出并获取列表的第一个元素
      * @param string $key
      * @return string
-     * @author zjs 2018/3/13
      */
-    public static function lPop($key){
+    public static function lPop($key)
+    {
         return self::$handler->lPop($key);
     }
 }
