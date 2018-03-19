@@ -68,7 +68,7 @@
   export default {
     data() {
       return {
-        address: window.baseUrl + '/',
+        address: window.HOST + '/',
         tableData: [],
         uid: '',
         keywords: {},
@@ -83,7 +83,7 @@
             status: 'on-hold',
             title: 'Test',
           },{
-            id: 2,
+            id: 1,
             status: 'on-hold',
             title: 'Test',
           },
