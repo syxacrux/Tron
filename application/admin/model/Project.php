@@ -9,9 +9,10 @@ class Project extends Common{
     protected $frame_rate_arr = [1=>'24fps',2=>'25fps']; //项目帧率
     protected $aspect_ratio_arr = [1=>'16:9',2=>'10:5',3=>'1:1'];   //遮幅比
     protected $status_arr = [0=>'未开始',1=>'等待中',2=>'制作中',3=>'暂停',4=>'完成']; //项目状态
+    protected $movies_type_arr = [0=>'未选择',1=>'电影',2=>'电视剧'];
 
     //获取列表
-    public function getList($keyword,$uid,$group_id){
+    public function getList($keyword){
         $where = [];
         if (!empty($keyword['studio_ids'])) {   //工作室
             $studio_ids = implode(",",$keyword['studio_ids']);
@@ -20,7 +21,6 @@ class Project extends Common{
         if(!empty($keyword['status'])){ //项目状态
             $where['status'] = $keyword['status'];
         }
-        file_put_contents('aa.txt',var_export($keyword,true));
         $dataCount = $this->where($where)->count('id');
         $nobeginCount = $this->where('status',0)->count('id');  //未开始
         $waitingCount = $this->where('status',1)->count('id');  //等待中
@@ -35,6 +35,7 @@ class Project extends Common{
         //合成数据 当前时间与计划结束时间最小的，排前边
         $list = array_merge($big_project_data,$small_project_data);
         foreach($list as $key=>$value){
+            $list[$key]['movies_type'] = $this->movies_type_arr[$value['movies_type']];  //影视类型
             $list[$key]['resolutic'] = $this->resolutic_arr[$value['resolutic']];   //分辨率
             $list[$key]['frame_rate'] = $this->frame_rate_arr[$value['frame_rate']];   //项目帧率
             $list[$key]['aspect_ratio'] = $this->aspect_ratio_arr[$value['aspect_ratio']]; //遮幅比
@@ -82,9 +83,11 @@ class Project extends Common{
                 return false;
             }else{
                 //执行外部程序-开启队列
-                /*$redis = new RedisPackage();
+                /*
+                $redis = new RedisPackage();
                 $cmd = "python /var/www/html/tronPipelineScript/createDirPath/parser.py $str ";
-                $redis::LPush("pyFile",$cmd);*/
+                $redis::LPush("pyFile",$cmd);
+                */
                 return true;
             }
         }catch(\Exception $e){

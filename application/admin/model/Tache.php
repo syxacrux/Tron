@@ -29,14 +29,20 @@ class Tache extends Common{
         try{
             $param['tache_name'] = trimall($param['tache_name']);
             $param['explain'] = trimall($param['explain']);
-            $param['sort'] = intval($param['sort']);
+            $param['sort'] = $sort = intval($param['sort']);
             $param['create_time'] = time();
-            $result =  $this->validate($this->name)->save($param);
-            if(false === $result){
-                $this->error = $this->getError();
+            $check_sort = $this->where('sort',$sort)->find();
+            if(!empty($check_sort)){
+                $this->error = '序号重复';
                 return false;
             }else{
-                return true;
+                $result = $this->validate($this->name)->save($param);
+                if(false === $result){
+                    $this->error = $this->getError();
+                    return false;
+                }else{
+                    return true;
+                }
             }
         }catch(\Exception $e){
             $this->error = '添加失败';
@@ -65,8 +71,8 @@ class Tache extends Common{
             return false;
         }
         try{
-            $check_sort = $this->where('sort',$data['sort'])->find();
-            if(!empty($check_sort)){
+            $checkSort = $this->where('id','<>',$id)->where('sort',$data['sort'])->value('sort');
+            if($checkSort == $data['sort']){
                 $this->error = '该序号已存在，请重新赋予序号!';
                 return false;
             }else{

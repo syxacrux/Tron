@@ -1,5 +1,4 @@
 <?php
-use redis\RedisPackage;
 /**
  * 行为绑定
  */
