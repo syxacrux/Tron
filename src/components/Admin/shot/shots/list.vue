@@ -144,6 +144,9 @@ export default {
         handleCurrentChange(page) {
             this.getAllTaches(page)
         },
+        getAllProjects(){
+            this.$router.push({name: 'shotsList_detail'})
+        }
     },
     components: {
     //   btnGroup
