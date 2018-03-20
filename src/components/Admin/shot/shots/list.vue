@@ -3,7 +3,7 @@
     <div class="m-b-20">
       <el-breadcrumb separator="/">
         <el-breadcrumb-item :to="{ path: '/admin' }">首页</el-breadcrumb-item>
-        <el-breadcrumb-item :to="{ path: '/admin/projects/list' }">镜头管理</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ path: '/admin/shots/list' }">镜头管理</el-breadcrumb-item>
         <el-breadcrumb-item>镜头汇总</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
