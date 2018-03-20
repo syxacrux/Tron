@@ -277,28 +277,28 @@ const routes = [
   },
   // 镜头管理-镜头
   {
-	path: '/admin',
-	component: Home,
-	children: [
-	  {
-		path: 'shots/list',
-		component: shotsList,
-		name: 'shotsList',
-		meta: { hideLeft: false, module: 'Admin', menu: 'shots' }
-	  },
-	  {
-		path: 'shots/add',
-		component: shotsAdd,
-		name: 'shotsAdd',
-		meta: { hideLeft: false, module: 'Admin', menu: 'shots' }
-	  },
-	  {
-		path: 'shots/edit/:id',
-		component: shotsEdit,
-		name: 'shotsEdit',
-		meta: { hideLeft: false, module: 'Admin', menu: 'shots' }
-	  }
-	]
+    path: '/admin',
+    component: Home,
+    children: [
+      {
+        path: 'shots/list',
+        component: shotsList,
+        name: 'shotsList',
+        meta: { hideLeft: false, module: 'Admin', menu: 'shots' }
+      },
+      {
+        path: 'shots/add',
+        component: shotsAdd,
+        name: 'shotsAdd',
+        meta: { hideLeft: false, module: 'Admin', menu: 'shots' }
+      },
+      {
+        path: 'shots/edit/:id',
+        component: shotsEdit,
+        name: 'shotsEdit',
+        meta: { hideLeft: false, module: 'Admin', menu: 'shots' }
+      }
+    ]
   }
 ]
 

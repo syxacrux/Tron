@@ -7,11 +7,11 @@
         <el-breadcrumb-item>工作台</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
-    <div class="m-b-20">
-      <el-tabs v-model="activeName" @tab-click="handleClick">
+    <div class="m-b-20 ovf-hd">
+      <el-tabs v-model="activeName" @tab-click="handleClick" class="fl">
         <el-tab-pane label="任务" name="task">
           <kanban-board :stages="stages" :blocks="blocks" @update-block="updateBlock">
-            <el-card class="box-card" v-for="block in blocks" :slot="block.id">
+            <el-card class="box-card point" v-for="block in blocks" :slot="block.id" :key="block.id">
               <div>
                 <strong>id:</strong> {{ block.id }}
               </div>
@@ -21,11 +21,60 @@
             </el-card>
           </kanban-board>
         </el-tab-pane>
-        <el-tab-pane label="等待上游" name="waiting">等待上游</el-tab-pane>
-        <el-tab-pane label="完成" name="complete">完成</el-tab-pane>
+        <el-tab-pane label="等待上游" name="waiting">
+          <div class="waiting ovf-hd">
+            <el-col :span="12">
+              <div class="grid-content bg-purple">
+                <h2 class="m-0 h-40 tx-c c-white">资产</h2>
+                <ul class="p-l-0 m-0">
+                  <li v-for="i in 4" :key="i" class="text">
+                    <el-card class="box-card">
+                      <div v-for="o in 4" :key="o" class="text item">
+                        {{'列表内容 ' + o }}
+                      </div>
+                    </el-card>
+                  </li>
+                </ul>
+              </div>
+            </el-col>
+            <el-col :span="12">
+              <div class="grid-content bg-purple-light">
+                <h2 class="m-0 h-40 tx-c c-white" style="background: yellowgreen">镜头</h2>
+                <ul class="p-l-0 m-0">
+                  <li v-for="i in 4" :key="i" class="text">
+                    <el-card class="box-card">
+                      <div v-for="o in 4" :key="o" class="text item">
+                        {{'列表内容 ' + o }}
+                      </div>
+                    </el-card>
+                  </li>
+                </ul>
+              </div>
+            </el-col>
+          </div>
+        </el-tab-pane>
+        <el-tab-pane label="完成" name="complete">
+          <el-col :span="6" v-for="i in 7" :key="i">
+            <div class="grid-content bg-purple p-b-5">
+              <el-card class="box-card" style="">
+                <div v-for="o in 3" :key="o" class="text item">
+                  {{'列表内容 ' + o }}
+                </div>
+              </el-card>
+            </div>
+          </el-col>
+
+        </el-tab-pane>
       </el-tabs>
-      <div class="content">
-        hahahahahhahahahahhah
+      <div class="task_detail fr">
+        <el-card class="box-card">
+          <div slot="header" class="clearfix">
+            <span>任务详情</span>
+          </div>
+          <div v-for="o in 4" :key="o" class="text item">
+            {{'我是任务详情' + o }}
+          </div>
+        </el-card>
       </div>
     </div>
   </div>
@@ -53,6 +102,10 @@
           },{
             id: 3,
             status: '上游反馈',
+            title: 'Test',
+          },{
+            id: 4,
+            status: '等待制作',
             title: 'Test',
           },
         ],
@@ -98,12 +151,25 @@
   .item {
     margin-right: 20px;
   }
+  .el-tabs{
+    width: 75%;
+  }
+
+  .task_detail{
+    width: 25%;
+    margin-top: 55px;
+  }
+  .waiting h2{
+    font-size: .8rem;
+    background: lightpink;
+
+  }
   .drag-container{
     margin: 0;
   }
   .drag-container .drag-column{
     flex: inherit;
-    width: 23%;
+    width: 25%;
     margin: 0;
     background: none;
   }
