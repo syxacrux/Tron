@@ -10,11 +10,23 @@
     <div class="m-b-20">
       <el-tabs v-model="activeName" @tab-click="handleClick">
         <el-tab-pane label="任务" name="task">
-          <kanban-board :stages="stages" :blocks="blocks" @update-block="updateBlock"></kanban-board>
+          <kanban-board :stages="stages" :blocks="blocks" @update-block="updateBlock">
+            <el-card class="box-card" v-for="block in blocks" :slot="block.id">
+              <div>
+                <strong>id:</strong> {{ block.id }}
+              </div>
+              <div>
+                {{ block.title }}
+              </div>
+            </el-card>
+          </kanban-board>
         </el-tab-pane>
         <el-tab-pane label="等待上游" name="waiting">等待上游</el-tab-pane>
         <el-tab-pane label="完成" name="complete">完成</el-tab-pane>
       </el-tabs>
+      <div class="content">
+        hahahahahhahahahahhah
+      </div>
     </div>
   </div>
 </template>
@@ -36,6 +48,10 @@
             title: 'Test',
           },{
             id: 2,
+            status: '上游反馈',
+            title: 'Test',
+          },{
+            id: 3,
             status: '上游反馈',
             title: 'Test',
           },
@@ -81,5 +97,39 @@
 <style>
   .item {
     margin-right: 20px;
+  }
+  .drag-container{
+    margin: 0;
+  }
+  .drag-container .drag-column{
+    flex: inherit;
+    width: 23%;
+    margin: 0;
+    background: none;
+  }
+  .drag-container .drag-column .drag-column-header{
+    text-align: center;
+  }
+  .drag-container .drag-column .drag-column-header h2{
+    width: 100%;
+    color: #fff;
+  }
+  .drag-item{
+    height: inherit;
+    padding: 0;
+    margin: 0;
+  }
+  .drag-column-制作中 .drag-column-header, .drag-column-制作中 .drag-options, .drag-column-制作中 .is-moved {
+    background: #fb7d44;
+  }
+  .drag-column-反馈中 .drag-column-header, .drag-column-反馈中 .drag-options, .drag-column-反馈中 .is-moved {
+    /*background: #2a92bf;*/
+    background: #f4ce46;
+  }
+  .drag-column-上游反馈 .drag-column-header, .drag-column-上游反馈 .drag-options, .drag-column-上游反馈 .is-moved {
+    background: #2a92bf;
+  }
+  .drag-column-等待制作 .drag-column-header, .drag-column-等待制作 .drag-options, .drag-column-等待制作 .is-moved {
+    background: #00b961;
   }
 </style>
