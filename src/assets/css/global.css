@@ -156,7 +156,9 @@ a {
     max-height: 400px
 }
 
-
+.m-0 {
+    margin: 0 !important;
+}
 .m-t-5 {
     margin-top: 5px !important;
 }
@@ -409,6 +411,9 @@ a {
 }
 .c-black {
     color: #333;
+}
+.c-white {
+    color: #fff;
 }
 
 .fz-12 {
