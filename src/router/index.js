@@ -51,7 +51,7 @@ import workbenchesList from '@/components/Admin/workbench/workbenches/list.vue'
 import shotsList from '@/components/Admin/shot/shots/list.vue'
 import shotsAdd from '@/components/Admin/shot/shots/add.vue'
 import shotsEdit from '@/components/Admin/shot/shots/edit.vue'
-import shotsListDetail from '@//components/Admin/shot/shots/list_detail.vue'
+import shotsListDetail from '@/components/Admin/shot/shots/list_detail.vue'
 
 Vue.use(VueRouter)
 
@@ -285,15 +285,7 @@ const routes = [
         path: 'shots/list',
         component: shotsList,
         name: 'shotsList',
-        meta: { hideLeft: false, module: 'Admin', menu: 'shots' },
-        children: [
-          {
-            path:'shots/list_detail',
-            component:shotsListDetail,
-            name:'shotsListDetail',
-            meta:{hideLeft: false, module: 'Admin', menu: 'shots'}
-          }
-        ]
+        meta: { hideLeft: false, module: 'Admin', menu: 'shots' }
       },
       {
         path: 'shots/add',
@@ -306,6 +298,12 @@ const routes = [
         component: shotsEdit,
         name: 'shotsEdit',
         meta: { hideLeft: false, module: 'Admin', menu: 'shots' }
+      },
+      {
+        path:'shots/list_detail',
+        component:shotsListDetail,
+        name:'shotsListDetail',
+        meta:{hideLeft: false, module: 'Admin', menu: 'shots'}
       }
     ]
   }
