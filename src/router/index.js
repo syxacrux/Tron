@@ -41,12 +41,16 @@ import studiosEdit from '@/components/Admin/personnel/studios/edit.vue'
 import tachesList from '@/components/Admin/personnel/taches/list.vue'
 import tachesAdd from '@/components/Admin/personnel/taches/add.vue'
 import tachesEdit from '@/components/Admin/personnel/taches/edit.vue'
-// 项目管理-项目列表
+// 项目管理-项目
 import projectsList from '@/components/Admin/project/projects/list.vue'
 import projectsAdd from '@/components/Admin/project/projects/add.vue'
 import projectsEdit from '@/components/Admin/project/projects/edit.vue'
 // 工作台管理-工作台列表
 import workbenchesList from '@/components/Admin/workbench/workbenches/list.vue'
+// 镜头管理-镜头
+import shotsList from '@/components/Admin/shot/shots/list.vue'
+import shotsAdd from '@/components/Admin/shot/shots/add.vue'
+import shotsEdit from '@/components/Admin/shot/shots/edit.vue'
 
 Vue.use(VueRouter)
 
@@ -270,7 +274,32 @@ const routes = [
         meta: { hideLeft: false, module: 'Admin', menu: 'workbenches' }
       }
     ]
-  }
+  },
+  // 镜头管理-镜头列表
+  {
+	path: '/admin',
+	component: Home,
+	children: [
+	  {
+		path: 'shots/list',
+		component: shotsList,
+		name: 'shotsList',
+		meta: { hideLeft: false, module: 'Admin', menu: 'shots' }
+	  },
+	  {
+		path: 'shots/add',
+		component: shotsAdd,
+		name: 'shotsAdd',
+		meta: { hideLeft: false, module: 'Admin', menu: 'shots' }
+	  },
+	  {
+		path: 'shots/edit/:id',
+		component: shotsEdit,
+		name: 'shotsEdit',
+		meta: { hideLeft: false, module: 'Admin', menu: 'shots' }
+	  }
+	]
+  },
 ]
 
 const router = new VueRouter({

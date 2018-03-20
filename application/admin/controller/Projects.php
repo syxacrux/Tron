@@ -14,6 +14,7 @@ class Projects extends ApiCommon{
         $param = $this->param;
         $keywords = !empty($param['keywords']) ? json_decode($param['keywords'],true): '';
         $data = $project_model->getList($keywords,$uid,$group_id);
+        //$test = [0=>];
         $data['uid'] = $uid;
         return resultArray(['data' => $data]);
     }
