@@ -118,6 +118,10 @@
     height: inherit;
     padding: 0;
     margin: 0;
+    background: none;
+  }
+  .drag-item.is-moving{
+    background: none;
   }
   .drag-column-制作中 .drag-column-header, .drag-column-制作中 .drag-options, .drag-column-制作中 .is-moved {
     background: #fb7d44;
