@@ -38,7 +38,7 @@
                 <div v-for="o in 4" :key="o" class="text item1">
                     {{'列表内容 ' + o }}
                 </div>
-                <div>
+                <div class="box-after">
                     <p class="box-card-p">Liangcy:</p>
                     <div class="box-card-div">
                         <p>提交文件---fuy003002_rig_liangcy_sdddf_v0101提交dailies。</p>
@@ -46,7 +46,7 @@
                         <p>时间：20180207-14：52</p>
                     </div>
                 </div>
-                <div>
+                <div class="box-after">
                     <p class="box-card-p">Liangcy:</p>
                     <div class="box-card-div">
                         <p>提交文件---fuy003002_rig_liangcy_sdddf_v0101提交dailies。</p>
@@ -72,7 +72,7 @@
                 <div v-for="o in 4" :key="o" class="text item1">
                     {{'列表内容 ' + o }}
                 </div>
-                <div>
+                <div class="box-after">
                     <p class="box-card-p">Liangcy:</p>
                     <div class="box-card-div">
                         <p>提交文件---fuy003002_rig_liangcy_sdddf_v0101提交dailies。</p>
@@ -80,7 +80,7 @@
                         <p>时间：20180207-14：52</p>
                     </div>
                 </div>
-                <div>
+                <div class="box-after">
                     <p class="box-card-p">Liangcy:</p>
                     <div class="box-card-div">
                         <p>提交文件---fuy003002_rig_liangcy_sdddf_v0101提交dailies。</p>
@@ -185,6 +185,14 @@ export default {
   .box-card-p, .box-card-div{
       /* display: inline-block; */
       float: left;
+  }
+  .box-after:after{
+      content:'';
+      height: 0;
+      line-height: 0;
+      display: block;
+      visibility: hidden;
+      clear: both;
   }
 </style>
 
