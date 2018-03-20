@@ -275,7 +275,7 @@ const routes = [
       }
     ]
   },
-  // 镜头管理-镜头列表
+  // 镜头管理-镜头
   {
 	path: '/admin',
 	component: Home,
@@ -299,7 +299,7 @@ const routes = [
 		meta: { hideLeft: false, module: 'Admin', menu: 'shots' }
 	  }
 	]
-  },
+  }
 ]
 
 const router = new VueRouter({
