@@ -145,7 +145,7 @@ export default {
             this.getAllTaches(page)
         },
         getAllProjects(){
-            this.$router.push({name: 'shotsList_detail'})
+            this.$router.push({name: 'shotsListDetail'})
         }
     },
     components: {
