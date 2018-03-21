@@ -138,7 +138,7 @@
       },
 //      初始化项目列表内容
       init() {
-        this.getAllProjects(0)
+        this.getAllProjects(2)
       }
     },
     created() {
