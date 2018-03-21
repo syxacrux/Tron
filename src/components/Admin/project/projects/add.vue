@@ -2,7 +2,8 @@
   <div>
     <div class="m-b-20">
       <el-breadcrumb separator="/">
-        <el-breadcrumb-item :to="{ path: '/admin' }">项目管理</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ path: '/admin' }">首页</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ path: '/admin/projects/list' }">项目管理</el-breadcrumb-item>
         <el-breadcrumb-item :to="{ path: '/admin/projects/list' }">项目汇总</el-breadcrumb-item>
         <el-breadcrumb-item>添加项目</el-breadcrumb-item>
       </el-breadcrumb>
@@ -180,7 +181,7 @@
             </el-input>
           </el-form-item>
         </el-row>
-        <el-form-item class="tsf_ProjectMap">
+        <el-form-item>
           <el-button type="primary" @click="add('form')" :loading="isLoading">提交</el-button>
           <el-button @click="goback()">返回</el-button>
         </el-form-item>
