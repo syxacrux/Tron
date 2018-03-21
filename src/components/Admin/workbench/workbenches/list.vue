@@ -166,6 +166,7 @@
   }
   .drag-container{
     margin: 0;
+    max-width: initial;
   }
   .drag-container .drag-column{
     flex: inherit;
