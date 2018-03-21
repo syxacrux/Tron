@@ -46,6 +46,10 @@ class Projects extends ApiCommon{
     public function update(){
         $project_model = new Project();
         $param = $this->param;
+        $param['project_image'] = str_replace('\\','/',$param['project_image']);
+        $param['plan_start_timestamp'] = strtotime($param['plan_start_timestamp']);
+        $param['plan_end_timestamp'] = strtotime($param['plan_end_timestamp']);
+        $param['create_time'] = time();
         $data = $project_model->updateDataById($param, $param['id']);
         if (!$data) {
             return resultArray(['error' => $project_model->getError()]);
