@@ -22,7 +22,6 @@ class Project extends Common{
             $where['status'] = $keywords['status'];
         }
         $dataCount = $this->where($where)->count('id');
-        $nobeginCount = $this->where('status',0)->count('id');  //未开始
         $waitingCount = $this->where('status',1)->count('id');  //等待中
         $workingCount = $this->where('status',2)->count('id');  //制作中
         $suspendCount = $this->where('status',3)->count('id');  //暂停
