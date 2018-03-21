@@ -14,7 +14,6 @@ class Projects extends ApiCommon{
         $param = $this->param;
         $keywords = !empty($param['keywords']) ? json_decode($param['keywords'],true): '';
         $data = $project_model->getList($keywords,$uid,$group_id);
-        //$test = [0=>];
         $data['uid'] = $uid;
         return resultArray(['data' => $data]);
     }
@@ -68,8 +67,4 @@ class Projects extends ApiCommon{
         return resultArray(['data' => '删除成功']);
     }
 
-    //获取当前登陆人是否存在于所属项目ID的项目中
-    public function get_uid_rule(){
-        echo 123;
-    }
 }
