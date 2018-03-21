@@ -8,8 +8,31 @@
         <el-breadcrumb-item>镜头详情</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
+    <div class="m-b-10">
+      <div class="tx-r">
+        <el-tooltip effect="dark" content="镜头进度" placement="bottom-start">
+          <el-button type="primary" plain size="mini" @click="isList = false"><i class="el-icon-menu"></i></el-button>
+        </el-tooltip>
+        <el-tooltip effect="dark" content="镜头列表" placement="bottom-start">
+          <el-button type="primary" plain size="mini" @click="isList = true"><i class="el-icon-document"></i></el-button>
+        </el-tooltip>
+      </div>
+    </div>
     <div class="m-b-20 ovf-hd">
-      <el-tabs v-model="activeName" @tab-click="handleClick" class="fl">
+      <el-table v-if="isList" :data="tableData" stripe class="fl">
+        <el-table-column prop="date" label="缩略图"></el-table-column>
+        <el-table-column prop="name" label="场号"></el-table-column>
+        <el-table-column prop="address" label="镜头号"></el-table-column>
+        <el-table-column prop="address" label="难度"></el-table-column>
+        <el-table-column prop="address" label="优先级"></el-table-column>
+        <el-table-column prop="address" label="进度"></el-table-column>
+        <el-table-column prop="address" label="计划开始"></el-table-column>
+        <el-table-column prop="address" label="计划结束"></el-table-column>
+        <el-table-column prop="address" label="实际开始"></el-table-column>
+        <el-table-column prop="address" label="实际结束"></el-table-column>
+        <el-table-column prop="explain" label="备注"></el-table-column>
+      </el-table>
+      <el-tabs v-if="!isList" v-model="activeName" @tab-click="handleClick" class="fl">
         <el-tab-pane label="镜头制作中" name="shotsInDevelopment">
           <div class="waiting ovf-hd">
             <el-col :span="12">
@@ -120,6 +143,16 @@
     data() {
       return {
         activeName: 'shotInDevelopment',
+        isList: false,
+        tableData: [{
+          date: '2016-05-02',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1518 弄'
+        }, {
+          date: '2016-05-04',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1517 弄'
+        }]
       }
     },
     methods: {
@@ -136,7 +169,10 @@
     },
     created() {
       this.activeName = this.$route.query.type
+      console.log(this.activeName)
+      this.isList = this.$route.query.list
       this.init()
+      console.log(store)
     },
     components: {},
     mixins: [http],
@@ -157,13 +193,16 @@
   .item {
     margin-right: 20px;
   }
+  .el-table{
+    width: 75%;
+  }
   .el-tabs{
     width: 75%;
   }
 
   .task_detail{
     width: 25%;
-    margin-top: 55px;
+    /*margin-top: 55px;*/
   }
   .waiting h2{
     font-size: .8rem;

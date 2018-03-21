@@ -7,7 +7,21 @@
         <el-breadcrumb-item>镜头列表</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
-    <div class="m-b-20">
+    <div class="m-b-10">
+      <div class="tx-r">
+        <router-link :to="{ name: 'shotsListDetail', query: { type: 'shotsInDevelopment', list: false }}">
+          <el-tooltip effect="dark" content="镜头进度" placement="bottom-start">
+            <el-button type="primary" plain size="mini"><i class="el-icon-menu"></i></el-button>
+          </el-tooltip>
+        </router-link>
+        <router-link :to="{ name: 'shotsListDetail', query: { type: 'list', list: true }}">
+          <el-tooltip effect="dark" content="镜头列表" placement="bottom-start">
+            <el-button type="primary" plain size="mini"><i class="el-icon-document"></i></el-button>
+          </el-tooltip>
+        </router-link>
+      </div>
+    </div>
+    <div class="m-b-20 pos-rel">
       <router-link class="btn-link-large add-btn" to="add" v-if="addShow">
         <i class="el-icon-plus"></i>&nbsp;&nbsp;添加镜头
       </router-link>
@@ -32,7 +46,7 @@
         </el-badge>
       </div>
     </div>
-    <div class="shots">
+    <div class="shots ovf-hd">
       <el-col class="shots_list" :span="12">
         <el-card class="box-card">
           <div v-for="o in 4" :key="o" class="text item1">
@@ -146,7 +160,7 @@
         this.getAllTaches(page)
       },
       getShotsDetail(name) {
-        this.$router.push({name: 'shotsListDetail', query: {type: name}})
+        this.$router.push({name: 'shotsListDetail', query: {type: name, list: false}})
       }
     },
     components: {
