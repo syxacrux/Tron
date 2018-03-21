@@ -3,13 +3,14 @@
     <div class="m-b-20">
       <el-breadcrumb separator="/">
         <el-breadcrumb-item :to="{ path: '/admin' }">首页</el-breadcrumb-item>
-        <el-breadcrumb-item :to="{ path: '/admin/workbenches/list' }">工作台管理</el-breadcrumb-item>
-        <el-breadcrumb-item>工作台</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ path: '/admin/shots/list' }">镜头管理</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ path: '/admin/shots/list' }">镜头列表</el-breadcrumb-item>
+        <el-breadcrumb-item>镜头详情</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
     <div class="m-b-20 ovf-hd">
       <el-tabs v-model="activeName" @tab-click="handleClick" class="fl">
-        <el-tab-pane label="镜头制作中" name="shotInDevelopment">
+        <el-tab-pane label="镜头制作中" name="shotsInDevelopment">
           <div class="waiting ovf-hd">
             <el-col :span="12">
               <div class="grid-content bg-purple">
@@ -27,7 +28,7 @@
             </el-col>
             <el-col :span="12">
               <div class="grid-content bg-purple-light">
-                <h2 class="m-0 h-40 tx-c c-white" style="background: yellowgreen">反馈</h2>
+                <h2 class="m-0 h-40 tx-c c-white" style="background: yellowgreen">反馈中</h2>
                 <ul class="p-l-0 m-0">
                   <li v-for="i in 4" :key="i" class="text">
                     <el-card class="box-card">
@@ -41,7 +42,7 @@
             </el-col>
           </div>         
         </el-tab-pane>
-        <el-tab-pane label="镜头未制作" name="shotNot">
+        <el-tab-pane label="镜头未制作" name="shotsNotDevelopment">
           <div class="waiting ovf-hd">
             <el-col :span="12">
               <div class="grid-content bg-purple">
@@ -73,7 +74,7 @@
             </el-col>
           </div>
         </el-tab-pane>
-        <el-tab-pane label="镜头完成" name="shotcomplete">
+        <el-tab-pane label="镜头暂停" name="shotsSuspend">
           <el-col :span="6" v-for="i in 7" :key="i">
             <div class="grid-content bg-purple p-b-5">
               <el-card class="box-card" style="">
@@ -83,16 +84,26 @@
               </el-card>
             </div>
           </el-col>
-
+        </el-tab-pane>
+        <el-tab-pane label="镜头完成" name="shotsFinish">
+          <el-col :span="6" v-for="i in 7" :key="i">
+            <div class="grid-content bg-purple p-b-5">
+              <el-card class="box-card" style="">
+                <div v-for="o in 3" :key="o" class="text item">
+                  {{'列表内容 ' + o }}
+                </div>
+              </el-card>
+            </div>
+          </el-col>
         </el-tab-pane>
       </el-tabs>
       <div class="task_detail fr">
         <el-card class="box-card">
           <div slot="header" class="clearfix">
-            <span>任务详情</span>
+            <span>镜头详情</span>
           </div>
           <div v-for="o in 4" :key="o" class="text item">
-            {{'我是任务详情' + o }}
+            {{'我是镜头详情' + o }}
           </div>
         </el-card>
       </div>
@@ -124,6 +135,7 @@
       }
     },
     created() {
+      this.activeName = this.$route.query.type
       this.init()
     },
     components: {},
