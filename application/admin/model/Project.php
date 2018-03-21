@@ -52,7 +52,6 @@ class Project extends Common{
         }
         $data['list'] = $list;
         $data['dataCount'] = $dataCount;
-        $data['nobeginCount'] = $nobeginCount;
         $data['waitingCount'] = $waitingCount;
         $data['workingCount'] = $workingCount;
         $data['suspendCount'] = $suspendCount;
