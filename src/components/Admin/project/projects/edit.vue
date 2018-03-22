@@ -259,7 +259,7 @@
     data() {
       return {
         isLoading: false,
-        uploadImageUrl: window.HOST + '/admin/upload_project_image',
+        uploadImageUrl: window.HOST + '/admin/upload_image',
         userList: [],
         studiosOptions: [],
         plan_time: [],
