@@ -1,10 +1,9 @@
 <?php
 namespace app\admin\model;
+use think\Db;
 use app\common\model\Common;
 
 class Shot extends Common{
-
-    protected $name = 'admin_shot';
 
     /**
      * 获取列表
@@ -40,28 +39,29 @@ class Shot extends Common{
         return $data;
     }
 
-
     /**
-     * 多工作室ID字符串转换相对应的工作室名称，以逗号分割
-     * @param $ids
-     * @param $tag
-     * @return string
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
-     * @throws \think\exception\DbException
-     * @author zjs 2018/3/13
+     * 添加场号/集号
+     * @param $param
+     * @return bool
+     * @author zjs 2018/3/21
      */
-    public static function get_studio_names($ids,$value,$tag){
-        if(!empty($ids)){
-            $studio_ids = explode(',',$ids);
-            foreach($studio_ids as $key=>$val){
-                $res[] = self::where('id',$val)->value($value);
+    public function addFieldData($param){
+        try{
+            $where = [];
+            $where['project_id'] = $param['project_id'];
+            $where['name'] = $param['name'];
+            $check_name = Db::name('field')->where($where)->find();
+            if(!empty($check_name)){
+                $this->error = "名称重复，请重新填写";
+                return false;
+            }else{
+                Db::name('field')->insert($param);
             }
-            $data = implode($tag,$res);
-        }else{
-            $data = '';
+        }catch(\Exception $e){
+            $this->error = '添加失败';
+            return false;
         }
-        return $data;
     }
+
 
 }

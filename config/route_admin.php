@@ -16,6 +16,8 @@ return [
         'admin/studios'        =>'admin/studios',
         'admin/taches'         =>'admin/taches',
         'admin/projects'       =>'admin/projects',
+        'admin/shots'          =>'admin/shots',
+        'admin/workbenches'    =>'admin/workbenches',
     ],
 	// 【获取信息】
 	'admin/infos/index' =>['admin/infos/index',['method' => 'POST']],
@@ -35,6 +37,8 @@ return [
 	'admin/base/getVerify' => ['admin/base/getVerify', ['method' => 'GET']],
 	// 【基础】上传图片
 	'admin/upload' => ['admin/upload/index', ['method' => 'POST']],
+    // 【基础】 上传缩略图
+    'admin/upload_image' => ['admin/upload/images_add', ['method' => 'POST']],
 	// 保存系统配置
 	'admin/systemConfigs' => ['admin/systemConfigs/save', ['method' => 'POST']],
 	// 【规则】批量删除
@@ -63,11 +67,12 @@ return [
     'admin/roles/deletes' => ['admin/roles/deletes', ['method' => 'POST']],
     // 【角色管理】批量启用/禁用
     'admin/roles/enables' => ['admin/roles/enables', ['method' => 'POST']],
-    // 【项目】 上传缩略图
-    'admin/upload_project_image' => ['admin/upload/project_images_add', ['method' => 'POST']],
     // 【项目】 获取登陆者是否属于当前项目 应用于编辑操作的权限
     'admin/check_auth'   =>  ['admin/base/getAuth_byUid', ['method'=> 'POST']],
-	
+    // 【镜头】 获取场/集列表
+    'admin/get_fields'   => ['admin/base/getAuth_byUid',['method' => 'get']],
+
+
 	// MISS路由
 	'__miss__'  => 'admin/base/miss',
 ];
