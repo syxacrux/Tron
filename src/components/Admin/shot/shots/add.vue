@@ -14,8 +14,8 @@
           <el-col :span="8">
             <div class="grid-content">
               <el-form-item label="项目名称:" prop="project_id">
-                <el-select v-model="form.project_id" placeholder="请选择项目名称">
-                  <el-option label="我是项目名称" value="1"></el-option>
+                <el-select v-model="form.project_id" placeholder="请选择项目">
+                  <el-option label="我是项目1" value=1></el-option>
                 </el-select>
               </el-form-item>
             </div>
@@ -29,11 +29,20 @@
               </el-form-item>
             </div>
           </el-col>
+          <el-col :span="8">
+            <div class="grid-content">
+              <el-form-item label="是否暂停:" prop="is_parse">
+                <el-select v-model="form.is_parse" placeholder="请选择是否暂停" class="h-40 w-200">
+                  <el-option label="非暂停" value="1"></el-option>
+                  <el-option label="暂停" value="2"></el-option>
+                </el-select>
+              </el-form-item>
+            </div>
+          </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="8">
-            <el-form-item class="is-required" label="项目缩略图:" prop="image">
-              <!-- 上传照片地址 action="" -->
+            <el-form-item class="is-required" label="镜头缩略图:" prop="image">
               <el-upload
                   class="avatar-uploader"
                   :action="uploadImageUrl"
@@ -65,6 +74,35 @@
             <div class="grid-content">
               <el-form-item label="镜头名称:" prop="shot_name">
                 <el-input v-model.trim="form.shot_name" class="h-40 w-200"></el-input>
+              </el-form-item>
+            </div>
+          </el-col>
+          <el-col :span="8">
+            <div class="grid-content">
+              <el-form-item label="时刻:" prop="time">
+                <el-select v-model="form.time" placeholder="请选择时刻" class="h-40 w-200">
+                  <el-option label="白天" value="1"></el-option>
+                  <el-option label="夜晚" value="2"></el-option>
+                </el-select>
+              </el-form-item>
+            </div>
+          </el-col>
+          <el-col :span="8">
+            <div class="grid-content">
+              <el-form-item label="环境:" prop="ambient">
+                <el-select v-model="form.ambient" placeholder="请选择环境" class="h-40 w-200">
+                  <el-option label="室外" value="1"></el-option>
+                  <el-option label="室内" value="2"></el-option>
+                </el-select>
+              </el-form-item>
+            </div>
+          </el-col>
+          <el-col :span="8">
+            <div class="grid-content">
+              <el-form-item label="计划起止时间:" prop="plan_time" class="is-required">
+                <el-date-picker v-model="plan_time" type="datetimerange" range-separator="至" start-placeholder="计划开始时间"
+                                end-placeholder="计划结束时间">
+                </el-date-picker>
               </el-form-item>
             </div>
           </el-col>
@@ -121,6 +159,7 @@
             <div class="grid-content">
               <el-form-item label="手柄帧:" prop="handle_frame">
                 <el-input v-model.trim="form.handle_frame" class="h-40 w-80"></el-input>
+                -
                 <el-input v-model.trim="form.handle_frame" class="h-40 w-80"></el-input>
               </el-form-item>
             </div>
@@ -142,68 +181,11 @@
           </el-col>
           <el-col :span="8">
             <div class="grid-content">
-              <el-form-item label="时刻:" prop="time">
-                <el-select v-model="form.time" placeholder="请选择时刻" class="h-40 w-200">
-                  <el-option label="白天" value="1"></el-option>
-                  <el-option label="夜晚" value="2"></el-option>
-                </el-select>
-              </el-form-item>
-            </div>
-          </el-col>
-          <el-col :span="8">
-            <div class="grid-content">
-              <el-form-item label="环境:" prop="ambient">
-                <el-select v-model="form.ambient" placeholder="请选择环境" class="h-40 w-200">
-                  <el-option label="室外" value="1"></el-option>
-                  <el-option label="室内" value="2"></el-option>
-                </el-select>
-              </el-form-item>
-            </div>
-          </el-col>
-          <el-col :span="8">
-            <div class="grid-content">
               <el-form-item label="素材号:" prop="material_ids">
                 <el-select v-model="form.material_ids" multiple collapse-tags placeholder="请选择素材号" class="h-40 w-200">
                   <el-option label="我是素材号1" value="1"></el-option>
                   <el-option label="我是素材号2" value="2"></el-option>
                 </el-select>
-              </el-form-item>
-            </div>
-          </el-col>
-          <el-col :span="8">
-            <div class="grid-content">
-              <el-form-item label="相机型号:" prop="camera_model">
-                <el-input v-model.trim="form.camera_model" class="h-40 w-200"></el-input>
-              </el-form-item>
-            </div>
-          </el-col>
-          <el-col :span="8">
-            <div class="grid-content">
-              <el-form-item label="相机捕捉:" prop="camera_catch">
-                <el-input v-model.trim="form.camera_catch" class="h-40 w-200"></el-input>
-              </el-form-item>
-            </div>
-          </el-col>
-          <el-col :span="8">
-            <div class="grid-content">
-              <el-form-item label="相机运动:" prop="camera_motion">
-                <el-select v-model="form.camera_motion" placeholder="请选择环境" class="h-40 w-200">
-                  <el-option label="匀速" value="1"></el-option>
-                </el-select>
-              </el-form-item>
-            </div>
-          </el-col>
-          <el-col :span="8">
-            <div class="grid-content">
-              <el-form-item label="相机高度:" prop="camera_height">
-                <el-input v-model.trim="form.camera_height" class="h-40 w-200"></el-input>
-              </el-form-item>
-            </div>
-          </el-col>
-          <el-col :span="8">
-            <div class="grid-content">
-              <el-form-item label="相机焦距:" prop="camera_focus">
-                <el-input v-model.trim="form.camera_focus" class="h-40 w-200"></el-input>
               </el-form-item>
             </div>
           </el-col>
@@ -223,15 +205,6 @@
               <el-form-item label="制作要求:" prop="make_demand">
                 <el-input type="textarea" :rows="2" placeholder="请输入制作要求" v-model="form.make_demand"
                           class="h-40 w-200"></el-input>
-              </el-form-item>
-            </div>
-          </el-col>
-          <el-col :span="8">
-            <div class="grid-content">
-              <el-form-item label="计划起止时间:" prop="plan_time" class="is-required">
-                <el-date-picker v-model="plan_time" type="datetimerange" range-separator="至" start-placeholder="计划开始时间"
-                                end-placeholder="计划结束时间">
-                </el-date-picker>
               </el-form-item>
             </div>
           </el-col>
@@ -315,7 +288,7 @@
     data() {
       return {
         isLoading: false,
-        uploadImageUrl: window.HOST + '/admin/upload_project_image',
+        uploadImageUrl: window.HOST + '/admin/upload_image',
         form: {
           project_id: '',    //所属项目id
           field_id: '',     //场号id
@@ -323,6 +296,11 @@
           shot_number: '',    //镜头编号
           shot_byname: '',    //镜头简称
           shot_name: '',    //镜头名称
+          time: '',    //时刻
+          ambient: '',    //环境
+          plan_start_timestamp: '',    //计划开始时间
+          plan_end_timestamp: '',    //计划结束时间
+          is_parse: '',    //是否暂停   以上为必填项↑
           shot_explain: '',    //镜头备注
           clip_frame_length: '',    //剪辑帧长
           frame_range: '',    //帧数范围
@@ -331,29 +309,28 @@
           handle_frame: '',    //手柄帧
           material_frame_length: '',    //素材帧长
           charge_speed_info: '',    //变速信息
-          time: '',    //时刻
-          ambient: '',    //环境
           material_ids: '',    //素材号
-          camera_model: '',    //相机型号
-          camera_catch: '',    //相机捕捉
-          camera_motion: '',    //相机运动
-          camera_height: '',    //相机高度
-          camera_focus: '',    //相机焦距
           second_company: '',    //二级公司
           make_demand: '',    //制作要求
-          stauts: 1,    //镜头状态
-          plan_start_timestamp: '',    //计划开始时间
-          plan_end_timestamp: ''    //计划结束时间
+          status: 1    //镜头状态
         },
         image: '',
         plan_time: '',
         rules: {
-          project_byname: [
-            {required: true, message: '请输入项目简称'}, {min: 3, max: 5, message: '长度在 3 到 5 个字符'}, {
-              pattern: /^[A-Z]+$/,
-              message: '项目简称必须为大写字母'
-            }
-          ]
+          project_id: [{required: true, message: '请选择项目'}],
+          field_id: [{required: true, message: '请选择场号'}],
+          shot_image: [{required: true, message: '请插入镜头缩略图'}],
+          shot_number: [{required: true, message: '请输入镜头编号'},, {min: 3, max: 6, message: '长度在3到6个字符'}, {
+            pattern: /^[0-9]+$/,
+            message: '镜头编号必须为数字'
+          }],
+          shot_byname: [
+            {required: true, message: '请输入镜头简称'}, {pattern: /^[a-zA-Z]+$/, message: '镜头简称必须为字母'}
+          ],
+          shot_name: [{required: true, message: '请输入镜头名称'}, {pattern: /^[\u4E00-\u9FA5]+$/, message: '镜头名称必须为汉字'}],
+          time: [{required: true, message: '请选择时刻'}],
+          ambient: [{required: true, message: '请选择环境'}],
+          is_parse: [{required: true, message: '请选择是否暂停'}]
         }
       }
     },
@@ -374,6 +351,22 @@
         return isLt2M;
       },
       add(form) {
+        if (!this.form.shot_image) {
+          _g.toastMsg('warning', '请插入镜头缩略图')
+          return
+        }
+        if (this.plan_time.length === 0) {
+          _g.toastMsg('warning', '请输入计划起止时间')
+          return
+        }
+        this.form.project_id = parseInt(this.form.project_id)
+        this.form.field_id = parseInt(this.form.field_id)
+        this.form.time = parseInt(this.form.time)
+        this.form.ambient = parseInt(this.form.ambient)
+        this.form.is_parse = parseInt(this.form.is_parse)
+        this.form.plan_start_timestamp = _g.j2time(this.plan_time[0])
+        this.form.plan_end_timestamp = _g.j2time(this.plan_time[1])
+        console.log(this.form)
         this.$refs.form.validate((pass) => {
           if (pass) {
             this.isLoading = !this.isLoading
