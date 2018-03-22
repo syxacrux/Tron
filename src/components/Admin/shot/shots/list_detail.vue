@@ -41,8 +41,43 @@
                 <ul class="p-l-0 m-0">
                   <li v-for="i in 4" :key="i" class="text">
                     <el-card class="box-card">
-                      <div v-for="o in 4" :key="o" class="text item">
-                        {{'列表内容 ' + o }}
+                      <div class="text item">
+                        <!-- {{'列表内容 ' + o }} -->
+                        <div class="text-Lens">
+                          <div class="text-Lens-name">FUY:001002:{{o}}</div><div class="text-Lens-rank"><el-tag>A</el-tag><el-tag>S</el-tag></div>
+                        </div>
+                        <div class="text-Lens">
+                          <div class="text-Lens-assets">
+                            <el-tag type="info">标签:一签</el-tag>
+                            <el-tag type="info">标签:一签</el-tag>
+                            <el-tag type="info">标签:一签</el-tag>
+                            <el-tag type="info">标签:一签</el-tag>
+                            <el-tag type="info">标签:一签</el-tag>
+                            <el-tag type="info">标签:一签</el-tag>
+                          </div>
+                          <div class="text-Lens-time">
+                            <div>
+                              <el-tooltip class="item" effect="dark" content="Bottom Left 提示文字" placement="bottom-start">
+                                <el-button>8天</el-button>
+                              </el-tooltip>
+                              <el-tooltip class="item" effect="dark" content="Bottom Left 提示文字" placement="bottom-start">
+                                <el-button>32分</el-button>
+                              </el-tooltip>
+                              <el-tooltip class="item" effect="dark" content="Bottom Left 提示文字" placement="bottom-start">
+                                <el-button>9天</el-button>
+                              </el-tooltip>
+                            </div>
+                            <div>2018/02/08 14:00</div>
+                          </div>
+                        </div>
+                        <div class="text-Lens-link">
+                            <el-tag type="info">标签:一签</el-tag>
+                            <el-tag type="info">标签:一签</el-tag>
+                            <el-tag type="info">标签:一签</el-tag>
+                            <el-tag type="info">标签:一签</el-tag>
+                            <el-tag type="info">标签:一签</el-tag>
+                            <el-tag type="info">标签:一签</el-tag>
+                        </div>
                       </div>
                     </el-card>
                   </li>
@@ -55,8 +90,43 @@
                 <ul class="p-l-0 m-0">
                   <li v-for="i in 4" :key="i" class="text">
                     <el-card class="box-card">
-                      <div v-for="o in 4" :key="o" class="text item">
-                        {{'列表内容 ' + o }}
+                      <div class="text item">
+                        <!-- {{'列表内容 ' + o }} -->
+                        <div class="text-Lens">
+                          <div class="text-Lens-name">FUY:001002:{{o}}</div><div class="text-Lens-rank"><el-tag>A</el-tag><el-tag>S</el-tag></div>
+                        </div>
+                        <div class="text-Lens">
+                          <div class="text-Lens-assets">
+                            <el-tag type="info">标签:一签</el-tag>
+                            <el-tag type="info">标签:一签</el-tag>
+                            <el-tag type="info">标签:一签</el-tag>
+                            <el-tag type="info">标签:一签</el-tag>
+                            <el-tag type="info">标签:一签</el-tag>
+                            <el-tag type="info">标签:一签</el-tag>
+                          </div>
+                          <div class="text-Lens-time">
+                            <div>
+                              <el-tooltip class="item" effect="dark" content="Bottom Left 提示文字" placement="bottom-start">
+                                <el-button>8天</el-button>
+                              </el-tooltip>
+                              <el-tooltip class="item" effect="dark" content="Bottom Left 提示文字" placement="bottom-start">
+                                <el-button>32分</el-button>
+                              </el-tooltip>
+                              <el-tooltip class="item" effect="dark" content="Bottom Left 提示文字" placement="bottom-start">
+                                <el-button>9天</el-button>
+                              </el-tooltip>
+                            </div>
+                            <div>2018/02/08 14:00</div>
+                          </div>
+                        </div>
+                        <div class="text-Lens-link">
+                            <el-tag type="info">标签:一签</el-tag>
+                            <el-tag type="info">标签:一签</el-tag>
+                            <el-tag type="info">标签:一签</el-tag>
+                            <el-tag type="info">标签:一签</el-tag>
+                            <el-tag type="info">标签:一签</el-tag>
+                            <el-tag type="info">标签:一签</el-tag>
+                        </div>
                       </div>
                     </el-card>
                   </li>
@@ -73,8 +143,43 @@
                 <ul class="p-l-0 m-0">
                   <li v-for="i in 4" :key="i" class="text">
                     <el-card class="box-card">
-                      <div v-for="o in 4" :key="o" class="text item">
-                        {{'列表内容 ' + o }}
+                      <div class="text item">
+                        <!-- {{'列表内容 ' + o }} -->
+                        <div class="text-Lens">
+                          <div class="text-Lens-name">FUY:001002:{{o}}</div><div class="text-Lens-rank"><el-tag>A</el-tag><el-tag>S</el-tag></div>
+                        </div>
+                        <div class="text-Lens">
+                          <div class="text-Lens-assets">
+                            <el-tag type="info">标签:一签</el-tag>
+                            <el-tag type="info">标签:一签</el-tag>
+                            <el-tag type="info">标签:一签</el-tag>
+                            <el-tag type="info">标签:一签</el-tag>
+                            <el-tag type="info">标签:一签</el-tag>
+                            <el-tag type="info">标签:一签</el-tag>
+                          </div>
+                          <div class="text-Lens-time">
+                            <div>
+                              <el-tooltip class="item" effect="dark" content="Bottom Left 提示文字" placement="bottom-start">
+                                <el-button>8天</el-button>
+                              </el-tooltip>
+                              <el-tooltip class="item" effect="dark" content="Bottom Left 提示文字" placement="bottom-start">
+                                <el-button>32分</el-button>
+                              </el-tooltip>
+                              <el-tooltip class="item" effect="dark" content="Bottom Left 提示文字" placement="bottom-start">
+                                <el-button>9天</el-button>
+                              </el-tooltip>
+                            </div>
+                            <div>2018/02/08 14:00</div>
+                          </div>
+                        </div>
+                        <div class="text-Lens-link">
+                            <el-tag type="info">标签:一签</el-tag>
+                            <el-tag type="info">标签:一签</el-tag>
+                            <el-tag type="info">标签:一签</el-tag>
+                            <el-tag type="info">标签:一签</el-tag>
+                            <el-tag type="info">标签:一签</el-tag>
+                            <el-tag type="info">标签:一签</el-tag>
+                        </div>
                       </div>
                     </el-card>
                   </li>
@@ -87,8 +192,43 @@
                 <ul class="p-l-0 m-0">
                   <li v-for="i in 4" :key="i" class="text">
                     <el-card class="box-card">
-                      <div v-for="o in 4" :key="o" class="text item">
-                        {{'列表内容 ' + o }}
+                      <div class="text item">
+                        <!-- {{'列表内容 ' + o }} -->
+                        <div class="text-Lens">
+                          <div class="text-Lens-name">FUY:001002:{{o}}</div><div class="text-Lens-rank"><el-tag>A</el-tag><el-tag>S</el-tag></div>
+                        </div>
+                        <div class="text-Lens">
+                          <div class="text-Lens-assets">
+                            <el-tag type="info">标签:一签</el-tag>
+                            <el-tag type="info">标签:一签</el-tag>
+                            <el-tag type="info">标签:一签</el-tag>
+                            <el-tag type="info">标签:一签</el-tag>
+                            <el-tag type="info">标签:一签</el-tag>
+                            <el-tag type="info">标签:一签</el-tag>
+                          </div>
+                          <div class="text-Lens-time">
+                            <div>
+                              <el-tooltip class="item" effect="dark" content="Bottom Left 提示文字" placement="bottom-start">
+                                <el-button>8天</el-button>
+                              </el-tooltip>
+                              <el-tooltip class="item" effect="dark" content="Bottom Left 提示文字" placement="bottom-start">
+                                <el-button>32分</el-button>
+                              </el-tooltip>
+                              <el-tooltip class="item" effect="dark" content="Bottom Left 提示文字" placement="bottom-start">
+                                <el-button>9天</el-button>
+                              </el-tooltip>
+                            </div>
+                            <div>2018/02/08 14:00</div>
+                          </div>
+                        </div>
+                        <div class="text-Lens-link">
+                            <el-tag type="info">标签:一签</el-tag>
+                            <el-tag type="info">标签:一签</el-tag>
+                            <el-tag type="info">标签:一签</el-tag>
+                            <el-tag type="info">标签:一签</el-tag>
+                            <el-tag type="info">标签:一签</el-tag>
+                            <el-tag type="info">标签:一签</el-tag>
+                        </div>
                       </div>
                     </el-card>
                   </li>
@@ -98,22 +238,92 @@
           </div>
         </el-tab-pane>
         <el-tab-pane label="镜头暂停" name="shotsSuspend">
-          <el-col :span="6" v-for="i in 7" :key="i">
+          <el-col :span="12" v-for="i in 7" :key="i">
             <div class="grid-content bg-purple p-b-5">
-              <el-card class="box-card" style="">
-                <div v-for="o in 3" :key="o" class="text item">
-                  {{'列表内容 ' + o }}
+              <el-card class="box-card">
+                <div class="text item">
+                  <!-- {{'列表内容 ' + o }} -->
+                  <div class="text-Lens">
+                    <div class="text-Lens-name">FUY:001002:{{o}}</div><div class="text-Lens-rank"><el-tag>A</el-tag><el-tag>S</el-tag></div>
+                  </div>
+                  <div class="text-Lens">
+                    <div class="text-Lens-assets">
+                      <el-tag type="info">标签:一签</el-tag>
+                      <el-tag type="info">标签:一签</el-tag>
+                      <el-tag type="info">标签:一签</el-tag>
+                      <el-tag type="info">标签:一签</el-tag>
+                      <el-tag type="info">标签:一签</el-tag>
+                      <el-tag type="info">标签:一签</el-tag>
+                    </div>
+                    <div class="text-Lens-time">
+                      <div>
+                        <el-tooltip class="item" effect="dark" content="Bottom Left 提示文字" placement="bottom-start">
+                          <el-button>8天</el-button>
+                        </el-tooltip>
+                        <el-tooltip class="item" effect="dark" content="Bottom Left 提示文字" placement="bottom-start">
+                          <el-button>32分</el-button>
+                        </el-tooltip>
+                        <el-tooltip class="item" effect="dark" content="Bottom Left 提示文字" placement="bottom-start">
+                          <el-button>9天</el-button>
+                        </el-tooltip>
+                      </div>
+                      <div>2018/02/08 14:00</div>
+                    </div>
+                  </div>
+                  <div class="text-Lens-link">
+                      <el-tag type="info">标签:一签</el-tag>
+                      <el-tag type="info">标签:一签</el-tag>
+                      <el-tag type="info">标签:一签</el-tag>
+                      <el-tag type="info">标签:一签</el-tag>
+                      <el-tag type="info">标签:一签</el-tag>
+                      <el-tag type="info">标签:一签</el-tag>
+                  </div>
                 </div>
               </el-card>
             </div>
           </el-col>
         </el-tab-pane>
         <el-tab-pane label="镜头完成" name="shotsFinish">
-          <el-col :span="6" v-for="i in 7" :key="i">
+          <el-col :span="12" v-for="i in 7" :key="i">
             <div class="grid-content bg-purple p-b-5">
-              <el-card class="box-card" style="">
-                <div v-for="o in 3" :key="o" class="text item">
-                  {{'列表内容 ' + o }}
+              <el-card class="box-card">
+                <div class="text item">
+                  <!-- {{'列表内容 ' + o }} -->
+                  <div class="text-Lens">
+                    <div class="text-Lens-name">FUY:001002:{{o}}</div><div class="text-Lens-rank"><el-tag>A</el-tag><el-tag>S</el-tag></div>
+                  </div>
+                  <div class="text-Lens">
+                    <div class="text-Lens-assets">
+                      <el-tag type="info">标签:一签</el-tag>
+                      <el-tag type="info">标签:一签</el-tag>
+                      <el-tag type="info">标签:一签</el-tag>
+                      <el-tag type="info">标签:一签</el-tag>
+                      <el-tag type="info">标签:一签</el-tag>
+                      <el-tag type="info">标签:一签</el-tag>
+                    </div>
+                    <div class="text-Lens-time">
+                      <div>
+                        <el-tooltip class="item" effect="dark" content="Bottom Left 提示文字" placement="bottom-start">
+                          <el-button>8天</el-button>
+                        </el-tooltip>
+                        <el-tooltip class="item" effect="dark" content="Bottom Left 提示文字" placement="bottom-start">
+                          <el-button>32分</el-button>
+                        </el-tooltip>
+                        <el-tooltip class="item" effect="dark" content="Bottom Left 提示文字" placement="bottom-start">
+                          <el-button>9天</el-button>
+                        </el-tooltip>
+                      </div>
+                      <div>2018/02/08 14:00</div>
+                    </div>
+                  </div>
+                  <div class="text-Lens-link">
+                      <el-tag type="info">标签:一签</el-tag>
+                      <el-tag type="info">标签:一签</el-tag>
+                      <el-tag type="info">标签:一签</el-tag>
+                      <el-tag type="info">标签:一签</el-tag>
+                      <el-tag type="info">标签:一签</el-tag>
+                      <el-tag type="info">标签:一签</el-tag>
+                  </div>
                 </div>
               </el-card>
             </div>
@@ -246,6 +456,48 @@
   }
   .drag-column-等待制作 .drag-column-header, .drag-column-等待制作 .drag-options, .drag-column-等待制作 .is-moved {
     background: #00b961;
+  }
+  .text-Lens:after {
+    content: '';
+    height: 0;
+    line-height: 0;
+    display: block;
+    visibility: hidden;
+    clear: both;
+  }
+  .text-Lens .text-Lens-name{
+    float: left;
+  }
+  .text-Lens .text-Lens-rank{
+    float: right;
+  }
+  .text-Lens-assets{
+    max-width: 70%;
+    float: left;
+  }
+  .text-Lens-time{
+    float: right;
+    width: 30%;
+    /* border: none; */
+    /* border-right: 1px solid; */
+
+  }
+  .text-Lens-time div{
+    margin-left:32%;
+  }
+  .text-Lens-time .item{
+    margin-right:0;
+    padding: 12px 4px;
+    margin-left: 0;
+    border-radius:0;
+    border: none;
+    border-right: 1px solid;
+    line-height: 0;
+    font-size: 14px;
+  }
+  .text-Lens-link{
+    padding-top: 10px;
+    text-align: right;
   }
 </style>
 
