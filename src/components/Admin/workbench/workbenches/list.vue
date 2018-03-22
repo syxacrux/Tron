@@ -7,8 +7,16 @@
         <el-breadcrumb-item>工作台</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
+    <div class="tx-r">
+      <el-tooltip effect="dark" content="工作台进度" placement="bottom-start">
+        <el-button type="primary" plain size="mini" @click="isList = true"><i class="el-icon-menu"></i></el-button>
+      </el-tooltip>
+      <el-tooltip effect="dark" content="工作台列表" placement="bottom-start">
+        <el-button type="primary" plain size="mini" @click="isList = false"><i class="el-icon-document"></i></el-button>
+      </el-tooltip>
+    </div>
     <div class="m-b-20 ovf-hd">
-      <el-tabs v-model="activeName" @tab-click="handleClick" class="fl">
+      <el-tabs v-model="activeName" @tab-click="handleClick" class="fl" v-if="isList">
         <el-tab-pane label="任务" name="task">
           <kanban-board :stages="stages" :blocks="blocks" @update-block="updateBlock">
             <el-card class="box-card point" v-for="block in blocks" :slot="block.id" :key="block.id">
@@ -66,6 +74,20 @@
 
         </el-tab-pane>
       </el-tabs>
+      <el-table v-if="!isList" :data="tableData" stripe class="fl">
+        <el-table-column type="selection" width="50"></el-table-column>
+        <el-table-column prop="date" label="缩略图"></el-table-column>
+        <el-table-column prop="name" label="场号"></el-table-column>
+        <el-table-column prop="address" label="镜头号"></el-table-column>
+        <el-table-column prop="address" label="难度"></el-table-column>
+        <el-table-column prop="address" label="优先级"></el-table-column>
+        <el-table-column prop="address" label="进度"></el-table-column>
+        <el-table-column prop="address" label="计划开始"></el-table-column>
+        <el-table-column prop="address" label="计划结束"></el-table-column>
+        <el-table-column prop="address" label="实际开始"></el-table-column>
+        <el-table-column prop="address" label="实际结束"></el-table-column>
+        <el-table-column prop="explain" label="备注"></el-table-column>
+      </el-table>
       <div class="task_detail fr">
         <el-card class="box-card">
           <div slot="header" class="clearfix">
@@ -88,7 +110,17 @@
   export default {
     data() {
       return {
+        isList:true,
         activeName: 'task',
+        tableData: [{
+          date: '2016-05-02',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1518 弄'
+        }, {
+          date: '2016-05-04',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1517 弄'
+        }],
         stages: ['制作中', '反馈中', '上游反馈', '等待制作'],
         blocks: [
           {
@@ -166,6 +198,7 @@
   }
   .drag-container{
     margin: 0;
+    max-width: initial;
   }
   .drag-container .drag-column{
     flex: inherit;

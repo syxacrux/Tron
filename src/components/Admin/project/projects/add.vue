@@ -2,7 +2,8 @@
   <div>
     <div class="m-b-20">
       <el-breadcrumb separator="/">
-        <el-breadcrumb-item :to="{ path: '/admin' }">项目管理</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ path: '/admin' }">首页</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ path: '/admin/projects/list' }">项目管理</el-breadcrumb-item>
         <el-breadcrumb-item :to="{ path: '/admin/projects/list' }">项目汇总</el-breadcrumb-item>
         <el-breadcrumb-item>添加项目</el-breadcrumb-item>
       </el-breadcrumb>
@@ -72,7 +73,6 @@
           <!--</el-form-item>-->
           <el-form-item label="分辨率:" prop="resolutic" class="is-required">
             <el-select v-model="form.resolutic" placeholder="请选择">
-              <!--<el-option label="请选择" value=""></el-option>-->
               <el-option label="1024*768" value="1"></el-option>
               <el-option label="2560*1680" value="2"></el-option>
             </el-select>
@@ -81,14 +81,13 @@
         <el-row :gutter="20">
           <el-form-item label="项目帧率:" prop="frame_rate" class="is-required">
             <el-select v-model="form.frame_rate" placeholder="请选择">
-              <!--<el-option label="请选择" value=""></el-option>-->
               <el-option label="24fps" value="1"></el-option>
               <el-option label="25fps" value="2"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="手柄帧:" prop="handle_frame" class="is-required">
-            <el-input v-model.trim="form.handle_frame.handle_frame1" class="h-40" style="width: 100px;"></el-input>
-            <el-input v-model.trim="form.handle_frame.handle_frame2" class="h-40" style="width: 100px;"></el-input>
+            <el-input v-model.trim="form.handle_frame.handle_frame1" class="h-40 w-100"></el-input>
+            <el-input v-model.trim="form.handle_frame.handle_frame2" class="h-40 w-100"></el-input>
           </el-form-item>
         </el-row>
         <el-row :gutter="20">
@@ -180,7 +179,7 @@
             </el-input>
           </el-form-item>
         </el-row>
-        <el-form-item class="tsf_ProjectMap">
+        <el-form-item>
           <el-button type="primary" @click="add('form')" :loading="isLoading">提交</el-button>
           <el-button @click="goback()">返回</el-button>
         </el-form-item>
@@ -245,6 +244,7 @@
   .form_studio_id {
     width: 350px;
   }
+
   .block {
     /* margin-top: 20px; */
   }
@@ -265,7 +265,7 @@
         form: {
           project_name: "", //项目名称
           project_byname: '', //项目简称
-          movies_type:'',//影视类型
+          movies_type: '',//影视类型
           project_image: '', //项目缩略图
           status: 1, //项目状态
 //          duration: '',//总时长
@@ -326,16 +326,16 @@
         this.form.project_image = res.data;
       },
       beforeAvatarUpload(file) {
-      //  const isJPG = file.type === 'image/jpeg';
-       const isLt2M = file.size / 1024 / 1024 < 0.195;
-              console.log(isLt2M)
-      //  if (!isJPG) {
-      //    this.$message.error('上传头像图片只能是 JPG 格式!');
-      //  }
-       if (!isLt2M) {
-         this.$message.error('上传头像图片大小不能超过 200KB!');
-       }
-       return isLt2M;
+        //  const isJPG = file.type === 'image/jpeg';
+        const isLt2M = file.size / 1024 / 1024 < 0.195;
+        console.log(isLt2M)
+        //  if (!isJPG) {
+        //    this.$message.error('上传图片只能是 JPG 格式!');
+        //  }
+        if (!isLt2M) {
+          this.$message.error('上传图片大小不能超过 200KB!');
+        }
+        return isLt2M;
       },
       add(form) {
         if (!this.form.project_image) {

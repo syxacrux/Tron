@@ -300,10 +300,10 @@ const routes = [
         meta: { hideLeft: false, module: 'Admin', menu: 'shots' }
       },
       {
-        path:'shots/list_detail',
-        component:shotsListDetail,
-        name:'shotsListDetail',
-        meta:{hideLeft: false, module: 'Admin', menu: 'shots'}
+        path: 'shots/list_detail',
+        component: shotsListDetail,
+        name: 'shotsListDetail',
+        meta: { hideLeft: false, module: 'Admin', menu: 'shots' }
       }
     ]
   }

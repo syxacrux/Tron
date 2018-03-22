@@ -266,7 +266,7 @@
         form: {
           project_name: "", //项目名称
           project_byname: '', //项目简称
-          movies_type:'',//影视类型
+          movies_type: '',//影视类型
           project_image: '', //项目缩略图
           status: 0, //项目状态
 //          duration: '',//总时长
@@ -331,10 +331,10 @@
         const isLt2M = file.size / 1024 / 1024 < 0.195;
 
         // if (!isJPG) {
-        //   this.$message.error('上传头像图片只能是 JPG 格式!');
+        //   this.$message.error('上传图片只能是 JPG 格式!');
         // }
         if (!isLt2M) {
-          this.$message.error('上传头像图片大小不能超过 200KB!');
+          this.$message.error('上传图片大小不能超过 200KB!');
         }
         return isLt2M;
       },
@@ -476,6 +476,7 @@
             this.form.resolutic = data.resolutic.toString()
             this.form.frame_rate = data.frame_rate.toString()
             this.form.aspect_ratio = data.aspect_ratio.toString()
+
             function str2num(str) {
               let arr = str.split(',')
               let temp = []
@@ -484,6 +485,7 @@
               })
               return temp
             }
+
             this.studio_ids = str2num(data.studio_ids)
             this.scene_director = str2num(data.scene_director)
             this.producer = str2num(data.producer)
