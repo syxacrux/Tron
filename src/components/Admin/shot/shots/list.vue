@@ -7,7 +7,7 @@
         <el-breadcrumb-item>镜头列表</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
-    <div class="m-b-10">
+    <div class="m-b-20">
       <div class="tx-r">
         <router-link :to="{ name: 'shotsListDetail', query: { type: 'shotsInDevelopment', list: false }}">
           <el-tooltip effect="dark" content="镜头进度" placement="bottom-start">
