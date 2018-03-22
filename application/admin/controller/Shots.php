@@ -13,13 +13,11 @@ class Shots extends BaseCommon{
 
     public function index(){
         $studio_model = model('Shot');
-        $uid = $this->uid;
-        $group_id = Access::get($uid)->group_id; //所属角色
         $param = $this->param;
         $keywords = !empty($param['keywords']) ? $param['keywords']: '';
         $page = !empty($param['page']) ? $param['page']: '';
         $limit = !empty($param['limit']) ? $param['limit']: '';
-        $data = $studio_model->getList($keywords, $page, $limit,$uid,$group_id);
+        $data = $studio_model->getList($keywords, $page, $limit);
         return resultArray(['data' => $data]);
     }
 
@@ -53,6 +51,17 @@ class Shots extends BaseCommon{
             return resultArray(['error' => $studio_model->getError()]);
         }
         return resultArray(['data' => '添加成功']);
+    }
+
+    //根据所属项目添加场/集
+    public function filed_save(){
+        $shot_model = model('Shot');
+        $param = $this->param;
+        $data = $shot_model->addFieldData($param);
+        if(!$data){
+            return resultArray(['error'=>$shot_model->getError()]);
+        }
+        return resultArray(['data'=>'添加成功']);
     }
 
     public function update(){

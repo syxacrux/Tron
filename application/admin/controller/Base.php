@@ -10,7 +10,7 @@ namespace app\admin\controller;
 use app\admin\model\Access;
 use com\verify\HonrayVerify;
 use app\common\controller\Common;
-
+use think\Db;
 use think\Request;
 
 class Base extends Common
@@ -121,9 +121,21 @@ class Base extends Common
         }
     }
 
+    /**
+     * 根据项目ID获取场/集数据
+     * @author zjs 2018/3/21
+     */
+    public function getField_ByPid(){
+        $param = $this->param;
+        $data = Db::name('field')->where('project_id',$param['project_id'])->select();
+        if (!$data) {
+            return resultArray(['code'  => 400,'error'=>'没有数据']);
+        }
+        return resultArray(['code'=>200,'data' => $data]);
+    }
+
     // miss 路由：处理没有匹配到的路由规则
-    public function miss()
-    {
+    public function miss(){
         if (Request::instance()->isOptions()) {
             return ;
         } else {

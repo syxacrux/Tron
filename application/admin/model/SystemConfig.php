@@ -2,22 +2,23 @@
 // +----------------------------------------------------------------------
 // | Description: 系统配置
 // +----------------------------------------------------------------------
-// | Author: linchuangbin <linchuangbin@honraytech.com>
+// | Author: zjs <839804865@qq.com>
 // +----------------------------------------------------------------------
 
 namespace app\admin\model;
-
 use think\Model;
 
-class SystemConfig extends Model 
-{
+class SystemConfig extends Model{
 
-	/**
-	 * 获取配置列表
-	 * @param  array   $param  [description]
-	 */
-	public function getDataList()
-	{
+    /**
+     * 获取配置列表
+     * @return array
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     * @author zjs 2018/3/21
+     */
+	public function getDataList(){
 		$list = $this->select();
 		$data = array();
         foreach ($list as $key => $val) {
@@ -26,12 +27,17 @@ class SystemConfig extends Model
         return $data;
 	}
 
-	/**
-	 * 批量修改配置
-	 * @param  array   $param  [description]
-	 */
-	public function createData($param)
-	{
+    /**
+     * 批量修改配置
+     * @param $param
+     * @return array|bool
+     * @throws \Exception
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     * @author zjs 2018/3/21
+     */
+	public function createData($param){
 		$list = [
 		    ['id' => 1, 'value' => $param['SYSTEM_NAME']],
 		    ['id' => 2, 'value' => $param['SYSTEM_LOGO']],
@@ -47,4 +53,5 @@ class SystemConfig extends Model
 		$this->error = '更新失败';
 		return false;
 	}
+
 }
