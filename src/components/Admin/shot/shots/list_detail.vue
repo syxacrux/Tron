@@ -45,38 +45,43 @@
                   <li v-for="i in 3" :key="i" class="text">
                     <el-card class="box-card">
                       <div class="text">
-                        <div class="text-Lens">
-                          <div class="text-Lens-name">FUY:001002</div>
-                          <div class="text-Lens-rank">
+                        <div class="text-Lens pos-rel">
+                          <p class="text-Lens-name h-28 ">FUY：<span>001002</span></p>
+                          <p class="text-Lens-rank pos-abs">
                             <el-tag type="warning">A</el-tag>
                             <el-tag type="danger">S</el-tag>
-                          </div>
+                          </p>
                         </div>
                         <div class="text-Lens m-t-10">
-                          <div class="text-Lens-assets">
+                          <p class="text-Lens-assets">
                             <el-tag type="info">混天绫:道具</el-tag>
                             <el-tag type="info">元宝:道具</el-tag>
                             <el-tag type="info">混天绫:道具</el-tag>
                             <el-tag type="info">元宝:道具</el-tag>
                             <el-tag type="info">混天绫:道具</el-tag>
-                          </div>
-                          <div class="text-Lens-time">
-                            <div>
-                              <el-tooltip class="item" effect="dark" content="Bottom Left 提示文字"
+                          </p>
+                          <p class="text-Lens-time tx-r">
+                            <span>
+                              <el-tooltip class="m-r-5 pointer" effect="dark" content="任务剩余天数"
                                           placement="bottom-start">
-                                <el-button>8天</el-button>
+                                <span>8天</span>
                               </el-tooltip>
-                              <el-tooltip class="item" effect="dark" content="Bottom Left 提示文字"
+                              <el-tooltip class="m-r-5 pointer" effect="dark" content="任务建立时间"
                                           placement="bottom-start">
-                                <el-button>32分</el-button>
+                                <span>32分</span>
                               </el-tooltip>
-                              <el-tooltip class="item" effect="dark" content="Bottom Left 提示文字"
+                              <el-tooltip class="m-r-5 pointer" effect="dark" content="任务制作中时间"
                                           placement="bottom-start">
-                                <el-button>9天</el-button>
+                                <span>9天</span>
                               </el-tooltip>
-                            </div>
-                            <div>2018/02/08 14:00</div>
-                          </div>
+                            </span>
+                            <span>
+                              <el-tooltip class="m-r-5 pointer" effect="dark" content="任务制作中时间"
+                                          placement="bottom-start">
+                                <span>2018/02/08 14:00</span>
+                              </el-tooltip>
+                            </span>
+                          </p>
                         </div>
                         <div class="text-Lens-link m-t-10">
                           <el-tag type="success">数绘: 100%</el-tag>
@@ -99,38 +104,43 @@
                   <li v-for="i in 3" :key="i" class="text">
                     <el-card class="box-card">
                       <div class="text">
-                        <div class="text-Lens">
-                          <div class="text-Lens-name">FUY:001002</div>
-                          <div class="text-Lens-rank">
+                        <div class="text-Lens pos-rel">
+                          <p class="text-Lens-name h-28 ">FUY：<span>001002</span></p>
+                          <p class="text-Lens-rank pos-abs">
                             <el-tag type="warning">A</el-tag>
                             <el-tag type="danger">S</el-tag>
-                          </div>
+                          </p>
                         </div>
                         <div class="text-Lens m-t-10">
-                          <div class="text-Lens-assets">
+                          <p class="text-Lens-assets">
                             <el-tag type="info">混天绫:道具</el-tag>
                             <el-tag type="info">元宝:道具</el-tag>
                             <el-tag type="info">混天绫:道具</el-tag>
                             <el-tag type="info">元宝:道具</el-tag>
                             <el-tag type="info">混天绫:道具</el-tag>
-                          </div>
-                          <div class="text-Lens-time">
-                            <div>
-                              <el-tooltip class="item" effect="dark" content="Bottom Left 提示文字"
+                          </p>
+                          <p class="text-Lens-time tx-r">
+                            <span>
+                              <el-tooltip class="m-r-5 pointer" effect="dark" content="任务剩余天数"
                                           placement="bottom-start">
-                                <el-button>8天</el-button>
+                                <span>8天</span>
                               </el-tooltip>
-                              <el-tooltip class="item" effect="dark" content="Bottom Left 提示文字"
+                              <el-tooltip class="m-r-5 pointer" effect="dark" content="任务建立时间"
                                           placement="bottom-start">
-                                <el-button>32分</el-button>
+                                <span>32分</span>
                               </el-tooltip>
-                              <el-tooltip class="item" effect="dark" content="Bottom Left 提示文字"
+                              <el-tooltip class="m-r-5 pointer" effect="dark" content="任务制作中时间"
                                           placement="bottom-start">
-                                <el-button>9天</el-button>
+                                <span>9天</span>
                               </el-tooltip>
-                            </div>
-                            <div>2018/02/08 14:00</div>
-                          </div>
+                            </span>
+                            <span>
+                              <el-tooltip class="m-r-5 pointer" effect="dark" content="任务制作中时间"
+                                          placement="bottom-start">
+                                <span>2018/02/08 14:00</span>
+                              </el-tooltip>
+                            </span>
+                          </p>
                         </div>
                         <div class="text-Lens-link m-t-10">
                           <el-tag type="success">数绘: 100%</el-tag>
@@ -157,38 +167,43 @@
                   <li v-for="i in 3" :key="i" class="text">
                     <el-card class="box-card">
                       <div class="text">
-                        <div class="text-Lens">
-                          <div class="text-Lens-name">FUY:001002</div>
-                          <div class="text-Lens-rank">
+                        <div class="text-Lens pos-rel">
+                          <p class="text-Lens-name h-28 ">FUY：<span>001002</span></p>
+                          <p class="text-Lens-rank pos-abs">
                             <el-tag type="warning">A</el-tag>
                             <el-tag type="danger">S</el-tag>
-                          </div>
+                          </p>
                         </div>
                         <div class="text-Lens m-t-10">
-                          <div class="text-Lens-assets">
+                          <p class="text-Lens-assets">
                             <el-tag type="info">混天绫:道具</el-tag>
                             <el-tag type="info">元宝:道具</el-tag>
                             <el-tag type="info">混天绫:道具</el-tag>
                             <el-tag type="info">元宝:道具</el-tag>
                             <el-tag type="info">混天绫:道具</el-tag>
-                          </div>
-                          <div class="text-Lens-time">
-                            <div>
-                              <el-tooltip class="item" effect="dark" content="Bottom Left 提示文字"
+                          </p>
+                          <p class="text-Lens-time tx-r">
+                            <span>
+                              <el-tooltip class="m-r-5 pointer" effect="dark" content="任务剩余天数"
                                           placement="bottom-start">
-                                <el-button>8天</el-button>
+                                <span>8天</span>
                               </el-tooltip>
-                              <el-tooltip class="item" effect="dark" content="Bottom Left 提示文字"
+                              <el-tooltip class="m-r-5 pointer" effect="dark" content="任务建立时间"
                                           placement="bottom-start">
-                                <el-button>32分</el-button>
+                                <span>32分</span>
                               </el-tooltip>
-                              <el-tooltip class="item" effect="dark" content="Bottom Left 提示文字"
+                              <el-tooltip class="m-r-5 pointer" effect="dark" content="任务制作中时间"
                                           placement="bottom-start">
-                                <el-button>9天</el-button>
+                                <span>9天</span>
                               </el-tooltip>
-                            </div>
-                            <div>2018/02/08 14:00</div>
-                          </div>
+                            </span>
+                            <span>
+                              <el-tooltip class="m-r-5 pointer" effect="dark" content="任务制作中时间"
+                                          placement="bottom-start">
+                                <span>2018/02/08 14:00</span>
+                              </el-tooltip>
+                            </span>
+                          </p>
                         </div>
                         <div class="text-Lens-link m-t-10">
                           <el-tag type="success">数绘: 100%</el-tag>
@@ -211,38 +226,43 @@
                   <li v-for="i in 3" :key="i" class="text">
                     <el-card class="box-card">
                       <div class="text">
-                        <div class="text-Lens">
-                          <div class="text-Lens-name">FUY:001002</div>
-                          <div class="text-Lens-rank">
+                        <div class="text-Lens pos-rel">
+                          <p class="text-Lens-name h-28 ">FUY：<span>001002</span></p>
+                          <p class="text-Lens-rank pos-abs">
                             <el-tag type="warning">A</el-tag>
                             <el-tag type="danger">S</el-tag>
-                          </div>
+                          </p>
                         </div>
                         <div class="text-Lens m-t-10">
-                          <div class="text-Lens-assets">
+                          <p class="text-Lens-assets">
                             <el-tag type="info">混天绫:道具</el-tag>
                             <el-tag type="info">元宝:道具</el-tag>
                             <el-tag type="info">混天绫:道具</el-tag>
                             <el-tag type="info">元宝:道具</el-tag>
                             <el-tag type="info">混天绫:道具</el-tag>
-                          </div>
-                          <div class="text-Lens-time">
-                            <div>
-                              <el-tooltip class="item" effect="dark" content="Bottom Left 提示文字"
+                          </p>
+                          <p class="text-Lens-time tx-r">
+                            <span>
+                              <el-tooltip class="m-r-5 pointer" effect="dark" content="任务剩余天数"
                                           placement="bottom-start">
-                                <el-button>8天</el-button>
+                                <span>8天</span>
                               </el-tooltip>
-                              <el-tooltip class="item" effect="dark" content="Bottom Left 提示文字"
+                              <el-tooltip class="m-r-5 pointer" effect="dark" content="任务建立时间"
                                           placement="bottom-start">
-                                <el-button>32分</el-button>
+                                <span>32分</span>
                               </el-tooltip>
-                              <el-tooltip class="item" effect="dark" content="Bottom Left 提示文字"
+                              <el-tooltip class="m-r-5 pointer" effect="dark" content="任务制作中时间"
                                           placement="bottom-start">
-                                <el-button>9天</el-button>
+                                <span>9天</span>
                               </el-tooltip>
-                            </div>
-                            <div>2018/02/08 14:00</div>
-                          </div>
+                            </span>
+                            <span>
+                              <el-tooltip class="m-r-5 pointer" effect="dark" content="任务制作中时间"
+                                          placement="bottom-start">
+                                <span>2018/02/08 14:00</span>
+                              </el-tooltip>
+                            </span>
+                          </p>
                         </div>
                         <div class="text-Lens-link m-t-10">
                           <el-tag type="success">数绘: 100%</el-tag>
@@ -265,38 +285,43 @@
             <div class="grid-content bg-purple p-b-5">
               <el-card class="box-card">
                 <div class="text">
-                  <div class="text-Lens">
-                    <div class="text-Lens-name">FUY:001002</div>
-                    <div class="text-Lens-rank">
+                  <div class="text-Lens pos-rel">
+                    <p class="text-Lens-name h-28 ">FUY：<span>001002</span></p>
+                    <p class="text-Lens-rank pos-abs">
                       <el-tag type="warning">A</el-tag>
                       <el-tag type="danger">S</el-tag>
-                    </div>
+                    </p>
                   </div>
                   <div class="text-Lens m-t-10">
-                    <div class="text-Lens-assets">
+                    <p class="text-Lens-assets">
                       <el-tag type="info">混天绫:道具</el-tag>
                       <el-tag type="info">元宝:道具</el-tag>
                       <el-tag type="info">混天绫:道具</el-tag>
                       <el-tag type="info">元宝:道具</el-tag>
                       <el-tag type="info">混天绫:道具</el-tag>
-                    </div>
-                    <div class="text-Lens-time">
-                      <div>
-                        <el-tooltip class="item" effect="dark" content="Bottom Left 提示文字"
-                                    placement="bottom-start">
-                          <el-button>8天</el-button>
-                        </el-tooltip>
-                        <el-tooltip class="item" effect="dark" content="Bottom Left 提示文字"
-                                    placement="bottom-start">
-                          <el-button>32分</el-button>
-                        </el-tooltip>
-                        <el-tooltip class="item" effect="dark" content="Bottom Left 提示文字"
-                                    placement="bottom-start">
-                          <el-button>9天</el-button>
-                        </el-tooltip>
-                      </div>
-                      <div>2018/02/08 14:00</div>
-                    </div>
+                    </p>
+                    <p class="text-Lens-time tx-r">
+                            <span>
+                              <el-tooltip class="m-r-5 pointer" effect="dark" content="任务剩余天数"
+                                          placement="bottom-start">
+                                <span>8天</span>
+                              </el-tooltip>
+                              <el-tooltip class="m-r-5 pointer" effect="dark" content="任务建立时间"
+                                          placement="bottom-start">
+                                <span>32分</span>
+                              </el-tooltip>
+                              <el-tooltip class="m-r-5 pointer" effect="dark" content="任务制作中时间"
+                                          placement="bottom-start">
+                                <span>9天</span>
+                              </el-tooltip>
+                            </span>
+                      <span>
+                              <el-tooltip class="m-r-5 pointer" effect="dark" content="任务制作中时间"
+                                          placement="bottom-start">
+                                <span>2018/02/08 14:00</span>
+                              </el-tooltip>
+                            </span>
+                    </p>
                   </div>
                   <div class="text-Lens-link m-t-10">
                     <el-tag type="success">数绘: 100%</el-tag>
@@ -316,38 +341,43 @@
             <div class="grid-content bg-purple p-b-5">
               <el-card class="box-card">
                 <div class="text">
-                  <div class="text-Lens">
-                    <div class="text-Lens-name">FUY:001002</div>
-                    <div class="text-Lens-rank">
+                  <div class="text-Lens pos-rel">
+                    <p class="text-Lens-name h-28 ">FUY：<span>001002</span></p>
+                    <p class="text-Lens-rank pos-abs">
                       <el-tag type="warning">A</el-tag>
                       <el-tag type="danger">S</el-tag>
-                    </div>
+                    </p>
                   </div>
                   <div class="text-Lens m-t-10">
-                    <div class="text-Lens-assets">
+                    <p class="text-Lens-assets">
                       <el-tag type="info">混天绫:道具</el-tag>
                       <el-tag type="info">元宝:道具</el-tag>
                       <el-tag type="info">混天绫:道具</el-tag>
                       <el-tag type="info">元宝:道具</el-tag>
                       <el-tag type="info">混天绫:道具</el-tag>
-                    </div>
-                    <div class="text-Lens-time">
-                      <div>
-                        <el-tooltip class="item" effect="dark" content="Bottom Left 提示文字"
-                                    placement="bottom-start">
-                          <el-button>8天</el-button>
-                        </el-tooltip>
-                        <el-tooltip class="item" effect="dark" content="Bottom Left 提示文字"
-                                    placement="bottom-start">
-                          <el-button>32分</el-button>
-                        </el-tooltip>
-                        <el-tooltip class="item" effect="dark" content="Bottom Left 提示文字"
-                                    placement="bottom-start">
-                          <el-button>9天</el-button>
-                        </el-tooltip>
-                      </div>
-                      <div>2018/02/08 14:00</div>
-                    </div>
+                    </p>
+                    <p class="text-Lens-time tx-r">
+                            <span>
+                              <el-tooltip class="m-r-5 pointer" effect="dark" content="任务剩余天数"
+                                          placement="bottom-start">
+                                <span>8天</span>
+                              </el-tooltip>
+                              <el-tooltip class="m-r-5 pointer" effect="dark" content="任务建立时间"
+                                          placement="bottom-start">
+                                <span>32分</span>
+                              </el-tooltip>
+                              <el-tooltip class="m-r-5 pointer" effect="dark" content="任务制作中时间"
+                                          placement="bottom-start">
+                                <span>9天</span>
+                              </el-tooltip>
+                            </span>
+                      <span>
+                              <el-tooltip class="m-r-5 pointer" effect="dark" content="任务制作中时间"
+                                          placement="bottom-start">
+                                <span>2018/02/08 14:00</span>
+                              </el-tooltip>
+                            </span>
+                    </p>
                   </div>
                   <div class="text-Lens-link m-t-10">
                     <el-tag type="success">数绘: 100%</el-tag>
@@ -368,7 +398,7 @@
           <el-card class="box-card">
             <div slot="header" class="clearfix">
               <span>镜头详情</span>
-              <i class="el-icon-close fr" @click="show2 = !show2"></i>
+              <i class="el-icon-close fr pointer" @click="show2 = !show2"></i>
             </div>
             <div v-for="o in 4" :key="o" class="text item">
               {{'我是镜头详情' + o }}
@@ -445,6 +475,10 @@
     margin-right: 20px;
   }
 
+  .el-card__body {
+    padding: 15px;
+  }
+
   .el-table {
     width: 95%;
   }
@@ -479,12 +513,15 @@
     clear: both;
   }
 
-  .text-Lens .text-Lens-name {
-    float: left;
+  .text-Lens p {
+    margin: 0;
+    display: inline-block;
+    font-weight: 500;
   }
 
   .text-Lens .text-Lens-rank {
-    float: right;
+    top: 0;
+    right: 0;
   }
 
   .text-Lens-assets {
@@ -497,12 +534,14 @@
   }
 
   .text-Lens-time {
-    float: right;
     width: 30%;
   }
 
-  .text-Lens-time div {
-    margin-left: 32%;
+  .text-Lens-time span {
+    display: inline-block;
+    height: 30px;
+    line-height: 30px;
+    font-weight: normal;
   }
 
   .text-Lens-time .item {
