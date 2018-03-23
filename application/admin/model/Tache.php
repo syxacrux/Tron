@@ -5,13 +5,13 @@ use app\common\model\Common;
 class Tache extends Common{
     protected $name = "admin_tache";
 
-    public function getDataList($keyword, $page, $limit,$uid){
+    public function getDataList($keyword, $page, $limit){
         $where = [];
         if ($keyword) {
             $where['tache_name|explain'] = ['like', '%'.$keyword.'%'];
         }
         $dataCount = $this->where($where)->count('id');
-        $list = $this->where($where);
+        $list = $this->where($where)->order('sort asc');
         // 若有分页
         if ($page && $limit) {
             $list = $list->page($page, $limit);
