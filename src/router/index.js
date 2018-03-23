@@ -293,12 +293,12 @@ const routes = [
         name: 'shotsAdd',
         meta: { hideLeft: false, module: 'Admin', menu: 'shots' }
       },
-      {
-        path: 'shots/edit/:id',
-        component: shotsEdit,
-        name: 'shotsEdit',
-        meta: { hideLeft: false, module: 'Admin', menu: 'shots' }
-      },
+      // {
+      //   path: 'shots/edit/:id',
+      //   component: shotsEdit,
+      //   name: 'shotsEdit',
+      //   meta: { hideLeft: false, module: 'Admin', menu: 'shots' }
+      // },
       {
         path: 'shots/list_detail',
         component: shotsListDetail,

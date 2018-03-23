@@ -42,7 +42,7 @@
               <div class="grid-content bg-purple">
                 <h2 class="m-0 h-40 tx-c c-white">制作中</h2>
                 <ul class="p-l-0 m-0">
-                  <li v-for="i in 3" :key="i" class="text">
+                  <li v-for="i in 3" :key="i" class="text" @click="show2 = !show2">
                     <el-card class="box-card">
                       <div class="text">
                         <div class="text-Lens pos-rel">
@@ -398,6 +398,8 @@
           <el-card class="box-card">
             <div slot="header" class="clearfix">
               <span>镜头详情</span>
+              <i class="el-icon-edit m-l-5 fz-14 c-light-gray pointer" @click="editShot"></i>
+              <i class="el-icon-delete m-l-5 fz-14 c-light-gray pointer"></i>
               <i class="el-icon-close fr pointer" @click="show2 = !show2"></i>
             </div>
             <div v-for="o in 4" :key="o" class="text item">
@@ -406,13 +408,13 @@
           </el-card>
         </div>
       </transition>
-      <el-button @click="show2 = !show2">Click Me</el-button>
     </div>
+    <editShots :data="shotDetail" ref="editShots"></editShots>
   </div>
 </template>
 
 <script>
-  import btnGroup from '../../../Common/btn-group.vue'
+  import editShots from '../shots/edit.vue'
   import http from '../../../../assets/js/http'
   import _g from '@/assets/js/global'
 
@@ -434,6 +436,9 @@
       }
     },
     methods: {
+      editShot() {
+        this.$refs.editShots.open()
+      },
       handleSelectionChange(val) {
         this.multipleSelection = val;
       },
@@ -455,7 +460,9 @@
       this.init()
       console.log(store)
     },
-    components: {},
+    components: {
+      editShots
+    },
     mixins: [http],
     computed: {
 //      addShow() {

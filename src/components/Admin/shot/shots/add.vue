@@ -320,7 +320,7 @@
           project_id: [{required: true, message: '请选择项目'}],
           field_id: [{required: true, message: '请选择场号'}],
           shot_image: [{required: true, message: '请插入镜头缩略图'}],
-          shot_number: [{required: true, message: '请输入镜头编号'},, {min: 3, max: 6, message: '长度在3到6个字符'}, {
+          shot_number: [{required: true, message: '请输入镜头编号'}, , {min: 3, max: 6, message: '长度在3到6个字符'}, {
             pattern: /^[0-9]+$/,
             message: '镜头编号必须为数字'
           }],
