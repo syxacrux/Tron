@@ -129,9 +129,9 @@ class Base extends Common
         $param = $this->param;
         $data = Db::name('field')->where('project_id',$param['project_id'])->select();
         if (!$data) {
-            return resultArray(['code'  => 200,'data'=>[]]);
+            return ['code'  => 200,'data'=>[]];
         }
-        return resultArray(['code'=>200,'data' => $data]);
+        return ['code'=>200,'data' => $data];
     }
 
     /**
@@ -144,10 +144,11 @@ class Base extends Common
         $where['project_id'] = $param['project_id'];
         $where['name'] = $param['name'];
         $check_name = Db::name('field')->where($where)->find();
-        if(!empty($check_name)){
-            return resultArray(['code'=>400,'error'=>'所属项目下场号重复']);
+        if(!empty($check_name) || !is_null($check_name)){
+            return ['code'=>400,'error'=>'所属项目下场号重复'];
         }else{
-            return resultArray(['code'=>200,'error'=>'']);
+            Db::name('field')->insert($param);
+            return ['code'=>200,'error'=>''];
         }
     }
 
