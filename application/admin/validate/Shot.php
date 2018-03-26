@@ -5,7 +5,7 @@ use think\Validate;
 /**
  * 设置模型
  */
-class AdminShot extends Validate{
+class Shot extends Validate{
 
     protected $rule = array(
 

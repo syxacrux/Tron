@@ -24,9 +24,10 @@
           <el-col :span="8">
             <div class="grid-content">
               <el-form-item label="场号:" prop="field_id">
-                <el-select v-model="form.field_id" placeholder="请选择场号" filterable allow-create default-first-option>
+                <el-select v-model="form.field_id" placeholder="请选择场号" class="w-130">
                   <el-option label="我是场号1" value="1"></el-option>
                 </el-select>
+                <el-button @click="isAddField = true" size="small" v-if="addShow">添加</el-button>
               </el-form-item>
             </div>
           </el-col>
@@ -240,6 +241,23 @@
         </el-row>
       </el-form>
     </div>
+    <el-dialog title="添加场号/集号" :visible.sync="isAddField" width="30%" center>
+      <el-form :model="fieldForm" :rules="addFieldRules" label-width="130px">
+        <el-form-item label="项目名称：" prop="project_id">
+          <el-select v-model="fieldForm.project_id" placeholder="请选择项目" class="w-200">
+            <el-option v-for="item in projectList" :label="item.project_name" :value="item.id"
+                       :key="item.id"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="场号/集号：" prop="name">
+          <el-input v-model.trim="fieldForm.name" class="w-200"></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="isAddField = false">取 消</el-button>
+        <el-button type="primary" @click="addField(fieldForm)">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 <style type="text/css">
@@ -312,9 +330,14 @@
   export default {
     data() {
       return {
+        isAddField: false,
         isLoading: false,
         uploadImageUrl: window.HOST + '/admin/upload_image',
         projectList: [],
+        fieldForm: {
+          project_id: '',
+          name: ''
+        },
         form: {
           project_id: '',    //所属项目id
           field_id: '',     //场号id
@@ -361,6 +384,10 @@
           time: [{required: true, message: '请选择时刻'}],
           ambient: [{required: true, message: '请选择环境'}],
           is_parse: [{required: true, message: '请选择是否暂停'}]
+        },
+        addFieldRules: {
+          project_id: [{required: true, message: '请选择项目'}],
+          name: [{required: true, message: '请输入场号/集号'}]
         }
       }
     },
@@ -379,6 +406,21 @@
           this.$message.error('上传图片大小不能超过 200KB!');
         }
         return isLt2M;
+      },
+      addField(form) {
+        if (this.fieldForm.project_id && this.fieldForm.name) {
+          this.isLoading = !this.isLoading
+          this.apiPost('admin/save_field', this.fieldForm).then((res) => {
+            this.handelResponse(res, (data) => {
+              _g.toastMsg('success', '添加成功')
+              setTimeout(() => {
+                this.isAddField = false
+              }, 1500)
+            }, () => {
+              this.isLoading = !this.isLoading
+            })
+          })
+        }
       },
       add(form) {
         if (!this.form.shot_image) {
@@ -441,6 +483,11 @@
       this.getProjects()
       this.getFields()
     },
-    mixins: [http, fomrMixin]
+    mixins: [http, fomrMixin],
+    computed: {
+      addShow() {
+        return _g.getHasRule('shots-filed_save')
+      }
+    }
   }
 </script>

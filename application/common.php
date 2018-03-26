@@ -2,6 +2,7 @@
 /**
  * 行为绑定
  */
+use redis\RedisPackage;
 \think\Hook::add('app_init','app\\common\\behavior\\InitConfigBehavior');
 
 /**
@@ -55,6 +56,17 @@ function user_md5($str, $auth_key = '')
  */
 function objToArray($obj){
     return json_decode(json_encode($obj), true);
+}
+
+/**
+ * 通过redis执行外部python脚本
+ * @param $str
+ * @author zjs 2018/3/26
+ */
+function exec_python($str){
+    $redis = new RedisPackage();
+    $cmd = "python /var/www/html/tronPipelineScript/createDirPath/parser.py $str ";
+    $redis::LPush("pyFile",$cmd);
 }
 
 

@@ -46,7 +46,7 @@ class Shots extends BaseCommon{
     public function save(){
         $shot_model = model('Shot');
         $param = $this->param;
-        $data = $shot_model->createData($param);
+        $data = $shot_model->addData($param);
         if (!$data) {
             return resultArray(['error' => $shot_model->getError()]);
         }
