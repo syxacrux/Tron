@@ -507,6 +507,7 @@
   }
 
   .waiting h2 {
+    font-size: .8rem;
     height: 35px;
     line-height: 35px;
     background: #fff;
