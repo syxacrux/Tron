@@ -134,6 +134,22 @@ class Base extends Common
         return resultArray(['code'=>200,'data' => $data]);
     }
 
+    /**
+     * 保存场号
+     * @return array
+     */
+    public function save_field(){
+        $param = $this->param;
+        $where = [];
+        $where['project_id'] = $param['project_id'];
+        $where['name'] = $param['name'];
+        $check_name = Db::name('field')->where($where)->find();
+        if(!empty($check_name)){
+            return resultArray(['code'=>400,'error'=>'所属项目下场号重复']);
+        }else{
+            return resultArray(['code'=>200,'error'=>'']);
+        }
+    }
 
     // miss 路由：处理没有匹配到的路由规则
     public function miss(){

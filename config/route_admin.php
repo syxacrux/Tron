@@ -71,7 +71,8 @@ return [
     'admin/check_auth'   =>  ['admin/base/getAuth_byUid', ['method'=> 'POST']],
     // 【镜头】 获取场/集列表
     'admin/get_fields'   => ['admin/base/getField_ByPid',['method' => 'get']],
-
+    // 【镜头】添加场号
+    'admin/save_field'  => ['admin/base/save_field',['method' => 'POST']],
 
 	// MISS路由
 	'__miss__'  => 'admin/base/miss',
