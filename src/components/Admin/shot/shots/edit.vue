@@ -1,21 +1,32 @@
 <template>
-  <el-dialog title="编辑镜头" :visible.sync="dialogFormVisible">
+  <el-dialog title="编辑镜头" :visible.sync="dialogFormVisible" width="75%">
     <el-form ref="form" :model="form" :rules="rules" label-width="130px" class="shot_add">
       <el-row :gutter="20">
-        <el-col :span="12">
+        <el-col :span="8">
           <div class="grid-content">
             <el-form-item label="项目名称:" prop="project_id">
               <el-select v-model="form.project_id" placeholder="请选择项目">
-                <el-option label="我是项目1" value=1></el-option>
+                <el-option v-for="item in projectList" :label="item.project_name" :value="item.id"
+                           :key="item.id"></el-option>
               </el-select>
             </el-form-item>
           </div>
         </el-col>
-        <el-col :span="12">
+        <el-col :span="8">
           <div class="grid-content">
             <el-form-item label="场号:" prop="field_id">
               <el-select v-model="form.field_id" placeholder="请选择场号">
                 <el-option label="我是场号1" value="1"></el-option>
+              </el-select>
+            </el-form-item>
+          </div>
+        </el-col>
+        <el-col :span="8">
+          <div class="grid-content">
+            <el-form-item label="资产:" prop="asset_ids">
+              <el-select v-model="form.asset_ids" multiple collapse-tags placeholder="请选择资产" class="h-40 w-200">
+                <el-option label="我是资产1" value="1"></el-option>
+                <el-option label="我是资产2" value="2"></el-option>
               </el-select>
             </el-form-item>
           </div>
@@ -37,33 +48,53 @@
         </el-col>
       </el-row>
       <el-row>
-        <el-col :span="12">
+        <el-col :span="8">
           <div class="grid-content">
             <el-form-item label="镜头编号:" prop="shot_number">
               <el-input v-model.trim="form.shot_number" class="h-40 w-200"></el-input>
             </el-form-item>
           </div>
         </el-col>
-        <el-col :span="12">
+        <el-col :span="8">
           <div class="grid-content">
             <el-form-item label="镜头简称:" prop="shot_byname">
               <el-input v-model.trim="form.shot_byname" class="h-40 w-200"></el-input>
             </el-form-item>
           </div>
         </el-col>
-        <el-col :span="12">
+        <el-col :span="8">
           <div class="grid-content">
             <el-form-item label="镜头名称:" prop="shot_name">
               <el-input v-model.trim="form.shot_name" class="h-40 w-200"></el-input>
             </el-form-item>
           </div>
         </el-col>
-        <el-col :span="12">
+        <el-col :span="8">
           <div class="grid-content">
             <el-form-item label="是否暂停:" prop="is_parse">
               <el-select v-model="form.is_parse" placeholder="请选择是否暂停" class="h-40 w-200">
                 <el-option label="非暂停" value="1"></el-option>
                 <el-option label="暂停" value="2"></el-option>
+              </el-select>
+            </el-form-item>
+          </div>
+        </el-col>
+        <el-col :span="8">
+          <div class="grid-content">
+            <el-form-item label="时刻:" prop="time">
+              <el-select v-model="form.time" placeholder="请选择时刻" class="h-40 w-200">
+                <el-option label="白天" value="1"></el-option>
+                <el-option label="夜晚" value="2"></el-option>
+              </el-select>
+            </el-form-item>
+          </div>
+        </el-col>
+        <el-col :span="8">
+          <div class="grid-content">
+            <el-form-item label="环境:" prop="ambient">
+              <el-select v-model="form.ambient" placeholder="请选择环境" class="h-40 w-200">
+                <el-option label="室外" value="1"></el-option>
+                <el-option label="室内" value="2"></el-option>
               </el-select>
             </el-form-item>
           </div>
@@ -77,27 +108,25 @@
             </el-form-item>
           </div>
         </el-col>
-        <el-col :span="12">
+        <el-col :span="8">
           <div class="grid-content">
-            <el-form-item label="时刻:" prop="time">
-              <el-select v-model="form.time" placeholder="请选择时刻" class="h-40 w-200">
-                <el-option label="白天" value="1"></el-option>
-                <el-option label="夜晚" value="2"></el-option>
-              </el-select>
+            <el-form-item label="帧长范围:" prop="frame_range">
+              <el-input v-model.trim="form.frame_range" class="h-40 w-80"></el-input>
+              -
+              <el-input v-model.trim="form.frame_range" class="h-40 w-80"></el-input>
             </el-form-item>
           </div>
         </el-col>
-        <el-col :span="12">
+        <el-col :span="8">
           <div class="grid-content">
-            <el-form-item label="环境:" prop="ambient">
-              <el-select v-model="form.ambient" placeholder="请选择环境" class="h-40 w-200">
-                <el-option label="室外" value="1"></el-option>
-                <el-option label="室内" value="2"></el-option>
-              </el-select>
+            <el-form-item label="手柄帧:" prop="handle_frame">
+              <el-input v-model.trim="form.handle_frame" class="h-40 w-80"></el-input>
+              -
+              <el-input v-model.trim="form.handle_frame" class="h-40 w-80"></el-input>
             </el-form-item>
           </div>
         </el-col>
-        <el-col :span="12">
+        <el-col :span="8">
           <div class="grid-content">
             <el-form-item label="镜头优先级:" prop="priority_level">
               <el-select v-model="form.priority_level" placeholder="请选择镜头优先级" class="h-40 w-200">
@@ -109,7 +138,7 @@
             </el-form-item>
           </div>
         </el-col>
-        <el-col :span="12">
+        <el-col :span="8">
           <div class="grid-content">
             <el-form-item label="镜头难度:" prop="difficulty">
               <el-select v-model="form.difficulty" placeholder="请选择镜头难度" class="h-40 w-200">
@@ -122,79 +151,63 @@
             </el-form-item>
           </div>
         </el-col>
-        <el-col :span="12">
-          <div class="grid-content">
-            <el-form-item label="帧长范围:" prop="frame_range">
-              <el-input v-model.trim="form.frame_range" class="h-40 w-80"></el-input>
-              -
-              <el-input v-model.trim="form.frame_range" class="h-40 w-80"></el-input>
-            </el-form-item>
-          </div>
-        </el-col>
-        <el-col :span="12">
-          <div class="grid-content">
-            <el-form-item label="手柄帧:" prop="handle_frame">
-              <el-input v-model.trim="form.handle_frame" class="h-40 w-80"></el-input>
-              -
-              <el-input v-model.trim="form.handle_frame" class="h-40 w-80"></el-input>
-            </el-form-item>
-          </div>
-        </el-col>
-        <el-col :span="12">
+        <el-col :span="8">
           <div class="grid-content">
             <el-form-item label="剪辑帧长:" prop="clip_frame_length">
               <el-input v-model.trim="form.clip_frame_length" class="h-40 w-200"></el-input>
             </el-form-item>
           </div>
         </el-col>
-        <el-col :span="12">
+        <el-col :span="8">
           <div class="grid-content">
             <el-form-item label="素材帧长:" prop="material_frame_length">
               <el-input v-model.trim="form.material_frame_length" class="h-40 w-200"></el-input>
             </el-form-item>
           </div>
         </el-col>
-        <el-col :span="12">
-          <div class="grid-content">
-            <el-form-item label="素材号:" prop="material_ids">
-              <el-select v-model="form.material_ids" multiple collapse-tags placeholder="请选择素材号" class="h-40 w-200">
-                <el-option label="我是素材号1" value="1"></el-option>
-                <el-option label="我是素材号2" value="2"></el-option>
-              </el-select>
-            </el-form-item>
-          </div>
-        </el-col>
-        <el-col :span="12">
-          <div class="grid-content">
-            <el-form-item label="二级公司:" prop="second_company">
-              <el-select v-model="form.second_company" multiple collapse-tags placeholder="请选择二级公司"
-                         class="h-40 w-200">
-                <el-option label="我是二级公司1" value="1"></el-option>
-                <el-option label="我是二级公司2" value="2"></el-option>
-              </el-select>
-            </el-form-item>
-          </div>
-        </el-col>
-        <el-col :span="12">
+        <el-row>
+          <el-col :span="8">
+            <div class="grid-content">
+              <el-form-item label="素材号:" prop="material_ids">
+                <el-select v-model="form.material_ids" multiple collapse-tags placeholder="请选择素材号" class="h-40 w-200">
+                  <el-option label="我是素材号1" value="1"></el-option>
+                  <el-option label="我是素材号2" value="2"></el-option>
+                </el-select>
+              </el-form-item>
+            </div>
+          </el-col>
+          <el-col :span="8">
+            <div class="grid-content">
+              <el-form-item label="二级公司:" prop="second_company">
+                <el-select v-model="form.second_company" multiple collapse-tags placeholder="请选择二级公司"
+                           class="h-40 w-200">
+                  <el-option label="我是二级公司1" value="1"></el-option>
+                  <el-option label="我是二级公司2" value="2"></el-option>
+                </el-select>
+              </el-form-item>
+            </div>
+          </el-col>
+        </el-row>
+        <el-col :span="8">
           <div class="grid-content">
             <el-form-item label="镜头备注:" prop="shot_explain">
-              <el-input type="textarea" :rows="2" placeholder="请输入镜头备注" v-model="form.shot_explain"
+              <el-input type="textarea" :rows="3" placeholder="请输入镜头备注" v-model="form.shot_explain"
                         class="h-40 w-200"></el-input>
             </el-form-item>
           </div>
         </el-col>
-        <el-col :span="12">
+        <el-col :span="8">
           <div class="grid-content">
             <el-form-item label="变速信息:" prop="charge_speed_info">
-              <el-input type="textarea" :rows="2" placeholder="请输入变速信息" v-model="form.charge_speed_info"
+              <el-input type="textarea" :rows="3" placeholder="请输入变速信息" v-model="form.charge_speed_info"
                         class="h-40 w-200"></el-input>
             </el-form-item>
           </div>
         </el-col>
-        <el-col :span="12">
+        <el-col :span="8">
           <div class="grid-content">
             <el-form-item label="制作要求:" prop="make_demand">
-              <el-input type="textarea" :rows="2" placeholder="请输入制作要求" v-model="form.make_demand"
+              <el-input type="textarea" :rows="3" placeholder="请输入制作要求" v-model="form.make_demand"
                         class="h-40 w-200"></el-input>
             </el-form-item>
           </div>
@@ -249,6 +262,8 @@
         isLoading: false,
         dialogFormVisible: false,
         uploadImageUrl: window.HOST + '/admin/upload_image',
+        projectList: [],
+        fieldList: [],
         form: {
           project_id: '',    //所属项目id
           field_id: '',     //场号id
@@ -348,10 +363,68 @@
             })
           }
         })
+      },
+      //获取工作室
+      getAllProjects() {
+        return new Promise((resolve, reject) => {
+          this.apiGet('admin/projects').then((res) => {
+            this.handelResponse(res, (data) => {
+              resolve(data.list)
+            })
+          })
+        })
+      },
+      getAllFields() {
+        return new Promise((resolve, reject) => {
+          this.apiGet('admin/get_fields').then((res) => {
+            this.handelResponse(res, (data) => {
+              resolve(data.list)
+            })
+          })
+        })
+      },
+      async getCompleteData() {
+        this.projectList = await this.getAllProjects()
+//        this.fieldList = await this.getAllFields()
+//        this.apiGet('admin/projects/' + this.id).then((res) => {
+//          this.handelResponse(res, (data) => {
+//            this.form.project_name = data.project_name
+//            this.form.project_byname = data.project_byname
+//            this.form.project_explain = data.project_explain
+//            this.form.project_image = this.image = window.baseUrl + '/' + data.project_image
+//            console.log(this.image)
+//            this.form.handle_frame.handle_frame1 = data.handle_frame.split(',')[0]
+//            this.form.handle_frame.handle_frame2 = data.handle_frame.split(',')[1]
+//            this.form.movies_type = data.movies_type.toString()
+//            this.form.resolutic = data.resolutic.toString()
+//            this.form.frame_rate = data.frame_rate.toString()
+//            this.form.aspect_ratio = data.aspect_ratio.toString()
+//
+//            function str2num(str) {
+//              let arr = str.split(',')
+//              let temp = []
+//              _(arr).forEach((key, index) => {
+//                temp.push(parseInt(key))
+//              })
+//              return temp
+//            }
+//
+//            this.studio_ids = str2num(data.studio_ids)
+//            this.scene_director = str2num(data.scene_director)
+//            this.producer = str2num(data.producer)
+//            this.scene_producer = str2num(data.scene_producer)
+//            this.visual_effects_boss = str2num(data.visual_effects_boss)
+//            this.visual_effects_producer = str2num(data.visual_effects_producer)
+//            this.second_company_producer = str2num(data.second_company_producer)
+//            this.inside_coordinate = str2num(data.inside_coordinate)
+//            this.plan_time = [new Date(data.plan_start_timestamp * 1000), new Date(data.plan_end_timestamp * 1000)]
+//          })
+//        })
       }
     },
     created() {
 //      this.form.auth_key = Lockr.get('authKey')
+      this.getCompleteData()
     },
     mixins: [http]
   }

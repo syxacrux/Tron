@@ -409,7 +409,7 @@
         </div>
       </transition>
     </div>
-    <editShots :data="shotDetail" ref="editShots"></editShots>
+    <editShots ref="editShots"></editShots>
   </div>
 </template>
 
