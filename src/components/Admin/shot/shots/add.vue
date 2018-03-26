@@ -15,7 +15,8 @@
             <div class="grid-content">
               <el-form-item label="项目名称:" prop="project_id">
                 <el-select v-model="form.project_id" placeholder="请选择项目">
-                  <el-option v-for="item in projectList" :label="item.project_name" :value="item.id" :key="item.id"></el-option>
+                  <el-option v-for="item in projectList" :label="item.project_name" :value="item.id"
+                             :key="item.id"></el-option>
                 </el-select>
               </el-form-item>
             </div>
@@ -23,7 +24,7 @@
           <el-col :span="8">
             <div class="grid-content">
               <el-form-item label="场号:" prop="field_id">
-                <el-select v-model="form.field_id" placeholder="请选择场号">
+                <el-select v-model="form.field_id" placeholder="请选择场号" filterable allow-create default-first-option>
                   <el-option label="我是场号1" value="1"></el-option>
                 </el-select>
               </el-form-item>
@@ -31,17 +32,17 @@
           </el-col>
           <el-col :span="8">
             <div class="grid-content">
-              <el-form-item label="是否暂停:" prop="is_parse">
-                <el-select v-model="form.is_parse" placeholder="请选择是否暂停" class="h-40 w-200">
-                  <el-option label="非暂停" value="1"></el-option>
-                  <el-option label="暂停" value="2"></el-option>
+              <el-form-item label="资产:" prop="asset_ids">
+                <el-select v-model="form.asset_ids" multiple collapse-tags placeholder="请选择资产" class="h-40 w-200">
+                  <el-option label="我是资产1" value="1"></el-option>
+                  <el-option label="我是资产2" value="2"></el-option>
                 </el-select>
               </el-form-item>
             </div>
           </el-col>
         </el-row>
         <el-row :gutter="20">
-          <el-col :span="8">
+          <el-col :span="12">
             <el-form-item class="is-required" label="镜头缩略图:" prop="image">
               <el-upload
                   class="avatar-uploader"
@@ -55,7 +56,7 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row>
+        <el-row :gutter="20">
           <el-col :span="8">
             <div class="grid-content">
               <el-form-item label="镜头编号:" prop="shot_number">
@@ -74,6 +75,18 @@
             <div class="grid-content">
               <el-form-item label="镜头名称:" prop="shot_name">
                 <el-input v-model.trim="form.shot_name" class="h-40 w-200"></el-input>
+              </el-form-item>
+            </div>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="8">
+            <div class="grid-content">
+              <el-form-item label="是否暂停:" prop="is_parse">
+                <el-select v-model="form.is_parse" placeholder="请选择是否暂停" class="h-40 w-200">
+                  <el-option label="非暂停" value="1"></el-option>
+                  <el-option label="暂停" value="2"></el-option>
+                </el-select>
               </el-form-item>
             </div>
           </el-col>
@@ -97,7 +110,9 @@
               </el-form-item>
             </div>
           </el-col>
-          <el-col :span="8">
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="24">
             <div class="grid-content">
               <el-form-item label="计划起止时间:" prop="plan_time" class="is-required">
                 <el-date-picker v-model="plan_time" type="datetimerange" range-separator="至" start-placeholder="计划开始时间"
@@ -106,27 +121,23 @@
               </el-form-item>
             </div>
           </el-col>
-          <el-col :span="8">
-            <div class="grid-content">
-              <el-form-item label="镜头备注:" prop="shot_explain">
-                <el-input type="textarea" :rows="2" placeholder="请输入镜头备注" v-model="form.shot_explain"
-                          class="h-40 w-200"></el-input>
-              </el-form-item>
-            </div>
-          </el-col>
-          <el-col :span="8">
-            <div class="grid-content">
-              <el-form-item label="剪辑帧长:" prop="clip_frame_length">
-                <el-input v-model.trim="form.clip_frame_length" class="h-40 w-200"></el-input>
-              </el-form-item>
-            </div>
-          </el-col>
+        </el-row>
+        <el-row :gutter="20">
           <el-col :span="8">
             <div class="grid-content">
               <el-form-item label="帧长范围:" prop="frame_range">
-                <el-input v-model.trim="form.frame_range" class="h-40 w-80"></el-input>
+                <el-input v-model.trim="frame_range1" class="h-40 w-80"></el-input>
                 -
-                <el-input v-model.trim="form.frame_range" class="h-40 w-80"></el-input>
+                <el-input v-model.trim="frame_range2" class="h-40 w-80"></el-input>
+              </el-form-item>
+            </div>
+          </el-col>
+          <el-col :span="8">
+            <div class="grid-content">
+              <el-form-item label="手柄帧:" prop="handle_frame">
+                <el-input v-model.trim="handle_frame1" class="h-40 w-80"></el-input>
+                -
+                <el-input v-model.trim="handle_frame2" class="h-40 w-80"></el-input>
               </el-form-item>
             </div>
           </el-col>
@@ -142,6 +153,8 @@
               </el-form-item>
             </div>
           </el-col>
+        </el-row>
+        <el-row :gutter="20">
           <el-col :span="8">
             <div class="grid-content">
               <el-form-item label="镜头难度:" prop="difficulty">
@@ -157,10 +170,8 @@
           </el-col>
           <el-col :span="8">
             <div class="grid-content">
-              <el-form-item label="手柄帧:" prop="handle_frame">
-                <el-input v-model.trim="form.handle_frame" class="h-40 w-80"></el-input>
-                -
-                <el-input v-model.trim="form.handle_frame" class="h-40 w-80"></el-input>
+              <el-form-item label="剪辑帧长:" prop="clip_frame_length">
+                <el-input v-model.trim="form.clip_frame_length" class="h-40 w-200"></el-input>
               </el-form-item>
             </div>
           </el-col>
@@ -171,18 +182,12 @@
               </el-form-item>
             </div>
           </el-col>
+        </el-row>
+        <el-row :gutter="20">
           <el-col :span="8">
             <div class="grid-content">
-              <el-form-item label="变速信息:" prop="charge_speed_info">
-                <el-input type="textarea" :rows="2" placeholder="请输入变速信息" v-model="form.charge_speed_info"
-                          class="h-40 w-200"></el-input>
-              </el-form-item>
-            </div>
-          </el-col>
-          <el-col :span="8">
-            <div class="grid-content">
-              <el-form-item label="素材号:" prop="material_ids">
-                <el-select v-model="form.material_ids" multiple collapse-tags placeholder="请选择素材号" class="h-40 w-200">
+              <el-form-item label="素材号:" prop="material_number">
+                <el-select v-model="form.material_number" placeholder="请选择素材号" class="h-40 w-200">
                   <el-option label="我是素材号1" value="1"></el-option>
                   <el-option label="我是素材号2" value="2"></el-option>
                 </el-select>
@@ -200,19 +205,39 @@
               </el-form-item>
             </div>
           </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="8">
+            <div class="grid-content">
+              <el-form-item label="镜头备注:" prop="shot_explain">
+                <el-input type="textarea" :rows="3" placeholder="请输入镜头备注" v-model="form.shot_explain"
+                          class="h-40 w-200"></el-input>
+              </el-form-item>
+            </div>
+          </el-col>
+          <el-col :span="8">
+            <div class="grid-content">
+              <el-form-item label="变速信息:" prop="charge_speed_info">
+                <el-input type="textarea" :rows="3" placeholder="请输入变速信息" v-model="form.charge_speed_info"
+                          class="h-40 w-200"></el-input>
+              </el-form-item>
+            </div>
+          </el-col>
           <el-col :span="8">
             <div class="grid-content">
               <el-form-item label="制作要求:" prop="make_demand">
-                <el-input type="textarea" :rows="2" placeholder="请输入制作要求" v-model="form.make_demand"
+                <el-input type="textarea" :rows="3" placeholder="请输入制作要求" v-model="form.make_demand"
                           class="h-40 w-200"></el-input>
               </el-form-item>
             </div>
           </el-col>
         </el-row>
-        <el-form-item>
-          <el-button type="primary" @click="add('form')" :loading="isLoading">提交</el-button>
-          <el-button @click="goback()">返回</el-button>
-        </el-form-item>
+        <el-row :gutter="20">
+          <el-form-item>
+            <el-button type="primary" @click="add('form')" :loading="isLoading">提交</el-button>
+            <el-button @click="goback()">返回</el-button>
+          </el-form-item>
+        </el-row>
       </el-form>
     </div>
   </div>
@@ -310,13 +335,17 @@
           handle_frame: '',    //手柄帧
           material_frame_length: '',    //素材帧长
           charge_speed_info: '',    //变速信息
-          material_ids: '',    //素材号
+          material_number: '',    //素材号
           second_company: '',    //二级公司
           make_demand: '',    //制作要求
           status: 1    //镜头状态
         },
         image: '',
         plan_time: '',
+        frame_range1: '',
+        frame_range2: '',
+        handle_frame1: '',
+        handle_frame2: '',
         rules: {
           project_id: [{required: true, message: '请选择项目'}],
           field_id: [{required: true, message: '请选择场号'}],
@@ -367,6 +396,14 @@
         this.form.is_parse = parseInt(this.form.is_parse)
         this.form.plan_start_timestamp = _g.j2time(this.plan_time[0])
         this.form.plan_end_timestamp = _g.j2time(this.plan_time[1])
+
+        this.form.frame_range = this.frame_range1 && this.frame_range2 ? this.frame_range1 + ',' + this.frame_range2 : ''
+        this.form.handle_frame = this.handle_frame1 && this.handle_frame2 ? this.handle_frame1 + ',' + this.handle_frame2 : ''
+        this.form.priority_level = this.form.priority_level ? parseInt(this.form.priority_level) : ''
+        this.form.difficulty = this.form.difficulty ? parseInt(this.form.difficulty) : ''
+        this.form.clip_frame_length = this.form.clip_frame_length ? parseInt(this.form.clip_frame_length) : ''
+        this.form.material_frame_length = this.form.material_frame_length ? parseInt(this.form.material_frame_length) : ''
+
         console.log(this.form)
         this.$refs.form.validate((pass) => {
           if (pass) {
