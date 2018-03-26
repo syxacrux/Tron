@@ -3,9 +3,10 @@ namespace app\admin\model;
 use think\Db;
 use app\common\model\Common;
 
-class Shot extends Common{
+class Workbench extends Common{
 
-    protected $name = 'shot';
+    protected $table = 'task';
+    protected $name = 'task';
     /**
      * 获取列表
      * @param $keyword
@@ -49,7 +50,6 @@ class Shot extends Common{
             $param['actual_start_timestamp'] = strtotime($param['actual_start_timestamp']);
             $param['actual_end_timestamp'] = strtotime($param['actual_end_timestamp']);
             $param['create_time'] = time();
-            //保存镜头表
             $result =  $this->validate($this->name)->save($param);
             if(false === $result){
                 $this->error = $this->getError();
@@ -60,8 +60,6 @@ class Shot extends Common{
                 //执行redis添加镜头所属目录 python
                 $str = "'Shot' '{$project_byname}' '{$field_name}' '{$param['shot_name']}'";
                 //exec_python($str);
-                //根据环节分配任务给各大工作室
-
                 return true;
             }
         }catch(\Exception $e){
