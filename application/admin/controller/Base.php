@@ -129,10 +129,11 @@ class Base extends Common
         $param = $this->param;
         $data = Db::name('field')->where('project_id',$param['project_id'])->select();
         if (!$data) {
-            return resultArray(['code'  => 201,'data'=>[]]);
+            return resultArray(['code'  => 200,'data'=>[]]);
         }
         return resultArray(['code'=>200,'data' => $data]);
     }
+
 
     // miss 路由：处理没有匹配到的路由规则
     public function miss(){
