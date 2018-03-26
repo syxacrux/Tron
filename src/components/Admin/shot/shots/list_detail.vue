@@ -40,7 +40,7 @@
           <div class="waiting ovf-hd">
             <el-col :span="12">
               <div class="grid-content bg-purple">
-                <h2 class="m-0 h-40 tx-c c-white">制作中</h2>
+                <h2 class="m-0">制作中</h2>
                 <ul class="p-l-0 m-0">
                   <li v-for="i in 3" :key="i" class="text" @click="show2 = !show2">
                     <el-card class="box-card">
@@ -99,7 +99,7 @@
             </el-col>
             <el-col :span="12">
               <div class="grid-content bg-purple-light">
-                <h2 class="m-0 h-40 tx-c c-white" style="background: cadetblue">反馈中</h2>
+                <h2 class="m-0">反馈中</h2>
                 <ul class="p-l-0 m-0">
                   <li v-for="i in 3" :key="i" class="text">
                     <el-card class="box-card">
@@ -162,7 +162,7 @@
           <div class="waiting ovf-hd">
             <el-col :span="12">
               <div class="grid-content bg-purple">
-                <h2 class="m-0 h-40 tx-c c-white">等待资产</h2>
+                <h2 class="m-0">等待资产</h2>
                 <ul class="p-l-0 m-0">
                   <li v-for="i in 3" :key="i" class="text">
                     <el-card class="box-card">
@@ -221,7 +221,7 @@
             </el-col>
             <el-col :span="12">
               <div class="grid-content bg-purple-light">
-                <h2 class="m-0 h-40 tx-c c-white" style="background: cadetblue">等待上游</h2>
+                <h2 class="m-0">等待上游</h2>
                 <ul class="p-l-0 m-0">
                   <li v-for="i in 3" :key="i" class="text">
                     <el-card class="box-card">
@@ -507,8 +507,14 @@
   }
 
   .waiting h2 {
-    font-size: .8rem;
-    background: steelblue;
+    height: 35px;
+    line-height: 35px;
+    background: #fff;
+    color: #666;
+    border-left: 2px solid #409eff;
+    padding-left: 10px;
+    border-bottom-right-radius: 5px;
+    border-top-right-radius: 5px;
   }
 
   .text-Lens:after {
