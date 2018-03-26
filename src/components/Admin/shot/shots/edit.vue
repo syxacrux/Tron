@@ -47,7 +47,7 @@
           </el-form-item>
         </el-col>
       </el-row>
-      <el-row>
+      <el-row :gutter="20">
         <el-col :span="8">
           <div class="grid-content">
             <el-form-item label="镜头编号:" prop="shot_number">
@@ -69,6 +69,8 @@
             </el-form-item>
           </div>
         </el-col>
+      </el-row>
+      <el-row :gutter="20">
         <el-col :span="8">
           <div class="grid-content">
             <el-form-item label="是否暂停:" prop="is_parse">
@@ -99,6 +101,8 @@
             </el-form-item>
           </div>
         </el-col>
+      </el-row>
+      <el-row :gutter="20">
         <el-col :span="24">
           <div class="grid-content">
             <el-form-item label="计划起止时间:" prop="plan_time" class="is-required">
@@ -108,6 +112,8 @@
             </el-form-item>
           </div>
         </el-col>
+      </el-row>
+      <el-row :gutter="20">
         <el-col :span="8">
           <div class="grid-content">
             <el-form-item label="帧长范围:" prop="frame_range">
@@ -138,6 +144,8 @@
             </el-form-item>
           </div>
         </el-col>
+      </el-row>
+      <el-row :gutter="20">
         <el-col :span="8">
           <div class="grid-content">
             <el-form-item label="镜头难度:" prop="difficulty">
@@ -165,29 +173,31 @@
             </el-form-item>
           </div>
         </el-col>
-        <el-row>
-          <el-col :span="8">
-            <div class="grid-content">
-              <el-form-item label="素材号:" prop="material_ids">
-                <el-select v-model="form.material_ids" multiple collapse-tags placeholder="请选择素材号" class="h-40 w-200">
-                  <el-option label="我是素材号1" value="1"></el-option>
-                  <el-option label="我是素材号2" value="2"></el-option>
-                </el-select>
-              </el-form-item>
-            </div>
-          </el-col>
-          <el-col :span="8">
-            <div class="grid-content">
-              <el-form-item label="二级公司:" prop="second_company">
-                <el-select v-model="form.second_company" multiple collapse-tags placeholder="请选择二级公司"
-                           class="h-40 w-200">
-                  <el-option label="我是二级公司1" value="1"></el-option>
-                  <el-option label="我是二级公司2" value="2"></el-option>
-                </el-select>
-              </el-form-item>
-            </div>
-          </el-col>
-        </el-row>
+      </el-row>
+      <el-row :gutter="20">
+        <el-col :span="8">
+          <div class="grid-content">
+            <el-form-item label="素材号:" prop="material_number">
+              <el-select v-model="form.material_number" placeholder="请选择素材号" class="h-40 w-200">
+                <el-option label="我是素材号1" value="1"></el-option>
+                <el-option label="我是素材号2" value="2"></el-option>
+              </el-select>
+            </el-form-item>
+          </div>
+        </el-col>
+        <el-col :span="8">
+          <div class="grid-content">
+            <el-form-item label="二级公司:" prop="second_company">
+              <el-select v-model="form.second_company" multiple collapse-tags placeholder="请选择二级公司"
+                         class="h-40 w-200">
+                <el-option label="我是二级公司1" value="1"></el-option>
+                <el-option label="我是二级公司2" value="2"></el-option>
+              </el-select>
+            </el-form-item>
+          </div>
+        </el-col>
+      </el-row>
+      <el-row :gutter="20">
         <el-col :span="8">
           <div class="grid-content">
             <el-form-item label="镜头备注:" prop="shot_explain">
@@ -284,7 +294,7 @@
           handle_frame: '',    //手柄帧
           material_frame_length: '',    //素材帧长
           charge_speed_info: '',    //变速信息
-          material_ids: '',    //素材号
+          material_number: '',    //素材号
           second_company: '',    //二级公司
           make_demand: '',    //制作要求
           status: 1    //镜头状态
