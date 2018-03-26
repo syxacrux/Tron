@@ -129,7 +129,7 @@ class Base extends Common
         $param = $this->param;
         $data = Db::name('field')->where('project_id',$param['project_id'])->select();
         if (!$data) {
-            return resultArray(['code'  => 400,'error'=>'没有数据']);
+            return resultArray(['code'  => 400,'error'=>'']);
         }
         return resultArray(['code'=>200,'data' => $data]);
     }

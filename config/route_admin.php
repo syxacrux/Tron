@@ -70,7 +70,7 @@ return [
     // 【项目】 获取登陆者是否属于当前项目 应用于编辑操作的权限
     'admin/check_auth'   =>  ['admin/base/getAuth_byUid', ['method'=> 'POST']],
     // 【镜头】 获取场/集列表
-    'admin/get_fields'   => ['admin/base/getAuth_byUid',['method' => 'get']],
+    'admin/get_fields'   => ['admin/base/getField_ByPid',['method' => 'get']],
 
 
 	// MISS路由
