@@ -14,7 +14,7 @@
           <el-col :span="8">
             <div class="grid-content">
               <el-form-item label="项目名称:" prop="project_id">
-                <el-select v-model="form.project_id" placeholder="请选择项目">
+                <el-select v-model="form.project_id" placeholder="请选择项目" @change="getFields">
                   <el-option v-for="item in projectList" :label="item.project_name" :value="item.id"
                              :key="item.id"></el-option>
                 </el-select>
@@ -25,7 +25,8 @@
             <div class="grid-content">
               <el-form-item label="场号:" prop="field_id">
                 <el-select v-model="form.field_id" placeholder="请选择场号" class="w-130">
-                  <el-option label="我是场号1" value="1"></el-option>
+                  <el-option v-for="item in fieldList" :label="item.name" :value="item.id"
+                             :key="item.id"></el-option>
                 </el-select>
                 <el-button @click="isAddField = true" size="small" v-if="addShow">添加</el-button>
               </el-form-item>
@@ -334,6 +335,7 @@
         isLoading: false,
         uploadImageUrl: window.HOST + '/admin/upload_image',
         projectList: [],
+        fieldList: [],
         fieldForm: {
           project_id: '',
           name: ''
@@ -472,16 +474,20 @@
         })
       },
       getFields() {
-        this.apiGet('admin/get_fields').then((res) => {
+        const data = {
+          params: {
+            project_id: this.form.project_id
+          }
+        }
+        this.apiGet('admin/get_fields/', data).then((res) => {
           this.handelResponse(res, (data) => {
-//            this.projectList = data.list
+            this.fieldList = data
           })
         })
       }
     },
     created() {
       this.getProjects()
-      this.getFields()
     },
     mixins: [http, fomrMixin],
     computed: {
