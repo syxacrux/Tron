@@ -127,14 +127,75 @@
           <el-col :span="24">
             <div class="grid-content">
               <el-form-item label="环节:" prop="hahah" class="is-required">
-                <el-col :span="12" v-for="item in tachesList" :key="item.id">
-                  <el-checkbox>{{item.id}} - {{item.explain}}</el-checkbox>
-
-                  <el-select v-model="value" multiple collapse-tags style="margin-left: 20px;" placeholder="请选择">
+                <el-col :span="12" class="h-40">
+                  <el-checkbox>3 - 美术部</el-checkbox>
+                  <el-select v-model="artOfStudio" multiple collapse-tags style="margin-left: 20px;" placeholder="请选择">
                     <el-option v-for="item1 in studiosList" :key="item1.id" :label="item1.name" :value="item1.id">
                     </el-option>
                   </el-select>
-
+                </el-col>
+                <el-col :span="12" class="h-40">
+                  <el-checkbox>4 - 模型部</el-checkbox>
+                  <el-select v-model="modelOfStudio" multiple collapse-tags style="margin-left: 20px;" placeholder="请选择">
+                    <el-option v-for="item1 in studiosList" :key="item1.id" :label="item1.name" :value="item1.id">
+                    </el-option>
+                  </el-select>
+                </el-col>
+                <el-col :span="12" class="h-40">
+                  <el-checkbox>3 - 贴图部</el-checkbox>
+                  <el-select v-model="mapOfStudio" multiple collapse-tags style="margin-left: 20px;" placeholder="请选择">
+                    <el-option v-for="item1 in studiosList" :key="item1.id" :label="item1.name" :value="item1.id">
+                    </el-option>
+                  </el-select>
+                </el-col>
+                <el-col :span="12" class="h-40">
+                  <el-checkbox>6 - 绑定部</el-checkbox>
+                  <el-select v-model="bindOfStudio" multiple collapse-tags style="margin-left: 20px;" placeholder="请选择">
+                    <el-option v-for="item1 in studiosList" :key="item1.id" :label="item1.name" :value="item1.id">
+                    </el-option>
+                  </el-select>
+                </el-col>
+                <el-col :span="12" class="h-40">
+                  <el-checkbox>7 - 跟踪部</el-checkbox>
+                  <el-select v-model="trackOfStudio" multiple collapse-tags style="margin-left: 20px;" placeholder="请选择">
+                    <el-option v-for="item1 in studiosList" :key="item1.id" :label="item1.name" :value="item1.id">
+                    </el-option>
+                  </el-select>
+                </el-col>
+                <el-col :span="12" class="h-40">
+                  <el-checkbox>8 - 动画部</el-checkbox>
+                  <el-select v-model="animateOfStudio" multiple collapse-tags style="margin-left: 20px;" placeholder="请选择">
+                    <el-option v-for="item1 in studiosList" :key="item1.id" :label="item1.name" :value="item1.id">
+                    </el-option>
+                  </el-select>
+                </el-col>
+                <el-col :span="12" class="h-40">
+                  <el-checkbox>9 - 数字绘景部</el-checkbox>
+                  <el-select v-model="paintOfStudio" multiple collapse-tags style="margin-left: 20px;" placeholder="请选择">
+                    <el-option v-for="item1 in studiosList" :key="item1.id" :label="item1.name" :value="item1.id">
+                    </el-option>
+                  </el-select>
+                </el-col>
+                <el-col :span="12" class="h-40">
+                  <el-checkbox>10 - 特效部</el-checkbox>
+                  <el-select v-model="specialOfStudio" multiple collapse-tags style="margin-left: 20px;" placeholder="请选择">
+                    <el-option v-for="item1 in studiosList" :key="item1.id" :label="item1.name" :value="item1.id">
+                    </el-option>
+                  </el-select>
+                </el-col>
+                <el-col :span="12" class="h-40">
+                  <el-checkbox>11 - 灯光部</el-checkbox>
+                  <el-select v-model="lightOfStudio" multiple collapse-tags style="margin-left: 20px;" placeholder="请选择">
+                    <el-option v-for="item1 in studiosList" :key="item1.id" :label="item1.name" :value="item1.id">
+                    </el-option>
+                  </el-select>
+                </el-col>
+                <el-col :span="12" class="h-40">
+                  <el-checkbox>12 - 合成部</el-checkbox>
+                  <el-select v-model="synchOfStudio" multiple collapse-tags style="margin-left: 20px;" placeholder="请选择">
+                    <el-option v-for="item1 in studiosList" :key="item1.id" :label="item1.name" :value="item1.id">
+                    </el-option>
+                  </el-select>
                 </el-col>
               </el-form-item>
             </div>
@@ -354,8 +415,16 @@
   export default {
     data() {
       return {
-        value: '',
-//        checked: false,
+        artOfStudio: [],
+        modelOfStudio: [],
+        mapOfStudio: [],
+        bindOfStudio: [],
+        trackOfStudio: [],
+        animateOfStudio: [],
+        paintOfStudio: [],
+        specialOfStudio: [],
+        lightOfStudio: [],
+        synchOfStudio: [],
         isAddField: false,
         isLoading: false,
         uploadImageUrl: window.HOST + '/admin/upload_image',
