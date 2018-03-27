@@ -123,6 +123,20 @@
               </el-form-item>
             </div>
           </el-col>
+        </el-row><el-row :gutter="20">
+          <el-col :span="24">
+            <div class="grid-content">
+              <el-form-item label="环节:" prop="hahah" class="is-required">
+                <el-col :span="12" v-for="item in tachesList" :key="item.id">
+                  <el-checkbox>{{item.id}} - {{item.explain}}</el-checkbox>
+                  <el-select v-model="value" multiple collapse-tags style="margin-left: 20px;" placeholder="请选择">
+                    <el-option v-for="item1 in studiosList" :key="item1.id" :label="item1.name" :value="item1.id">
+                    </el-option>
+                  </el-select>
+                </el-col>
+              </el-form-item>
+            </div>
+          </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="8">
@@ -338,10 +352,14 @@
   export default {
     data() {
       return {
+        value: '',
+//        checked: false,
         isAddField: false,
         isLoading: false,
         uploadImageUrl: window.HOST + '/admin/upload_image',
         projectList: [],
+        studiosList: [],
+        tachesList: [],
         fieldList: [],
         fieldForm: {
           project_id: '',
@@ -403,6 +421,10 @@
       }
     },
     methods: {
+      change(item) {
+        console.log(item)
+        arguments
+      },
       handleAvatarSuccess(res, file) {
         this.image = URL.createObjectURL(file.raw);
         this.form.shot_image = res.data;
@@ -480,6 +502,22 @@
           }
         })
       },
+//			获取所有环节
+      getAllTaches() {
+        this.apiGet('admin/taches').then((res) => {
+          this.handelResponse(res, (data) => {
+            this.tachesList = _.drop(data.list, 2)
+          })
+        })
+      },
+//			获取所有工作室
+      getAllStudios() {
+        this.apiGet('admin/studios').then((res) => {
+          this.handelResponse(res, (data) => {
+            this.studiosList = data.list
+          })
+        })
+      },
       getProjects() {
         this.apiGet('admin/projects').then((res) => {
           this.handelResponse(res, (data) => {
@@ -502,6 +540,8 @@
     },
     created() {
       this.getProjects()
+      this.getAllTaches()
+      this.getAllStudios()
     },
     mixins: [http, fomrMixin],
     computed: {
