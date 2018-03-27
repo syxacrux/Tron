@@ -129,10 +129,12 @@
               <el-form-item label="环节:" prop="hahah" class="is-required">
                 <el-col :span="12" v-for="item in tachesList" :key="item.id">
                   <el-checkbox>{{item.id}} - {{item.explain}}</el-checkbox>
+
                   <el-select v-model="value" multiple collapse-tags style="margin-left: 20px;" placeholder="请选择">
                     <el-option v-for="item1 in studiosList" :key="item1.id" :label="item1.name" :value="item1.id">
                     </el-option>
                   </el-select>
+
                 </el-col>
               </el-form-item>
             </div>
@@ -421,10 +423,6 @@
       }
     },
     methods: {
-      change(item) {
-        console.log(item)
-        arguments
-      },
       handleAvatarSuccess(res, file) {
         this.image = URL.createObjectURL(file.raw);
         this.form.shot_image = res.data;
@@ -514,7 +512,7 @@
       getAllStudios() {
         this.apiGet('admin/studios').then((res) => {
           this.handelResponse(res, (data) => {
-            this.studiosList = data.list
+            this.studiosList = _.drop(data.list, 1)
           })
         })
       },

@@ -35,7 +35,7 @@
         <el-table-column prop="tache" label="进度"  width="200">
           <template slot-scope="scopes">
             <!--这里插入子列表就可以了,子列表的数据来自scope-->
-            <el-tag v-for="(taches, index) in scopes.row.tache" type="success">{{taches.name}}</el-tag>
+            <el-tag v-for="(taches, index) in scopes.row.tache" :key="item.id" type="success">{{taches.name}}</el-tag>
             <!-- <el-tag type="success">标签二</el-tag>
             <el-tag type="info">标签三</el-tag>
             <el-tag type="warning">标签四</el-tag>
@@ -56,7 +56,7 @@
               <div class="grid-content bg-purple">
                 <h2 class="m-0">制作中</h2>
                 <ul class="p-l-0 m-0">
-                  <li v-for="(item, index) in shotData" class="text" @click="show2 = !show2">
+                  <li v-for="(item, index) in shotData" :key="item.id" class="text" @click="show2 = !show2">
                     <el-card class="box-card">
                       <div class="text">
                         <div class="text-Lens pos-rel">
@@ -68,7 +68,7 @@
                         </div>
                         <div class="text-Lens m-t-10">
                           <p class="text-Lens-assets">
-                            <el-tag type="info" v-for="(props, index) in item.prop">{{props.name}}:{{props.lmane}}</el-tag>
+                            <el-tag type="info" v-for="(props, index) in item.prop" :key="item.id">{{props.name}}:{{props.lmane}}</el-tag>
                             <!-- <el-tag type="info">元宝:道具</el-tag>
                             <el-tag type="info">混天绫:道具</el-tag>
                             <el-tag type="info">元宝:道具</el-tag>
@@ -98,7 +98,7 @@
                           </p>
                         </div>
                         <div class="text-Lens-link m-t-10">
-                          <el-tag type="success" v-for="(taches, index) in item.tache">{{taches.name}}:{{taches.lmane}}</el-tag>
+                          <el-tag type="success" v-for="(taches, index) in item.tache" :key="item.id">{{taches.name}}:{{taches.lmane}}</el-tag>
                           <!-- <el-tag type="success">跟踪: 100%</el-tag>
                           <el-tag type="warn">动画: 60%</el-tag>
                           <el-tag type="danger">特效: 0%</el-tag>
@@ -115,7 +115,7 @@
               <div class="grid-content bg-purple-light">
                 <h2 class="m-0">反馈中</h2>
                 <ul class="p-l-0 m-0">
-                  <li v-for="(item, index) in shotData" class="text" @click="show2 = !show2">
+                  <li v-for="(item, index) in shotData" :key="item.id" class="text" @click="show2 = !show2">
                     <el-card class="box-card">
                       <div class="text">
                         <div class="text-Lens pos-rel">
@@ -178,7 +178,7 @@
               <div class="grid-content bg-purple">
                 <h2 class="m-0">等待资产</h2>
                 <ul class="p-l-0 m-0">
-                  <li v-for="(item, index) in shotData" class="text" @click="show2 = !show2">
+                  <li v-for="(item, index) in shotData" :key="item.id" class="text" @click="show2 = !show2">
                     <el-card class="box-card">
                       <div class="text">
                         <div class="text-Lens pos-rel">
@@ -237,7 +237,7 @@
               <div class="grid-content bg-purple-light">
                 <h2 class="m-0">等待上游</h2>
                 <ul class="p-l-0 m-0">
-                 <li v-for="(item, index) in shotData" class="text" @click="show2 = !show2">
+                 <li v-for="(item, index) in shotData" :key="item.id" class="text" @click="show2 = !show2">
                     <el-card class="box-card">
                       <div class="text">
                         <div class="text-Lens pos-rel">
@@ -295,7 +295,7 @@
           </div>
         </el-tab-pane>
         <el-tab-pane label="镜头暂停" name="shotsSuspend">
-          <el-col :span="12" v-for="(item, index) in shotData">
+          <el-col :span="12" v-for="(item, index) in shotData" :key="item.id">
             <div class="grid-content bg-purple p-b-5">
               <el-card class="box-card">
                 <div class="text">
@@ -351,7 +351,7 @@
           </el-col>
         </el-tab-pane>
         <el-tab-pane label="镜头完成" name="shotsFinish">
-          <el-col :span="12" v-for="(item, index) in shotData">
+          <el-col :span="12" v-for="(item, index) in shotData" :key="item.id">
             <div class="grid-content bg-purple p-b-5">
               <el-card class="box-card">
                 <div class="text">
