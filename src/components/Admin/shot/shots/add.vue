@@ -24,7 +24,7 @@
           <el-col :span="8">
             <div class="grid-content">
               <el-form-item label="场号:" prop="field_id">
-                <el-select v-model="form.field_id" placeholder="请选择场号" class="w-130">
+                <el-select v-model="form.field_id" placeholder="请选择场号" :class="{ 'w-130': addShow }">
                   <el-option v-for="item in fieldList" :label="item.name" :value="item.id"
                              :key="item.id"></el-option>
                 </el-select>
