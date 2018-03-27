@@ -14,7 +14,7 @@
           <el-col :span="8">
             <div class="grid-content">
               <el-form-item label="项目名称:" prop="project_id">
-                <el-select v-model="form.project_id" placeholder="请选择项目">
+                <el-select v-model="form.project_id" placeholder="请选择项目" @change="getFields">
                   <el-option v-for="item in projectList" :label="item.project_name" :value="item.id"
                              :key="item.id"></el-option>
                 </el-select>
@@ -24,8 +24,9 @@
           <el-col :span="8">
             <div class="grid-content">
               <el-form-item label="场号:" prop="field_id">
-                <el-select v-model="form.field_id" placeholder="请选择场号" class="w-130">
-                  <el-option label="我是场号1" value="1"></el-option>
+                <el-select v-model="form.field_id" placeholder="请选择场号" :class="{ 'w-130': addShow }">
+                  <el-option v-for="item in fieldList" :label="item.name" :value="item.id"
+                             :key="item.id"></el-option>
                 </el-select>
                 <el-button @click="isAddField = true" size="small" v-if="addShow">添加</el-button>
               </el-form-item>
@@ -187,22 +188,29 @@
         <el-row :gutter="20">
           <el-col :span="8">
             <div class="grid-content">
-              <el-form-item label="素材号:" prop="material_number">
-                <el-select v-model="form.material_number" placeholder="请选择素材号" class="h-40 w-200">
-                  <el-option label="我是素材号1" value="1"></el-option>
-                  <el-option label="我是素材号2" value="2"></el-option>
+              <el-form-item label="是否等待资产:" prop="is_assets">
+                <el-select v-model="form.is_assets" placeholder="请选择是否等待资产" class="h-40 w-200">
+                  <el-option label="是" value="1"></el-option>
+                  <el-option label="否" value="2"></el-option>
                 </el-select>
               </el-form-item>
             </div>
           </el-col>
           <el-col :span="8">
             <div class="grid-content">
+              <el-form-item label="素材号:" prop="material_number">
+                <el-input v-model.trim="form.material_number" class="h-40 w-200"></el-input>
+              </el-form-item>
+            </div>
+          </el-col>
+          <el-col :span="8">
+            <div class="grid-content">
               <el-form-item label="二级公司:" prop="second_company">
-                <el-select v-model="form.second_company" multiple collapse-tags placeholder="请选择二级公司"
-                           class="h-40 w-200">
-                  <el-option label="我是二级公司1" value="1"></el-option>
-                  <el-option label="我是二级公司2" value="2"></el-option>
-                </el-select>
+                <!--<el-select v-model="form.second_company" multiple collapse-tags placeholder="请选择二级公司"-->
+                           <!--class="h-40 w-200">-->
+                  <!--<el-option label="我是二级公司1" value="1"></el-option>-->
+                  <!--<el-option label="我是二级公司2" value="2"></el-option>-->
+                <!--</el-select>-->
               </el-form-item>
             </div>
           </el-col>
@@ -334,6 +342,7 @@
         isLoading: false,
         uploadImageUrl: window.HOST + '/admin/upload_image',
         projectList: [],
+        fieldList: [],
         fieldForm: {
           project_id: '',
           name: ''
@@ -341,6 +350,7 @@
         form: {
           project_id: '',    //所属项目id
           field_id: '',     //场号id
+          asset_ids: '',    //资产id
           shot_image: '',    //镜头缩略图地址
           shot_number: '',    //镜头编号
           shot_byname: '',    //镜头简称
@@ -350,6 +360,7 @@
           plan_start_timestamp: '',    //计划开始时间
           plan_end_timestamp: '',    //计划结束时间
           is_parse: '',    //是否暂停   以上为必填项↑
+          is_assets: '',    //是否等待资产
           shot_explain: '',    //镜头备注
           clip_frame_length: '',    //剪辑帧长
           frame_range: '',    //帧数范围
@@ -415,6 +426,7 @@
               _g.toastMsg('success', '添加成功')
               setTimeout(() => {
                 this.isAddField = false
+                this.getFields()
               }, 1500)
             }, () => {
               this.isLoading = !this.isLoading
@@ -431,6 +443,7 @@
           _g.toastMsg('warning', '请输入计划起止时间')
           return
         }
+//        必填项
         this.form.project_id = parseInt(this.form.project_id)
         this.form.field_id = parseInt(this.form.field_id)
         this.form.time = parseInt(this.form.time)
@@ -439,11 +452,14 @@
         this.form.plan_start_timestamp = _g.j2time(this.plan_time[0])
         this.form.plan_end_timestamp = _g.j2time(this.plan_time[1])
 
+//        选填项
+        this.form.asset_ids = this.form.asset_ids.join('')
+        this.form.is_assets = this.form.is_assets ? parseInt(this.form.is_assets) : 2
         this.form.frame_range = this.frame_range1 && this.frame_range2 ? this.frame_range1 + ',' + this.frame_range2 : ''
         this.form.handle_frame = this.handle_frame1 && this.handle_frame2 ? this.handle_frame1 + ',' + this.handle_frame2 : ''
-        this.form.priority_level = this.form.priority_level ? parseInt(this.form.priority_level) : ''
-        this.form.difficulty = this.form.difficulty ? parseInt(this.form.difficulty) : ''
-        this.form.clip_frame_length = this.form.clip_frame_length ? parseInt(this.form.clip_frame_length) : ''
+        this.form.priority_level = this.form.priority_level ? parseInt(this.form.priority_level) : 1
+        this.form.difficulty = this.form.difficulty ? parseInt(this.form.difficulty) : 1
+        this.form.clip_frame_length = this.form.clip_frame_length ? parseInt(this.form.clip_frame_length) : 0
         this.form.material_frame_length = this.form.material_frame_length ? parseInt(this.form.material_frame_length) : ''
 
         console.log(this.form)
@@ -453,7 +469,7 @@
             this.apiPost('admin/shots', this.form).then((res) => {
               this.handelResponse(res, (data) => {
                 _g.toastMsg('success', '添加成功')
-                _g.clearVuex('setUsers')
+//                _g.clearVuex('setUsers')
                 setTimeout(() => {
                   this.goback()
                 }, 1500)
@@ -472,16 +488,20 @@
         })
       },
       getFields() {
-        this.apiGet('admin/get_fields').then((res) => {
+        const data = {
+          params: {
+            project_id: this.form.project_id
+          }
+        }
+        this.apiGet('admin/get_fields/', data).then((res) => {
           this.handelResponse(res, (data) => {
-//            this.projectList = data.list
+            this.fieldList = data
           })
         })
       }
     },
     created() {
       this.getProjects()
-      this.getFields()
     },
     mixins: [http, fomrMixin],
     computed: {
