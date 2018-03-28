@@ -36,7 +36,7 @@
                     </div>
                     <div class="text-Lens m-t-10">
                       <p class="task-Lens-assets text-p">
-                            <el-tag type="info" >37次</el-tag>
+                            <el-tag type="info"  v-if="block.id > 0">37次</el-tag>
                       </p>
                       <p class="text-Lens-time tx-r">
                               <span>
@@ -77,7 +77,7 @@
               <div class="grid-content bg-purple">
                 <h2 class="m-0 h-40 tx-c c-white">资产</h2>
                 <ul class="p-l-0 m-0">
-                  <li v-for="block in blocks" :key="block.id" class="text">
+                  <li v-for="block in blocks" :key="block.id" class="text" @click="task2 = !task2">
                     <el-card class="box-card">
                       <!-- <div v-for="o in 4" :key="o" class="text item">
                         {{'列表内容 ' + o }}
@@ -131,7 +131,7 @@
               <div class="grid-content bg-purple-light">
                 <h2 class="m-0 h-40 tx-c c-white" style="background: yellowgreen">镜头</h2>
                 <ul class="p-l-0 m-0">
-                  <li v-for="block in blocks" :key="block.id" class="text">
+                  <li v-for="block in blocks" :key="block.id" class="text" @click="task2 = !task2">
                     <el-card class="box-card">
                       <!-- <div v-for="o in 4" :key="o" class="text item">
                         {{'列表内容 ' + o }}
@@ -184,7 +184,7 @@
         </el-tab-pane>
         <el-tab-pane label="完成" name="complete">
           <el-col :span="6" v-for="block in blocks" :key="block.id">
-            <div class="grid-content bg-purple p-b-5">
+            <div class="grid-content bg-purple p-b-5" @click="task2 = !task2">
               <el-card class="box-card ">
                   <div class="text">
                     <div class="text-Lens pos-rel">
@@ -237,7 +237,12 @@
       </el-tabs>
       <el-table v-if="!isList" :data="tableData" stripe class="fl">
         <el-table-column type="selection" width="50"></el-table-column>
-        <el-table-column prop="shot_image" label="缩略图"></el-table-column>
+        <!-- <el-table-column prop="shot_image" label="缩略图"></el-table-column> -->
+        <el-table-column prop="shot_image" label="缩略图">
+          <template slot-scope="scope">
+            <img :src="address + scope.row.shot_image" alt="" style="width: 50px;height: 50px">
+          </template>
+        </el-table-column>
         <el-table-column prop="field_id" label="场号"></el-table-column>
         <el-table-column prop="shot_number" label="镜头号"></el-table-column>
         <el-table-column prop="difficulty" label="难度"></el-table-column>
@@ -254,7 +259,7 @@
           <el-card class="box-card">
             <div slot="header" class="clearfix">
               <span>任务详情</span>
-              <i class="el-icon-edit m-l-5 fz-14 c-light-gray pointer" @click="editShot"></i>
+              <i class="el-icon-edit m-l-5 fz-14 c-light-gray pointer" @click="editWorkbench"></i>
                 <i class="el-icon-delete m-l-5 fz-14 c-light-gray pointer"></i>
                 <i class="el-icon-close fr pointer" @click="task2 = !task2"></i>
             </div>
@@ -265,12 +270,23 @@
         </div>
       </transition>
     </div>
-    <!-- <editShots ref="editShots"></editShots> -->
+    <editWorkbenches ref="editWorkbenches"></editWorkbenches>
+    <div class="pos-rel p-t-20">
+      <div class="block pages">
+        <el-pagination
+                @current-change="handleCurrentChange"
+                layout="prev, pager, next"
+                :page-size="limit"
+                :current-page="currentPage"
+                :total="dataCount">
+        </el-pagination>
+      </div>
+		</div>
   </div>
 </template>
 
 <script>
-  
+  import editWorkbenches from '../workbenches/edit.vue'
   import btnGroup from '../../../Common/btn-group.vue'
   import http from '../../../../assets/js/http'
   import _g from '@/assets/js/global'
@@ -280,7 +296,11 @@
       return {
         isList:true,
         task2: false,
+        limit: 10,
+        currentPage: 1,
+        dataCount: null,
         activeName: 'task',
+        address: window.baseUrl + '/',
         // frequencyState:true,
         tableData: [{
           date: '2016-05-02',
@@ -297,7 +317,8 @@
           tache_sort:null,//环节序号
           studio_id:2,//工作室ID
           task_type:'',//任务类型
-          shot_image:'FUY',//镜头简称
+          shot_image:'FUY',//镜头缩略图
+          task_byname:'FUY',//镜头简称
           make_demand:'',//制作要求
           shot_number:'001',//镜头
           task_priority_level:'A',//优先级
@@ -515,40 +536,58 @@
       }
     },
     methods: {
+      editWorkbench() {
+        this.$refs.editWorkbenches.open()
+      },
       updateBlock(id, status) {
         console.log(id)
         console.log(status)
         console.log(arguments)
         this.blocks.find(b => b.id === Number(id)).status = status;
       },
-      editShot() {
-        this.$refs.editShots.open()
-      },
       handleClick(tab, event) {
         console.log(tab, event);
       },
+      //      切换页码
+      handleCurrentChange(page) {
+      // this.getAllWorkbenches(page)
+      },
 //      获取项目列表
-      getAllProjects(status) {
+      getAllWorkbenches(status) {
+        this.loading = true
+        const data = {
+          params: {
+            keyword: {
+              list_type: status
+            }
+          }
+        }
+        this.apiGet('admin/workbenches',data).then((res) => {
+          this.handelResponse(res, (data) => {
+          })
+        })
       },
 //      初始化项目列表内容
       init() {
-//        this.getAllProjects(0)
+       this.getAllWorkbenches(1)
       }
     },
     created() {
       this.init()
     },
-    components: {},
+    components: {
+      editWorkbenches
+    },
     mixins: [http],
     computed: {
 //      addShow() {
-//        return _g.getHasRule('projects-save')
+//        return _g.getHasRule('workbenches-save')
 //      },
 //      editShow() {
-//        return _g.getHasRule('projects-update')
+//        return _g.getHasRule('workbenches-update')
 //      },
 //      deleteShow() {
-//        return _g.getHasRule('projects-delete')
+//        return _g.getHasRule('workbenches-delete')
 //      }
     }
   }
@@ -643,6 +682,8 @@
 
   .workbench_list .text-Lens .text-Lens-time {
     width: 50%;
+    /* position:  */
+    float:right;
   }
 
   .workbench_list .text-Lens-time span {
@@ -674,12 +715,15 @@
     z-index: 1;
   }
   .workbench_list .el-card__body{
-    padding: 0;
+    padding: 10px;
     width: 100%;
   }
   .workbench_list .el-card .el-card__body{
     padding: 0;
     width: 100%;
+  }
+  .workbench_list .el-card .el-card__body .text{
+    padding: 10px;
   }
   .workbench_list .text-p{
     text-align: right;
