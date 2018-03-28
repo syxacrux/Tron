@@ -82,16 +82,16 @@
           </el-col>
         </el-row>
         <el-row :gutter="20">
-          <el-col :span="8">
-            <div class="grid-content">
-              <el-form-item label="是否暂停:" prop="is_parse">
-                <el-select v-model="form.is_parse" placeholder="请选择是否暂停" class="h-40 w-200">
-                  <el-option label="非暂停" value="1"></el-option>
-                  <el-option label="暂停" value="2"></el-option>
-                </el-select>
-              </el-form-item>
-            </div>
-          </el-col>
+          <!--<el-col :span="8">-->
+            <!--<div class="grid-content">-->
+              <!--<el-form-item label="是否暂停:" prop="is_parse">-->
+                <!--<el-select v-model="form.is_parse" placeholder="请选择是否暂停" class="h-40 w-200">-->
+                  <!--<el-option label="非暂停" value="1"></el-option>-->
+                  <!--<el-option label="暂停" value="2"></el-option>-->
+                <!--</el-select>-->
+              <!--</el-form-item>-->
+            <!--</div>-->
+          <!--</el-col>-->
           <el-col :span="8">
             <div class="grid-content">
               <el-form-item label="时刻:" prop="time">
@@ -123,7 +123,8 @@
               </el-form-item>
             </div>
           </el-col>
-        </el-row><el-row :gutter="20">
+        </el-row>
+        <el-row :gutter="20">
           <el-col :span="24">
             <div class="grid-content">
               <el-form-item label="环节:" prop="hahah" class="is-required">
@@ -224,10 +225,10 @@
             <div class="grid-content">
               <el-form-item label="镜头优先级:" prop="priority_level">
                 <el-select v-model="form.priority_level" placeholder="请选择镜头优先级" class="h-40 w-200">
-                  <el-option label="A" value="4"></el-option>
-                  <el-option label="B" value="3"></el-option>
-                  <el-option label="C" value="2"></el-option>
                   <el-option label="D" value="1"></el-option>
+                  <el-option label="C" value="2"></el-option>
+                  <el-option label="B" value="3"></el-option>
+                  <el-option label="A" value="4"></el-option>
                 </el-select>
               </el-form-item>
             </div>
@@ -238,11 +239,11 @@
             <div class="grid-content">
               <el-form-item label="镜头难度:" prop="difficulty">
                 <el-select v-model="form.difficulty" placeholder="请选择镜头难度" class="h-40 w-200">
-                  <el-option label="S" value="5"></el-option>
-                  <el-option label="A" value="4"></el-option>
-                  <el-option label="B" value="3"></el-option>
-                  <el-option label="C" value="2"></el-option>
                   <el-option label="D" value="1"></el-option>
+                  <el-option label="C" value="2"></el-option>
+                  <el-option label="B" value="3"></el-option>
+                  <el-option label="A" value="4"></el-option>
+                  <el-option label="S" value="5"></el-option>
                 </el-select>
               </el-form-item>
             </div>
@@ -263,16 +264,16 @@
           </el-col>
         </el-row>
         <el-row :gutter="20">
-          <el-col :span="8">
-            <div class="grid-content">
-              <el-form-item label="是否等待资产:" prop="is_assets">
-                <el-select v-model="form.is_assets" placeholder="请选择是否等待资产" class="h-40 w-200">
-                  <el-option label="是" value="1"></el-option>
-                  <el-option label="否" value="2"></el-option>
-                </el-select>
-              </el-form-item>
-            </div>
-          </el-col>
+          <!--<el-col :span="8">-->
+            <!--<div class="grid-content">-->
+              <!--<el-form-item label="是否等待资产:" prop="is_assets">-->
+                <!--<el-select v-model="form.is_assets" placeholder="请选择是否等待资产" class="h-40 w-200">-->
+                  <!--<el-option label="是" value="1"></el-option>-->
+                  <!--<el-option label="否" value="2"></el-option>-->
+                <!--</el-select>-->
+              <!--</el-form-item>-->
+            <!--</div>-->
+          <!--</el-col>-->
           <el-col :span="8">
             <div class="grid-content">
               <el-form-item label="素材号:" prop="material_number">
@@ -448,8 +449,8 @@
           ambient: '',    //环境
           plan_start_timestamp: '',    //计划开始时间
           plan_end_timestamp: '',    //计划结束时间
-          is_parse: '',    //是否暂停   以上为必填项↑
-          is_assets: '',    //是否等待资产
+//          is_parse: '',    //是否暂停   以上为必填项↑
+//          is_assets: '',    //是否等待资产
           shot_explain: '',    //镜头备注
           clip_frame_length: '',    //剪辑帧长
           frame_range: '',    //帧数范围
@@ -538,13 +539,13 @@
         this.form.field_id = parseInt(this.form.field_id)
         this.form.time = parseInt(this.form.time)
         this.form.ambient = parseInt(this.form.ambient)
-        this.form.is_parse = parseInt(this.form.is_parse)
+//        this.form.is_parse = parseInt(this.form.is_parse)
         this.form.plan_start_timestamp = _g.j2time(this.plan_time[0])
         this.form.plan_end_timestamp = _g.j2time(this.plan_time[1])
 
 //        选填项
         this.form.asset_ids = this.form.asset_ids.join('')
-        this.form.is_assets = this.form.is_assets ? parseInt(this.form.is_assets) : 2
+//        this.form.is_assets = this.form.is_assets ? parseInt(this.form.is_assets) : 2
         this.form.frame_range = this.frame_range1 && this.frame_range2 ? this.frame_range1 + ',' + this.frame_range2 : ''
         this.form.handle_frame = this.handle_frame1 && this.handle_frame2 ? this.handle_frame1 + ',' + this.handle_frame2 : ''
         this.form.priority_level = this.form.priority_level ? parseInt(this.form.priority_level) : 1
