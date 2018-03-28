@@ -49,7 +49,7 @@
         <el-table-column prop="actual_end_timestamp" label="实际结束"></el-table-column>
         <el-table-column prop="make_demand" label="备注"></el-table-column>
       </el-table>
-      <el-tabs v-if="!isList" v-model="activeName" @tab-click="handleClick" class="fl">
+      <el-tabs v-if="!isList" v-model="activeName" @tab-click="tabClick" class="fl">
         <el-tab-pane label="镜头制作中" name="shotsInDevelopment">
           <div class="shot_card ovf-hd">
             <el-col :span="12">
@@ -77,21 +77,21 @@
                           </p>
                           <p class="text-Lens-time fr tx-r">
                             <span>
-                              <el-tooltip class="m-r-5 pointer" effect="dark" content="任务剩余天数"
+                              <el-tooltip class="m-r-5 pointer" effect="dark" content="镜头剩余天数"
                                           placement="bottom-start">
                                 <span>8天</span>
                               </el-tooltip>
-                              <el-tooltip class="m-r-5 pointer" effect="dark" content="任务建立时间"
+                              <el-tooltip class="m-r-5 pointer" effect="dark" content="镜头建立时间"
                                           placement="bottom-start">
                                 <span>32分</span>
                               </el-tooltip>
-                              <el-tooltip class="m-r-5 pointer" effect="dark" content="任务制作中时间"
+                              <el-tooltip class="m-r-5 pointer" effect="dark" content="镜头制作中时间"
                                           placement="bottom-start">
                                 <span>9天</span>
                               </el-tooltip>
                             </span>
                             <span>
-                              <el-tooltip class="m-r-5 pointer" effect="dark" content="任务制作中时间"
+                              <el-tooltip class="m-r-5 pointer" effect="dark" content="预计结束时间"
                                           placement="bottom-start">
                                 <span>2018/02/08 14:00</span>
                               </el-tooltip>
@@ -137,21 +137,21 @@
                           </p>
                           <p class="text-Lens-time fr tx-r">
                             <span>
-                              <el-tooltip class="m-r-5 pointer" effect="dark" content="任务剩余天数"
+                              <el-tooltip class="m-r-5 pointer" effect="dark" content="镜头剩余天数"
                                           placement="bottom-start">
                                 <span>8天</span>
                               </el-tooltip>
-                              <el-tooltip class="m-r-5 pointer" effect="dark" content="任务建立时间"
+                              <el-tooltip class="m-r-5 pointer" effect="dark" content="镜头建立时间"
                                           placement="bottom-start">
                                 <span>32分</span>
                               </el-tooltip>
-                              <el-tooltip class="m-r-5 pointer" effect="dark" content="任务制作中时间"
+                              <el-tooltip class="m-r-5 pointer" effect="dark" content="镜头制作中时间"
                                           placement="bottom-start">
                                 <span>9天</span>
                               </el-tooltip>
                             </span>
                             <span>
-                              <el-tooltip class="m-r-5 pointer" effect="dark" content="任务制作中时间"
+                              <el-tooltip class="m-r-5 pointer" effect="dark" content="预计结束时间"
                                           placement="bottom-start">
                                 <span>2018/02/08 14:00</span>
                               </el-tooltip>
@@ -201,21 +201,21 @@
                           </p>
                           <p class="text-Lens-time fr tx-r">
                             <span>
-                              <el-tooltip class="m-r-5 pointer" effect="dark" content="任务剩余天数"
+                              <el-tooltip class="m-r-5 pointer" effect="dark" content="镜头剩余天数"
                                           placement="bottom-start">
                                 <span>8天</span>
                               </el-tooltip>
-                              <el-tooltip class="m-r-5 pointer" effect="dark" content="任务建立时间"
+                              <el-tooltip class="m-r-5 pointer" effect="dark" content="镜头建立时间"
                                           placement="bottom-start">
                                 <span>32分</span>
                               </el-tooltip>
-                              <el-tooltip class="m-r-5 pointer" effect="dark" content="任务制作中时间"
+                              <el-tooltip class="m-r-5 pointer" effect="dark" content="镜头制作中时间"
                                           placement="bottom-start">
                                 <span>9天</span>
                               </el-tooltip>
                             </span>
                             <span>
-                              <el-tooltip class="m-r-5 pointer" effect="dark" content="任务制作中时间"
+                              <el-tooltip class="m-r-5 pointer" effect="dark" content="预计结束时间"
                                           placement="bottom-start">
                                 <span>2018/02/08 14:00</span>
                               </el-tooltip>
@@ -261,21 +261,21 @@
                           <!--</p>-->
                           <!--<p class="text-Lens-time fr tx-r">-->
                             <!--<span>-->
-                              <!--<el-tooltip class="m-r-5 pointer" effect="dark" content="任务剩余天数"-->
+                              <!--<el-tooltip class="m-r-5 pointer" effect="dark" content="镜头剩余天数"-->
                                           <!--placement="bottom-start">-->
                                 <!--<span>8天</span>-->
                               <!--</el-tooltip>-->
-                              <!--<el-tooltip class="m-r-5 pointer" effect="dark" content="任务建立时间"-->
+                              <!--<el-tooltip class="m-r-5 pointer" effect="dark" content="镜头建立时间"-->
                                           <!--placement="bottom-start">-->
                                 <!--<span>32分</span>-->
                               <!--</el-tooltip>-->
-                              <!--<el-tooltip class="m-r-5 pointer" effect="dark" content="任务制作中时间"-->
+                              <!--<el-tooltip class="m-r-5 pointer" effect="dark" content="镜头制作中时间"-->
                                           <!--placement="bottom-start">-->
                                 <!--<span>9天</span>-->
                               <!--</el-tooltip>-->
                             <!--</span>-->
                             <!--<span>-->
-                              <!--<el-tooltip class="m-r-5 pointer" effect="dark" content="任务制作中时间"-->
+                              <!--<el-tooltip class="m-r-5 pointer" effect="dark" content="预计结束时间"-->
                                           <!--placement="bottom-start">-->
                                 <!--<span>2018/02/08 14:00</span>-->
                               <!--</el-tooltip>-->
@@ -321,21 +321,21 @@
                     </p>
                     <p class="text-Lens-time fr tx-r">
                             <span>
-                              <el-tooltip class="m-r-5 pointer" effect="dark" content="任务剩余天数"
+                              <el-tooltip class="m-r-5 pointer" effect="dark" content="镜头剩余天数"
                                           placement="bottom-start">
                                 <span>8天</span>
                               </el-tooltip>
-                              <el-tooltip class="m-r-5 pointer" effect="dark" content="任务建立时间"
+                              <el-tooltip class="m-r-5 pointer" effect="dark" content="镜头建立时间"
                                           placement="bottom-start">
                                 <span>32分</span>
                               </el-tooltip>
-                              <el-tooltip class="m-r-5 pointer" effect="dark" content="任务制作中时间"
+                              <el-tooltip class="m-r-5 pointer" effect="dark" content="镜头制作中时间"
                                           placement="bottom-start">
                                 <span>9天</span>
                               </el-tooltip>
                             </span>
                       <span>
-                              <el-tooltip class="m-r-5 pointer" effect="dark" content="任务制作中时间"
+                              <el-tooltip class="m-r-5 pointer" effect="dark" content="预计结束时间"
                                           placement="bottom-start">
                                 <span>2018/02/08 14:00</span>
                               </el-tooltip>
@@ -378,21 +378,21 @@
                     </p>
                     <p class="text-Lens-time fr tx-r">
                             <span>
-                              <el-tooltip class="m-r-5 pointer" effect="dark" content="任务剩余天数"
+                              <el-tooltip class="m-r-5 pointer" effect="dark" content="镜头剩余天数"
                                           placement="bottom-start">
                                 <span>8天</span>
                               </el-tooltip>
-                              <el-tooltip class="m-r-5 pointer" effect="dark" content="任务建立时间"
+                              <el-tooltip class="m-r-5 pointer" effect="dark" content="镜头建立时间"
                                           placement="bottom-start">
                                 <span>32分</span>
                               </el-tooltip>
-                              <el-tooltip class="m-r-5 pointer" effect="dark" content="任务制作中时间"
+                              <el-tooltip class="m-r-5 pointer" effect="dark" content="镜头制作中时间"
                                           placement="bottom-start">
                                 <span>9天</span>
                               </el-tooltip>
                             </span>
                       <span>
-                              <el-tooltip class="m-r-5 pointer" effect="dark" content="任务制作中时间"
+                              <el-tooltip class="m-r-5 pointer" effect="dark" content="预计结束时间"
                                           placement="bottom-start">
                                 <span>2018/02/08 14:00</span>
                               </el-tooltip>
@@ -460,38 +460,8 @@
           tache: [{name: 'ANI', lmane: '100%'}, {name: 'MMV', lmane: '100%'}],
           actual_start_timestamp: '1',
           actual_end_timestamp: '2'
-        }, {
-          date: '2016-05-02',
-          name: '王小虎',
-          address: 'S',
-          shot_image: 'uploads/Projects/images/20180315/0fb7566809a188ba7e330564d7a9c644.jpg',
-          field_name: '',
-          shot_number: '',
-          difficulty: '',
-          priority_level: '',
-          plan_start_timestamp: '',
-          plan_end_timestamp: '',
-          make_demand: '',
-          tache: [{name: 'ANI', lmane: '100%'}, {name: 'MMV', lmane: '100%'}],
-          actual_start_timestamp: '1',
-          actual_end_timestamp: '2'
         }],
         shotData: [{
-          date: '2016-05-02',
-          name: '王小虎',
-          shot_byname: 'FUY',
-          address: 'S',
-          shot_image: '',
-          field_name: '001',
-          shot_number: '002',
-          difficulty: 'S',
-          priority_level: 'A',
-          plan_start_timestamp: '',
-          plan_end_timestamp: '',
-          make_demand: '',
-          prop: [{name: '混天绫', lmane: '道具'}, {name: '混天绫', lmane: '道具'}],
-          tache: [{name: '数景', lmane: '100%'}]
-        }, {
           date: '2016-05-02',
           name: '王小虎',
           shot_byname: 'FUY',
@@ -510,17 +480,34 @@
       }
     },
     methods: {
+//      点击编辑镜头执行方法
       editShot() {
         this.$refs.editShots.open()
       },
+ /*
+ * 镜头列表批量点击checkbox
+ * params: {
+ *   val: 当前已选中的checkbox群的value
+ * }
+ * */
       handleSelectionChange(val) {
         this.multipleSelection = val;
       },
-      handleClick(tab, event) {
-        console.log(tab.name);
+/*
+* 切换镜头tab方法
+*   params: {
+*     tab: 传入当前点击tab信息
+*   }
+* */
+      tabClick(tab, event) {
         this.init(tab.name)
       },
-//      获取项目列表
+/*
+* 获取项目列表
+* params: {
+*   shot_status: 区分请求接口的地址（in_production、feedback、waiting、pause、finish）
+* }
+* */
       getShots(shot_status) {
         let url = `admin/shots/${shot_status}`
         this.loading = true
@@ -531,7 +518,12 @@
           })
         })
       },
-//      初始化项目列表内容
+/*
+* 初始化镜头看板内容
+* params: {
+*   tab_name : 当点击切换镜头tab时的传入值
+* }
+* */
       init(tab_name) {
         switch (tab_name) {
           case 'shotsInDevelopment':

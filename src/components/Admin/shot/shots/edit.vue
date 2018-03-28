@@ -473,6 +473,7 @@
         }
         return isLt2M;
       },
+//      添加场号、集号
       addField(form) {
         if (this.fieldForm.project_id && this.fieldForm.name) {
           this.isLoading = !this.isLoading
@@ -489,6 +490,7 @@
           })
         }
       },
+//      改变环节选项任意复选框时执行方法
       changeTache() {
         this.artOfStudio = this.isArt ? this.artOfStudio : []
         this.modelOfStudio = this.isModel ? this.modelOfStudio : []
@@ -501,6 +503,7 @@
         this.lightOfStudio = this.isLight ? this.lightOfStudio : []
         this.synchOfStudio = this.isSynch ? this.synchOfStudio : []
       },
+//      编辑镜头
       edit(form) {
         if (
           this.artOfStudio.length === 0 && this.modelOfStudio.length === 0 && this.mapOfStudio.length === 0 &&
@@ -581,6 +584,7 @@
           })
         })
       },
+//      获取所有场号、集号
       getFields() {
         const data = {
           params: {
