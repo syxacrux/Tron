@@ -423,8 +423,8 @@
         tachesList: [],
         fieldList: [],
         fieldForm: {
-          project_id: '',
-          name: ''
+          project_id: '',  //所属项目id
+          name: ''    //场号/集号
         },
         form: {
           project_id: '',    //所属项目id
