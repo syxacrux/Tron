@@ -557,7 +557,7 @@
         this.loading = true
         const data = {
           params: {
-            keyword: {
+            keywords: {
               list_type: status
             }
           }
