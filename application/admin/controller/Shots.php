@@ -45,8 +45,10 @@ class Shots extends BaseCommon{
 
     public function save(){
         $shot_model = model('Shot');
+        $uid = $this->uid;
+        $group_id = Access::get($uid)->group_id; //所属角色
         $param = $this->param;
-        $data = $shot_model->addData($param);
+        $data = $shot_model->addData($param,$uid,$group_id);
         if (!$data) {
             return resultArray(['error' => $shot_model->getError()]);
         }

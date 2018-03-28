@@ -88,6 +88,7 @@ class Workbench extends Common{
     }
 
     public function addData($param){
+
         try{
             $param['asset_ids'] = implode(",",$param['asset_ids']);    //资产ID 多项 字符串 以逗号分割
             $param['shot_image'] = str_replace('\\','/',$param['shot_image']);
