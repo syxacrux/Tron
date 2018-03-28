@@ -82,16 +82,6 @@
           </el-col>
         </el-row>
         <el-row :gutter="20">
-          <!--<el-col :span="8">-->
-          <!--<div class="grid-content">-->
-          <!--<el-form-item label="是否暂停:" prop="is_parse">-->
-          <!--<el-select v-model="form.is_parse" placeholder="请选择是否暂停" class="h-40 w-200">-->
-          <!--<el-option label="非暂停" value="1"></el-option>-->
-          <!--<el-option label="暂停" value="2"></el-option>-->
-          <!--</el-select>-->
-          <!--</el-form-item>-->
-          <!--</div>-->
-          <!--</el-col>-->
           <el-col :span="8">
             <div class="grid-content">
               <el-form-item label="时刻:" prop="time">
@@ -108,6 +98,19 @@
                 <el-select v-model="form.ambient" placeholder="请选择环境" class="h-40 w-200">
                   <el-option label="室外" value="1"></el-option>
                   <el-option label="室内" value="2"></el-option>
+                </el-select>
+              </el-form-item>
+            </div>
+          </el-col>
+          <el-col :span="8">
+            <div class="grid-content">
+              <el-form-item label="镜头难度:" prop="difficulty">
+                <el-select v-model="form.difficulty" placeholder="请选择镜头难度" class="h-40 w-200">
+                  <el-option label="D" value="1"></el-option>
+                  <el-option label="C" value="2"></el-option>
+                  <el-option label="B" value="3"></el-option>
+                  <el-option label="A" value="4"></el-option>
+                  <el-option label="S" value="5"></el-option>
                 </el-select>
               </el-form-item>
             </div>
@@ -245,19 +248,6 @@
         <el-row :gutter="20">
           <el-col :span="8">
             <div class="grid-content">
-              <el-form-item label="镜头难度:" prop="difficulty">
-                <el-select v-model="form.difficulty" placeholder="请选择镜头难度" class="h-40 w-200">
-                  <el-option label="D" value="1"></el-option>
-                  <el-option label="C" value="2"></el-option>
-                  <el-option label="B" value="3"></el-option>
-                  <el-option label="A" value="4"></el-option>
-                  <el-option label="S" value="5"></el-option>
-                </el-select>
-              </el-form-item>
-            </div>
-          </el-col>
-          <el-col :span="8">
-            <div class="grid-content">
               <el-form-item label="剪辑帧长:" prop="clip_frame_length">
                 <el-input v-model.trim="form.clip_frame_length" class="h-40 w-200"></el-input>
               </el-form-item>
@@ -272,16 +262,6 @@
           </el-col>
         </el-row>
         <el-row :gutter="20">
-          <!--<el-col :span="8">-->
-          <!--<div class="grid-content">-->
-          <!--<el-form-item label="是否等待资产:" prop="is_assets">-->
-          <!--<el-select v-model="form.is_assets" placeholder="请选择是否等待资产" class="h-40 w-200">-->
-          <!--<el-option label="是" value="1"></el-option>-->
-          <!--<el-option label="否" value="2"></el-option>-->
-          <!--</el-select>-->
-          <!--</el-form-item>-->
-          <!--</div>-->
-          <!--</el-col>-->
           <el-col :span="8">
             <div class="grid-content">
               <el-form-item label="素材号:" prop="material_number">
@@ -471,8 +451,7 @@
           material_number: '',    //素材号
           second_company: '',    //二级公司
           make_demand: '',    //制作要求
-          status: 1,    //镜头状态
-
+          status: 1    //镜头状态
         },
         image: '',
         plan_time: '',
