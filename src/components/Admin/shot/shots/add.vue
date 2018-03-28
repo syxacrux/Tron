@@ -128,7 +128,7 @@
           <el-col :span="24">
             <div class="grid-content">
               <el-form-item label="环节:" prop="hahah" class="is-required">
-                <el-col :span="12" class="h-40">
+                <el-col :span="12" class="h-45">
                   <el-checkbox v-model="isArt" @change="changeTache">美术部</el-checkbox>
                   <el-select v-if="isArt" v-model="artOfStudio" multiple collapse-tags style="margin-left: 20px;"
                              placeholder="请选择">
@@ -136,7 +136,7 @@
                     </el-option>
                   </el-select>
                 </el-col>
-                <el-col :span="12" class="h-40">
+                <el-col :span="12" class="h-45">
                   <el-checkbox>模型部</el-checkbox>
                   <el-select v-model="modelOfStudio" multiple collapse-tags style="margin-left: 20px;"
                              placeholder="请选择">
@@ -144,21 +144,21 @@
                     </el-option>
                   </el-select>
                 </el-col>
-                <el-col :span="12" class="h-40">
+                <el-col :span="12" class="h-45">
                   <el-checkbox>贴图部</el-checkbox>
                   <el-select v-model="mapOfStudio" multiple collapse-tags style="margin-left: 20px;" placeholder="请选择">
                     <el-option v-for="item1 in studiosList" :key="item1.id" :label="item1.name" :value="item1.id">
                     </el-option>
                   </el-select>
                 </el-col>
-                <el-col :span="12" class="h-40">
+                <el-col :span="12" class="h-45">
                   <el-checkbox>绑定部</el-checkbox>
                   <el-select v-model="bindOfStudio" multiple collapse-tags style="margin-left: 20px;" placeholder="请选择">
                     <el-option v-for="item1 in studiosList" :key="item1.id" :label="item1.name" :value="item1.id">
                     </el-option>
                   </el-select>
                 </el-col>
-                <el-col :span="12" class="h-40">
+                <el-col :span="12" class="h-45">
                   <el-checkbox>跟踪部</el-checkbox>
                   <el-select v-model="trackOfStudio" multiple collapse-tags style="margin-left: 20px;"
                              placeholder="请选择">
@@ -166,7 +166,7 @@
                     </el-option>
                   </el-select>
                 </el-col>
-                <el-col :span="12" class="h-40">
+                <el-col :span="12" class="h-45">
                   <el-checkbox>动画部</el-checkbox>
                   <el-select v-model="animateOfStudio" multiple collapse-tags style="margin-left: 20px;"
                              placeholder="请选择">
@@ -174,7 +174,7 @@
                     </el-option>
                   </el-select>
                 </el-col>
-                <el-col :span="12" class="h-40">
+                <el-col :span="12" class="h-45">
                   <el-checkbox>数字绘景部</el-checkbox>
                   <el-select v-model="paintOfStudio" multiple collapse-tags style="margin-left: 20px;"
                              placeholder="请选择">
@@ -182,7 +182,7 @@
                     </el-option>
                   </el-select>
                 </el-col>
-                <el-col :span="12" class="h-40">
+                <el-col :span="12" class="h-45">
                   <el-checkbox>特效部</el-checkbox>
                   <el-select v-model="specialOfStudio" multiple collapse-tags style="margin-left: 20px;"
                              placeholder="请选择">
@@ -190,7 +190,7 @@
                     </el-option>
                   </el-select>
                 </el-col>
-                <el-col :span="12" class="h-40">
+                <el-col :span="12" class="h-45">
                   <el-checkbox>灯光部</el-checkbox>
                   <el-select v-model="lightOfStudio" multiple collapse-tags style="margin-left: 20px;"
                              placeholder="请选择">
@@ -198,7 +198,7 @@
                     </el-option>
                   </el-select>
                 </el-col>
-                <el-col :span="12" class="h-40">
+                <el-col :span="12" class="h-45">
                   <el-checkbox>合成部</el-checkbox>
                   <el-select v-model="synchOfStudio" multiple collapse-tags style="margin-left: 20px;"
                              placeholder="请选择">
