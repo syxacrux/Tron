@@ -134,70 +134,72 @@
                   </el-select>
                 </el-col>
                 <el-col :span="12" class="h-45">
-                  <el-checkbox>模型部</el-checkbox>
-                  <el-select v-model="modelOfStudio" multiple collapse-tags style="margin-left: 20px;"
+                  <el-checkbox v-model="isModel">模型部</el-checkbox>
+                  <el-select v-if="isModel" v-model="modelOfStudio" multiple collapse-tags style="margin-left: 20px;"
                              placeholder="请选择">
                     <el-option v-for="item1 in studiosList" :key="item1.id" :label="item1.name" :value="item1.id">
                     </el-option>
                   </el-select>
                 </el-col>
                 <el-col :span="12" class="h-45">
-                  <el-checkbox>贴图部</el-checkbox>
-                  <el-select v-model="mapOfStudio" multiple collapse-tags style="margin-left: 20px;" placeholder="请选择">
-                    <el-option v-for="item1 in studiosList" :key="item1.id" :label="item1.name" :value="item1.id">
-                    </el-option>
-                  </el-select>
-                </el-col>
-                <el-col :span="12" class="h-45">
-                  <el-checkbox>绑定部</el-checkbox>
-                  <el-select v-model="bindOfStudio" multiple collapse-tags style="margin-left: 20px;" placeholder="请选择">
-                    <el-option v-for="item1 in studiosList" :key="item1.id" :label="item1.name" :value="item1.id">
-                    </el-option>
-                  </el-select>
-                </el-col>
-                <el-col :span="12" class="h-45">
-                  <el-checkbox>跟踪部</el-checkbox>
-                  <el-select v-model="trackOfStudio" multiple collapse-tags style="margin-left: 20px;"
+                  <el-checkbox v-model="isMap">贴图部</el-checkbox>
+                  <el-select v-if="isMap" v-model="mapOfStudio" multiple collapse-tags style="margin-left: 20px;"
                              placeholder="请选择">
                     <el-option v-for="item1 in studiosList" :key="item1.id" :label="item1.name" :value="item1.id">
                     </el-option>
                   </el-select>
                 </el-col>
                 <el-col :span="12" class="h-45">
-                  <el-checkbox>动画部</el-checkbox>
-                  <el-select v-model="animateOfStudio" multiple collapse-tags style="margin-left: 20px;"
+                  <el-checkbox v-model="isBind">绑定部</el-checkbox>
+                  <el-select v-if="isBind" v-model="bindOfStudio" multiple collapse-tags style="margin-left: 20px;"
                              placeholder="请选择">
                     <el-option v-for="item1 in studiosList" :key="item1.id" :label="item1.name" :value="item1.id">
                     </el-option>
                   </el-select>
                 </el-col>
                 <el-col :span="12" class="h-45">
-                  <el-checkbox>数字绘景部</el-checkbox>
-                  <el-select v-model="paintOfStudio" multiple collapse-tags style="margin-left: 20px;"
+                  <el-checkbox v-model="isTrack">跟踪部</el-checkbox>
+                  <el-select v-if="isTrack" v-model="trackOfStudio" multiple collapse-tags style="margin-left: 20px;"
                              placeholder="请选择">
                     <el-option v-for="item1 in studiosList" :key="item1.id" :label="item1.name" :value="item1.id">
                     </el-option>
                   </el-select>
                 </el-col>
                 <el-col :span="12" class="h-45">
-                  <el-checkbox>特效部</el-checkbox>
-                  <el-select v-model="specialOfStudio" multiple collapse-tags style="margin-left: 20px;"
+                  <el-checkbox v-model="isAni">动画部</el-checkbox>
+                  <el-select v-if="isAni" v-model="animateOfStudio" multiple collapse-tags style="margin-left: 20px;"
                              placeholder="请选择">
                     <el-option v-for="item1 in studiosList" :key="item1.id" :label="item1.name" :value="item1.id">
                     </el-option>
                   </el-select>
                 </el-col>
                 <el-col :span="12" class="h-45">
-                  <el-checkbox>灯光部</el-checkbox>
-                  <el-select v-model="lightOfStudio" multiple collapse-tags style="margin-left: 20px;"
+                  <el-checkbox v-model="isPaint">数字绘景部</el-checkbox>
+                  <el-select v-if="isPaint" v-model="paintOfStudio" multiple collapse-tags style="margin-left: 20px;"
                              placeholder="请选择">
                     <el-option v-for="item1 in studiosList" :key="item1.id" :label="item1.name" :value="item1.id">
                     </el-option>
                   </el-select>
                 </el-col>
                 <el-col :span="12" class="h-45">
-                  <el-checkbox>合成部</el-checkbox>
-                  <el-select v-model="synchOfStudio" multiple collapse-tags style="margin-left: 20px;"
+                  <el-checkbox v-model="isSpec">特效部</el-checkbox>
+                  <el-select v-if="isSpec" v-model="specialOfStudio" multiple collapse-tags style="margin-left: 20px;"
+                             placeholder="请选择">
+                    <el-option v-for="item1 in studiosList" :key="item1.id" :label="item1.name" :value="item1.id">
+                    </el-option>
+                  </el-select>
+                </el-col>
+                <el-col :span="12" class="h-45">
+                  <el-checkbox v-model="isLight">灯光部</el-checkbox>
+                  <el-select v-if="isLight" v-model="lightOfStudio" multiple collapse-tags style="margin-left: 20px;"
+                             placeholder="请选择">
+                    <el-option v-for="item1 in studiosList" :key="item1.id" :label="item1.name" :value="item1.id">
+                    </el-option>
+                  </el-select>
+                </el-col>
+                <el-col :span="12" class="h-45">
+                  <el-checkbox v-model="isSynch">合成部</el-checkbox>
+                  <el-select v-if="isSynch" v-model="synchOfStudio" multiple collapse-tags style="margin-left: 20px;"
                              placeholder="请选择">
                     <el-option v-for="item1 in studiosList" :key="item1.id" :label="item1.name" :value="item1.id">
                     </el-option>
@@ -365,7 +367,16 @@
   export default {
     data() {
       return {
-        isArt: true,
+        isArt: false,
+        isModel: false,
+        isMap: false,
+        isBind: false,
+        isTrack: false,
+        isAni: false,
+        isPaint: false,
+        isSpec: false,
+        isLight: false,
+        isSynch: false,
         artOfStudio: [],
         modelOfStudio: [],
         mapOfStudio: [],
@@ -462,6 +473,7 @@
         }
         return isLt2M;
       },
+//      添加场号、集号
       addField(form) {
         if (this.fieldForm.project_id && this.fieldForm.name) {
           this.isLoading = !this.isLoading
@@ -478,12 +490,20 @@
           })
         }
       },
+//      改变环节选项任意复选框时执行方法
       changeTache() {
-//        if(!this.isArt) {
-//          console.log(this.artOfStudio)
-//          this.artOfStudio = []
-//        }
+        this.artOfStudio = this.isArt ? this.artOfStudio : []
+        this.modelOfStudio = this.isModel ? this.modelOfStudio : []
+        this.mapOfStudio = this.isMap ? this.mapOfStudio : []
+        this.bindOfStudio = this.isBind ? this.bindOfStudio : []
+        this.trackOfStudio = this.isTrack ? this.trackOfStudio : []
+        this.animateOfStudio = this.isAni ? this.animateOfStudio : []
+        this.paintOfStudio = this.isPaint ? this.paintOfStudio : []
+        this.specialOfStudio = this.isSpec ? this.specialOfStudio : []
+        this.lightOfStudio = this.isLight ? this.lightOfStudio : []
+        this.synchOfStudio = this.isSynch ? this.synchOfStudio : []
       },
+//      编辑镜头
       edit(form) {
         if (
           this.artOfStudio.length === 0 && this.modelOfStudio.length === 0 && this.mapOfStudio.length === 0 &&
@@ -564,6 +584,7 @@
           })
         })
       },
+//      获取所有场号、集号
       getFields() {
         const data = {
           params: {
