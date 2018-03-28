@@ -5,7 +5,7 @@ use app\common\model\Common;
 
 class Workbench extends Common{
 
-    protected $table = 'task';
+    protected $table = 'oa_task';
     protected $name = 'task';
     /**
      * 获取列表

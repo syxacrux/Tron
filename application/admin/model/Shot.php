@@ -10,6 +10,7 @@ class Shot extends Common{
     protected $difficulty_arr = [1=>'D',2=>'C',3=>'B',4=>'A',5=>'S']; //镜头难度
     protected $time_arr = [1=>'白天',2=>'晚上'];   //时刻(1白天 2夜晚)
     protected $ambient_arr = [1=>'室外',2=>'室内'];    //环境(1外 2内)
+    protected $task_status_arr = [1=>0,5=>20,10=>40,15=>60,20=>80,25=>100];    //用于任务状态计算进度百分比 status=>0%
 
     /**
      * 获取列表
@@ -79,8 +80,9 @@ class Shot extends Common{
             $list[$key]['time'] = $this->time_arr[$value['time']];  //时刻
             $list[$key]['ambient'] = $this->ambient_arr[$value['ambient']]; //环境
             $list[$key]['surplus_days'] = floatval(sprintf("%.2f",($value['plan_end_timestamp']-time())/86400));   //剩余天数
+            $list[$key]['create_timestamp'] = $value['create_time'];
             $list[$key]['create_time'] = date("Y-m-d H:i:s",$value['create_time']);
-
+            //$list[$key]['tache_info'] = $this->rate_of_progress($value['id']);
         }
         $data['list'] = $list;
         $data['dataCount'] = $dataCount;
@@ -89,7 +91,6 @@ class Shot extends Common{
 
     //添加镜头及任务
     public function addData($param,$uid,$group_id){
-        //file_put_contents('aa.txt',var_export($param,true));
         //开启事务
         $this->startTrans();
         try{
@@ -137,6 +138,7 @@ class Shot extends Common{
                         $task_data['plan_end_timestamp'] = $curr_shot_obj->plan_end_timestamp;    //计划结束时间
                         $task_data['task_status'] = 1;  //任务状态
                         $task_data['is_assets'] = 2; //是否为等待资产 1是 2否
+                        $task_data['pid'] = 0;  //工作室顶级任务ID都为0
                         $task_data['create_time'] = time();//创建时间
                         Db::name('task')->insert($task_data);
                     }
@@ -151,6 +153,17 @@ class Shot extends Common{
         }
     }
 
+    //获取当前镜头各环节进度
+    public function rate_of_progress($shot_id){
+        $where = [];
+        $where['shot_id'] = $shot_id;
+        $where['pid'] = ['neq',0];
+        $tache_arr = array_unique(Workbench::where('shot_id',$shot_id)->where('pid','!=',0)->field('tache_id')->order('tache_sort asc')->select());
+        foreach($tache_arr as $key=>$value){
+            //$studio_task_data[]
+        }
+        file_put_contents('aa.txt',var_export($tache_arr,true));
+    }
 
 
 }
