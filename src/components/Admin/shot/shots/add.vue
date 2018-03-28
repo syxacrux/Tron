@@ -461,7 +461,8 @@
           material_number: '',    //素材号
           second_company: '',    //二级公司
           make_demand: '',    //制作要求
-          status: 1    //镜头状态
+          status: 1,    //镜头状态
+
         },
         image: '',
         plan_time: '',
@@ -550,6 +551,19 @@
         this.form.difficulty = this.form.difficulty ? parseInt(this.form.difficulty) : 1
         this.form.clip_frame_length = this.form.clip_frame_length ? parseInt(this.form.clip_frame_length) : 0
         this.form.material_frame_length = this.form.material_frame_length ? parseInt(this.form.material_frame_length) : ''
+
+        this.form.tache = {
+          'ART': this.artOfStudio,
+          'MOD': this.modelOfStudio,
+          'TEX': this.mapOfStudio,
+          'RIG': this.bindOfStudio,
+          'MMV': this.trackOfStudio,
+          'ANI': this.animateOfStudio,
+          'DMT': this.paintOfStudio,
+          'EFX': this.specialOfStudio,
+          'LGT': this.lightOfStudio,
+          'CMP': this.synchOfStudio
+        }
 
         console.log(this.form)
         this.$refs.form.validate((pass) => {
