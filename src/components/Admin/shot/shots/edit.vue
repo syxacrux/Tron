@@ -5,7 +5,7 @@
         <el-col :span="8">
           <div class="grid-content">
             <el-form-item label="项目名称:" prop="project_id">
-              <el-select v-model="form.project_id" placeholder="请选择项目">
+              <el-select v-model="form.project_id" placeholder="请选择项目" @change="getAllFields">
                 <el-option v-for="item in projectList" :label="item.project_name" :value="item.id"
                            :key="item.id"></el-option>
               </el-select>
@@ -385,18 +385,20 @@
         })
       },
       getAllFields() {
-        return new Promise((resolve, reject) => {
-          this.apiGet('admin/get_fields').then((res) => {
-            this.handelResponse(res, (data) => {
-              resolve(data.list)
-            })
+        const data = {
+          params: {
+            project_id: this.form.project_id
+          }
+        }
+        this.apiGet('admin/get_fields', data).then((res) => {
+          this.handelResponse(res, (data) => {
+            resolve(data.list)
           })
         })
       },
       async getCompleteData() {
         this.projectList = await this.getAllProjects()
-//        this.fieldList = await this.getAllFields()
-//        this.apiGet('admin/projects/' + this.id).then((res) => {
+//        this.apiGet('admin/shots/' + this.id).then((res) => {
 //          this.handelResponse(res, (data) => {
 //            this.form.project_name = data.project_name
 //            this.form.project_byname = data.project_byname

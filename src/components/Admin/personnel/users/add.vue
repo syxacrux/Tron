@@ -162,40 +162,27 @@
       },
 //			获取所有角色
       getAllGroups() {
-        let data = store.state.Groups
-        if (data.list && data.list.length) {
-          this.groupsOptions = data.list
-        } else {
-          this.apiGet('admin/groups').then((res) => {
-            this.handelResponse(res, (data) => {
-              this.groupsOptions = data.list
-            })
-          })
-        }
+				this.apiGet('admin/groups').then((res) => {
+					this.handelResponse(res, (data) => {
+						this.groupsOptions = data.list
+					})
+				})
       },
 //			获取所有工作室
       getAllStudios() {
-        let data = store.state.Studios
-        if (data.list && data.list.length) {
-          this.studiosOptions = data.list
-        } else {
-          this.apiGet('admin/studios').then((res) => {
-            this.handelResponse(res, (data) => {
-              this.studiosOptions = data.list
-            })
-          })}
+				this.apiGet('admin/studios').then((res) => {
+					this.handelResponse(res, (data) => {
+						this.studiosOptions = data.list
+					})
+				})
       },
 //			获取所有环节
       getAllTaches() {
-        let data = store.state.Taches
-        if (data.list && data.list.length) {
-          this.tachesOptions = data.list
-        } else {
-          this.apiGet('admin/taches').then((res) => {
-            this.handelResponse(res, (data) => {
-              this.tachesOptions = data.list
-            })
-          })}
+				this.apiGet('admin/taches').then((res) => {
+					this.handelResponse(res, (data) => {
+						this.tachesOptions = data.list
+					})
+				})
       }
     },
     created() {
