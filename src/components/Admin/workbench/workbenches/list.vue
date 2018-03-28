@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="workbench_list">
     <div class="m-b-20">
       <el-breadcrumb separator="/">
         <el-breadcrumb-item :to="{ path: '/admin' }">首页</el-breadcrumb-item>
@@ -25,7 +25,7 @@
               </div>
               <div>
                 <!-- {{ block.title }} -->
-                <el-card class="box-card box-texts">
+                <el-card class="work-box box-card box-texts">
                   <div class="text" @click="task2 = !task2">
                     <div class="text-Lens pos-rel">
                       <p class="text-Lens-name">{{block.shot_image}}：<span>{{block.field_id + block.shot_number}}:tengsf</span></p>
@@ -611,7 +611,7 @@
   }
 
 
-    .text-Lens:after {
+  .workbench_list .text-Lens:after {
     content: '';
     height: 0;
     line-height: 0;
@@ -620,39 +620,39 @@
     clear: both;
   }
 
-  .text-Lens p {
+  .workbench_list .text-Lens p {
     margin: 0;
     display: inline-block;
     font-weight: 500;
     /* width:50%; */
   }
 
-  .text-Lens .text-Lens-rank {
+  .workbench_list .text-Lens .text-Lens-rank {
     top: 0;
     right: 0;
   }
 
-  .task-Lens-assets {
+  .workbench_list .task-Lens-assets {
     max-width: 70%;
     float: left;
   }
 
-  .task-Lens-assets .el-tag {
+  .workbench_list .task-Lens-assets .el-tag {
     margin-bottom: 5px;
   }
 
-  .text-Lens .text-Lens-time {
+  .workbench_list .text-Lens .text-Lens-time {
     width: 50%;
   }
 
-  .text-Lens-time span {
+  .workbench_list .text-Lens-time span {
     display: inline-block;
     height: 30px;
     line-height: 30px;
     font-weight: normal;
   }
 
-  .text-Lens-time .item {
+  .workbench_list .text-Lens-time .item {
     margin-right: 0;
     padding: 12px 4px;
     margin-left: 0;
@@ -663,36 +663,36 @@
     font-size: 14px;
   }
 
-  .text-Lens-link {
+  .workbench_list .text-Lens-link {
     text-align: right;
   }
-  .task_detail {
+  .workbench_list .task_detail {
     width: 25%;
     position: fixed;
     right: 20px;
     top: 100px;
     z-index: 1;
   }
-  .box-texts .el-card__body{
+  .workbench_list .el-card__body{
     padding: 0;
     width: 100%;
   }
-  .el-card .el-card__body{
+  .workbench_list .el-card .el-card__body{
     padding: 0;
-    /* width: 100%; */
+    width: 100%;
   }
-  .text-p{
+  .workbench_list .text-p{
     text-align: right;
     width:50%;
   }
-  .task-reaches p{
+  .workbench_list .task-reaches p{
     margin: 0;
     display: block;
-    font-weight: 500;
+    font-weight: 500; 
     /* width: 50%; */
     text-align: right;
   }
-  .text-Lens .task-r{
+  .workbench_list .text-Lens .task-r{
     width: 100%;
   }
 </style>
