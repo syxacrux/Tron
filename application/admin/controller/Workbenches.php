@@ -7,17 +7,19 @@
 
 namespace app\admin\controller;
 use app\admin\model\Access;
-use app\common\controller\BaseCommon;
+use app\common\controller\ApiCommon;
 
-class Workbenches extends BaseCommon{
+class Workbenches extends ApiCommon{
 
     public function index(){
         $workbench_model = model('Workbench');
+        $uid = $this->uid;
+        $group_id = Access::get($uid)->group_id;
         $param = $this->param;
         $keywords = !empty($param['keywords']) ? $param['keywords']: '';
         $page = !empty($param['page']) ? $param['page']: '';
         $limit = !empty($param['limit']) ? $param['limit']: '';
-        $data = $workbench_model->getList($keywords, $page, $limit);
+        $data = $workbench_model->getList($keywords, $page, $limit,$uid,$group_id);
         return resultArray(['data' => $data]);
     }
 

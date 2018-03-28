@@ -82,16 +82,16 @@
           </el-col>
         </el-row>
         <el-row :gutter="20">
-          <el-col :span="8">
-            <div class="grid-content">
-              <el-form-item label="是否暂停:" prop="is_parse">
-                <el-select v-model="form.is_parse" placeholder="请选择是否暂停" class="h-40 w-200">
-                  <el-option label="非暂停" value="1"></el-option>
-                  <el-option label="暂停" value="2"></el-option>
-                </el-select>
-              </el-form-item>
-            </div>
-          </el-col>
+          <!--<el-col :span="8">-->
+            <!--<div class="grid-content">-->
+              <!--<el-form-item label="是否暂停:" prop="is_parse">-->
+                <!--<el-select v-model="form.is_parse" placeholder="请选择是否暂停" class="h-40 w-200">-->
+                  <!--<el-option label="非暂停" value="1"></el-option>-->
+                  <!--<el-option label="暂停" value="2"></el-option>-->
+                <!--</el-select>-->
+              <!--</el-form-item>-->
+            <!--</div>-->
+          <!--</el-col>-->
           <el-col :span="8">
             <div class="grid-content">
               <el-form-item label="时刻:" prop="time">
@@ -123,13 +123,77 @@
               </el-form-item>
             </div>
           </el-col>
-        </el-row><el-row :gutter="20">
+        </el-row>
+        <el-row :gutter="20">
           <el-col :span="24">
             <div class="grid-content">
               <el-form-item label="环节:" prop="hahah" class="is-required">
-                <el-col :span="12" v-for="item in tachesList" :key="item.id">
-                  <el-checkbox>{{item.id}} - {{item.explain}}</el-checkbox>
-                  <el-select v-model="value" multiple collapse-tags style="margin-left: 20px;" placeholder="请选择">
+                <el-col :span="12" class="h-40">
+                  <el-checkbox>3 - 美术部</el-checkbox>
+                  <el-select v-model="artOfStudio" multiple collapse-tags style="margin-left: 20px;" placeholder="请选择">
+                    <el-option v-for="item1 in studiosList" :key="item1.id" :label="item1.name" :value="item1.id">
+                    </el-option>
+                  </el-select>
+                </el-col>
+                <el-col :span="12" class="h-40">
+                  <el-checkbox>4 - 模型部</el-checkbox>
+                  <el-select v-model="modelOfStudio" multiple collapse-tags style="margin-left: 20px;" placeholder="请选择">
+                    <el-option v-for="item1 in studiosList" :key="item1.id" :label="item1.name" :value="item1.id">
+                    </el-option>
+                  </el-select>
+                </el-col>
+                <el-col :span="12" class="h-40">
+                  <el-checkbox>3 - 贴图部</el-checkbox>
+                  <el-select v-model="mapOfStudio" multiple collapse-tags style="margin-left: 20px;" placeholder="请选择">
+                    <el-option v-for="item1 in studiosList" :key="item1.id" :label="item1.name" :value="item1.id">
+                    </el-option>
+                  </el-select>
+                </el-col>
+                <el-col :span="12" class="h-40">
+                  <el-checkbox>6 - 绑定部</el-checkbox>
+                  <el-select v-model="bindOfStudio" multiple collapse-tags style="margin-left: 20px;" placeholder="请选择">
+                    <el-option v-for="item1 in studiosList" :key="item1.id" :label="item1.name" :value="item1.id">
+                    </el-option>
+                  </el-select>
+                </el-col>
+                <el-col :span="12" class="h-40">
+                  <el-checkbox>7 - 跟踪部</el-checkbox>
+                  <el-select v-model="trackOfStudio" multiple collapse-tags style="margin-left: 20px;" placeholder="请选择">
+                    <el-option v-for="item1 in studiosList" :key="item1.id" :label="item1.name" :value="item1.id">
+                    </el-option>
+                  </el-select>
+                </el-col>
+                <el-col :span="12" class="h-40">
+                  <el-checkbox>8 - 动画部</el-checkbox>
+                  <el-select v-model="animateOfStudio" multiple collapse-tags style="margin-left: 20px;" placeholder="请选择">
+                    <el-option v-for="item1 in studiosList" :key="item1.id" :label="item1.name" :value="item1.id">
+                    </el-option>
+                  </el-select>
+                </el-col>
+                <el-col :span="12" class="h-40">
+                  <el-checkbox>9 - 数字绘景部</el-checkbox>
+                  <el-select v-model="paintOfStudio" multiple collapse-tags style="margin-left: 20px;" placeholder="请选择">
+                    <el-option v-for="item1 in studiosList" :key="item1.id" :label="item1.name" :value="item1.id">
+                    </el-option>
+                  </el-select>
+                </el-col>
+                <el-col :span="12" class="h-40">
+                  <el-checkbox>10 - 特效部</el-checkbox>
+                  <el-select v-model="specialOfStudio" multiple collapse-tags style="margin-left: 20px;" placeholder="请选择">
+                    <el-option v-for="item1 in studiosList" :key="item1.id" :label="item1.name" :value="item1.id">
+                    </el-option>
+                  </el-select>
+                </el-col>
+                <el-col :span="12" class="h-40">
+                  <el-checkbox>11 - 灯光部</el-checkbox>
+                  <el-select v-model="lightOfStudio" multiple collapse-tags style="margin-left: 20px;" placeholder="请选择">
+                    <el-option v-for="item1 in studiosList" :key="item1.id" :label="item1.name" :value="item1.id">
+                    </el-option>
+                  </el-select>
+                </el-col>
+                <el-col :span="12" class="h-40">
+                  <el-checkbox>12 - 合成部</el-checkbox>
+                  <el-select v-model="synchOfStudio" multiple collapse-tags style="margin-left: 20px;" placeholder="请选择">
                     <el-option v-for="item1 in studiosList" :key="item1.id" :label="item1.name" :value="item1.id">
                     </el-option>
                   </el-select>
@@ -161,10 +225,10 @@
             <div class="grid-content">
               <el-form-item label="镜头优先级:" prop="priority_level">
                 <el-select v-model="form.priority_level" placeholder="请选择镜头优先级" class="h-40 w-200">
-                  <el-option label="A" value="4"></el-option>
-                  <el-option label="B" value="3"></el-option>
-                  <el-option label="C" value="2"></el-option>
                   <el-option label="D" value="1"></el-option>
+                  <el-option label="C" value="2"></el-option>
+                  <el-option label="B" value="3"></el-option>
+                  <el-option label="A" value="4"></el-option>
                 </el-select>
               </el-form-item>
             </div>
@@ -175,11 +239,11 @@
             <div class="grid-content">
               <el-form-item label="镜头难度:" prop="difficulty">
                 <el-select v-model="form.difficulty" placeholder="请选择镜头难度" class="h-40 w-200">
-                  <el-option label="S" value="5"></el-option>
-                  <el-option label="A" value="4"></el-option>
-                  <el-option label="B" value="3"></el-option>
-                  <el-option label="C" value="2"></el-option>
                   <el-option label="D" value="1"></el-option>
+                  <el-option label="C" value="2"></el-option>
+                  <el-option label="B" value="3"></el-option>
+                  <el-option label="A" value="4"></el-option>
+                  <el-option label="S" value="5"></el-option>
                 </el-select>
               </el-form-item>
             </div>
@@ -200,16 +264,16 @@
           </el-col>
         </el-row>
         <el-row :gutter="20">
-          <el-col :span="8">
-            <div class="grid-content">
-              <el-form-item label="是否等待资产:" prop="is_assets">
-                <el-select v-model="form.is_assets" placeholder="请选择是否等待资产" class="h-40 w-200">
-                  <el-option label="是" value="1"></el-option>
-                  <el-option label="否" value="2"></el-option>
-                </el-select>
-              </el-form-item>
-            </div>
-          </el-col>
+          <!--<el-col :span="8">-->
+            <!--<div class="grid-content">-->
+              <!--<el-form-item label="是否等待资产:" prop="is_assets">-->
+                <!--<el-select v-model="form.is_assets" placeholder="请选择是否等待资产" class="h-40 w-200">-->
+                  <!--<el-option label="是" value="1"></el-option>-->
+                  <!--<el-option label="否" value="2"></el-option>-->
+                <!--</el-select>-->
+              <!--</el-form-item>-->
+            <!--</div>-->
+          <!--</el-col>-->
           <el-col :span="8">
             <div class="grid-content">
               <el-form-item label="素材号:" prop="material_number">
@@ -352,8 +416,16 @@
   export default {
     data() {
       return {
-        value: '',
-//        checked: false,
+        artOfStudio: [],
+        modelOfStudio: [],
+        mapOfStudio: [],
+        bindOfStudio: [],
+        trackOfStudio: [],
+        animateOfStudio: [],
+        paintOfStudio: [],
+        specialOfStudio: [],
+        lightOfStudio: [],
+        synchOfStudio: [],
         isAddField: false,
         isLoading: false,
         uploadImageUrl: window.HOST + '/admin/upload_image',
@@ -377,8 +449,8 @@
           ambient: '',    //环境
           plan_start_timestamp: '',    //计划开始时间
           plan_end_timestamp: '',    //计划结束时间
-          is_parse: '',    //是否暂停   以上为必填项↑
-          is_assets: '',    //是否等待资产
+//          is_parse: '',    //是否暂停   以上为必填项↑
+//          is_assets: '',    //是否等待资产
           shot_explain: '',    //镜头备注
           clip_frame_length: '',    //剪辑帧长
           frame_range: '',    //帧数范围
@@ -390,7 +462,8 @@
           material_number: '',    //素材号
           second_company: '',    //二级公司
           make_demand: '',    //制作要求
-          status: 1    //镜头状态
+          status: 1,    //镜头状态
+
         },
         image: '',
         plan_time: '',
@@ -421,10 +494,6 @@
       }
     },
     methods: {
-      change(item) {
-        console.log(item)
-        arguments
-      },
       handleAvatarSuccess(res, file) {
         this.image = URL.createObjectURL(file.raw);
         this.form.shot_image = res.data;
@@ -470,19 +539,32 @@
         this.form.field_id = parseInt(this.form.field_id)
         this.form.time = parseInt(this.form.time)
         this.form.ambient = parseInt(this.form.ambient)
-        this.form.is_parse = parseInt(this.form.is_parse)
+//        this.form.is_parse = parseInt(this.form.is_parse)
         this.form.plan_start_timestamp = _g.j2time(this.plan_time[0])
         this.form.plan_end_timestamp = _g.j2time(this.plan_time[1])
 
 //        选填项
         this.form.asset_ids = this.form.asset_ids.join('')
-        this.form.is_assets = this.form.is_assets ? parseInt(this.form.is_assets) : 2
+//        this.form.is_assets = this.form.is_assets ? parseInt(this.form.is_assets) : 2
         this.form.frame_range = this.frame_range1 && this.frame_range2 ? this.frame_range1 + ',' + this.frame_range2 : ''
         this.form.handle_frame = this.handle_frame1 && this.handle_frame2 ? this.handle_frame1 + ',' + this.handle_frame2 : ''
         this.form.priority_level = this.form.priority_level ? parseInt(this.form.priority_level) : 1
         this.form.difficulty = this.form.difficulty ? parseInt(this.form.difficulty) : 1
         this.form.clip_frame_length = this.form.clip_frame_length ? parseInt(this.form.clip_frame_length) : 0
         this.form.material_frame_length = this.form.material_frame_length ? parseInt(this.form.material_frame_length) : ''
+
+        this.form.tache = {
+          'ART': this.artOfStudio,
+          'MOD': this.modelOfStudio,
+          'TEX': this.mapOfStudio,
+          'RIG': this.bindOfStudio,
+          'MMV': this.trackOfStudio,
+          'ANI': this.animateOfStudio,
+          'DMT': this.paintOfStudio,
+          'EFX': this.specialOfStudio,
+          'LGT': this.lightOfStudio,
+          'CMP': this.synchOfStudio
+        }
 
         console.log(this.form)
         this.$refs.form.validate((pass) => {
@@ -514,7 +596,7 @@
       getAllStudios() {
         this.apiGet('admin/studios').then((res) => {
           this.handelResponse(res, (data) => {
-            this.studiosList = data.list
+            this.studiosList = _.drop(data.list, 1)
           })
         })
       },
