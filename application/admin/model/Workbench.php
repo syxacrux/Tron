@@ -39,13 +39,21 @@ class Workbench extends Common{
                 if($group_id == 1 || $group_id == 2|| $group_id == 3 || $group_id == 4){
                     $project_where['producer|scene_producer|scene_director|visual_effects_boss|visual_effects_producer|inside_coordinate'] = ['like','%'.$uid.'%'];
                     $project_ids_data = Project::where($project_where)->field('id')->select();
-                    foreach($project_ids_data as $key=>$value){
-                        $project_id_arr[] = $value['id'];
+                    if(!empty($project_ids_data)){
+                        foreach($project_ids_data as $key=>$value){
+                            $project_id_arr[] = $value['id'];
+                        }
+                        $project_ids = implode(",",$project_id_arr);
+                        $where['project_id'] = ['in',$project_ids];
+                    }else{  //超级管理员 uid =1
+                        $where = [];
                     }
-                    $project_ids = implode(",",$project_id_arr);
-                    $where['project_id'] = ['in',$project_ids];
+
                 }elseif($group_id == 5 || $group_id == 6 || $group_id == 7){//工作室内角色 暂时为5，6，7
                     $where['studio_id'] = $user_obj->studio_id;
+                }else{ // uid 为超级管理员
+                    echo 2;
+                    $where = [];
                 }
                 //加入条件查询
                 if(!empty($keyword['project_id'])){
@@ -56,13 +64,13 @@ class Workbench extends Common{
                 }
                 $dataCount = $this->where($where)->count('id'); //全部数量
                 //制作中 in_production
-                $in_production_list = $this->where($where)->where('status',5);
+                $in_production_list = $this->where($where)->where('task_status',5);
                 //反馈中 feedback
-                $feedback_list = $this->where($where)->where('status',15);
+                $feedback_list = $this->where($where)->where('task_status',15);
                 //提交发布 submit
-                $submit_list = $this->where($where)->where('status',25);
+                $submit_list = $this->where($where)->where('task_status',25);
                 //等待制作 wait_production
-                $wait_production_list = $this->where($where)->where('status',1);
+                $wait_production_list = $this->where($where)->where('task_status',1);
                 // 若有分页
                 if($page && $limit){
                     //暂定为总页数为40 /每列显示10条数据 $limit 10
