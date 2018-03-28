@@ -424,7 +424,7 @@
   export default {
     data() {
       return {
-        isArt: false,
+        isArt: true,
         artOfStudio: [],
         modelOfStudio: [],
         mapOfStudio: [],
