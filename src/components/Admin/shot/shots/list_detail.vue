@@ -56,7 +56,7 @@
               <div class="grid-content bg-purple">
                 <h2 class="m-0">制作中</h2>
                 <ul class="p-l-0 m-0">
-                  <li v-for="item in inProductionList" :key="item.id" @click="show2 = !show2">
+                  <li v-for="item in inProductionList" :key="item.id" @click="shotDetail(item.id)">
                     <el-card>
                       <div class="">
                         <div class="text-Lens pos-rel">
@@ -357,13 +357,13 @@
         </el-tab-pane>
       </el-tabs>
       <transition name="el-zoom-in-top">
-        <div v-show="show2" class="shot_detail fr">
+        <div v-show="isShotDetailShow" class="shot_detail fr">
           <el-card class="">
             <div slot="header" class="clearfix">
               <span>镜头详情</span>
               <i class="el-icon-edit m-l-5 fz-14 c-light-gray pointer" @click="editShot"></i>
               <i class="el-icon-delete m-l-5 fz-14 c-light-gray pointer"></i>
-              <i class="el-icon-close fr pointer" @click="show2 = !show2"></i>
+              <i class="el-icon-close fr pointer" @click="isShotDetailShow = !isShotDetailShow"></i>
             </div>
             <div v-for="o in 4" :key="o" class="item">
               {{'我是镜头详情' + o }}
@@ -384,7 +384,7 @@
   export default {
     data() {
       return {
-        show2: false,
+        isShotDetailShow: false,
         activeName: 'shotInDevelopment',
         isList: false,
         address: window.baseUrl + '/',
@@ -415,6 +415,14 @@
 //      点击编辑镜头执行方法
       editShot() {
         this.$refs.editShots.open()
+      },
+      shotDetail(id) {
+        console.log(id)
+        if(this.isShotDetailShow) {
+
+        }else {
+          this.isShotDetailShow = !this.isShotDetailShow
+        }
       },
       /*
       * 镜头列表批量点击checkbox
