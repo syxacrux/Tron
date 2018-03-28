@@ -9,12 +9,13 @@ const commonFn = {
   },
   //时间转换
   j2time(obj) {
-    let year = obj.getFullYear()
-    let month = obj.getMonth() + 1 < 10 ? '0' + (obj.getMonth() + 1) : obj.getMonth() + 1
-    let date = obj.getDate()  < 10 ? '0' + obj.getDate() : obj.getDate()
-    let hour = obj.getHours() < 10 ? '0' + obj.getHours() : obj.getHours()
-    let min = obj.getMinutes() < 10 ? '0' + obj.getMinutes() : obj.getMinutes()
-    let seconds = obj.getSeconds() < 10 ? '0' + obj.getSeconds() : obj.getSeconds()
+    var time = new Date(obj * 1000);
+    let year = time.getFullYear()
+    let month = time.getMonth() + 1 < 10 ? '0' + (time.getMonth() + 1) : time.getMonth() + 1
+    let date = time.getDate()  < 10 ? '0' + time.getDate() : time.getDate()
+    let hour = time.getHours() < 10 ? '0' + time.getHours() : time.getHours()
+    let min = time.getMinutes() < 10 ? '0' + time.getMinutes() : time.getMinutes()
+    let seconds = time.getSeconds() < 10 ? '0' + time.getSeconds() : time.getSeconds()
     return year + '-' + month + '-' + date + ' ' + hour + ':' + min + ':' + seconds
   },
   shallowRefresh(name) {

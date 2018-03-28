@@ -49,22 +49,27 @@
         <el-table-column prop="actual_end_timestamp" label="实际结束"></el-table-column>
         <el-table-column prop="make_demand" label="备注"></el-table-column>
       </el-table>
-      <el-tabs v-if="!isList" v-model="activeName" @tab-click="handleClick" class="fl">
+      <el-tabs v-if="!isList" v-model="activeName" @tab-click="tabClick" class="fl">
         <el-tab-pane label="镜头制作中" name="shotsInDevelopment">
           <div class="shot_card ovf-hd">
             <el-col :span="12">
               <div class="grid-content bg-purple">
                 <h2 class="m-0">制作中</h2>
                 <ul class="p-l-0 m-0">
-                  <li v-for="(item, index) in shotData" :key="item.id" class="" @click="show2 = !show2">
+                  <li v-for="item in inProductionList" :key="item.id" @click="show2 = !show2">
                     <el-card>
                       <div class="">
                         <div class="text-Lens pos-rel">
                           <p class="text-Lens-name h-28 ">
-                            {{item.shot_byname}}：<span>{{item.field_name + item.shot_number}}</span></p>
+                            {{item.project_name}}：<span>{{item.shot_number}}</span>
+                          </p>
                           <p class="text-Lens-rank pos-abs">
-                            <el-tag type="warning">{{item.priority_level}}</el-tag>
-                            <el-tag type="danger">{{item.difficulty}}</el-tag>
+                            <el-tooltip class="pointer" effect="dark" content="镜头难度" placement="bottom-start">
+                              <el-tag type="warning">{{item.difficulty}}</el-tag>
+                            </el-tooltip>
+                            <el-tooltip v-if="item.priority_level" class="pointer" effect="dark" content="镜头优先级" placement="bottom-start">
+                              <el-tag type="danger">{{item.priority_level}}</el-tag>
+                            </el-tooltip>
                           </p>
                         </div>
                         <div class="text-Lens m-t-10">
@@ -77,23 +82,19 @@
                           </p>
                           <p class="text-Lens-time fr tx-r">
                             <span>
-                              <el-tooltip class="m-r-5 pointer" effect="dark" content="任务剩余天数"
-                                          placement="bottom-start">
-                                <span>8天</span>
+                              <el-tooltip class="m-r-5 pointer" effect="dark" content="镜头剩余天数" placement="bottom-start">
+                                <span>{{ shotRemainDay(item.plan_end_timestamp) }}天</span>
                               </el-tooltip>
-                              <el-tooltip class="m-r-5 pointer" effect="dark" content="任务建立时间"
-                                          placement="bottom-start">
-                                <span>32分</span>
+                              <el-tooltip class="m-r-5 pointer" effect="dark" content="镜头建立时间" placement="bottom-start">
+                                <span>{{ shotCreateTime(item.create_timestamp) }}天</span>
                               </el-tooltip>
-                              <el-tooltip class="m-r-5 pointer" effect="dark" content="任务制作中时间"
-                                          placement="bottom-start">
-                                <span>9天</span>
+                              <el-tooltip class="m-r-5 pointer" effect="dark" content="镜头制作中时间" placement="bottom-start">
+                                <span>0天</span>
                               </el-tooltip>
                             </span>
                             <span>
-                              <el-tooltip class="m-r-5 pointer" effect="dark" content="任务制作中时间"
-                                          placement="bottom-start">
-                                <span>2018/02/08 14:00</span>
+                              <el-tooltip class="m-r-5 pointer" effect="dark" content="预计结束时间" placement="bottom-start">
+                                <span>{{ j2time(item.plan_end_timestamp) }}</span>
                               </el-tooltip>
                             </span>
                           </p>
@@ -116,15 +117,20 @@
               <div class="grid-content bg-purple-light">
                 <h2 class="m-0">反馈中</h2>
                 <ul class="p-l-0 m-0">
-                  <li v-for="(item, index) in shotData" :key="item.id" class="" @click="show2 = !show2">
+                  <li v-for="item in feedbackList" :key="item.id" @click="show2 = !show2">
                     <el-card class="">
                       <div class="">
                         <div class="text-Lens pos-rel">
                           <p class="text-Lens-name h-28 ">
-                            {{item.shot_byname}}：<span>{{item.field_name + item.shot_number}}</span></p>
+                            {{item.project_name}}：<span>{{item.shot_number}}</span>
+                          </p>
                           <p class="text-Lens-rank pos-abs">
-                            <el-tag type="warning">{{item.priority_level}}</el-tag>
-                            <el-tag type="danger">{{item.difficulty}}</el-tag>
+                            <el-tooltip class="pointer" effect="dark" content="镜头难度" placement="bottom-start">
+                              <el-tag type="warning">{{item.difficulty}}</el-tag>
+                            </el-tooltip>
+                            <el-tooltip v-if="item.priority_level" class="pointer" effect="dark" content="镜头优先级" placement="bottom-start">
+                              <el-tag type="danger">{{item.priority_level}}</el-tag>
+                            </el-tooltip>
                           </p>
                         </div>
                         <div class="text-Lens m-t-10">
@@ -137,23 +143,19 @@
                           </p>
                           <p class="text-Lens-time fr tx-r">
                             <span>
-                              <el-tooltip class="m-r-5 pointer" effect="dark" content="任务剩余天数"
-                                          placement="bottom-start">
-                                <span>8天</span>
+                              <el-tooltip class="m-r-5 pointer" effect="dark" content="镜头剩余天数" placement="bottom-start">
+                                <span>{{ shotRemainDay(item.plan_end_timestamp) }}天</span>
                               </el-tooltip>
-                              <el-tooltip class="m-r-5 pointer" effect="dark" content="任务建立时间"
-                                          placement="bottom-start">
-                                <span>32分</span>
+                              <el-tooltip class="m-r-5 pointer" effect="dark" content="镜头建立时间" placement="bottom-start">
+                                <span>{{ shotCreateTime(item.create_timestamp) }}天</span>
                               </el-tooltip>
-                              <el-tooltip class="m-r-5 pointer" effect="dark" content="任务制作中时间"
-                                          placement="bottom-start">
-                                <span>9天</span>
+                              <el-tooltip class="m-r-5 pointer" effect="dark" content="镜头制作中时间" placement="bottom-start">
+                                <span>0天</span>
                               </el-tooltip>
                             </span>
                             <span>
-                              <el-tooltip class="m-r-5 pointer" effect="dark" content="任务制作中时间"
-                                          placement="bottom-start">
-                                <span>2018/02/08 14:00</span>
+                              <el-tooltip class="m-r-5 pointer" effect="dark" content="预计结束时间" placement="bottom-start">
+                                <span>{{ j2time(item.plan_end_timestamp) }}</span>
                               </el-tooltip>
                             </span>
                           </p>
@@ -176,139 +178,83 @@
         </el-tab-pane>
         <el-tab-pane label="镜头未制作" name="shotsNotDevelopment">
           <div class="shot_card ovf-hd">
-            <el-col :span="12">
-              <div class="grid-content bg-purple">
-                <h2 class="m-0">等待资产</h2>
-                <ul class="p-l-0 m-0">
-                  <li v-for="(item, index) in shotData" :key="item.id" class="" @click="show2 = !show2">
-                    <el-card class="">
-                      <div class="">
-                        <div class="text-Lens pos-rel">
-                          <p class="text-Lens-name h-28 ">
-                            {{item.shot_byname}}：<span>{{item.field_name + item.shot_number}}</span></p>
-                          <p class="text-Lens-rank pos-abs">
-                            <el-tag type="warning">{{item.priority_level}}</el-tag>
-                            <el-tag type="danger">{{item.difficulty}}</el-tag>
-                          </p>
-                        </div>
-                        <div class="text-Lens m-t-10">
-                          <p class="text-Lens-assets">
-                            <el-tag type="info">混天绫:道具</el-tag>
-                            <el-tag type="info">元宝:道具</el-tag>
-                            <el-tag type="info">混天绫:道具</el-tag>
-                            <el-tag type="info">元宝:道具</el-tag>
-                            <el-tag type="info">混天绫:道具</el-tag>
-                          </p>
-                          <p class="text-Lens-time fr tx-r">
-                            <span>
-                              <el-tooltip class="m-r-5 pointer" effect="dark" content="任务剩余天数"
-                                          placement="bottom-start">
-                                <span>8天</span>
-                              </el-tooltip>
-                              <el-tooltip class="m-r-5 pointer" effect="dark" content="任务建立时间"
-                                          placement="bottom-start">
-                                <span>32分</span>
-                              </el-tooltip>
-                              <el-tooltip class="m-r-5 pointer" effect="dark" content="任务制作中时间"
-                                          placement="bottom-start">
-                                <span>9天</span>
-                              </el-tooltip>
-                            </span>
-                            <span>
-                              <el-tooltip class="m-r-5 pointer" effect="dark" content="任务制作中时间"
-                                          placement="bottom-start">
-                                <span>2018/02/08 14:00</span>
-                              </el-tooltip>
-                            </span>
-                          </p>
-                        </div>
-                        <div class="text-Lens-link m-t-10">
-                          <el-tag type="success">数绘: 100%</el-tag>
-                          <el-tag type="success">跟踪: 100%</el-tag>
-                          <el-tag type="warn">动画: 60%</el-tag>
-                          <el-tag type="danger">特效: 0%</el-tag>
-                          <el-tag type="danger">灯光: 0%</el-tag>
-                          <el-tag type="danger">合成: 0%</el-tag>
-                        </div>
+            <div class="grid-content bg-purple">
+              <h2 class="m-0">等待资产</h2>
+              <el-col :span="12" v-for="item in waitingList" :key="item.id">
+                <div class="grid-content bg-purple p-b-5">
+                  <el-card class="">
+                    <div class="">
+                      <div class="text-Lens pos-rel">
+                        <p class="text-Lens-name h-28 ">
+                          {{item.project_name}}：<span>{{item.shot_number}}</span>
+                        </p>
+                        <p class="text-Lens-rank pos-abs">
+                          <el-tooltip class="pointer" effect="dark" content="镜头难度" placement="bottom-start">
+                            <el-tag type="warning">{{item.difficulty}}</el-tag>
+                          </el-tooltip>
+                          <el-tooltip v-if="item.priority_level" class="pointer" effect="dark" content="镜头优先级" placement="bottom-start">
+                            <el-tag type="danger">{{item.priority_level}}</el-tag>
+                          </el-tooltip>
+                        </p>
                       </div>
-                    </el-card>
-                  </li>
-                </ul>
-              </div>
-            </el-col>
-            <el-col :span="12">
-              <div class="grid-content bg-purple-light">
-                <h2 class="m-0">等待上游</h2>
-                <ul class="p-l-0 m-0">
-                  <li v-for="(item, index) in shotData" :key="item.id" class="" @click="show2 = !show2">
-                    <el-card class="">
-                      <div class="">
-                        <div class="text-Lens pos-rel">
-                          <p class="text-Lens-name h-28 ">
-                            {{item.shot_byname}}：<span>{{item.field_name + item.shot_number}}</span></p>
-                          <p class="text-Lens-rank pos-abs">
-                            <el-tag type="warning">{{item.priority_level}}</el-tag>
-                            <el-tag type="danger">{{item.difficulty}}</el-tag>
-                          </p>
-                        </div>
-                        <div class="text-Lens m-t-10">
-                          <p class="text-Lens-assets">
-                            <el-tag type="info">混天绫:道具</el-tag>
-                            <el-tag type="info">元宝:道具</el-tag>
-                            <el-tag type="info">混天绫:道具</el-tag>
-                            <el-tag type="info">元宝:道具</el-tag>
-                            <el-tag type="info">混天绫:道具</el-tag>
-                          </p>
-                          <p class="text-Lens-time fr tx-r">
-                            <span>
-                              <el-tooltip class="m-r-5 pointer" effect="dark" content="任务剩余天数"
-                                          placement="bottom-start">
-                                <span>8天</span>
-                              </el-tooltip>
-                              <el-tooltip class="m-r-5 pointer" effect="dark" content="任务建立时间"
-                                          placement="bottom-start">
-                                <span>32分</span>
-                              </el-tooltip>
-                              <el-tooltip class="m-r-5 pointer" effect="dark" content="任务制作中时间"
-                                          placement="bottom-start">
-                                <span>9天</span>
-                              </el-tooltip>
-                            </span>
-                            <span>
-                              <el-tooltip class="m-r-5 pointer" effect="dark" content="任务制作中时间"
-                                          placement="bottom-start">
-                                <span>2018/02/08 14:00</span>
-                              </el-tooltip>
-                            </span>
-                          </p>
-                        </div>
-                        <div class="text-Lens-link m-t-10">
-                          <el-tag type="success">数绘: 100%</el-tag>
-                          <el-tag type="success">跟踪: 100%</el-tag>
-                          <el-tag type="warn">动画: 60%</el-tag>
-                          <el-tag type="danger">特效: 0%</el-tag>
-                          <el-tag type="danger">灯光: 0%</el-tag>
-                          <el-tag type="danger">合成: 0%</el-tag>
-                        </div>
+                      <div class="text-Lens m-t-10">
+                        <p class="text-Lens-assets">
+                          <el-tag type="info">混天绫:道具</el-tag>
+                          <el-tag type="info">元宝:道具</el-tag>
+                          <el-tag type="info">混天绫:道具</el-tag>
+                          <el-tag type="info">元宝:道具</el-tag>
+                          <el-tag type="info">混天绫:道具</el-tag>
+                        </p>
+                        <p class="text-Lens-time fr tx-r">
+                          <span>
+                            <el-tooltip class="m-r-5 pointer" effect="dark" content="镜头剩余天数" placement="bottom-start">
+                              <span>{{ shotRemainDay(item.plan_end_timestamp) }}天</span>
+                            </el-tooltip>
+                            <el-tooltip class="m-r-5 pointer" effect="dark" content="镜头建立时间" placement="bottom-start">
+                              <span>{{ shotCreateTime(item.create_timestamp) }}天</span>
+                            </el-tooltip>
+                            <el-tooltip class="m-r-5 pointer" effect="dark" content="镜头制作中时间" placement="bottom-start">
+                              <span>0天</span>
+                            </el-tooltip>
+                          </span>
+                          <span>
+                            <el-tooltip class="m-r-5 pointer" effect="dark" content="预计结束时间" placement="bottom-start">
+                              <span>{{ j2time(item.plan_end_timestamp) }}</span>
+                            </el-tooltip>
+                          </span>
+                        </p>
                       </div>
-                    </el-card>
-                  </li>
-                </ul>
-              </div>
-            </el-col>
+                      <div class="text-Lens-link m-t-10">
+                        <el-tag type="success">数绘: 100%</el-tag>
+                        <el-tag type="success">跟踪: 100%</el-tag>
+                        <el-tag type="warn">动画: 60%</el-tag>
+                        <el-tag type="danger">特效: 0%</el-tag>
+                        <el-tag type="danger">灯光: 0%</el-tag>
+                        <el-tag type="danger">合成: 0%</el-tag>
+                      </div>
+                    </div>
+                  </el-card>
+                </div>
+              </el-col>
+            </div>
           </div>
         </el-tab-pane>
         <el-tab-pane label="镜头暂停" name="shotsSuspend">
-          <el-col :span="12" v-for="(item, index) in shotData" :key="item.id">
+          <el-col :span="12" v-for="item in pauseList" :key="item.id">
             <div class="grid-content bg-purple p-b-5">
               <el-card class="">
                 <div class="">
                   <div class="text-Lens pos-rel">
                     <p class="text-Lens-name h-28 ">
-                      {{item.shot_byname}}：<span>{{item.field_name + item.shot_number}}</span></p>
+                      {{item.project_name}}：<span>{{item.shot_number}}</span>
+                    </p>
                     <p class="text-Lens-rank pos-abs">
-                      <el-tag type="warning">{{item.priority_level}}</el-tag>
-                      <el-tag type="danger">{{item.difficulty}}</el-tag>
+                      <el-tooltip class="pointer" effect="dark" content="镜头难度" placement="bottom-start">
+                        <el-tag type="warning">{{item.difficulty}}</el-tag>
+                      </el-tooltip>
+                      <el-tooltip v-if="item.priority_level" class="pointer" effect="dark" content="镜头优先级" placement="bottom-start">
+                        <el-tag type="danger">{{item.priority_level}}</el-tag>
+                      </el-tooltip>
                     </p>
                   </div>
                   <div class="text-Lens m-t-10">
@@ -320,26 +266,22 @@
                       <el-tag type="info">混天绫:道具</el-tag>
                     </p>
                     <p class="text-Lens-time fr tx-r">
-                            <span>
-                              <el-tooltip class="m-r-5 pointer" effect="dark" content="任务剩余天数"
-                                          placement="bottom-start">
-                                <span>8天</span>
-                              </el-tooltip>
-                              <el-tooltip class="m-r-5 pointer" effect="dark" content="任务建立时间"
-                                          placement="bottom-start">
-                                <span>32分</span>
-                              </el-tooltip>
-                              <el-tooltip class="m-r-5 pointer" effect="dark" content="任务制作中时间"
-                                          placement="bottom-start">
-                                <span>9天</span>
-                              </el-tooltip>
-                            </span>
                       <span>
-                              <el-tooltip class="m-r-5 pointer" effect="dark" content="任务制作中时间"
-                                          placement="bottom-start">
-                                <span>2018/02/08 14:00</span>
-                              </el-tooltip>
-                            </span>
+                        <el-tooltip class="m-r-5 pointer" effect="dark" content="镜头剩余天数" placement="bottom-start">
+                          <span>{{ shotRemainDay(item.plan_end_timestamp) }}天</span>
+                        </el-tooltip>
+                        <el-tooltip class="m-r-5 pointer" effect="dark" content="镜头建立时间" placement="bottom-start">
+                          <span>{{ shotCreateTime(item.create_timestamp) }}天</span>
+                        </el-tooltip>
+                        <el-tooltip class="m-r-5 pointer" effect="dark" content="镜头制作中时间" placement="bottom-start">
+                          <span>0天</span>
+                        </el-tooltip>
+                      </span>
+                      <span>
+                        <el-tooltip class="m-r-5 pointer" effect="dark" content="预计结束时间" placement="bottom-start">
+                          <span>{{ j2time(item.plan_end_timestamp) }}</span>
+                        </el-tooltip>
+                      </span>
                     </p>
                   </div>
                   <div class="text-Lens-link m-t-10">
@@ -356,16 +298,21 @@
           </el-col>
         </el-tab-pane>
         <el-tab-pane label="镜头完成" name="shotsFinish">
-          <el-col :span="12" v-for="(item, index) in shotData" :key="item.id">
+          <el-col :span="12" v-for="item in finishList" :key="item.id">
             <div class="grid-content bg-purple p-b-5">
               <el-card class="">
                 <div class="">
                   <div class="text-Lens pos-rel">
                     <p class="text-Lens-name h-28 ">
-                      {{item.shot_byname}}：<span>{{item.field_name + item.shot_number}}</span></p>
+                      {{item.project_name}}：<span>{{item.shot_number}}</span>
+                    </p>
                     <p class="text-Lens-rank pos-abs">
-                      <el-tag type="warning">{{item.priority_level}}</el-tag>
-                      <el-tag type="danger">{{item.difficulty}}</el-tag>
+                      <el-tooltip class="pointer" effect="dark" content="镜头难度" placement="bottom-start">
+                        <el-tag type="warning">{{item.difficulty}}</el-tag>
+                      </el-tooltip>
+                      <el-tooltip v-if="item.priority_level" class="pointer" effect="dark" content="镜头优先级" placement="bottom-start">
+                        <el-tag type="danger">{{item.priority_level}}</el-tag>
+                      </el-tooltip>
                     </p>
                   </div>
                   <div class="text-Lens m-t-10">
@@ -377,26 +324,22 @@
                       <el-tag type="info">混天绫:道具</el-tag>
                     </p>
                     <p class="text-Lens-time fr tx-r">
-                            <span>
-                              <el-tooltip class="m-r-5 pointer" effect="dark" content="任务剩余天数"
-                                          placement="bottom-start">
-                                <span>8天</span>
-                              </el-tooltip>
-                              <el-tooltip class="m-r-5 pointer" effect="dark" content="任务建立时间"
-                                          placement="bottom-start">
-                                <span>32分</span>
-                              </el-tooltip>
-                              <el-tooltip class="m-r-5 pointer" effect="dark" content="任务制作中时间"
-                                          placement="bottom-start">
-                                <span>9天</span>
-                              </el-tooltip>
-                            </span>
                       <span>
-                              <el-tooltip class="m-r-5 pointer" effect="dark" content="任务制作中时间"
-                                          placement="bottom-start">
-                                <span>2018/02/08 14:00</span>
-                              </el-tooltip>
-                            </span>
+                        <el-tooltip class="m-r-5 pointer" effect="dark" content="镜头剩余天数" placement="bottom-start">
+                          <span>{{ shotRemainDay(item.plan_end_timestamp) }}天</span>
+                        </el-tooltip>
+                        <el-tooltip class="m-r-5 pointer" effect="dark" content="镜头建立时间" placement="bottom-start">
+                          <span>{{ shotCreateTime(item.create_timestamp) }}天</span>
+                        </el-tooltip>
+                        <el-tooltip class="m-r-5 pointer" effect="dark" content="镜头制作中时间" placement="bottom-start">
+                          <span>0天</span>
+                        </el-tooltip>
+                      </span>
+                      <span>
+                        <el-tooltip class="m-r-5 pointer" effect="dark" content="预计结束时间" placement="bottom-start">
+                          <span>{{ j2time(item.plan_end_timestamp) }}</span>
+                        </el-tooltip>
+                      </span>
                     </p>
                   </div>
                   <div class="text-Lens-link m-t-10">
@@ -460,79 +403,115 @@
           tache: [{name: 'ANI', lmane: '100%'}, {name: 'MMV', lmane: '100%'}],
           actual_start_timestamp: '1',
           actual_end_timestamp: '2'
-        }, {
-          date: '2016-05-02',
-          name: '王小虎',
-          address: 'S',
-          shot_image: 'uploads/Projects/images/20180315/0fb7566809a188ba7e330564d7a9c644.jpg',
-          field_name: '',
-          shot_number: '',
-          difficulty: '',
-          priority_level: '',
-          plan_start_timestamp: '',
-          plan_end_timestamp: '',
-          make_demand: '',
-          tache: [{name: 'ANI', lmane: '100%'}, {name: 'MMV', lmane: '100%'}],
-          actual_start_timestamp: '1',
-          actual_end_timestamp: '2'
         }],
-        shotData: [{
-          date: '2016-05-02',
-          name: '王小虎',
-          shot_byname: 'FUY',
-          address: 'S',
-          shot_image: '',
-          field_name: '001',
-          shot_number: '002',
-          difficulty: 'S',
-          priority_level: 'A',
-          plan_start_timestamp: '',
-          plan_end_timestamp: '',
-          make_demand: '',
-          prop: [{name: '混天绫', lmane: '道具'}, {name: '混天绫', lmane: '道具'}],
-          tache: [{name: '数景', lmane: '100%'}]
-        }, {
-          date: '2016-05-02',
-          name: '王小虎',
-          shot_byname: 'FUY',
-          address: 'S',
-          shot_image: '',
-          field_name: '001',
-          shot_number: '002',
-          difficulty: 'S',
-          priority_level: 'A',
-          plan_start_timestamp: '',
-          plan_end_timestamp: '',
-          make_demand: '',
-          prop: [{name: '混天绫', lmane: '道具'}, {name: '混天绫', lmane: '道具'}],
-          tache: [{name: '数景', lmane: '100%'}]
-        }],
+        inProductionList: [],  //制作中列表
+        feedbackList: [],  //反馈中列表
+        waitingList: [],  //等待资产列表
+        pauseList: [],  //镜头暂停列表
+        finishList: []  //镜头完成列表
       }
     },
     methods: {
+//      点击编辑镜头执行方法
       editShot() {
         this.$refs.editShots.open()
       },
+      /*
+      * 镜头列表批量点击checkbox
+      * params: {
+      *   val: 当前已选中的checkbox群的value
+      * }
+      * */
       handleSelectionChange(val) {
         this.multipleSelection = val;
       },
-      handleClick(tab, event) {
-        console.log(tab, event);
+      /*
+      * 切换镜头tab方法
+      *   params: {
+      *     tab: 传入当前点击tab信息
+      *   }
+      * */
+      tabClick(tab, event) {
+        this.init(tab.name)
       },
-//      获取项目列表
-      getAllProjects(status) {
+//      时间抽转换为时间格式
+      j2time(time) {
+        var time = new Date(time * 1000);
+        let year = time.getFullYear()
+        let month = time.getMonth() + 1 < 10 ? '0' + (time.getMonth() + 1) : time.getMonth() + 1
+        let date = time.getDate() < 10 ? '0' + time.getDate() : time.getDate()
+        let hour = time.getHours() < 10 ? '0' + time.getHours() : time.getHours()
+        let min = time.getMinutes() < 10 ? '0' + time.getMinutes() : time.getMinutes()
+        let seconds = time.getSeconds() < 10 ? '0' + time.getSeconds() : time.getSeconds()
+        return year + '-' + month + '-' + date + ' ' + hour + ':' + min + ':' + seconds
       },
-//      初始化项目列表内容
-      init() {
-//        this.getAllProjects(0)
+//      镜头剩余天数 = 预计结束时间戳 - 当前时间戳
+      shotRemainDay(end_time) {
+        return Math.ceil((end_time - new Date() / 1000) / 86400)
+      },
+//      镜头建立时间 = 当前时间戳 - 镜头创建时间戳
+      shotCreateTime(create_time) {
+        return Math.ceil((new Date() / 1000 - create_time) / 86400)
+      },
+      /*
+      * 获取项目列表
+      * params: {
+      *   shot_status: 区分请求接口的地址（in_production、feedback、waiting、pause、finish）
+      * }
+      * */
+      getShots(shot_status) {
+        let url = `shot/${shot_status}`
+        this.loading = true
+        this.apiGet(url).then((res) => {
+          this.handelResponse(res, (data) => {
+            switch (shot_status) {
+              case 'in_production':
+                this.inProductionList = data.list
+                break;
+              case 'feedback':
+                this.feedbackList = data.list
+                break;
+              case 'waiting':
+                this.waitingList = data.list
+                break;
+              case 'pause':
+                this.pauseList = data.list
+                break;
+              case 'finish':
+                this.finishList = data.list
+                break;
+            }
+          })
+        })
+      },
+      /*
+      * 初始化镜头看板内容
+      * params: {
+      *   tab_name : 当点击切换镜头tab时的传入值
+      * }
+      * */
+      init(tab_name) {
+        switch (tab_name) {
+          case 'shotsInDevelopment':
+            this.getShots('in_production')
+            this.getShots('feedback')
+            break;
+          case 'shotsNotDevelopment':
+            this.getShots('waiting')
+            break;
+          case 'shotsSuspend':
+            this.getShots('pause')
+            break;
+          case 'shotsFinish':
+            this.getShots('finish')
+            break;
+        }
       }
     },
     created() {
       this.activeName = this.$route.query.type
-      console.log(this.activeName)
       this.isList = this.$route.query.list
-      this.init()
-      console.log(store)
+      this.init(this.activeName)
     },
     components: {
       editShots

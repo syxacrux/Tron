@@ -52,8 +52,7 @@ class Group extends Common
      * @throws \think\exception\DbException
      * @author zjs 2018/3/16
      */
-	public static function getGroupData($user_id,$value){
-        $group_id = Access::get($user_id)->group_id;
+	public static function getGroupData($group_id,$value){
         $group_data = self::where('id',$group_id)->value($value);
         return $group_data;
     }

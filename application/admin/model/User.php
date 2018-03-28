@@ -52,15 +52,16 @@ class User extends Common{
         $where['user.id'] = array('neq', 1);
 		$dataCount = $this->alias('user')->where($where)->count('id');
 		
-		$list = $this
-				->where($where)->alias('user');
+		$list = $this->where($where)->alias('user')
+                    ->join('__ADMIN_ACCESS__ access','access.user_id=user.id','inner')
+                    ->field('user.*,access.group_id');
 		// 若有分页
 		if ($page && $limit) {
 			$list = $list->page($page, $limit);
 		}
 		$list = $list->select();
 		foreach($list as $key=>$value){
-            $list[$key]['role_name'] = Group::getGroupData($value['id'],'remark');
+            $list[$key]['role_name'] = Group::getGroupData($value['group_id'],'remark');
             $list[$key]['studio_name'] = Studio::get($value['studio_id'])->name;
             $list[$key]['tache_name'] = Tache::get_tache_names($value['tache_ids'],'explain',',');
         }

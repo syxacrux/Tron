@@ -431,16 +431,11 @@
       //获取工作室
       getAllStudios() {
         return new Promise((resolve, reject) => {
-          let data = store.state.Studios
-          if (data.list && data.list.length) {
-            resolve(data.list)
-          } else {
-            this.apiGet('admin/studios').then((res) => {
-              this.handelResponse(res, (data) => {
-                resolve(data.list)
-              })
+          this.apiGet('admin/studios').then((res) => {
+            this.handelResponse(res, (data) => {
+              resolve(data.list)
             })
-          }
+          })
         })
       },
       getAllUsers() {

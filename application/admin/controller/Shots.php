@@ -33,6 +33,56 @@ class Shots extends BaseCommon{
         return resultArray(['data' => $data]);
     }
 
+    //镜头看板 - 制作中
+    public function in_production_data(){
+        $shot_model = model('Shot');
+        $param = $this->param;
+        $page = !empty($param['page']) ? $param['page']: '';
+        $limit = !empty($param['limit']) ? $param['limit']: '';
+        $data = $shot_model->getList_byStatus($page,$limit,5,2,1);
+        return resultArray(['data' => $data]);
+    }
+
+    //镜头看板 - 反馈中
+    public function feedback_data(){
+        $shot_model = model('Shot');
+        $param = $this->param;
+        $page = !empty($param['page']) ? $param['page']: '';
+        $limit = !empty($param['limit']) ? $param['limit']: '';
+        $data = $shot_model->getList_byStatus($page,$limit,15,2,1);
+        return resultArray(['data' => $data]);
+    }
+
+    //镜头看板 - 等待资产
+    public function waiting_assets_data(){
+        $shot_model = model('Shot');
+        $param = $this->param;
+        $page = !empty($param['page']) ? $param['page']: '';
+        $limit = !empty($param['limit']) ? $param['limit']: '';
+        $data = $shot_model->getList_byStatus($page,$limit,1,1,1);
+        return resultArray(['data' => $data]);
+    }
+
+    //镜头看板 - 暂停
+    public function pause_data(){
+        $shot_model = model('Shot');
+        $param = $this->param;
+        $page = !empty($param['page']) ? $param['page']: '';
+        $limit = !empty($param['limit']) ? $param['limit']: '';
+        $data = $shot_model->getList_byStatus($page,$limit,5,2,2);
+        return resultArray(['data' => $data]);
+    }
+
+    //镜头看板 - 完成
+    public function finish_data(){
+        $shot_model = model('Shot');
+        $param = $this->param;
+        $page = !empty($param['page']) ? $param['page']: '';
+        $limit = !empty($param['limit']) ? $param['limit']: '';
+        $data = $shot_model->getList_byStatus($page,$limit,25,1,1);
+        return resultArray(['data' => $data]);
+    }
+
     public function read(){
         $shot_model = model('Shot');
         $param = $this->param;
@@ -45,8 +95,10 @@ class Shots extends BaseCommon{
 
     public function save(){
         $shot_model = model('Shot');
+        $uid = $this->uid;
+        $group_id = Access::get($uid)->group_id; //所属角色
         $param = $this->param;
-        $data = $shot_model->addData($param);
+        $data = $shot_model->addData($param,$uid,$group_id);
         if (!$data) {
             return resultArray(['error' => $shot_model->getError()]);
         }

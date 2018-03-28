@@ -82,16 +82,6 @@
           </el-col>
         </el-row>
         <el-row :gutter="20">
-          <!--<el-col :span="8">-->
-            <!--<div class="grid-content">-->
-              <!--<el-form-item label="是否暂停:" prop="is_parse">-->
-                <!--<el-select v-model="form.is_parse" placeholder="请选择是否暂停" class="h-40 w-200">-->
-                  <!--<el-option label="非暂停" value="1"></el-option>-->
-                  <!--<el-option label="暂停" value="2"></el-option>-->
-                <!--</el-select>-->
-              <!--</el-form-item>-->
-            <!--</div>-->
-          <!--</el-col>-->
           <el-col :span="8">
             <div class="grid-content">
               <el-form-item label="时刻:" prop="time">
@@ -112,6 +102,19 @@
               </el-form-item>
             </div>
           </el-col>
+          <el-col :span="8">
+            <div class="grid-content">
+              <el-form-item label="镜头难度:" prop="difficulty">
+                <el-select v-model="form.difficulty" placeholder="请选择镜头难度" class="h-40 w-200">
+                  <el-option label="D" value="1"></el-option>
+                  <el-option label="C" value="2"></el-option>
+                  <el-option label="B" value="3"></el-option>
+                  <el-option label="A" value="4"></el-option>
+                  <el-option label="S" value="5"></el-option>
+                </el-select>
+              </el-form-item>
+            </div>
+          </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="24">
@@ -128,72 +131,82 @@
           <el-col :span="24">
             <div class="grid-content">
               <el-form-item label="环节:" prop="hahah" class="is-required">
-                <el-col :span="12" class="h-40">
-                  <el-checkbox>3 - 美术部</el-checkbox>
-                  <el-select v-model="artOfStudio" multiple collapse-tags style="margin-left: 20px;" placeholder="请选择">
+                <el-col :span="12" class="h-45">
+                  <el-checkbox v-model="isArt" @change="changeTache">美术部</el-checkbox>
+                  <el-select v-if="isArt" v-model="artOfStudio" multiple collapse-tags style="margin-left: 20px;"
+                             placeholder="请选择">
                     <el-option v-for="item1 in studiosList" :key="item1.id" :label="item1.name" :value="item1.id">
                     </el-option>
                   </el-select>
                 </el-col>
-                <el-col :span="12" class="h-40">
-                  <el-checkbox>4 - 模型部</el-checkbox>
-                  <el-select v-model="modelOfStudio" multiple collapse-tags style="margin-left: 20px;" placeholder="请选择">
+                <el-col :span="12" class="h-45">
+                  <el-checkbox v-model="isModel">模型部</el-checkbox>
+                  <el-select v-if="isModel" v-model="modelOfStudio" multiple collapse-tags style="margin-left: 20px;"
+                             placeholder="请选择">
                     <el-option v-for="item1 in studiosList" :key="item1.id" :label="item1.name" :value="item1.id">
                     </el-option>
                   </el-select>
                 </el-col>
-                <el-col :span="12" class="h-40">
-                  <el-checkbox>3 - 贴图部</el-checkbox>
-                  <el-select v-model="mapOfStudio" multiple collapse-tags style="margin-left: 20px;" placeholder="请选择">
+                <el-col :span="12" class="h-45">
+                  <el-checkbox v-model="isMap">贴图部</el-checkbox>
+                  <el-select v-if="isMap" v-model="mapOfStudio" multiple collapse-tags style="margin-left: 20px;"
+                             placeholder="请选择">
                     <el-option v-for="item1 in studiosList" :key="item1.id" :label="item1.name" :value="item1.id">
                     </el-option>
                   </el-select>
                 </el-col>
-                <el-col :span="12" class="h-40">
-                  <el-checkbox>6 - 绑定部</el-checkbox>
-                  <el-select v-model="bindOfStudio" multiple collapse-tags style="margin-left: 20px;" placeholder="请选择">
+                <el-col :span="12" class="h-45">
+                  <el-checkbox v-model="isBind">绑定部</el-checkbox>
+                  <el-select v-if="isBind" v-model="bindOfStudio" multiple collapse-tags style="margin-left: 20px;"
+                             placeholder="请选择">
                     <el-option v-for="item1 in studiosList" :key="item1.id" :label="item1.name" :value="item1.id">
                     </el-option>
                   </el-select>
                 </el-col>
-                <el-col :span="12" class="h-40">
-                  <el-checkbox>7 - 跟踪部</el-checkbox>
-                  <el-select v-model="trackOfStudio" multiple collapse-tags style="margin-left: 20px;" placeholder="请选择">
+                <el-col :span="12" class="h-45">
+                  <el-checkbox v-model="isTrack">跟踪部</el-checkbox>
+                  <el-select v-if="isTrack" v-model="trackOfStudio" multiple collapse-tags style="margin-left: 20px;"
+                             placeholder="请选择">
                     <el-option v-for="item1 in studiosList" :key="item1.id" :label="item1.name" :value="item1.id">
                     </el-option>
                   </el-select>
                 </el-col>
-                <el-col :span="12" class="h-40">
-                  <el-checkbox>8 - 动画部</el-checkbox>
-                  <el-select v-model="animateOfStudio" multiple collapse-tags style="margin-left: 20px;" placeholder="请选择">
+                <el-col :span="12" class="h-45">
+                  <el-checkbox v-model="isAni">动画部</el-checkbox>
+                  <el-select v-if="isAni" v-model="animateOfStudio" multiple collapse-tags style="margin-left: 20px;"
+                             placeholder="请选择">
                     <el-option v-for="item1 in studiosList" :key="item1.id" :label="item1.name" :value="item1.id">
                     </el-option>
                   </el-select>
                 </el-col>
-                <el-col :span="12" class="h-40">
-                  <el-checkbox>9 - 数字绘景部</el-checkbox>
-                  <el-select v-model="paintOfStudio" multiple collapse-tags style="margin-left: 20px;" placeholder="请选择">
+                <el-col :span="12" class="h-45">
+                  <el-checkbox v-model="isPaint">数字绘景部</el-checkbox>
+                  <el-select v-if="isPaint" v-model="paintOfStudio" multiple collapse-tags style="margin-left: 20px;"
+                             placeholder="请选择">
                     <el-option v-for="item1 in studiosList" :key="item1.id" :label="item1.name" :value="item1.id">
                     </el-option>
                   </el-select>
                 </el-col>
-                <el-col :span="12" class="h-40">
-                  <el-checkbox>10 - 特效部</el-checkbox>
-                  <el-select v-model="specialOfStudio" multiple collapse-tags style="margin-left: 20px;" placeholder="请选择">
+                <el-col :span="12" class="h-45">
+                  <el-checkbox v-model="isSpec">特效部</el-checkbox>
+                  <el-select v-if="isSpec" v-model="specialOfStudio" multiple collapse-tags style="margin-left: 20px;"
+                             placeholder="请选择">
                     <el-option v-for="item1 in studiosList" :key="item1.id" :label="item1.name" :value="item1.id">
                     </el-option>
                   </el-select>
                 </el-col>
-                <el-col :span="12" class="h-40">
-                  <el-checkbox>11 - 灯光部</el-checkbox>
-                  <el-select v-model="lightOfStudio" multiple collapse-tags style="margin-left: 20px;" placeholder="请选择">
+                <el-col :span="12" class="h-45">
+                  <el-checkbox v-model="isLight">灯光部</el-checkbox>
+                  <el-select v-if="isLight" v-model="lightOfStudio" multiple collapse-tags style="margin-left: 20px;"
+                             placeholder="请选择">
                     <el-option v-for="item1 in studiosList" :key="item1.id" :label="item1.name" :value="item1.id">
                     </el-option>
                   </el-select>
                 </el-col>
-                <el-col :span="12" class="h-40">
-                  <el-checkbox>12 - 合成部</el-checkbox>
-                  <el-select v-model="synchOfStudio" multiple collapse-tags style="margin-left: 20px;" placeholder="请选择">
+                <el-col :span="12" class="h-45">
+                  <el-checkbox v-model="isSynch">合成部</el-checkbox>
+                  <el-select v-if="isSynch" v-model="synchOfStudio" multiple collapse-tags style="margin-left: 20px;"
+                             placeholder="请选择">
                     <el-option v-for="item1 in studiosList" :key="item1.id" :label="item1.name" :value="item1.id">
                     </el-option>
                   </el-select>
@@ -237,19 +250,6 @@
         <el-row :gutter="20">
           <el-col :span="8">
             <div class="grid-content">
-              <el-form-item label="镜头难度:" prop="difficulty">
-                <el-select v-model="form.difficulty" placeholder="请选择镜头难度" class="h-40 w-200">
-                  <el-option label="D" value="1"></el-option>
-                  <el-option label="C" value="2"></el-option>
-                  <el-option label="B" value="3"></el-option>
-                  <el-option label="A" value="4"></el-option>
-                  <el-option label="S" value="5"></el-option>
-                </el-select>
-              </el-form-item>
-            </div>
-          </el-col>
-          <el-col :span="8">
-            <div class="grid-content">
               <el-form-item label="剪辑帧长:" prop="clip_frame_length">
                 <el-input v-model.trim="form.clip_frame_length" class="h-40 w-200"></el-input>
               </el-form-item>
@@ -264,16 +264,6 @@
           </el-col>
         </el-row>
         <el-row :gutter="20">
-          <!--<el-col :span="8">-->
-            <!--<div class="grid-content">-->
-              <!--<el-form-item label="是否等待资产:" prop="is_assets">-->
-                <!--<el-select v-model="form.is_assets" placeholder="请选择是否等待资产" class="h-40 w-200">-->
-                  <!--<el-option label="是" value="1"></el-option>-->
-                  <!--<el-option label="否" value="2"></el-option>-->
-                <!--</el-select>-->
-              <!--</el-form-item>-->
-            <!--</div>-->
-          <!--</el-col>-->
           <el-col :span="8">
             <div class="grid-content">
               <el-form-item label="素材号:" prop="material_number">
@@ -285,9 +275,9 @@
             <div class="grid-content">
               <el-form-item label="二级公司:" prop="second_company">
                 <!--<el-select v-model="form.second_company" multiple collapse-tags placeholder="请选择二级公司"-->
-                           <!--class="h-40 w-200">-->
-                  <!--<el-option label="我是二级公司1" value="1"></el-option>-->
-                  <!--<el-option label="我是二级公司2" value="2"></el-option>-->
+                <!--class="h-40 w-200">-->
+                <!--<el-option label="我是二级公司1" value="1"></el-option>-->
+                <!--<el-option label="我是二级公司2" value="2"></el-option>-->
                 <!--</el-select>-->
               </el-form-item>
             </div>
@@ -416,6 +406,16 @@
   export default {
     data() {
       return {
+        isArt: false,
+        isModel: false,
+        isMap: false,
+        isBind: false,
+        isTrack: false,
+        isAni: false,
+        isPaint: false,
+        isSpec: false,
+        isLight: false,
+        isSynch: false,
         artOfStudio: [],
         modelOfStudio: [],
         mapOfStudio: [],
@@ -434,8 +434,8 @@
         tachesList: [],
         fieldList: [],
         fieldForm: {
-          project_id: '',
-          name: ''
+          project_id: '',  //所属项目id
+          name: ''    //场号/集号
         },
         form: {
           project_id: '',    //所属项目id
@@ -462,8 +462,7 @@
           material_number: '',    //素材号
           second_company: '',    //二级公司
           make_demand: '',    //制作要求
-          status: 1,    //镜头状态
-
+          status: 1    //镜头状态
         },
         image: '',
         plan_time: '',
@@ -509,6 +508,7 @@
         }
         return isLt2M;
       },
+//      添加场号/集号
       addField(form) {
         if (this.fieldForm.project_id && this.fieldForm.name) {
           this.isLoading = !this.isLoading
@@ -525,7 +525,30 @@
           })
         }
       },
+//      改变环节选项中的任意复选框时执行方法
+      changeTache() {
+        this.artOfStudio = this.isArt ? this.artOfStudio : []
+        this.modelOfStudio = this.isModel ? this.modelOfStudio : []
+        this.mapOfStudio = this.isMap ? this.mapOfStudio : []
+        this.bindOfStudio = this.isBind ? this.bindOfStudio : []
+        this.trackOfStudio = this.isTrack ? this.trackOfStudio : []
+        this.animateOfStudio = this.isAni ? this.animateOfStudio : []
+        this.paintOfStudio = this.isPaint ? this.paintOfStudio : []
+        this.specialOfStudio = this.isSpec ? this.specialOfStudio : []
+        this.lightOfStudio = this.isLight ? this.lightOfStudio : []
+        this.synchOfStudio = this.isSynch ? this.synchOfStudio : []
+      },
+//      添加镜头
       add(form) {
+        if (
+          this.artOfStudio.length === 0 && this.modelOfStudio.length === 0 && this.mapOfStudio.length === 0 &&
+          this.bindOfStudio.length === 0 && this.trackOfStudio.length === 0 && this.animateOfStudio.length === 0 &&
+          this.paintOfStudio.length === 0 && this.specialOfStudio.length === 0 && this.lightOfStudio.length === 0 &&
+          this.synchOfStudio.length === 0
+        ) {
+          _g.toastMsg('warning', '请选择至少一个环节所属工作室')
+          return
+        }
         if (!this.form.shot_image) {
           _g.toastMsg('warning', '请插入镜头缩略图')
           return
@@ -534,6 +557,7 @@
           _g.toastMsg('warning', '请输入计划起止时间')
           return
         }
+
 //        必填项
         this.form.project_id = parseInt(this.form.project_id)
         this.form.field_id = parseInt(this.form.field_id)
@@ -554,16 +578,16 @@
         this.form.material_frame_length = this.form.material_frame_length ? parseInt(this.form.material_frame_length) : ''
 
         this.form.tache = {
-          'ART': this.artOfStudio,
-          'MOD': this.modelOfStudio,
-          'TEX': this.mapOfStudio,
-          'RIG': this.bindOfStudio,
-          'MMV': this.trackOfStudio,
-          'ANI': this.animateOfStudio,
-          'DMT': this.paintOfStudio,
-          'EFX': this.specialOfStudio,
-          'LGT': this.lightOfStudio,
-          'CMP': this.synchOfStudio
+          3: this.artOfStudio,
+          4: this.modelOfStudio,
+          5: this.mapOfStudio,
+          6: this.bindOfStudio,
+          7: this.trackOfStudio,
+          8: this.animateOfStudio,
+          9: this.paintOfStudio,
+          10: this.specialOfStudio,
+          11: this.lightOfStudio,
+          12: this.synchOfStudio
         }
 
         console.log(this.form)
@@ -600,6 +624,7 @@
           })
         })
       },
+//      获取所有项目
       getProjects() {
         this.apiGet('admin/projects').then((res) => {
           this.handelResponse(res, (data) => {
@@ -607,6 +632,7 @@
           })
         })
       },
+//      获取所有场合
       getFields() {
         const data = {
           params: {
