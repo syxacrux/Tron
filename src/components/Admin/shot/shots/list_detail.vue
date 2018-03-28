@@ -176,30 +176,29 @@
         </el-tab-pane>
         <el-tab-pane label="镜头未制作" name="shotsNotDevelopment">
           <div class="shot_card ovf-hd">
-            <el-col :span="24">
-              <div class="grid-content bg-purple">
-                <h2 class="m-0">等待资产</h2>
-                <ul class="p-l-0 m-0">
-                  <li v-for="(item, index) in shotData" :key="item.id" class="" @click="show2 = !show2">
-                    <el-card class="">
-                      <div class="">
-                        <div class="text-Lens pos-rel">
-                          <p class="text-Lens-name h-28 ">
-                            {{item.shot_byname}}：<span>{{item.field_name + item.shot_number}}</span></p>
-                          <p class="text-Lens-rank pos-abs">
-                            <el-tag type="warning">{{item.priority_level}}</el-tag>
-                            <el-tag type="danger">{{item.difficulty}}</el-tag>
-                          </p>
-                        </div>
-                        <div class="text-Lens m-t-10">
-                          <p class="text-Lens-assets">
-                            <el-tag type="info">混天绫:道具</el-tag>
-                            <el-tag type="info">元宝:道具</el-tag>
-                            <el-tag type="info">混天绫:道具</el-tag>
-                            <el-tag type="info">元宝:道具</el-tag>
-                            <el-tag type="info">混天绫:道具</el-tag>
-                          </p>
-                          <p class="text-Lens-time fr tx-r">
+            <div class="grid-content bg-purple">
+              <h2 class="m-0">等待资产</h2>
+              <el-col :span="12" v-for="(item, index) in shotData" :key="item.id">
+                <div class="grid-content bg-purple p-b-5">
+                  <el-card class="">
+                    <div class="">
+                      <div class="text-Lens pos-rel">
+                        <p class="text-Lens-name h-28 ">
+                          {{item.shot_byname}}：<span>{{item.field_name + item.shot_number}}</span></p>
+                        <p class="text-Lens-rank pos-abs">
+                          <el-tag type="warning">{{item.priority_level}}</el-tag>
+                          <el-tag type="danger">{{item.difficulty}}</el-tag>
+                        </p>
+                      </div>
+                      <div class="text-Lens m-t-10">
+                        <p class="text-Lens-assets">
+                          <el-tag type="info">混天绫:道具</el-tag>
+                          <el-tag type="info">元宝:道具</el-tag>
+                          <el-tag type="info">混天绫:道具</el-tag>
+                          <el-tag type="info">元宝:道具</el-tag>
+                          <el-tag type="info">混天绫:道具</el-tag>
+                        </p>
+                        <p class="text-Lens-time fr tx-r">
                             <span>
                               <el-tooltip class="m-r-5 pointer" effect="dark" content="镜头剩余天数"
                                           placement="bottom-start">
@@ -214,88 +213,27 @@
                                 <span>9天</span>
                               </el-tooltip>
                             </span>
-                            <span>
+                          <span>
                               <el-tooltip class="m-r-5 pointer" effect="dark" content="预计结束时间"
                                           placement="bottom-start">
                                 <span>2018/02/08 14:00</span>
                               </el-tooltip>
                             </span>
-                          </p>
-                        </div>
-                        <div class="text-Lens-link m-t-10">
-                          <el-tag type="success">数绘: 100%</el-tag>
-                          <el-tag type="success">跟踪: 100%</el-tag>
-                          <el-tag type="warn">动画: 60%</el-tag>
-                          <el-tag type="danger">特效: 0%</el-tag>
-                          <el-tag type="danger">灯光: 0%</el-tag>
-                          <el-tag type="danger">合成: 0%</el-tag>
-                        </div>
+                        </p>
                       </div>
-                    </el-card>
-                  </li>
-                </ul>
-              </div>
-            </el-col>
-            <!--<el-col :span="12">-->
-              <!--<div class="grid-content bg-purple-light">-->
-                <!--<h2 class="m-0">等待上游</h2>-->
-                <!--<ul class="p-l-0 m-0">-->
-                  <!--<li v-for="(item, index) in shotData" :key="item.id" class="" @click="show2 = !show2">-->
-                    <!--<el-card class="">-->
-                      <!--<div class="">-->
-                        <!--<div class="text-Lens pos-rel">-->
-                          <!--<p class="text-Lens-name h-28 ">-->
-                            <!--{{item.shot_byname}}：<span>{{item.field_name + item.shot_number}}</span></p>-->
-                          <!--<p class="text-Lens-rank pos-abs">-->
-                            <!--<el-tag type="warning">{{item.priority_level}}</el-tag>-->
-                            <!--<el-tag type="danger">{{item.difficulty}}</el-tag>-->
-                          <!--</p>-->
-                        <!--</div>-->
-                        <!--<div class="text-Lens m-t-10">-->
-                          <!--<p class="text-Lens-assets">-->
-                            <!--<el-tag type="info">混天绫:道具</el-tag>-->
-                            <!--<el-tag type="info">元宝:道具</el-tag>-->
-                            <!--<el-tag type="info">混天绫:道具</el-tag>-->
-                            <!--<el-tag type="info">元宝:道具</el-tag>-->
-                            <!--<el-tag type="info">混天绫:道具</el-tag>-->
-                          <!--</p>-->
-                          <!--<p class="text-Lens-time fr tx-r">-->
-                            <!--<span>-->
-                              <!--<el-tooltip class="m-r-5 pointer" effect="dark" content="镜头剩余天数"-->
-                                          <!--placement="bottom-start">-->
-                                <!--<span>8天</span>-->
-                              <!--</el-tooltip>-->
-                              <!--<el-tooltip class="m-r-5 pointer" effect="dark" content="镜头建立时间"-->
-                                          <!--placement="bottom-start">-->
-                                <!--<span>32分</span>-->
-                              <!--</el-tooltip>-->
-                              <!--<el-tooltip class="m-r-5 pointer" effect="dark" content="镜头制作中时间"-->
-                                          <!--placement="bottom-start">-->
-                                <!--<span>9天</span>-->
-                              <!--</el-tooltip>-->
-                            <!--</span>-->
-                            <!--<span>-->
-                              <!--<el-tooltip class="m-r-5 pointer" effect="dark" content="预计结束时间"-->
-                                          <!--placement="bottom-start">-->
-                                <!--<span>2018/02/08 14:00</span>-->
-                              <!--</el-tooltip>-->
-                            <!--</span>-->
-                          <!--</p>-->
-                        <!--</div>-->
-                        <!--<div class="text-Lens-link m-t-10">-->
-                          <!--<el-tag type="success">数绘: 100%</el-tag>-->
-                          <!--<el-tag type="success">跟踪: 100%</el-tag>-->
-                          <!--<el-tag type="warn">动画: 60%</el-tag>-->
-                          <!--<el-tag type="danger">特效: 0%</el-tag>-->
-                          <!--<el-tag type="danger">灯光: 0%</el-tag>-->
-                          <!--<el-tag type="danger">合成: 0%</el-tag>-->
-                        <!--</div>-->
-                      <!--</div>-->
-                    <!--</el-card>-->
-                  <!--</li>-->
-                <!--</ul>-->
-              <!--</div>-->
-            <!--</el-col>-->
+                      <div class="text-Lens-link m-t-10">
+                        <el-tag type="success">数绘: 100%</el-tag>
+                        <el-tag type="success">跟踪: 100%</el-tag>
+                        <el-tag type="warn">动画: 60%</el-tag>
+                        <el-tag type="danger">特效: 0%</el-tag>
+                        <el-tag type="danger">灯光: 0%</el-tag>
+                        <el-tag type="danger">合成: 0%</el-tag>
+                      </div>
+                    </div>
+                  </el-card>
+                </div>
+              </el-col>
+            </div>
           </div>
         </el-tab-pane>
         <el-tab-pane label="镜头暂停" name="shotsSuspend">
@@ -484,32 +422,32 @@
       editShot() {
         this.$refs.editShots.open()
       },
- /*
- * 镜头列表批量点击checkbox
- * params: {
- *   val: 当前已选中的checkbox群的value
- * }
- * */
+      /*
+      * 镜头列表批量点击checkbox
+      * params: {
+      *   val: 当前已选中的checkbox群的value
+      * }
+      * */
       handleSelectionChange(val) {
         this.multipleSelection = val;
       },
-/*
-* 切换镜头tab方法
-*   params: {
-*     tab: 传入当前点击tab信息
-*   }
-* */
+      /*
+      * 切换镜头tab方法
+      *   params: {
+      *     tab: 传入当前点击tab信息
+      *   }
+      * */
       tabClick(tab, event) {
         this.init(tab.name)
       },
-/*
-* 获取项目列表
-* params: {
-*   shot_status: 区分请求接口的地址（in_production、feedback、waiting、pause、finish）
-* }
-* */
+      /*
+      * 获取项目列表
+      * params: {
+      *   shot_status: 区分请求接口的地址（in_production、feedback、waiting、pause、finish）
+      * }
+      * */
       getShots(shot_status) {
-        let url = `admin/shots/${shot_status}`
+        let url = `shot/${shot_status}`
         this.loading = true
         this.apiGet(url).then((res) => {
           this.handelResponse(res, (data) => {
@@ -518,12 +456,12 @@
           })
         })
       },
-/*
-* 初始化镜头看板内容
-* params: {
-*   tab_name : 当点击切换镜头tab时的传入值
-* }
-* */
+      /*
+      * 初始化镜头看板内容
+      * params: {
+      *   tab_name : 当点击切换镜头tab时的传入值
+      * }
+      * */
       init(tab_name) {
         switch (tab_name) {
           case 'shotsInDevelopment':
