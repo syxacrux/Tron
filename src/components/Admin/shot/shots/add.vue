@@ -554,16 +554,16 @@
         this.form.material_frame_length = this.form.material_frame_length ? parseInt(this.form.material_frame_length) : ''
 
         this.form.tache = {
-          'ART': this.artOfStudio,
-          'MOD': this.modelOfStudio,
-          'TEX': this.mapOfStudio,
-          'RIG': this.bindOfStudio,
-          'MMV': this.trackOfStudio,
-          'ANI': this.animateOfStudio,
-          'DMT': this.paintOfStudio,
-          'EFX': this.specialOfStudio,
-          'LGT': this.lightOfStudio,
-          'CMP': this.synchOfStudio
+          3: this.artOfStudio,
+          4: this.modelOfStudio,
+          5: this.mapOfStudio,
+          6: this.bindOfStudio,
+          7: this.trackOfStudio,
+          8: this.animateOfStudio,
+          9: this.paintOfStudio,
+          10: this.specialOfStudio,
+          11: this.lightOfStudio,
+          12: this.synchOfStudio
         }
 
         console.log(this.form)
