@@ -70,32 +70,6 @@ class Shot extends Common{
         }
     }
 
-    /**
-     * 添加场号/集号
-     * @param $param
-     * @return bool
-     * @author zjs 2018/3/21
-     */
-    public function addFieldData($param){
-        file_put_contents('aa.txt',var_export(123,true));
-        try{
-
-            $where = [];
-            $where['project_id'] = $param['project_id'];
-            $where['name'] = $param['name'];
-            $check_name = Db::name('field')->where($where)->find();
-            if(!empty($check_name)){
-                $this->error = "名称重复，请重新填写";
-                return false;
-            }else{
-                file_put_contents('aa.txt',var_export($param,true));
-                Db::name('field')->insert($param);
-            }
-        }catch(\Exception $e){
-            $this->error = '添加失败1';
-            return false;
-        }
-    }
 
 
 }
