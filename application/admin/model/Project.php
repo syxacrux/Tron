@@ -97,11 +97,9 @@ class Project extends Common{
     /**
      * 根据项目ID获取所有数据
      * @param string $id
-     * @param string $uid
-     * @param string $group_id
      * @return bool|static
      * @throws \think\exception\DbException
-     * @author zjs 2018/3/16
+     * @author zjs 2018/3/28
      */
     public function getData_ById($id = ''){
         $data = $this->get($id);

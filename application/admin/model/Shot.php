@@ -6,6 +6,11 @@ use app\common\model\Common;
 class Shot extends Common{
 
     protected $name = 'shot';
+    protected $priority_level_arr = [1=>'D',2=>'C',3=>'B',4=>'A'];   //镜头优先级
+    protected $difficulty_arr = [1=>'D',2=>'C',3=>'B',4=>'A',5=>'S']; //镜头难度
+    protected $time_arr = [1=>'白天',2=>'晚上'];   //时刻(1白天 2夜晚)
+    protected $ambient_arr = [1=>'室外',2=>'室内'];    //环境(1外 2内)
+
     /**
      * 获取列表
      * @param $keyword
@@ -35,6 +40,48 @@ class Shot extends Common{
             $list = $list->page($page, $limit);
         }
         $list = $list ->select();
+        $data['list'] = $list;
+        $data['dataCount'] = $dataCount;
+        return $data;
+    }
+
+    /**
+     * 根据镜头状态与是否暂停状态获取列表数据
+     * @param $page
+     * @param $limit
+     * @param string $status
+     * @param string $is_assets 是否为等待资产 1是 2否
+     * @param string $is_pause  是否暂停 1 非暂停 2暂停
+     * @return mixed
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     * @author zjs 2018/3/28
+     */
+    public function getList_byStatus($page,$limit,$status,$is_assets,$is_pause){
+        $where = [];
+        $where['status'] = $status;
+        $where['is_assets'] = $is_assets;
+        $where['is_pause'] = $is_pause;
+
+        $dataCount = $this->where($where)->count('id');
+        $list = $this->where($where)->order('plan_end_timestamp desc');
+        // 若有分页
+        if ($page && $limit) {
+            $list = $list->page($page, $limit);
+        }
+        $list = $list ->select();
+        foreach($list as $key=>$value){
+            $list[$key]['project_name'] = Project::get($value['project_id'])->project_byname;
+            $list[$key]['shot_number'] = Db::name('field')->where('id',$value['field_id'])->value('name').$value['shot_number'];
+            $list[$key]['priority_level'] = $this->priority_level_arr[$value['priority_level']];    //镜头优先级
+            $list[$key]['difficulty'] = $this->difficulty_arr[$value['difficulty']];    //镜头难度
+            $list[$key]['time'] = $this->time_arr[$value['time']];  //时刻
+            $list[$key]['ambient'] = $this->ambient_arr[$value['ambient']]; //环境
+            $list[$key]['surplus_days'] = floatval(sprintf("%.2f",($value['plan_end_timestamp']-time())/86400));   //剩余天数
+            $list[$key]['create_time'] = date("Y-m-d H:i:s",$value['create_time']);
+
+        }
         $data['list'] = $list;
         $data['dataCount'] = $dataCount;
         return $data;
