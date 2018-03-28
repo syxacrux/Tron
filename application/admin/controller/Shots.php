@@ -53,17 +53,6 @@ class Shots extends BaseCommon{
         return resultArray(['data' => '添加成功']);
     }
 
-    //根据所属项目添加场/集
-    public function filed_save(){
-        $shot_model = model('Shot');
-        $param = $this->param;
-        $data = $shot_model->addFieldData($param);
-        if(!$data){
-            return resultArray(['error'=>$shot_model->getError()]);
-        }
-        return resultArray(['data'=>'添加成功']);
-    }
-
     public function update(){
         $shot_model = model('Shot');
         $param = $this->param;
