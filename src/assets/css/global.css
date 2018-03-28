@@ -114,6 +114,10 @@ a {
     height: 40px !important;
     line-height: 40px !important;
 }
+.h-45 {
+    height: 45px !important;
+    line-height: 45px !important;
+}
 .h-50 {
     height: 50px !important;
     line-height: 50px !important;
