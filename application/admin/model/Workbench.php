@@ -7,6 +7,9 @@ class Workbench extends Common{
 
     protected $table = 'oa_task';
     protected $name = 'task';
+
+    protected $task_priority_level_arr = [1=>'D',2=>'C',3=>'B',4=>'A'];   //任务优先级
+    protected $difficulty_arr = [1=>'D',2=>'C',3=>'B',4=>'A',5=>'S']; //任务难度
     /**
      * 获取列表
      * @param $keyword
@@ -89,14 +92,23 @@ class Workbench extends Common{
             case 3:
                 break;
         }
-
+        //重组数组
+        foreach($list_data as $key=>$value){
+            $list_data[$key]['project_name'] = Project::get($value['project_id'])->project_byname;
+            $list_data[$key]['shot_number'] = Db::name('field')->where('id',$value['field_id'])->value('name').Shot::get($value['shot_id'])->shot_number;
+            $list_data[$key]['task_priority_level'] = $this->task_priority_level_arr[$value['task_priority_level']];    //任务优先级
+            $list_data[$key]['difficulty'] = $this->difficulty_arr[$value['difficulty']];   //任务难度
+            $list_data[$key]['surplus_days'] = floatval(sprintf("%.2f",($value['plan_end_timestamp']-time())/86400))."天";   //剩余天数
+            $list_data[$key]['task_allot_days'] = (!empty($value['actually_start_timestamp']) || !empty($value['actually_end_timestamp'])) ? floatval(sprintf("%.2f",($value['actually_end_timestamp']-$value['actually_end_timestamp'])/86400))."天" :'0天';//任务分配时间
+            $list_data[$key]['create_timestamp'] = $value['create_time'];
+            $list_data[$key]['create_time'] = date("Y-m-d H:i:s",$value['create_time']);
+        }
         $data['list'] = $list_data;
         $data['dataCount'] = $dataCount;
         return $data;
     }
 
     public function addData($param){
-
         try{
             $param['asset_ids'] = implode(",",$param['asset_ids']);    //资产ID 多项 字符串 以逗号分割
             $param['shot_image'] = str_replace('\\','/',$param['shot_image']);
