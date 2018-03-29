@@ -564,14 +564,13 @@
 //        this.form.is_parse = parseInt(this.form.is_parse)
         this.form.plan_start_timestamp = _g.j2time(this.plan_time[0])
         this.form.plan_end_timestamp = _g.j2time(this.plan_time[1])
+        this.form.priority_level = this.form.priority_level ? parseInt(this.form.priority_level) : 1
+        this.form.difficulty = this.form.difficulty ? parseInt(this.form.difficulty) : 1
 
 //        选填项
         this.form.asset_ids = this.form.asset_ids.join('')
-//        this.form.is_assets = this.form.is_assets ? parseInt(this.form.is_assets) : 2
         this.form.frame_range = this.frame_range1 && this.frame_range2 ? this.frame_range1 + ',' + this.frame_range2 : ''
         this.form.handle_frame = this.handle_frame1 && this.handle_frame2 ? this.handle_frame1 + ',' + this.handle_frame2 : ''
-        this.form.priority_level = this.form.priority_level ? parseInt(this.form.priority_level) : 1
-        this.form.difficulty = this.form.difficulty ? parseInt(this.form.difficulty) : 1
         this.form.clip_frame_length = this.form.clip_frame_length ? parseInt(this.form.clip_frame_length) : 0
         this.form.material_frame_length = this.form.material_frame_length ? parseInt(this.form.material_frame_length) : ''
 
