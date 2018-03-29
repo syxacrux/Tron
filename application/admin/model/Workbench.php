@@ -70,8 +70,8 @@ class Workbench extends Common{
                 $dataCount = $this->where($where)->count('id'); //全部数量
                 //制作中 in_production
                 $in_production_list = $this->where($where)->where('task_status',5);
-                //反馈中 feedback
-                $feedback_list = $this->where($where)->where('task_status',15);
+                //反馈中 feedback  等待审核 反馈中
+                $feedback_list = $this->where($where)->where('task_status','in','10,15');
                 //提交发布 submit
                 $submit_list = $this->where($where)->where('task_status',25);
                 //等待制作 wait_production
@@ -102,7 +102,7 @@ class Workbench extends Common{
             $list_data[$key]['task_priority_level'] = $this->task_priority_level_arr[$value['task_priority_level']];    //任务优先级
             $list_data[$key]['difficulty'] = $this->difficulty_arr[$value['difficulty']];   //任务难度
             $list_data[$key]['surplus_days'] = floatval(sprintf("%.2f",($value['plan_end_timestamp']-time())/86400))."天";   //剩余天数
-            $list_data[$key]['task_allot_days'] = (!empty($value['actually_start_timestamp']) || !empty($value['actually_end_timestamp'])) ? floatval(sprintf("%.2f",($value['actually_end_timestamp']-$value['actually_end_timestamp'])/86400))."天" :'0天';//任务分配时间
+            $list_data[$key]['task_allot_days'] = (!empty($value['actually_start_timestamp']) || !empty($value['actually_end_timestamp'])) ? floatval(sprintf("%.2f",($value['actually_end_timestamp']-$value['actually_start_timestamp'])/86400))."天" :'0天';//任务分配时间
             $list_data[$key]['create_timestamp'] = $value['create_time'];
             $list_data[$key]['create_time'] = date("Y-m-d H:i:s",$value['create_time']);
         }

@@ -28,10 +28,10 @@
                 <el-card class="work-box box-card box-texts">
                   <div class="text" @click="task2 = !task2">
                     <div class="text-Lens pos-rel">
-                      <p class="text-Lens-name">{{block.shot_image}}：<span>{{block.field_id + block.shot_number}}:tengsf</span></p>
+                      <p class="text-Lens-name">{{block.project_name}}：<span>{{block.shot_number}}:{{block.task_byname}}</span></p>
                       <p class="text-Lens-rank pos-abs">
-                        <el-tag type="warning">{{block.task_priority_level}}</el-tag>
-                        <el-tag type="danger">{{block.difficulty}}</el-tag>
+                        <el-tag type="warning" v-if="block.task_priority_level != '' ">{{block.task_priority_level}}</el-tag>
+                        <el-tag type="danger" v-if="block.difficulty != '' ">{{block.difficulty}}</el-tag>
                       </p>
                     </div>
                     <div class="text-Lens m-t-10">
@@ -42,21 +42,21 @@
                               <span>
                                 <el-tooltip class="m-r-5 pointer" effect="dark" content="任务剩余天数"
                                             placement="bottom-start">
-                                  <span>8天</span>
+                                  <span>{{shotRemainDay(block.plan_end_timestamp)}}天</span>
                                 </el-tooltip>
                                 <el-tooltip class="m-r-5 pointer" effect="dark" content="任务建立时间"
                                             placement="bottom-start">
-                                  <span>{{block.task_is_status_time}}分</span>
+                                  <span>{{ shotCreateTime(block.create_timestamp) }}天</span>
                                 </el-tooltip>
                                 <el-tooltip class="m-r-5 pointer" effect="dark" content="任务制作中时间"
                                             placement="bottom-start">
-                                  <span>{{block.task_allocated_time}}天</span>
+                                  <span>{{block.update_time}}天</span>
                                 </el-tooltip>
                               </span>
                         <span>
-                            <el-tooltip class="m-r-5 pointer" effect="dark" content="任务制作中时间"
+                            <el-tooltip class="m-r-5 pointer" effect="dark" content="预计结束时间"
                                             placement="bottom-start">
-                            <span>2018/02/08 14:00</span>
+                            <span>{{block.plan_end_timestamp}}</span>
                                 </el-tooltip>
                         </span>
                       </p>
@@ -162,11 +162,11 @@
                                     </el-tooltip>
                                     <el-tooltip class="m-r-5 pointer" effect="dark" content="任务建立时间"
                                                 placement="bottom-start">
-                                      <span>{{block.task_is_status_time}}分</span>
+                                      <span>{{block.create_time}}分</span>
                                     </el-tooltip>
                                     <el-tooltip class="m-r-5 pointer" effect="dark" content="任务制作中时间"
                                                 placement="bottom-start">
-                                      <span>{{block.task_allocated_time}}天</span>
+                                      <span>{{block.update_time}}天</span>
                                     </el-tooltip>
                                   </span>
                           </p>
@@ -324,7 +324,7 @@
       return {
         isList:true,
         task2: false,
-        limit: 10,
+        limit: 40,
         currentPage: 1,
         dataCount: null,
         activeName: 'task',
@@ -370,54 +370,15 @@
           depth_of_field:'',//景深
           pid:1,//所属任务主键
 
-        }, {
-          date: '2016-05-04',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1517 弄',
-          id:0,
-          group_id:null,//角色ID
-          user_id:null,//所属用户
-          project_id:2,//所属项目ID
-          field_id:3,//	场号/集号ID
-          shot_id:null,//镜头ID 根据任务类型存值
-          assets_id:null,//资产ID 根据任务类型存值
-          tache_id:1,//环节ID
-          tache_sort:null,//环节序号
-          studio_id:2,//工作室ID
-          task_type:'',//任务类型
-          shot_image:'FUY',//镜头简称
-          make_demand:'',//制作要求
-          shot_number:'001',//镜头
-          task_priority_level:'A',//优先级
-          difficulty:'S',//难度
-          second_company:'',//二级公司(相当于其他工作室ID )
-          task_is_status_time:'32',//任务在此状态时间 分
-          task_allocated_time:'9',//任务分配时间 小时
-          plan_start_timestamp:'',//计划开始时间
-          plan_end_timestamp:'2018/02/08 14:00',//计划结束时间
-          actually_start_timestamp:'2018/02/04 14:00',//任务实际开始时间
-          actually_end_timestamp:'2018/02/04 14:00',//任务实际结时时间	
-          finish_degree:'',//完成度
-          task_status:1,//任务状态 1等待制作 5制作中 10等待审核 15 镜头反馈中 16 资产反馈中 20内部审核通过 25完成 30客户通过
-          is_pause:1,//是否暂停 1 非暂停 2暂停
-          camera_model:'',//相机型号
-          camera_catch:'',//相机捕捉	
-          camera_motion:1,//相机运动 1匀速
-          camera_height:null,//相机高度
-          camera_focus:'',//相机焦距
-          focus_distance:'',//对焦距离
-          depth_of_field:'',//景深
-          pid:1,//所属任务主键
         }],
         stages: ['制作中', '反馈中',  '等待制作', '提交发布'],
         blocks: [
           {
-            id: 1,
-            status: '制作中',
-            title: 'Test',
+            id:0,
             group_id:null,//角色ID
             user_id:null,//所属用户
             project_id:2,//所属项目ID
+            project_name:'',//项目简称
             field_id:3,//	场号/集号ID
             shot_id:null,//镜头ID 根据任务类型存值
             assets_id:null,//资产ID 根据任务类型存值
@@ -425,7 +386,8 @@
             tache_sort:null,//环节序号
             studio_id:2,//工作室ID
             task_type:'',//任务类型
-            shot_image:'FUY',//镜头简称
+            shot_image:'FUY',//镜头缩略图
+            task_byname:'FUY',//任务简称
             make_demand:'',//制作要求
             shot_number:'001',//镜头
             task_priority_level:'A',//优先级
@@ -435,8 +397,8 @@
             task_allocated_time:'9',//任务分配时间 小时
             plan_start_timestamp:'',//计划开始时间
             plan_end_timestamp:'2018/02/08 14:00',//计划结束时间
-            actually_start_timestamp:'2018/02/04 14:00',//任务实际开始时间
-            actually_end_timestamp:'2018/02/04 14:00',//任务实际结时时间	
+            actually_start_timestamp:'',//任务实际开始时间
+            actually_end_timestamp:'',//任务实际结时时间	
             finish_degree:'',//完成度
             task_status:1,//任务状态 1等待制作 5制作中 10等待审核 15 镜头反馈中 16 资产反馈中 20内部审核通过 25完成 30客户通过
             is_pause:1,//是否暂停 1 非暂停 2暂停
@@ -448,118 +410,9 @@
             focus_distance:'',//对焦距离
             depth_of_field:'',//景深
             pid:1,//所属任务主键
-          },{
-            id: 2,
-            status: '提交发布',
-            title: 'Test',
-            group_id:null,//角色ID
-            user_id:null,//所属用户
-            project_id:2,//所属项目ID
-            field_id:3,//	场号/集号ID
-            shot_id:null,//镜头ID 根据任务类型存值
-            assets_id:null,//资产ID 根据任务类型存值
-            tache_id:1,//环节ID
-            tache_sort:null,//环节序号
-            studio_id:2,//工作室ID
-            task_type:'',//任务类型
-            shot_image:'FUY',//镜头简称
-            make_demand:'',//制作要求
-            shot_number:'001',//镜头
-            task_priority_level:'A',//优先级
-            difficulty:'S',//难度
-            second_company:'',//二级公司(相当于其他工作室ID )
-            task_is_status_time:'32',//任务在此状态时间 分
-            task_allocated_time:'9',//任务分配时间 小时
-            plan_start_timestamp:'',//计划开始时间
-            plan_end_timestamp:'2018/02/08 14:00',//计划结束时间
-            actually_start_timestamp:'2018/02/04 14:00',//任务实际开始时间
-            actually_end_timestamp:'2018/02/04 14:00',//任务实际结时时间	
-            finish_degree:'',//完成度
-            task_status:1,//任务状态 1等待制作 5制作中 10等待审核 15 镜头反馈中 16 资产反馈中 20内部审核通过 25完成 30客户通过
-            is_pause:1,//是否暂停 1 非暂停 2暂停
-            camera_model:'',//相机型号
-            camera_catch:'',//相机捕捉	
-            camera_motion:1,//相机运动 1匀速
-            camera_height:null,//相机高度
-            camera_focus:'',//相机焦距
-            focus_distance:'',//对焦距离
-            depth_of_field:'',//景深
-            pid:1,//所属任务主键
-          },{
-            id: 3,
-            status: '提交发布',
-            title: 'Test',
-            group_id:null,//角色ID
-            user_id:null,//所属用户
-            project_id:2,//所属项目ID
-            field_id:3,//	场号/集号ID
-            shot_id:null,//镜头ID 根据任务类型存值
-            assets_id:null,//资产ID 根据任务类型存值
-            tache_id:1,//环节ID
-            tache_sort:null,//环节序号
-            studio_id:2,//工作室ID
-            task_type:'',//任务类型
-            shot_image:'FUY',//镜头简称
-            make_demand:'',//制作要求
-            shot_number:'001',//镜头
-            task_priority_level:'A',//优先级
-            difficulty:'S',//难度
-            second_company:'',//二级公司(相当于其他工作室ID )
-            task_is_status_time:'32',//任务在此状态时间 分
-            task_allocated_time:'9',//任务分配时间 小时
-            plan_start_timestamp:'',//计划开始时间
-            plan_end_timestamp:'2018/02/08 14:00',//计划结束时间
-            actually_start_timestamp:'2018/02/04 14:00',//任务实际开始时间
-            actually_end_timestamp:'2018/02/04 14:00',//任务实际结时时间	
-            finish_degree:'',//完成度
-            task_status:1,//任务状态 1等待制作 5制作中 10等待审核 15 镜头反馈中 16 资产反馈中 20内部审核通过 25完成 30客户通过
-            is_pause:1,//是否暂停 1 非暂停 2暂停
-            camera_model:'',//相机型号
-            camera_catch:'',//相机捕捉	
-            camera_motion:1,//相机运动 1匀速
-            camera_height:null,//相机高度
-            camera_focus:'',//相机焦距
-            focus_distance:'',//对焦距离
-            depth_of_field:'',//景深
-            pid:1,//所属任务主键
-          },{
-            id: 4,
-            status: '等待制作',
-            title: 'Test',
-            group_id:null,//角色ID
-            user_id:null,//所属用户
-            project_id:2,//所属项目ID
-            field_id:3,//	场号/集号ID
-            shot_id:null,//镜头ID 根据任务类型存值
-            assets_id:null,//资产ID 根据任务类型存值
-            tache_id:1,//环节ID
-            tache_sort:null,//环节序号
-            studio_id:2,//工作室ID
-            task_type:'',//任务类型
-            shot_image:'FUY',//镜头简称
-            make_demand:'',//制作要求
-            shot_number:'001',//镜头
-            task_priority_level:'A',//优先级
-            difficulty:'S',//难度
-            second_company:'',//二级公司(相当于其他工作室ID )
-            task_is_status_time:'32',//任务在此状态时间 分
-            task_allocated_time:'9',//任务分配时间 小时
-            plan_start_timestamp:'',//计划开始时间
-            plan_end_timestamp:'2018/02/08 14:00',//计划结束时间
-            actually_start_timestamp:'2018/02/04 14:00',//任务实际开始时间
-            actually_end_timestamp:'2018/02/04 14:00',//任务实际结时时间	
-            finish_degree:'',//完成度
-            task_status:1,//任务状态 1等待制作 5制作中 10等待审核 15 镜头反馈中 16 资产反馈中 20内部审核通过 25完成 30客户通过
-            is_pause:1,//是否暂停 1 非暂停 2暂停
-            camera_model:'',//相机型号
-            camera_catch:'',//相机捕捉	
-            camera_motion:1,//相机运动 1匀速
-            camera_height:null,//相机高度
-            camera_focus:'',//相机焦距
-            focus_distance:'',//对焦距离
-            depth_of_field:'',//景深
-            pid:1,//所属任务主键
-          },
+            create_time:'',//创建时间
+            update_time:0,//改变状态时更新时间
+          }
         ],
       }
     },
@@ -572,13 +425,35 @@
         console.log(status)
         console.log(arguments)
         this.blocks.find(b => b.id === Number(id)).status = status;
+
       },
       handleClick(tab, event) {
         console.log(tab, event);
+        console.log(tab)
+        this.getAllWorkbenches(parseInt(tab.index)+1)
       },
-      //      切换页码
+      //      时间抽转换为时间格式
+      j2time(time) {
+        var time = new Date(time * 1000);
+        let year = time.getFullYear()
+        let month = time.getMonth() + 1 < 10 ? '0' + (time.getMonth() + 1) : time.getMonth() + 1
+        let date = time.getDate() < 10 ? '0' + time.getDate() : time.getDate()
+        let hour = time.getHours() < 10 ? '0' + time.getHours() : time.getHours()
+        let min = time.getMinutes() < 10 ? '0' + time.getMinutes() : time.getMinutes()
+        let seconds = time.getSeconds() < 10 ? '0' + time.getSeconds() : time.getSeconds()
+        return year + '-' + month + '-' + date + ' ' + hour + ':' + min + ':' + seconds
+      },
+//      任务剩余天数 = 预计结束时间戳 - 当前时间戳
+      shotRemainDay(end_time) {
+        return Math.ceil((end_time - new Date() / 1000) / 86400)
+      },
+//      任务建立时间 = 当前时间戳 - 任务创建时间戳
+      shotCreateTime(create_time) {
+        return Math.ceil((new Date() / 1000 - create_time) / 86400)
+      },
+       //      切换页码
       handleCurrentChange(page) {
-      // this.getAllWorkbenches(page)
+        this.getAllWorkbenches(page)
       },
 //      获取项目列表
       getAllWorkbenches(status) {
@@ -586,12 +461,19 @@
         const data = {
           params: {
             keywords: {
-              list_type: status
+              list_type: status,
+              page: status,
+              limit: this.limit
             }
           }
         }
         this.apiGet('admin/workbenches',data).then((res) => {
           this.handelResponse(res, (data) => {
+            this.blocks=data.list
+            _(this.blocks).forEach((res1,res2) => {
+              this.blocks[res2].status = res1.task_status == 1 ? '等待制作' : (res1.task_status == 5 ? '制作中' : (res1.task_status == 15 ? '反馈中' : '提交发布'))
+            })
+            this.dataCount=data.dataCount
           })
         })
       },
