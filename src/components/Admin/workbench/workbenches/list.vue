@@ -83,8 +83,8 @@
           </kanban-board>
           <div class="block task-block">
             <el-pagination
-                    @current-change="handleCurrentChange"
-                    layout="prev, pager, next"
+                    @current-change="taskCurrentChange"
+                    layout="prev, pager, next, jumper"
                     :page-size="limit"
                     :current-page="currentPage"
                     :total="dataCount">
@@ -223,8 +223,8 @@
           </div>
           <div class="block task-block">
             <el-pagination
-                    @current-change="handleCurrentChange"
-                    layout="prev, pager, next"
+                    @current-change="upstreamCurrentChange"
+                    layout="prev, pager, next, jumper"
                     :page-size="limit"
                     :current-page="currentPage"
                     :total="dataCount">
@@ -295,8 +295,8 @@
           </div>
           <div class="block task-block">
             <el-pagination
-                    @current-change="handleCurrentChange"
-                    layout="prev, pager, next"
+                    @current-change="completeCurrentChange"
+                    layout="prev, pager, next, jumper"
                     :page-size="limit"
                     :current-page="currentPage"
                     :total="dataCount">
@@ -340,17 +340,17 @@
       </transition>
     </div>
     <editWorkbenches ref="editWorkbenches"></editWorkbenches>
-    <!-- <div class="pos-rel p-t-20">
+    <div v-if="!isList" class="pos-rel p-t-20">
       <div class="block pages">
         <el-pagination
-                @current-change="handleCurrentChange"
-                layout="prev, pager, next"
+                @current-change="taskCurrentChange"
+                layout="prev, pager, next, jumper"
                 :page-size="limit"
                 :current-page="currentPage"
                 :total="dataCount">
         </el-pagination>
       </div>
-		</div> -->
+		</div>
   </div>
 </template>
 
@@ -366,57 +366,13 @@
         isList:true,
         task2: false,
         limit: 40,
-        state:1,
         currentPage: 1,
         dataCount: null,
         activeName: 'task',
         address: window.baseUrl + '/',
         // frequencyState:true,
         tableData: [{
-          date: '2016-05-02',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄',
           id:0,
-          group_id:null,//角色ID
-          user_id:null,//所属用户
-          project_id:2,//所属项目ID
-          field_id:3,//	场号/集号ID
-          shot_id:null,//镜头ID 根据任务类型存值
-          assets_id:null,//资产ID 根据任务类型存值
-          tache_id:1,//环节ID
-          tache_sort:null,//环节序号
-          studio_id:2,//工作室ID
-          task_type:'',//任务类型
-          shot_image:'FUY',//镜头缩略图
-          task_byname:'FUY',//镜头简称
-          make_demand:'',//制作要求
-          shot_number:'001',//镜头
-          task_priority_level:'A',//优先级
-          difficulty:'S',//难度
-          second_company:'',//二级公司(相当于其他工作室ID )
-          task_is_status_time:'32',//任务在此状态时间 分
-          task_allocated_time:'9',//任务分配时间 小时
-          plan_start_timestamp:'',//计划开始时间
-          plan_end_timestamp:'2018/02/08 14:00',//计划结束时间
-          actually_start_timestamp:'',//任务实际开始时间
-          actually_end_timestamp:'',//任务实际结时时间	
-          finish_degree:'',//完成度
-          task_status:1,//任务状态 1等待制作 5制作中 10等待审核 15 镜头反馈中 16 资产反馈中 20内部审核通过 25完成 30客户通过
-          is_pause:1,//是否暂停 1 非暂停 2暂停
-          camera_model:'',//相机型号
-          camera_catch:'',//相机捕捉	
-          camera_motion:1,//相机运动 1匀速
-          camera_height:null,//相机高度
-          camera_focus:'',//相机焦距
-          focus_distance:'',//对焦距离
-          depth_of_field:'',//景深
-          pid:1,//所属任务主键
-
-        }],
-        stages: ['制作中', '反馈中',  '等待制作', '提交发布'],
-        blocks: [
-          {
-            id:0,
             group_id:null,//角色ID
             user_id:null,//所属用户
             project_id:2,//所属项目ID
@@ -454,8 +410,10 @@
             pid:1,//所属任务主键
             create_time:'',//创建时间
             update_time:0,//改变状态时更新时间
-          }
-        ],
+
+        }],
+        stages: ['制作中', '反馈中',  '等待制作', '提交发布'],
+        blocks: [],//任务页面数据
       }
     },
     methods: {
@@ -472,7 +430,7 @@
       handleClick(tab, event) {
         console.log(tab, event);
         console.log(tab)
-        this.getAllWorkbenches(parseInt(tab.index)+1)
+        this.getAllWorkbenches(parseInt(tab.index)+1,1)
       },
       //      时间抽转换为时间格式
       j2time(time) {
@@ -493,9 +451,17 @@
       shotCreateTime(create_time) {
         return Math.ceil((new Date() / 1000 - create_time) / 86400)
       },
-       //      切换页码
-      handleCurrentChange(page) {
-        this.getAllWorkbenches(this.state,page)
+       // 任务切换页码
+      taskCurrentChange(page) {
+        this.getAllWorkbenches(1,page)
+      },
+      //等待上游切换页码
+      upstreamCurrentChange(page){
+        this.getAllWorkbenches(2,page)
+      },
+      //完成切换页码
+      completeCurrentChange(page){
+        this.getAllWorkbenches(3,page)
       },
 //      获取项目列表
       getAllWorkbenches(status,page) {
