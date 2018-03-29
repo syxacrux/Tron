@@ -20,8 +20,8 @@
         <el-tab-pane label="任务" name="task">
           <kanban-board :stages="stages" :blocks="blocks" @update-block="updateBlock">
             <el-card class="box-card point" v-for="block in blocks" :slot="block.id" :key="block.id">
-              <div style="display:none">
-                <strong>id:</strong> {{ block.id }}
+              <div>
+                <!-- <strong>id:</strong> {{ block.id }} -->
               </div>
               <div>
                 <!-- {{ block.title }} -->
@@ -70,6 +70,15 @@
               </div>
             </el-card>
           </kanban-board>
+          <div class="block task-block">
+            <el-pagination
+                    @current-change="handleCurrentChange"
+                    layout="prev, pager, next"
+                    :page-size="limit"
+                    :current-page="currentPage"
+                    :total="dataCount">
+            </el-pagination>
+          </div>
         </el-tab-pane>
         <el-tab-pane label="等待上游" name="waiting">
           <div class="waiting ovf-hd">
@@ -181,58 +190,77 @@
               </div>
             </el-col>
           </div>
+          <div class="block task-block">
+            <el-pagination
+                    @current-change="handleCurrentChange"
+                    layout="prev, pager, next"
+                    :page-size="limit"
+                    :current-page="currentPage"
+                    :total="dataCount">
+            </el-pagination>
+          </div>
         </el-tab-pane>
         <el-tab-pane label="完成" name="complete">
-          <el-col :span="6" v-for="block in blocks" :key="block.id">
-            <div class="grid-content bg-purple p-b-5" @click="task2 = !task2">
-              <el-card class="box-card ">
-                  <div class="text">
-                    <div class="text-Lens pos-rel">
-                      <p class="text-Lens-name">{{block.shot_image}}：<span>{{block.field_id + block.shot_number}}:tengsf</span></p>
-                      <p class="text-Lens-rank pos-abs">
-                        <el-tag type="warning">{{block.task_priority_level}}</el-tag>
-                        <el-tag type="danger">{{block.difficulty}}</el-tag>
-                      </p>
+          <div class="waiting ovf-hd">
+            <el-col :span="6" v-for="block in blocks" :key="block.id">
+              <div class="grid-content bg-purple p-b-5" @click="task2 = !task2">
+                <el-card class="box-card ">
+                    <div class="text">
+                      <div class="text-Lens pos-rel">
+                        <p class="text-Lens-name">{{block.shot_image}}：<span>{{block.field_id + block.shot_number}}:tengsf</span></p>
+                        <p class="text-Lens-rank pos-abs">
+                          <el-tag type="warning">{{block.task_priority_level}}</el-tag>
+                          <el-tag type="danger">{{block.difficulty}}</el-tag>
+                        </p>
+                      </div>
+                      <div class="text-Lens m-t-10">
+                        <p class="text-Lens-time tx-r">
+                                <span>
+                                  <el-tooltip class="m-r-5 pointer" effect="dark" content="任务剩余天数"
+                                              placement="bottom-start">
+                                    <span>8天</span>
+                                  </el-tooltip>
+                                  <el-tooltip class="m-r-5 pointer" effect="dark" content="任务建立时间"
+                                              placement="bottom-start">
+                                    <span>{{block.task_is_status_time}}分</span>
+                                  </el-tooltip>
+                                  <el-tooltip class="m-r-5 pointer" effect="dark" content="任务制作中时间"
+                                              placement="bottom-start">
+                                    <span>{{block.task_allocated_time}}天</span>
+                                  </el-tooltip>
+                                </span>
+                        </p>
+                        <p>
+                          <span>
+                              <el-tooltip class="m-r-5 pointer" effect="dark" content="实际开始时间"
+                                              placement="bottom-start">
+                              <span>{{block.actually_start_timestamp}}</span>
+                                  </el-tooltip>
+                              <el-tooltip class="m-r-5 pointer" effect="dark" content="实际结束时间"
+                                              placement="bottom-start">
+                              <span>{{block.actually_end_timestamp}}</span>
+                                  </el-tooltip>
+                          </span>
+                        </p>
+                      </div>
+                      <div class="text-Lens-link m-t-10">
+                        <el-tag type="warn">动画: 60%</el-tag>
+                        <el-tag type="danger">合成: 0%</el-tag>
+                      </div>
                     </div>
-                    <div class="text-Lens m-t-10">
-                      <p class="text-Lens-time tx-r">
-                              <span>
-                                <el-tooltip class="m-r-5 pointer" effect="dark" content="任务剩余天数"
-                                            placement="bottom-start">
-                                  <span>8天</span>
-                                </el-tooltip>
-                                <el-tooltip class="m-r-5 pointer" effect="dark" content="任务建立时间"
-                                            placement="bottom-start">
-                                  <span>{{block.task_is_status_time}}分</span>
-                                </el-tooltip>
-                                <el-tooltip class="m-r-5 pointer" effect="dark" content="任务制作中时间"
-                                            placement="bottom-start">
-                                  <span>{{block.task_allocated_time}}天</span>
-                                </el-tooltip>
-                              </span>
-                      </p>
-                      <p>
-                        <span>
-                            <el-tooltip class="m-r-5 pointer" effect="dark" content="实际开始时间"
-                                            placement="bottom-start">
-                            <span>{{block.actually_start_timestamp}}</span>
-                                </el-tooltip>
-                             <el-tooltip class="m-r-5 pointer" effect="dark" content="实际结束时间"
-                                            placement="bottom-start">
-                            <span>{{block.actually_end_timestamp}}</span>
-                                </el-tooltip>
-                        </span>
-                      </p>
-                    </div>
-                    <div class="text-Lens-link m-t-10">
-                      <el-tag type="warn">动画: 60%</el-tag>
-                      <el-tag type="danger">合成: 0%</el-tag>
-                    </div>
-                  </div>
-              </el-card>
-            </div>
-          </el-col>
-
+                </el-card>
+              </div>
+            </el-col>
+          </div>
+          <div class="block task-block">
+            <el-pagination
+                    @current-change="handleCurrentChange"
+                    layout="prev, pager, next"
+                    :page-size="limit"
+                    :current-page="currentPage"
+                    :total="dataCount">
+            </el-pagination>
+          </div>
         </el-tab-pane>
       </el-tabs>
       <el-table v-if="!isList" :data="tableData" stripe class="fl">
@@ -271,7 +299,7 @@
       </transition>
     </div>
     <editWorkbenches ref="editWorkbenches"></editWorkbenches>
-    <div class="pos-rel p-t-20">
+    <!-- <div class="pos-rel p-t-20">
       <div class="block pages">
         <el-pagination
                 @current-change="handleCurrentChange"
@@ -281,7 +309,7 @@
                 :total="dataCount">
         </el-pagination>
       </div>
-		</div>
+		</div> -->
   </div>
 </template>
 
@@ -738,5 +766,8 @@
   }
   .workbench_list .text-Lens .task-r{
     width: 100%;
+  }
+  .workbench_list .task-block{
+    text-align: right;
   }
 </style>
