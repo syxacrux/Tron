@@ -84,9 +84,13 @@ class Workbench extends Common{
                     $feedback_list = $feedback_list->page($page,$every_limit);
                     $submit_list = $submit_list->page($page,$limit);
                     $wait_production_list = $wait_production_list->page($page,$every_limit);
-                    $list_data = array_merge($in_production_list,$feedback_list,$submit_list,$wait_production_list);
+                    $list_data = array_unique(array_merge($in_production_list,$feedback_list,$submit_list,$wait_production_list));
                 }else{
-                    $list_data = $this->where($where)->select();
+                    $in_production_list = $in_production_list->select();
+                    $feedback_list = $feedback_list->select();
+                    $submit_list = $submit_list->select();
+                    $wait_production_list = $wait_production_list->select();
+                    $list_data = array_unique(array_merge($in_production_list,$feedback_list,$submit_list,$wait_production_list));
                 }
                 break;
             case 2:
@@ -104,7 +108,7 @@ class Workbench extends Common{
             $list_data[$key]['surplus_days'] = floatval(sprintf("%.2f",($value['plan_end_timestamp']-time())/86400))."天";   //剩余天数
             $list_data[$key]['task_allot_days'] = (!empty($value['actually_start_timestamp']) || !empty($value['actually_end_timestamp'])) ? floatval(sprintf("%.2f",($value['actually_end_timestamp']-$value['actually_start_timestamp'])/86400))."天" :'0天';//任务分配时间
             $list_data[$key]['create_timestamp'] = $value['create_time'];
-            $list_data[$key]['create_time'] = date("Y-m-d H:i:s",$value['create_time']);
+            $list_data[$key]['create_time'] = !empty($value['update_time']) ? '读任务状态记录表的最新时间' : date("Y-m-d H:i:s",$value['create_time']);
         }
         $data['list'] = $list_data;
         $data['dataCount'] = $dataCount;
