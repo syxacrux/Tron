@@ -56,8 +56,8 @@
                                 </el-tooltip>
                                 <el-tooltip class="m-r-5 pointer" effect="dark" content="任务在次状态时间"
                                             placement="bottom-start">
-                                  <!-- <span>{{ shotCreateTime(block.create_timestamp) }}天</span> -->
-                                  <span>没给</span>
+                                  <span>{{ shotCreateTime(block.create_timestamp) }}天</span>
+                                  <!-- <span>没给</span> -->
                                 </el-tooltip>
                                 <el-tooltip class="m-r-5 pointer" effect="dark" content="任务分配时间"
                                             placement="bottom-start">
@@ -85,9 +85,9 @@
             <el-pagination
                     @current-change="taskCurrentChange"
                     layout="prev, pager, next, jumper"
-                    :page-size="limit"
+                    :page-size="40"
                     :current-page="currentPage"
-                    :total="dataCount">
+                    :total="blocksDataCount">
             </el-pagination>
           </div>
         </el-tab-pane>
@@ -97,7 +97,7 @@
               <div class="grid-content bg-purple">
                 <h2 class="m-0 h-40 tx-c c-white">资产</h2>
                 <ul class="p-l-0 m-0">
-                  <li v-for="block in blocks" :key="block.id" class="text" @click="task2 = !task2">
+                  <li v-for="block in upstreamList" :key="block.id" class="text" @click="task2 = !task2">
                     <el-card class="box-card">
                       <!-- <div v-for="o in 4" :key="o" class="text item">
                         {{'列表内容 ' + o }}
@@ -225,15 +225,15 @@
             <el-pagination
                     @current-change="upstreamCurrentChange"
                     layout="prev, pager, next, jumper"
-                    :page-size="limit"
+                    :page-size="20"
                     :current-page="currentPage"
-                    :total="dataCount">
+                    :total="upstreamDataCount">
             </el-pagination>
           </div>
         </el-tab-pane>
         <el-tab-pane label="完成" name="complete">
           <div class="waiting ovf-hd">
-            <el-col :span="6" v-for="block in blocks" :key="block.id">
+            <el-col :span="6" v-for="block in completeList" :key="block.id">
               <div class="grid-content bg-purple p-b-5" @click="task2 = !task2">
                 <el-card class="box-card ">
                     <div class="text">
@@ -297,14 +297,14 @@
             <el-pagination
                     @current-change="completeCurrentChange"
                     layout="prev, pager, next, jumper"
-                    :page-size="limit"
+                    :page-size="20"
                     :current-page="currentPage"
-                    :total="dataCount">
+                    :total="completeDataCount">
             </el-pagination>
           </div>
         </el-tab-pane>
       </el-tabs>
-      <el-table v-if="!isList" :data="tableData" stripe class="fl">
+      <el-table v-if="!isList" :data="finishList" stripe class="fl">
         <el-table-column type="selection" width="50"></el-table-column>
         <!-- <el-table-column prop="shot_image" label="缩略图"></el-table-column> -->
         <el-table-column prop="shot_image" label="缩略图">
@@ -347,7 +347,7 @@
                 layout="prev, pager, next, jumper"
                 :page-size="limit"
                 :current-page="currentPage"
-                :total="dataCount">
+                :total="finishList">
         </el-pagination>
       </div>
 		</div>
@@ -365,9 +365,8 @@
       return {
         isList:true,
         task2: false,
-        limit: 40,
+        // limit: 40,
         currentPage: 1,
-        dataCount: null,
         activeName: 'task',
         address: window.baseUrl + '/',
         // frequencyState:true,
@@ -413,7 +412,14 @@
 
         }],
         stages: ['制作中', '反馈中',  '等待制作', '提交发布'],
-        blocks: [],//任务页面数据
+        blocksDataCount:0,//任务的数量
+        blocks: [],//任务页面列表
+        upstreamDataCount:0,//等待上游的数量
+        upstreamList:[],//等待上游列表
+        completeDataCount:0,//完成数量
+        completeList:[],//完成列表
+        finishList: [],  //任务列表
+        limit: 10,
       }
     },
     methods: {
@@ -477,11 +483,16 @@
         }
         this.apiGet('admin/workbenches',data).then((res) => {
           this.handelResponse(res, (data) => {
-            this.blocks=data.list
-            _(this.blocks).forEach((res1,res2) => {
-              this.blocks[res2].status = res1.task_status == 1 ? '等待制作' : (res1.task_status == 5 ? '制作中' : (res1.task_status == 15 ? '反馈中' : '提交发布'))
-            })
-            this.dataCount=data.dataCount
+            switch (status){
+              case 1:
+                this.blocks=data.list
+                _(this.blocks).forEach((res1,res2) => {
+                  this.blocks[res2].status = res1.task_status == 1 ? '等待制作' : (res1.task_status == 5 ? '制作中' : (res1.task_status == 15 ? '反馈中' : '提交发布'))
+                })
+                this.dataCount=data.dataCount
+                break;
+            }
+            
           })
         })
       },
