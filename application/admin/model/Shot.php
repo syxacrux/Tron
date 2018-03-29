@@ -171,11 +171,11 @@ class Shot extends Common{
         //多工作室
         if(count($studio_ids_arr) > 1){
             foreach($studio_ids_arr as $key=>$value){
-                $studio_degree[] = $this->task_status_arr[Workbench::where(['shot_id'=>$shot_id,'studio_id'=>$value])->value('task_status')];
+                $studio_degree[] = $this->task_status_arr[Workbench::where(['pid'=>0,'shot_id'=>$shot_id,'studio_id'=>$value])->value('task_status')];
             }
             $curr_tache_degree = (array_sum($studio_degree) == 0 ) ? 0 : intval(array_sum($studio_degree)/count($studio_ids_arr));
         }else{//一个工作室 他的状态即是当前环节的进度
-            $curr_tache_degree = $this->task_status_arr[Workbench::where(['shot_id'=>$shot_id,'studio_id'=>$studio_ids_arr[0]])->value('task_status')];    //获取这个任务的状态转化的进度值
+            $curr_tache_degree = $this->task_status_arr[Workbench::where(['pid'=>0,'shot_id'=>$shot_id,'studio_id'=>$studio_ids_arr[0]])->value('task_status')];    //获取这个任务的状态转化的进度值
         }
         return $curr_tache_degree;
     }

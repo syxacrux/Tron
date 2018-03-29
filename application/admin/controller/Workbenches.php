@@ -53,6 +53,20 @@ class Workbenches extends ApiCommon{
         return resultArray(['data' => '编辑成功']);
     }
 
+    //改变任务状态
+    public function change_status(){
+        $workbench_model = model('Workbench');
+        $param = $this->param;
+        $uid = $this->uid;
+        $group_id = Access::get($uid)->group_id;
+        $data = $workbench_model->change_task_status($param['id'], $param['task_status'],$uid,$group_id);
+        if (!$data) {
+            return resultArray(['error' => $workbench_model->getError()]);
+        }
+        return resultArray(['data' => '操作成功']);
+    }
+
+    //删除一条数据
     public function delete(){
         $workbench_model = model('Workbench');
         $param = $this->param;
@@ -63,6 +77,7 @@ class Workbenches extends ApiCommon{
         return resultArray(['data' => '删除成功']);
     }
 
+    //批量删除
     public function deletes(){
         $workbench_model = model('Workbench');
         $param = $this->param;
@@ -73,6 +88,7 @@ class Workbenches extends ApiCommon{
         return resultArray(['data' => '删除成功']);
     }
 
+    //批量改变状态
     public function enables(){
         $workbench_model = model('Workbench');
         $param = $this->param;
@@ -82,4 +98,5 @@ class Workbenches extends ApiCommon{
         }
         return resultArray(['data' => '操作成功']);
     }
+
 }
