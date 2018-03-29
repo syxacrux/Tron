@@ -30,8 +30,18 @@
                     <div class="text-Lens pos-rel">
                       <p class="text-Lens-name">{{block.project_name}}：<span>{{block.shot_number}}:{{block.task_byname}}</span></p>
                       <p class="text-Lens-rank pos-abs">
-                        <el-tag type="warning" v-if="block.task_priority_level != '' ">{{block.task_priority_level}}</el-tag>
-                        <el-tag type="danger" v-if="block.difficulty != '' ">{{block.difficulty}}</el-tag>
+                        <el-tag type="danger" v-if="block.difficulty != '' ">
+                          <el-tooltip class="m-r-5 pointer" effect="dark" content="难度"
+                                              placement="bottom-start">
+                                    <span>{{block.difficulty}}</span>
+                            </el-tooltip>
+                          </el-tag>
+                          <el-tag type="warning" v-if="block.task_priority_level != '' ">
+                            <el-tooltip class="m-r-5 pointer" effect="dark" content="优先级"
+                                              placement="bottom-start">
+                                    <span>{{block.task_priority_level}}</span>
+                          </el-tooltip>
+                        </el-tag>
                       </p>
                     </div>
                     <div class="text-Lens m-t-10">
@@ -42,21 +52,22 @@
                               <span>
                                 <el-tooltip class="m-r-5 pointer" effect="dark" content="任务剩余天数"
                                             placement="bottom-start">
-                                  <span>{{shotRemainDay(block.plan_end_timestamp)}}天</span>
+                                  <span>{{block.surplus_days}}</span>
                                 </el-tooltip>
-                                <el-tooltip class="m-r-5 pointer" effect="dark" content="任务建立时间"
+                                <el-tooltip class="m-r-5 pointer" effect="dark" content="任务在次状态时间"
                                             placement="bottom-start">
-                                  <span>{{ shotCreateTime(block.create_timestamp) }}天</span>
+                                  <!-- <span>{{ shotCreateTime(block.create_timestamp) }}天</span> -->
+                                  <span>没给</span>
                                 </el-tooltip>
-                                <el-tooltip class="m-r-5 pointer" effect="dark" content="任务制作中时间"
+                                <el-tooltip class="m-r-5 pointer" effect="dark" content="任务分配时间"
                                             placement="bottom-start">
-                                  <span>{{block.update_time}}天</span>
+                                  <span>{{block.task_allot_days}}</span>
                                 </el-tooltip>
                               </span>
                         <span>
                             <el-tooltip class="m-r-5 pointer" effect="dark" content="预计结束时间"
                                             placement="bottom-start">
-                            <span>{{block.plan_end_timestamp}}</span>
+                            <span>{{ j2time(block.plan_end_timestamp) }}</span>
                                 </el-tooltip>
                         </span>
                       </p>
@@ -93,10 +104,20 @@
                       </div> -->
                       <div class="text item">
                         <div class="text-Lens pos-rel">
-                          <p class="text-Lens-name">{{block.shot_image}}：<span>{{block.field_id + block.shot_number}}:tengsf</span></p>
+                          <p class="text-Lens-name">{{block.project_name}}：<span>{{block.shot_number}}:{{block.task_byname}}</span></p>
                           <p class="text-Lens-rank pos-abs">
-                            <el-tag type="warning">{{block.task_priority_level}}</el-tag>
-                            <el-tag type="danger">{{block.difficulty}}</el-tag>
+                            <el-tag type="danger" v-if="block.difficulty != '' ">
+                              <el-tooltip class="m-r-5 pointer" effect="dark" content="难度"
+                                                placement="bottom-start">
+                                      <span>{{block.difficulty}}</span>
+                              </el-tooltip>
+                            </el-tag>
+                            <el-tag type="warning" v-if="block.task_priority_level != '' ">
+                              <el-tooltip class="m-r-5 pointer" effect="dark" content="优先级"
+                                                placement="bottom-start">
+                                      <span>{{block.task_priority_level}}</span>
+                              </el-tooltip>
+                            </el-tag>
                           </p>
                         </div>
                         <div class="text-Lens m-t-10 task-reaches">
@@ -104,24 +125,24 @@
                                   <span>
                                     <el-tooltip class="m-r-5 pointer" effect="dark" content="任务剩余天数"
                                                 placement="bottom-start">
-                                      <span>8天</span>
+                                      <span>{{block.surplus_days}}</span>
                                     </el-tooltip>
-                                    <el-tooltip class="m-r-5 pointer" effect="dark" content="任务建立时间"
+                                    <el-tooltip class="m-r-5 pointer" effect="dark" content="任务在此状态时间"
                                                 placement="bottom-start">
-                                      <span>{{block.task_is_status_time}}分</span>
+                                      <span>无</span>
                                     </el-tooltip>
-                                    <el-tooltip class="m-r-5 pointer" effect="dark" content="任务制作中时间"
+                                    <el-tooltip class="m-r-5 pointer" effect="dark" content="任务分配时间"
                                                 placement="bottom-start">
-                                      <span>{{block.task_allocated_time}}天</span>
+                                      <span>{{block.task_allot_days}}</span>
                                     </el-tooltip>
                                   </span>
                             
                           </p>
                           <p>
                             <span>
-                                <el-tooltip class="m-r-5 pointer" effect="dark" content="任务制作中时间"
+                                <el-tooltip class="m-r-5 pointer" effect="dark" content="预计结束时间"
                                                 placement="bottom-start">
-                                <span>2018/02/08 14:00</span>
+                                <span>{{ j2time(block.plan_end_timestamp) }}</span>
                                     </el-tooltip>
                             </span>
                           </p>
@@ -147,10 +168,20 @@
                       </div> -->
                       <div class="text item">
                         <div class="text-Lens pos-rel">
-                          <p class="text-Lens-name">{{block.shot_image}}：<span>{{block.field_id + block.shot_number}}:tengsf</span></p>
+                          <p class="text-Lens-name">{{block.project_name}}：<span>{{block.shot_number}}:{{block.task_byname}}</span></p>
                           <p class="text-Lens-rank pos-abs">
-                            <el-tag type="warning">{{block.task_priority_level}}</el-tag>
-                            <el-tag type="danger">{{block.difficulty}}</el-tag>
+                            <el-tag type="danger" v-if="block.difficulty != '' ">
+                              <el-tooltip class="m-r-5 pointer" effect="dark" content="难度"
+                                                placement="bottom-start">
+                                      <span>{{block.difficulty}}</span>
+                              </el-tooltip>
+                            </el-tag>
+                            <el-tag type="warning" v-if="block.task_priority_level != '' ">
+                              <el-tooltip class="m-r-5 pointer" effect="dark" content="优先级"
+                                                placement="bottom-start">
+                                      <span>{{block.task_priority_level}}</span>
+                              </el-tooltip>
+                            </el-tag>
                           </p>
                         </div>
                         <div class="text-Lens m-t-10 task-reaches">
@@ -158,23 +189,23 @@
                                   <span>
                                     <el-tooltip class="m-r-5 pointer" effect="dark" content="任务剩余天数"
                                                 placement="bottom-start">
-                                      <span>8天</span>
+                                      <span>{{block.surplus_days}}</span>
                                     </el-tooltip>
-                                    <el-tooltip class="m-r-5 pointer" effect="dark" content="任务建立时间"
+                                    <el-tooltip class="m-r-5 pointer" effect="dark" content="任务在此状态时间"
                                                 placement="bottom-start">
-                                      <span>{{block.create_time}}分</span>
+                                      <span>无</span>
                                     </el-tooltip>
-                                    <el-tooltip class="m-r-5 pointer" effect="dark" content="任务制作中时间"
+                                    <el-tooltip class="m-r-5 pointer" effect="dark" content="任务分配时间"
                                                 placement="bottom-start">
-                                      <span>{{block.update_time}}天</span>
+                                      <span>{{block.task_allot_days}}</span>
                                     </el-tooltip>
                                   </span>
                           </p>
                           <p>
                             <span>
-                                <el-tooltip class="m-r-5 pointer" effect="dark" content="任务制作中时间"
+                                <el-tooltip class="m-r-5 pointer" effect="dark" content="预计结束时间"
                                                 placement="bottom-start">
-                                <span>2018/02/08 14:00</span>
+                                <span>{{ j2time(block.plan_end_timestamp) }}</span>
                                     </el-tooltip>
                             </span>
                           </p>
@@ -207,30 +238,40 @@
                 <el-card class="box-card ">
                     <div class="text">
                       <div class="text-Lens pos-rel">
-                        <p class="text-Lens-name">{{block.shot_image}}：<span>{{block.field_id + block.shot_number}}:tengsf</span></p>
+                        <p class="text-Lens-name">{{block.project_name}}：<span>{{block.shot_number}}:{{block.task_byname}}</span></p>
                         <p class="text-Lens-rank pos-abs">
-                          <el-tag type="warning">{{block.task_priority_level}}</el-tag>
-                          <el-tag type="danger">{{block.difficulty}}</el-tag>
+                          <el-tag type="danger" v-if="block.difficulty != '' ">
+                            <el-tooltip class="m-r-5 pointer" effect="dark" content="难度"
+                                              placement="bottom-start">
+                                    <span>{{block.difficulty}}</span>
+                            </el-tooltip>
+                          </el-tag>
+                          <el-tag type="warning" v-if="block.task_priority_level != '' ">
+                            <el-tooltip class="m-r-5 pointer" effect="dark" content="优先级"
+                                              placement="bottom-start">
+                                    <span>{{block.task_priority_level}}</span>
+                            </el-tooltip>
+                          </el-tag>
                         </p>
                       </div>
-                      <div class="text-Lens m-t-10">
+                      <div class="text-Lens text-wan  m-t-10">
                         <p class="text-Lens-time tx-r">
                                 <span>
                                   <el-tooltip class="m-r-5 pointer" effect="dark" content="任务剩余天数"
                                               placement="bottom-start">
-                                    <span>8天</span>
+                                    <span>{{block.surplus_days}}</span>
                                   </el-tooltip>
-                                  <el-tooltip class="m-r-5 pointer" effect="dark" content="任务建立时间"
+                                  <el-tooltip class="m-r-5 pointer" effect="dark" content="任务再次状态时间"
                                               placement="bottom-start">
-                                    <span>{{block.task_is_status_time}}分</span>
+                                    <span>无</span>
                                   </el-tooltip>
-                                  <el-tooltip class="m-r-5 pointer" effect="dark" content="任务制作中时间"
+                                  <el-tooltip class="m-r-5 pointer" effect="dark" content="任务分配时间"
                                               placement="bottom-start">
-                                    <span>{{block.task_allocated_time}}天</span>
+                                    <span>{{block.task_allot_days}}</span>
                                   </el-tooltip>
                                 </span>
                         </p>
-                        <p>
+                        <p class="text-Lens-time tx-r">
                           <span>
                               <el-tooltip class="m-r-5 pointer" effect="dark" content="实际开始时间"
                                               placement="bottom-start">
@@ -325,6 +366,7 @@
         isList:true,
         task2: false,
         limit: 40,
+        state:1,
         currentPage: 1,
         dataCount: null,
         activeName: 'task',
@@ -453,18 +495,18 @@
       },
        //      切换页码
       handleCurrentChange(page) {
-        this.getAllWorkbenches(page)
+        this.getAllWorkbenches(this.state,page)
       },
 //      获取项目列表
-      getAllWorkbenches(status) {
+      getAllWorkbenches(status,page) {
         this.loading = true
         const data = {
           params: {
             keywords: {
               list_type: status,
-              page: status,
-              limit: this.limit
-            }
+            },
+            page: page,
+            limit: this.limit
           }
         }
         this.apiGet('admin/workbenches',data).then((res) => {
@@ -479,7 +521,7 @@
       },
 //      初始化项目列表内容
       init() {
-       this.getAllWorkbenches(1)
+       this.getAllWorkbenches(1,1)
       }
     },
     created() {
@@ -595,7 +637,9 @@
     /* position:  */
     float:right;
   }
-
+  .workbench_list .text-wan .text-Lens-time{
+    width: 100%;
+  }
   .workbench_list .text-Lens-time span {
     display: inline-block;
     height: 30px;
