@@ -58,7 +58,7 @@
                 <ul class="p-l-0 m-0">
                   <li v-for="item in inProductionList" :key="item.id" @click="shotDetail(item.id)">
                     <el-card>
-                      <div class="">
+                      <div>
                         <div class="text-Lens pos-rel">
                           <p class="text-Lens-name h-28 ">
                             {{item.project_name}}：<span>{{item.shot_number}}</span>
@@ -89,7 +89,7 @@
                                 <span>{{ shotCreateTime(item.create_timestamp) }}天</span>
                               </el-tooltip>
                               <el-tooltip class="m-r-5 pointer" effect="dark" content="镜头制作中时间" placement="bottom-start">
-                                <span>0天</span>
+                                <span>{{ Math.ceil(item.surplus_days) }}天</span>
                               </el-tooltip>
                             </span>
                             <span>
@@ -100,17 +100,23 @@
                           </p>
                         </div>
                         <div class="text-Lens-link m-t-10">
-                          <!--<el-tag type="success" v-for="(taches, index) in item.tache" :key="item.id">{{taches.name}}:{{taches.lmane}}</el-tag>-->
-                          <el-tag type="success">跟踪: 100%</el-tag>
-                          <el-tag type="warn">动画: 60%</el-tag>
-                          <el-tag type="danger">特效: 0%</el-tag>
-                          <el-tag type="danger">灯光: 0%</el-tag>
-                          <el-tag type="danger">合成: 0%</el-tag>
+                          <el-tag class="m-l-5 m-b-5" v-for="value in item.tache_info" v-if="value.finish_degree!==''?true:false" :key="value.id" :type="value.finish_degree<100?'warning':'success'">
+                            {{ value.tache_byname }}：{{ value.finish_degree }}%
+                          </el-tag>
                         </div>
                       </div>
                     </el-card>
                   </li>
                 </ul>
+                <el-pagination
+                    small
+                    @size-change="handleSizeChange"
+                    @current-change="handleCurrentChange"
+                    :current-page.sync="currentPage3"
+                    :page-size="1"
+                    layout="prev, pager, next, jumper"
+                    :total="50">
+                </el-pagination>
               </div>
             </el-col>
             <el-col :span="12">
@@ -161,17 +167,23 @@
                           </p>
                         </div>
                         <div class="text-Lens-link m-t-10">
-                          <el-tag type="success">数绘: 100%</el-tag>
-                          <el-tag type="success">跟踪: 100%</el-tag>
-                          <el-tag type="warn">动画: 60%</el-tag>
-                          <el-tag type="danger">特效: 0%</el-tag>
-                          <el-tag type="danger">灯光: 0%</el-tag>
-                          <el-tag type="danger">合成: 0%</el-tag>
+                          <el-tag class="m-l-5" v-for="value in item.tache_info" v-if="value.finish_degree !== ''?true:false" :key="value.id" :type="value.finish_degree<100?'warning':'success'">
+                            {{ value.tache_byname }}：{{ value.finish_degree }}%
+                          </el-tag>
                         </div>
                       </div>
                     </el-card>
                   </li>
                 </ul>
+                <el-pagination
+                    small
+                    @size-change="handleSizeChange"
+                    @current-change="handleCurrentChange"
+                    :current-page.sync="currentPage3"
+                    :page-size="1"
+                    layout="prev, pager, next, jumper"
+                    :total="50">
+                </el-pagination>
               </div>
             </el-col>
           </div>
@@ -225,12 +237,9 @@
                         </p>
                       </div>
                       <div class="text-Lens-link m-t-10">
-                        <el-tag type="success">数绘: 100%</el-tag>
-                        <el-tag type="success">跟踪: 100%</el-tag>
-                        <el-tag type="warn">动画: 60%</el-tag>
-                        <el-tag type="danger">特效: 0%</el-tag>
-                        <el-tag type="danger">灯光: 0%</el-tag>
-                        <el-tag type="danger">合成: 0%</el-tag>
+                        <el-tag class="m-l-5" v-for="value in item.tache_info" v-if="value.finish_degree !== ''?true:false" :key="value.id" :type="value.finish_degree<100?'warning':'success'">
+                          {{ value.tache_byname }}：{{ value.finish_degree }}%
+                        </el-tag>
                       </div>
                     </div>
                   </el-card>
@@ -285,12 +294,9 @@
                     </p>
                   </div>
                   <div class="text-Lens-link m-t-10">
-                    <el-tag type="success">数绘: 100%</el-tag>
-                    <el-tag type="success">跟踪: 100%</el-tag>
-                    <el-tag type="warn">动画: 60%</el-tag>
-                    <el-tag type="danger">特效: 0%</el-tag>
-                    <el-tag type="danger">灯光: 0%</el-tag>
-                    <el-tag type="danger">合成: 0%</el-tag>
+                    <el-tag class="m-l-5" v-for="value in item.tache_info" v-if="value.finish_degree !== ''?true:false" :key="value.id" :type="value.finish_degree<100?'warning':'success'">
+                      {{ value.tache_byname }}：{{ value.finish_degree }}%
+                    </el-tag>
                   </div>
                 </div>
               </el-card>
@@ -343,12 +349,9 @@
                     </p>
                   </div>
                   <div class="text-Lens-link m-t-10">
-                    <el-tag type="success">数绘: 100%</el-tag>
-                    <el-tag type="success">跟踪: 100%</el-tag>
-                    <el-tag type="warn">动画: 60%</el-tag>
-                    <el-tag type="danger">特效: 0%</el-tag>
-                    <el-tag type="danger">灯光: 0%</el-tag>
-                    <el-tag type="danger">合成: 0%</el-tag>
+                    <el-tag class="m-l-5" v-for="value in item.tache_info" v-if="value.finish_degree !== ''?true:false" :key="value.id" :type="value.finish_degree<100?'warning':'success'">
+                      {{ value.tache_byname }}：{{ value.finish_degree }}%
+                    </el-tag>
                   </div>
                 </div>
               </el-card>
@@ -384,9 +387,10 @@
   export default {
     data() {
       return {
-        isShotDetailShow: false,
-        activeName: 'shotInDevelopment',
-        isList: false,
+        currentPage3: 5,
+        isShotDetailShow: false,    //是否显示镜头详情
+        activeName: 'shotInDevelopment', //镜头tab当前选中值
+        isList: false,    // 是否显示镜头列表
         address: window.baseUrl + '/',
         tableData: [{
           date: '2016-05-02',
@@ -416,6 +420,7 @@
       editShot() {
         this.$refs.editShots.open()
       },
+//      点击镜头显示镜头详情
       shotDetail(id) {
         console.log(id)
         if(this.isShotDetailShow) {
@@ -424,21 +429,27 @@
           this.isShotDetailShow = !this.isShotDetailShow
         }
       },
-      /*
-      * 镜头列表批量点击checkbox
-      * params: {
-      *   val: 当前已选中的checkbox群的value
-      * }
-      * */
+      handleSizeChange(val) {
+        console.log(`每页 ${val} 条`);
+      },
+      handleCurrentChange(val) {
+        console.log(`当前页: ${val}`);
+      },
+/*
+* 镜头列表批量点击checkbox
+* params: {
+*   val: 当前已选中的checkbox群的value
+* }
+* */
       handleSelectionChange(val) {
         this.multipleSelection = val;
       },
-      /*
-      * 切换镜头tab方法
-      *   params: {
-      *     tab: 传入当前点击tab信息
-      *   }
-      * */
+/*
+* 切换镜头tab方法
+*   params: {
+*     tab: 传入当前点击tab信息
+*   }
+* */
       tabClick(tab, event) {
         this.init(tab.name)
       },
@@ -461,12 +472,12 @@
       shotCreateTime(create_time) {
         return Math.ceil((new Date() / 1000 - create_time) / 86400)
       },
-      /*
-      * 获取项目列表
-      * params: {
-      *   shot_status: 区分请求接口的地址（in_production、feedback、waiting、pause、finish）
-      * }
-      * */
+/*
+* 获取某个状态的镜头看板内容
+* params: {
+*   shot_status: 区分请求接口的地址（in_production、feedback、waiting、pause、finish）
+* }
+* */
       getShots(shot_status) {
         let url = `shot/${shot_status}`
         this.loading = true
@@ -492,12 +503,12 @@
           })
         })
       },
-      /*
-      * 初始化镜头看板内容
-      * params: {
-      *   tab_name : 当点击切换镜头tab时的传入值
-      * }
-      * */
+/*
+* 初始化镜头看板内容
+* params: {
+*   tab_name : 当点击切换镜头tab时的传入值
+* }
+* */
       init(tab_name) {
         switch (tab_name) {
           case 'shotsInDevelopment':
