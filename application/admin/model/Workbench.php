@@ -10,6 +10,10 @@ class Workbench extends Common{
 
     protected $task_priority_level_arr = [1=>'D',2=>'C',3=>'B',4=>'A'];   //任务优先级
     protected $difficulty_arr = [1=>'D',2=>'C',3=>'B',4=>'A',5=>'S']; //任务难度
+    protected $task_status_degree_arr = [1=>0,5=>20,10=>40,15=>60,20=>80,25=>100];    //用于任务状态计算进度百分比 status=>0%
+    //根据环节ID获取镜头页面进度条所用别名
+    protected $tache_byname_arr = [3=>'美术',4=>'模型',5=>'贴图',6=>'绑定',7=>'跟踪',8=>'动画',9=>'数绘',10=>'特效',11=>'灯光',12=>'合成'];
+
     /**
      * 获取列表
      * @param $keyword
@@ -95,13 +99,13 @@ class Workbench extends Common{
         foreach($list_data as $key=>$value){
             $list_data[$key]['project_name'] = Project::get($value['project_id'])->project_byname;
             $list_data[$key]['shot_number'] = Db::name('field')->where('id',$value['field_id'])->value('name').Shot::get($value['shot_id'])->shot_number;
-            $list_data[$key]['user_name'] = ($value['user_id'] == 0) ? '' : User::get($value['user_id'])->realname;
             $list_data[$key]['task_priority_level'] = $this->task_priority_level_arr[$value['task_priority_level']];    //任务优先级
             $list_data[$key]['difficulty'] = $this->difficulty_arr[$value['difficulty']];   //任务难度
             $list_data[$key]['surplus_days'] = floatval(sprintf("%.2f",($value['plan_end_timestamp']-time())/86400))."天";   //剩余天数
             $list_data[$key]['task_allot_days'] = (!empty($value['actually_start_timestamp']) || !empty($value['actually_end_timestamp'])) ? floatval(sprintf("%.2f",($value['actually_end_timestamp']-$value['actually_start_timestamp'])/86400))."天" :'0天';//任务分配时间
             $list_data[$key]['create_timestamp'] = $value['create_time'];
             $list_data[$key]['create_time'] = !empty($value['update_time']) ? '读任务状态记录表的最新时间' : date("Y-m-d H:i:s",$value['create_time']);
+            $list_data[$key]['task_finish_degree'] = $this->rate_of_progress($value['task_status'],$value['tache_id']);//任务完成度
         }
         $data['list'] = $list_data;
         $data['dataCount'] = $dataCount;
@@ -157,6 +161,14 @@ class Workbench extends Common{
             $this->error = '添加失败';
             return false;
         }
+    }
+
+    //根据任务状态组合完成进度数据
+    public function rate_of_progress($status,$tache_id){
+        $data['tache_id'] = $tache_id;
+        $data['tache_byname'] = $this->tache_byname_arr[$tache_id];
+        $data['finish_degree'] = $this->task_status_degree_arr[$status];
+        return $data;
     }
 
 
