@@ -117,9 +117,7 @@
                     :current-page.sync="currentPage"
                     :page-size="10"
                     layout="prev, pager, next, jumper"
-                    slot="in_production"
-                    :total="50">
-                    <!--:total="inProductionDataCount">-->
+                  :total="inProductionDataCount">
                 </el-pagination>
               </div>
             </el-col>
@@ -459,6 +457,11 @@
 //      点击镜头显示镜头详情
       shotDetail(id) {
         console.log(id)
+        this.apiGet('admin/shots/' + id).then((res) => {
+          this.handelResponse(res, (data) => {
+            console.log(data)
+          })
+        })
         if (this.isShotDetailShow) {
 
         } else {

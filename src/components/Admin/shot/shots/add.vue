@@ -117,12 +117,24 @@
           </el-col>
         </el-row>
         <el-row :gutter="20">
-          <el-col :span="24">
+          <el-col :span="16">
             <div class="grid-content">
               <el-form-item label="计划起止时间:" prop="plan_time" class="is-required">
                 <el-date-picker v-model="plan_time" type="datetimerange" range-separator="至" start-placeholder="计划开始时间"
                                 end-placeholder="计划结束时间">
                 </el-date-picker>
+              </el-form-item>
+            </div>
+          </el-col>
+          <el-col :span="8">
+            <div class="grid-content">
+              <el-form-item label="镜头优先级:" prop="priority_level">
+                <el-select v-model="form.priority_level" placeholder="请选择镜头优先级" class="h-40 w-200">
+                  <el-option label="D" value="1"></el-option>
+                  <el-option label="C" value="2"></el-option>
+                  <el-option label="B" value="3"></el-option>
+                  <el-option label="A" value="4"></el-option>
+                </el-select>
               </el-form-item>
             </div>
           </el-col>
@@ -236,13 +248,8 @@
           </el-col>
           <el-col :span="8">
             <div class="grid-content">
-              <el-form-item label="镜头优先级:" prop="priority_level">
-                <el-select v-model="form.priority_level" placeholder="请选择镜头优先级" class="h-40 w-200">
-                  <el-option label="D" value="1"></el-option>
-                  <el-option label="C" value="2"></el-option>
-                  <el-option label="B" value="3"></el-option>
-                  <el-option label="A" value="4"></el-option>
-                </el-select>
+              <el-form-item label="素材号:" prop="material_number">
+                <el-input v-model.trim="form.material_number" class="h-40 w-200"></el-input>
               </el-form-item>
             </div>
           </el-col>
@@ -259,15 +266,6 @@
             <div class="grid-content">
               <el-form-item label="素材帧长:" prop="material_frame_length">
                 <el-input v-model.trim="form.material_frame_length" class="h-40 w-200"></el-input>
-              </el-form-item>
-            </div>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20">
-          <el-col :span="8">
-            <div class="grid-content">
-              <el-form-item label="素材号:" prop="material_number">
-                <el-input v-model.trim="form.material_number" class="h-40 w-200"></el-input>
               </el-form-item>
             </div>
           </el-col>
@@ -454,8 +452,8 @@
           shot_explain: '',    //镜头备注
           clip_frame_length: '',    //剪辑帧长
           frame_range: '',    //帧数范围
-          priority_level: '',    //镜头优先级
-          difficulty: '',    //镜头难度
+          priority_level: "1",    //镜头优先级
+          difficulty: "1",    //镜头难度
           handle_frame: '',    //手柄帧
           material_frame_length: '',    //素材帧长
           charge_speed_info: '',    //变速信息
@@ -484,7 +482,8 @@
           shot_name: [{required: true, message: '请输入镜头名称'}, {pattern: /^[\u4E00-\u9FA5]+$/, message: '镜头名称必须为汉字'}],
           time: [{required: true, message: '请选择时刻'}],
           ambient: [{required: true, message: '请选择环境'}],
-          is_parse: [{required: true, message: '请选择是否暂停'}]
+          difficulty: [{required: true, message: '请选择镜头难度'}],
+          priority_level: [{required: true, message: '请选择镜头优先级'}]
         },
         addFieldRules: {
           project_id: [{required: true, message: '请选择项目'}],
