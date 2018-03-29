@@ -29,13 +29,6 @@ class Shot extends Common{
      */
     public function getList($keyword, $page, $limit,$uid,$group_id){
         $where = [];
-        //区分工作室总监只能查看所属工作室
-        if($group_id == 5){
-            $where['id'] = User::get($uid)->studio_id;
-        }
-        if ($keyword) {
-            $where['name'] = ['like', '%'.$keyword.'%'];
-        }
         $dataCount = $this->where($where)->count('id');
         $list = $this->where($where);
         // 若有分页
@@ -124,7 +117,7 @@ class Shot extends Common{
                 foreach($tache_data as $key=>$val){
                     foreach($val as $k=>$v){
                         $task_data['group_id'] = $group_id ;    //所属角色ID
-                        $task_data['user_id'] = $uid;   //所属用户ID
+                        $task_data['user_id'] = 0;   //所属用户ID
                         $task_data['project_id'] = $curr_shot_obj->project_id;   //所属项目ID
                         $task_data['field_id'] = $curr_shot_obj->field_id;   //场号ID
                         $task_data['shot_id'] = $this->id;  //镜头ID
@@ -180,9 +173,9 @@ class Shot extends Common{
             foreach($studio_ids_arr as $key=>$value){
                 $studio_degree[] = $this->task_status_arr[Workbench::where(['shot_id'=>$shot_id,'studio_id'=>$value])->value('task_status')];
             }
-            $curr_tache_degree = (array_sum($studio_degree) == 0 ) ? '0%' : intval(array_sum($studio_degree)/count($studio_ids_arr))."%";
+            $curr_tache_degree = (array_sum($studio_degree) == 0 ) ? 0 : intval(array_sum($studio_degree)/count($studio_ids_arr));
         }else{//一个工作室 他的状态即是当前环节的进度
-            $curr_tache_degree = $this->task_status_arr[Workbench::where(['shot_id'=>$shot_id,'studio_id'=>$studio_ids_arr[0]])->value('task_status')]."%";    //获取这个任务的状态转化的进度值
+            $curr_tache_degree = $this->task_status_arr[Workbench::where(['shot_id'=>$shot_id,'studio_id'=>$studio_ids_arr[0]])->value('task_status')];    //获取这个任务的状态转化的进度值
         }
         return $curr_tache_degree;
     }

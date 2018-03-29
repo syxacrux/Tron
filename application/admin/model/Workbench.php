@@ -52,10 +52,12 @@ class Workbench extends Common{
                         $where = [];
                     }
 
-                }elseif($group_id == 5 || $group_id == 6 || $group_id == 7){//工作室内角色 暂时为5，6，7
+                }elseif($group_id == 5 || $group_id == 6){//工作室内角色 暂时为5 工作室总监，6组长
                     $where['studio_id'] = $user_obj->studio_id;
+                }elseif($group_id == 7){//工作室内角色  7制作人
+                    $where['studio_id'] = $user_obj->studio_id;
+                    $where['user_id'] = $uid;
                 }else{ // uid 为超级管理员
-                    echo 2;
                     $where = [];
                 }
                 //加入条件查询
@@ -96,6 +98,7 @@ class Workbench extends Common{
         foreach($list_data as $key=>$value){
             $list_data[$key]['project_name'] = Project::get($value['project_id'])->project_byname;
             $list_data[$key]['shot_number'] = Db::name('field')->where('id',$value['field_id'])->value('name').Shot::get($value['shot_id'])->shot_number;
+            $list_data[$key]['user_name'] = ($value['user_id'] == 0) ? '' : User::get($value['user_id'])->realname;
             $list_data[$key]['task_priority_level'] = $this->task_priority_level_arr[$value['task_priority_level']];    //任务优先级
             $list_data[$key]['difficulty'] = $this->difficulty_arr[$value['difficulty']];   //任务难度
             $list_data[$key]['surplus_days'] = floatval(sprintf("%.2f",($value['plan_end_timestamp']-time())/86400))."天";   //剩余天数
