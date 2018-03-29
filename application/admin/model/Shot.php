@@ -11,6 +11,8 @@ class Shot extends Common{
     protected $time_arr = [1=>'白天',2=>'晚上'];   //时刻(1白天 2夜晚)
     protected $ambient_arr = [1=>'室外',2=>'室内'];    //环境(1外 2内)
     protected $task_status_arr = [1=>0,5=>20,10=>40,15=>60,20=>80,25=>100];    //用于任务状态计算进度百分比 status=>0%
+    //根据环节ID获取镜头页面进度条所用别名
+    protected $tache_byname_arr = [3=>'美术',4=>'模型',5=>'贴图',6=>'绑定',7=>'跟踪',8=>'动画',9=>'数绘',10=>'特效',11=>'灯光',12=>'合成'];
 
     /**
      * 获取列表
@@ -82,7 +84,7 @@ class Shot extends Common{
             $list[$key]['surplus_days'] = floatval(sprintf("%.2f",($value['plan_end_timestamp']-time())/86400));   //剩余天数
             $list[$key]['create_timestamp'] = $value['create_time'];
             $list[$key]['create_time'] = date("Y-m-d H:i:s",$value['create_time']);
-            //$list[$key]['tache_info'] = $this->rate_of_progress($value['id']);
+            $list[$key]['tache_info'] = $this->rate_of_progress($value['id']);
         }
         $data['list'] = $list;
         $data['dataCount'] = $dataCount;
@@ -155,18 +157,34 @@ class Shot extends Common{
 
     //获取当前镜头各环节进度
     public function rate_of_progress($shot_id){
-        $tache_arr = array_unique(Workbench::where(['shot_id'=>$shot_id,'pid'=>0])->field('tache_id')->order('tache_sort asc')->select());
-        foreach($tache_arr as $key=>$value){
-            $tache_data[] = $value['tache_id'];
-        }
+        $tache_data = Tache::column('id');  //获取所有的环节
+        unset($tache_data[0]);//弹出环节中的视效总监部
+        unset($tache_data[1]);//弹出环节中的制片部
         foreach($tache_data as $key=>$value){
-            $studio_arr[] = Workbench::where(['shot_id'=>$shot_id,'tache_id'=>$value])->field('studio_id')->select();
+            //根据当前镜头ID与环节ID查询是否有其任务
+            $curr_task_data = Workbench::where(['shot_id'=>$shot_id,'tache_id'=>$value])->find();
+            $finish_degree[$key]['tache_id'] = $value;
+            $finish_degree[$key]['tache_byname'] = $this->tache_byname_arr[$value];
+            $finish_degree[$key]['finish_degree'] = !empty($curr_task_data) ?  $this->get_finish_degree_by_task(1,3): '' ;
         }
-        foreach($studio_arr as $key=>$value){
-            $studio_data[] = $value['studio_id'];
-        }
-        file_put_contents('aa.txt',var_export($studio_arr,true));die;
+        //根据环节ID获取所属任务
+        return $finish_degree;
     }
 
+    //根据任务获取完成度
+    public function get_finish_degree_by_task($shot_id,$tache_id){
+        //获取当前环节下有几个工作室ID
+        $studio_ids_arr = Workbench::where(['shot_id'=>$shot_id,'tache_id'=>$tache_id])->column('studio_id');
+        //多工作室
+        if(count($studio_ids_arr) > 1){
+            foreach($studio_ids_arr as $key=>$value){
+                $studio_degree[] = $this->task_status_arr[Workbench::where(['shot_id'=>$shot_id,'studio_id'=>$value])->value('task_status')];
+            }
+            $curr_tache_degree = (array_sum($studio_degree) == 0 ) ? '0%' : intval(array_sum($studio_degree)/count($studio_ids_arr))."%";
+        }else{//一个工作室 他的状态即是当前环节的进度
+            $curr_tache_degree = $this->task_status_arr[Workbench::where(['shot_id'=>$shot_id,'studio_id'=>$studio_ids_arr[0]])->value('task_status')]."%";    //获取这个任务的状态转化的进度值
+        }
+        return $curr_tache_degree;
+    }
 
 }
