@@ -365,6 +365,7 @@
   export default {
     data() {
       return {
+        editShotDetail: {},
         isArt: false,
         isModel: false,
         isMap: false,
@@ -391,7 +392,6 @@
         uploadImageUrl: window.HOST + '/admin/upload_image',
         projectList: [],
         studiosList: [],
-        tachesList: [],
         fieldList: [],
         fieldForm: {
           project_id: '',
@@ -573,7 +573,18 @@
           }
         })
       },
-      //获取工作室
+//			获取所有工作室
+      getAllStudios() {
+        return new Promise((resolve, reject) => {
+          this.apiGet('admin/studios').then((res) => {
+            this.handelResponse(res, (data) => {
+              let studioList = _.drop(data.list, 1)
+              resolve(studioList)
+            })
+          })
+        })
+      },
+//      获取项目列表
       getAllProjects() {
         return new Promise((resolve, reject) => {
           this.apiGet('admin/projects').then((res) => {
@@ -598,6 +609,7 @@
       },
       async getCompleteData() {
         this.projectList = await this.getAllProjects()
+        this.studiosList = await this.getAllStudios()
 //        this.apiGet('admin/shots/' + this.id).then((res) => {
 //          this.handelResponse(res, (data) => {
 //            this.form.project_name = data.project_name
@@ -637,6 +649,7 @@
     created() {
 //      this.form.auth_key = Lockr.get('authKey')
       this.getCompleteData()
+//      console.log(this.editShotDetail)
     },
     mixins: [http],
     computed: {

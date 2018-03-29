@@ -396,9 +396,9 @@
               <i class="el-icon-delete m-l-5 fz-14 c-light-gray pointer"></i>
               <i class="el-icon-close fr pointer" @click="isShotDetailShow = !isShotDetailShow"></i>
             </div>
-            <div v-for="o in 4" :key="o" class="item">
-              {{'我是镜头详情' + o }}
-            </div>
+            <p>
+
+            </p>
           </el-card>
         </div>
       </transition>
@@ -406,7 +406,6 @@
     <editShots ref="editShots"></editShots>
   </div>
 </template>
-
 <script>
   import editShots from '../shots/edit.vue'
   import http from '../../../../assets/js/http'
@@ -460,6 +459,7 @@
         this.apiGet('admin/shots/' + id).then((res) => {
           this.handelResponse(res, (data) => {
             console.log(data)
+//            this.editShotDetail = data
           })
         })
         if (this.isShotDetailShow) {
@@ -639,7 +639,7 @@
     position: fixed;
     right: 20px;
     top: 100px;
-    z-index: 1;
+    z-index: 2;
   }
 
   .shot_list_detail .shot_card h2 {

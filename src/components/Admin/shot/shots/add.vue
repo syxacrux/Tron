@@ -429,7 +429,6 @@
         uploadImageUrl: window.HOST + '/admin/upload_image',
         projectList: [],
         studiosList: [],
-        tachesList: [],
         fieldList: [],
         fieldForm: {
           project_id: '',  //所属项目id
@@ -607,14 +606,6 @@
           }
         })
       },
-//			获取所有环节
-      getAllTaches() {
-        this.apiGet('admin/taches').then((res) => {
-          this.handelResponse(res, (data) => {
-            this.tachesList = _.drop(data.list, 2)
-          })
-        })
-      },
 //			获取所有工作室
       getAllStudios() {
         this.apiGet('admin/studios').then((res) => {
@@ -631,7 +622,7 @@
           })
         })
       },
-//      获取所有场合
+//      获取所有场号、集号
       getFields() {
         const data = {
           params: {
@@ -647,7 +638,6 @@
     },
     created() {
       this.getProjects()
-      this.getAllTaches()
       this.getAllStudios()
     },
     mixins: [http, fomrMixin],

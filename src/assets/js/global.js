@@ -9,7 +9,7 @@ const commonFn = {
   },
   //时间转换
   j2time(obj) {
-    var time = new Date(obj * 1000);
+    var time = new Date(obj);
     let year = time.getFullYear()
     let month = time.getMonth() + 1 < 10 ? '0' + (time.getMonth() + 1) : time.getMonth() + 1
     let date = time.getDate()  < 10 ? '0' + time.getDate() : time.getDate()
