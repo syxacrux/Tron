@@ -403,7 +403,7 @@
         </div>
       </transition>
     </div>
-    <editShots ref="editShots"></editShots>
+    <editShots :message="editShotDetail" ref="editShots"></editShots>
   </div>
 </template>
 <script>
@@ -445,7 +445,8 @@
         pauseList: [],  //镜头暂停列表
         finishDataCount: 0,  //镜头完成总数量
         finishList: [],  //镜头完成列表
-        limit: 10
+        limit: 10,
+        editShotDetail: {}
       }
     },
     methods: {
@@ -458,8 +459,7 @@
         console.log(id)
         this.apiGet('admin/shots/' + id).then((res) => {
           this.handelResponse(res, (data) => {
-            console.log(data)
-//            this.editShotDetail = data
+            this.editShotDetail = data
           })
         })
         if (this.isShotDetailShow) {

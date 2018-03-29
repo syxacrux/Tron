@@ -365,7 +365,7 @@
   export default {
     data() {
       return {
-        editShotDetail: {},
+        form: {},
         isArt: false,
         isModel: false,
         isMap: false,
@@ -649,9 +649,32 @@
     created() {
 //      this.form.auth_key = Lockr.get('authKey')
       this.getCompleteData()
-//      console.log(this.editShotDetail)
     },
     mixins: [http],
+    props: ['message'],
+    watch: {
+      message: function(data, o) {
+        this.form = data
+        this.form.shot_image = this.image = window.baseUrl + '/' + data.shot_image
+        this.plan_time = [new Date(data.plan_start_timestamp * 1000), new Date(data.plan_end_timestamp * 1000)]
+        this.form.time = data.time.toString()
+        this.form.ambient = data.ambient.toString()
+        this.form.priority_level = data.priority_level.toString()
+        this.form.difficulty = data.difficulty.toString()
+        this.handle_frame1 = data.handle_frame.split(',')[0]
+        this.handle_frame2 = data.handle_frame.split(',')[1]
+        this.frame_range1 = data.frame_range.split(',')[0]
+        this.frame_range2 = data.frame_range.split(',')[1]
+        this.form.material_number = data.material_number
+        this.form.asset_ids = data.asset_ids
+        this.form.clip_frame_length = data.clip_frame_length
+        this.form.material_frame_length = data.material_frame_length
+        this.form.second_company = data.second_company
+        this.form.shot_explain = data.shot_explain
+        this.form.change_speed_info = data.change_speed_info
+        this.form.make_demand = data.make_demand
+      }
+    },
     computed: {
       addShow() {
         return _g.getHasRule('shots-filed_save')
