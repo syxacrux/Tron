@@ -135,7 +135,8 @@ class Shot extends Common{
                         $task_data['is_assets'] = 2; //是否为等待资产 1是 2否
                         $task_data['pid'] = 0;  //工作室顶级任务ID都为0
                         $task_data['create_time'] = time();//创建时间
-                        Db::name('task')->insert($task_data);
+                        $task_model = new Workbench();
+                        $task_model->data($task_data)->save();
                     }
                 }
                 $this->commit();
