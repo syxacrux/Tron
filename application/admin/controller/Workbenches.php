@@ -16,7 +16,7 @@ class Workbenches extends ApiCommon{
         $uid = $this->uid;
         $group_id = Access::get($uid)->group_id;
         $param = $this->param;
-        $keywords = !empty($param['keywords']) ? $param['keywords']: '';
+        $keywords = !empty($param['keywords']) ? json_decode($param['keywords'],true): '';
         $page = !empty($param['page']) ? $param['page']: '';
         $limit = !empty($param['limit']) ? $param['limit']: '';
         $data = $workbench_model->getList($keywords, $page, $limit,$uid,$group_id);

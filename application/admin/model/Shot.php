@@ -155,14 +155,17 @@ class Shot extends Common{
 
     //获取当前镜头各环节进度
     public function rate_of_progress($shot_id){
-        $where = [];
-        $where['shot_id'] = $shot_id;
-        $where['pid'] = ['neq',0];
-        $tache_arr = array_unique(Workbench::where('shot_id',$shot_id)->where('pid','!=',0)->field('tache_id')->order('tache_sort asc')->select());
+        $tache_arr = array_unique(Workbench::where(['shot_id'=>$shot_id,'pid'=>0])->field('tache_id')->order('tache_sort asc')->select());
         foreach($tache_arr as $key=>$value){
-            //$studio_task_data[]
+            $tache_data[] = $value['tache_id'];
         }
-        file_put_contents('aa.txt',var_export($tache_arr,true));
+        foreach($tache_data as $key=>$value){
+            $studio_arr[] = Workbench::where(['shot_id'=>$shot_id,'tache_id'=>$value])->field('studio_id')->select();
+        }
+        foreach($studio_arr as $key=>$value){
+            $studio_data[] = $value['studio_id'];
+        }
+        file_put_contents('aa.txt',var_export($studio_arr,true));die;
     }
 
 
