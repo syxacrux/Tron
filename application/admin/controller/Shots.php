@@ -86,7 +86,7 @@ class Shots extends BaseCommon{
     public function read(){
         $shot_model = model('Shot');
         $param = $this->param;
-        $data = $shot_model->getDataById($param['id']);
+        $data = $shot_model->getData_ById($param['id']);
         if (!$data) {
             return resultArray(['error' => $shot_model->getError()]);
         }

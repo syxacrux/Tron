@@ -149,6 +149,23 @@ class Shot extends Common{
         }
     }
 
+    //根据镜头ID获取数据
+    public function getData_ById($id){
+        $data = $this->get($id);
+        $data->project_name = Project::get($data->project_id)->project_name;
+        $data->field_name = Db::name('field')->where('id',$data->field_id)->value('name');
+        $data->time_name = $this->time_arr[$data->time];
+        $data->ambient_name = $this->ambient_arr[$data->ambient];
+        $data->difficulty_name = $this->difficulty_arr[$data->difficulty];
+        $data->priority_level_name = $this->priority_level_arr[$data->priority_level];
+        $data->tache_info = $this->rate_of_progress($data->id);
+        if (!$data){
+            $this->error = '暂无此数据';
+            return false;
+        }
+        return $data;
+    }
+
     //获取当前镜头各环节进度
     public function rate_of_progress($shot_id){
         $tache_data = Tache::column('id');  //获取所有的环节

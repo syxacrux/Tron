@@ -95,30 +95,29 @@ class Base extends Common
         $param = $this->param;
         $table = $param['table'];//数据表名
         $uid = $param['uid']; //当前登陆人
-        $group_id = Access::where('user_id',$uid)->value('group_id');
-        if((!$group_id) || ($uid != 1)){
-            return ['code' => '400','error'=>'没有当前用户'];
-        }
-        //过滤admin
-        if($uid ==1){
+        if($uid == 1){  //过滤admin
             return ['code'=>200,'error'=>''];
         }else{
-            if($group_id == 1 || $group_id == 2 || $group_id==3){
+            $group_id = Access::where('user_id',$uid)->where()->value('group_id');
+            if(!$group_id){
+                return ['code' => '400','error'=>'没有当前用户'];
+            }elseif($group_id == 1 || $group_id == 2 || $group_id==3){
                 return ['code'=>200,'error'=>''];
             }
+            $table_id = $param['table_id'];//查询数据表名主键
+            switch ($table) {
+                case 'project':
+                    $table_model = model('Project')->where('id',$table_id)->where('scene_producer|scene_director|second_company_producer|inside_coordinate','like','%'.$uid.'%');
+                    break;
+            }
+            $check_uid = $table_model->find();
+            if(!empty($check_uid)){
+                return ['code'  => 200,'error'=>''];
+            }else{
+                return ['code'  => 400,'error'=>'没有权限'];
+            }
         }
-        $table_id = $param['table_id'];//查询数据表名主键
-        switch ($table) {
-            case 'project':
-                $table_model = model('Project')->where('id',$table_id)->where('scene_producer|scene_director|second_company_producer|inside_coordinate','like','%'.$uid.'%');
-                break;
-        }
-        $check_uid = $table_model->find();
-        if(!empty($check_uid)){
-            return ['code'  => 200,'error'=>''];
-        }else{
-            return ['code'  => 400,'error'=>'没有权限'];
-        }
+
     }
 
     /**

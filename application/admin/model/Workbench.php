@@ -68,28 +68,21 @@ class Workbench extends Common{
                     $where['field_id'] = $keyword['field_id'];
                 }
                 $dataCount = $this->where($where)->count('id'); //全部数量
-                //制作中 in_production
-                $in_production_list = $this->where($where)->where('task_status',5);
-                //反馈中 feedback  等待审核 反馈中
-                $feedback_list = $this->where($where)->where('task_status','in','10,15');
-                //提交发布 submit
-                $submit_list = $this->where($where)->where('task_status',25);
-                //等待制作 wait_production
-                $wait_production_list = $this->where($where)->where('task_status',1);
+
                 // 若有分页
                 if($page && $limit){
                     //暂定为总页数为40 /每列显示10条数据 $limit 10
                     $every_limit = intval($limit)/4;
-                    $in_production_list = $in_production_list->page($page,$every_limit);
-                    $feedback_list = $feedback_list->page($page,$every_limit);
-                    $submit_list = $submit_list->page($page,$limit);
-                    $wait_production_list = $wait_production_list->page($page,$every_limit);
-                    $list_data = array_unique(array_merge($in_production_list,$feedback_list,$submit_list,$wait_production_list));
+                    $in_production_list = $this->where($where)->where('task_status',5)->page($page,$every_limit)->select(); //制作中 in_production
+                    $feedback_list = $this->where($where)->where('task_status','in','10,15')->page($page,$every_limit)->select();   //反馈中 feedback  等待审核 反馈中
+                    $submit_list = $this->where($where)->where('task_status',25)->page($page,$every_limit)->select();  //提交发布 submit
+                    $wait_production_list = $this->where($where)->where('task_status',1)->page(1,10)->select();  //等待制作 wait_production
+                    $list_data = array_merge($in_production_list,$feedback_list,$submit_list,$wait_production_list);
                 }else{
-                    $in_production_list = $in_production_list->select();
-                    $feedback_list = $feedback_list->select();
-                    $submit_list = $submit_list->select();
-                    $wait_production_list = $wait_production_list->select();
+                    $in_production_list = $this->where($where)->where('task_status',5)->select();
+                    $feedback_list = $this->where($where)->where('task_status','in','10,15')->select();
+                    $submit_list = $this->where($where)->where('task_status',25)->select();
+                    $wait_production_list = $this->where($where)->where('task_status',1)->select();
                     $list_data = array_unique(array_merge($in_production_list,$feedback_list,$submit_list,$wait_production_list));
                 }
                 break;
