@@ -168,12 +168,19 @@ class Shot extends Common{
 
     //根据镜头ID获取所属环节下的工作室
     public function get_studio_byTache($shot_id){
-        $tache_ids_arr = Tache::column('id');
-        unset($tache_ids_arr[0]);   //弹出视效总监部ID
-        unset($tache_ids_arr[1]);   //弹出制片部ID
+        $tache_ids_arr = array_unique(Workbench::where('shot_id',$shot_id)->column('tache_id'));
         foreach($tache_ids_arr as $key=>$value){
-            $data[$this->tache_byname_arr[$value]] = Workbench::where(['shot_id'=>$shot_id,'tache_id'=>$value])->column('studio_id');
+            $data[$this->tache_byname_arr[$value]] = $this->get_studio_name(Workbench::where(['shot_id'=>$shot_id,'tache_id'=>$value])->column('studio_id'));
         }
+        return $data;
+    }
+
+    //根据工作室ID数组拼接成中文字符串
+    public function get_studio_name($studio_id_arr){
+        foreach($studio_id_arr as $key=>$value){
+            $arr[] = Studio::get($value)->name;
+        }
+        $data = implode(",",$arr);
         return $data;
     }
 
