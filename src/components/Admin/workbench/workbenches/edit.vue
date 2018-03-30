@@ -2,6 +2,16 @@
   <el-dialog class="workbenches-edit" title="任务编辑" :visible.sync="dialogFormVisible" width="75%">
     <el-form ref="form" :model="form" :rules="rules" label-width="130px" class="shot_add">
       <el-row :gutter="20">
+        <el-col :span="8">
+          <div class="grid-content">
+            <el-form-item label="任务名称:" prop="field_id">
+              <el-input v-model="form.field_id" placeholder="请选择制作人">
+              </el-input>
+            </el-form-item>
+          </div>
+        </el-col>
+      </el-row>
+      <el-row :gutter="20">
         <el-col :span="12">
           <el-form-item class="is-required" label="任务缩略图:" prop="image">
             <el-upload

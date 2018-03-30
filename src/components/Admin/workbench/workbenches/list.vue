@@ -74,7 +74,8 @@
                     </div>
                     <div class="text-Lens-link m-t-10">
                       <el-tag type="warn">动画: 60%</el-tag>
-                      <el-tag type="danger">合成: 0%</el-tag>
+                      <el-tag type="danger" v-if="block.task_finish_degree.finish_degree < 100">{{block.task_finish_degree.tache_byname}}:{{block.task_finish_degree.finish_degree}}%</el-tag>
+                      <el-tag type="success" v-else>{{block.task_finish_degree.tache_byname}}:{{block.task_finish_degree.finish_degree}}%</el-tag>
                     </div>
                   </div>
                 </el-card>
@@ -285,8 +286,10 @@
                         </p>
                       </div>
                       <div class="text-Lens-link m-t-10">
-                        <el-tag type="warn">动画: 60%</el-tag>
-                        <el-tag type="danger">合成: 0%</el-tag>
+                        <el-tag type="warn"></el-tag>
+
+                        <el-tag type="danger" v-if="block.task_finish_degree.finish_degree < 100">{{block.task_finish_degree.tache_byname}}:{{block.task_finish_degree.finish_degree}}%</el-tag>
+                        <el-tag type="success" v-else>{{block.task_finish_degree.tache_byname}}:{{block.task_finish_degree.finish_degree}}%</el-tag>
                       </div>
                     </div>
                 </el-card>
@@ -332,8 +335,17 @@
                 <i class="el-icon-delete m-l-5 fz-14 c-light-gray pointer"></i>
                 <i class="el-icon-close fr pointer" @click="task2 = !task2"></i>
             </div>
-            <div v-for="o in 4" :key="o" class="text item">
-              {{'我是任务详情' + o }}
+            <div class="text item">
+              <!-- {{'我是任务详情' + o }} -->
+              <p>项目名：</p>
+              <p>项目简称：</p>
+              <p>场号：</p>
+              <p>镜头名：</p>
+              <p>镜头简称：</p>
+              <p>镜头号：</p>
+              <p>优先级：</p>
+              <p>难度：</p>
+              
             </div>
           </el-card>
         </div>
