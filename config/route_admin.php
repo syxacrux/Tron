@@ -81,6 +81,8 @@ return [
     'shot/pause'            =>      ['admin/shots/pause_data',['method'=>'GET']],
     //  [镜头] 镜头完成
     'shot/finish'           =>      ['admin/shots/finish_data',['method'=>'GET']],
+    //  [镜头] 获取工作室列表
+    'shot/get_studio'       =>      ['admin/shots/get_studio_list',['method'=>'GET']],
     // [镜头] 添加场号
     'admin/save_field'      =>      ['admin/base/save_field',['method' => 'POST']],
     // [工作台] 改变状态

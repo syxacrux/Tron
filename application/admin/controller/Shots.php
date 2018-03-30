@@ -33,7 +33,7 @@ class Shots extends BaseCommon{
         return resultArray(['data' => $data]);
     }
 
-    //镜头看板 - 制作中
+    //接口 - 镜头看板 - 制作中
     public function in_production_data(){
         $shot_model = model('Shot');
         $param = $this->param;
@@ -43,7 +43,7 @@ class Shots extends BaseCommon{
         return resultArray(['data' => $data]);
     }
 
-    //镜头看板 - 反馈中
+    //接口 - 镜头看板 - 反馈中
     public function feedback_data(){
         $shot_model = model('Shot');
         $param = $this->param;
@@ -53,7 +53,7 @@ class Shots extends BaseCommon{
         return resultArray(['data' => $data]);
     }
 
-    //镜头看板 - 等待资产
+    //接口 - 镜头看板 - 等待资产
     public function waiting_assets_data(){
         $shot_model = model('Shot');
         $param = $this->param;
@@ -63,7 +63,7 @@ class Shots extends BaseCommon{
         return resultArray(['data' => $data]);
     }
 
-    //镜头看板 - 暂停
+    //接口 - 镜头看板 - 暂停
     public function pause_data(){
         $shot_model = model('Shot');
         $param = $this->param;
@@ -73,7 +73,7 @@ class Shots extends BaseCommon{
         return resultArray(['data' => $data]);
     }
 
-    //镜头看板 - 完成
+    //接口 - 镜头看板 - 完成
     public function finish_data(){
         $shot_model = model('Shot');
         $param = $this->param;
@@ -144,4 +144,13 @@ class Shots extends BaseCommon{
         }
         return resultArray(['data' => '操作成功']);
     }
+
+    //接口 - 根据镜头ID及环节获取工作室列表
+    public function get_studio_list(){
+        $shot_model = model('Shot');
+        $param = $this->param;
+        $data = $shot_model->getStudio_byShot($param);
+        return resultArray(['data' => $data]);
+    }
+
 }

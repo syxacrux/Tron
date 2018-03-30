@@ -214,4 +214,23 @@ class Shot extends Common{
         return $curr_tache_degree;
     }
 
+    //获取工作室列表 弹出视效、制片工作室
+    public function getStudio_byShot($param){
+        $studio_data = Studio::where('pid',1)->select();
+        unset($studio_data[0]); //弹出视效工作室
+        unset($studio_data[1]); //制片工作室
+        $studio_data = array_values($studio_data);
+        if(!empty($param)){
+            $studio_id_temp = Workbench::where(['shot_id'=>$param['shot_id'],'tache_id'=>$param['tache_id']])->column('studio_id');
+            foreach($studio_data as $key=>$value){
+                foreach($studio_id_temp as $k=>$v){
+                    if($v==$value) unset($studio_data[$key]);
+                }
+            }
+            $data['list'] = array_values($studio_data);
+        }else{
+            $data['list'] = $studio_data;
+        }
+    }
+
 }
