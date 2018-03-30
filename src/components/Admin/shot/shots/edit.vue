@@ -1,8 +1,6 @@
 <template>
   <div>
-
-
-    <el-dialog title="编辑镜头" :visible.sync="dialogFormVisible" width="75%">
+    <el-dialog title="编辑镜头" :visible.sync="dialogFormVisible" width="75%" top="6vh">
       <el-form ref="form" :model="form" :rules="rules" label-width="130px" class="shot_add">
         <el-row :gutter="20">
           <el-col :span="8">
@@ -610,51 +608,22 @@
       async getCompleteData() {
         this.projectList = await this.getAllProjects()
         this.studiosList = await this.getAllStudios()
-//        this.apiGet('admin/shots/' + this.id).then((res) => {
-//          this.handelResponse(res, (data) => {
-//            this.form.project_name = data.project_name
-//            this.form.project_byname = data.project_byname
-//            this.form.project_explain = data.project_explain
-//            this.form.project_image = this.image = window.baseUrl + '/' + data.project_image
-//            console.log(this.image)
-//            this.form.handle_frame.handle_frame1 = data.handle_frame.split(',')[0]
-//            this.form.handle_frame.handle_frame2 = data.handle_frame.split(',')[1]
-//            this.form.movies_type = data.movies_type.toString()
-//            this.form.resolutic = data.resolutic.toString()
-//            this.form.frame_rate = data.frame_rate.toString()
-//            this.form.aspect_ratio = data.aspect_ratio.toString()
-//
-//            function str2num(str) {
-//              let arr = str.split(',')
-//              let temp = []
-//              _(arr).forEach((key, index) => {
-//                temp.push(parseInt(key))
-//              })
-//              return temp
-//            }
-//
-//            this.studio_ids = str2num(data.studio_ids)
-//            this.scene_director = str2num(data.scene_director)
-//            this.producer = str2num(data.producer)
-//            this.scene_producer = str2num(data.scene_producer)
-//            this.visual_effects_boss = str2num(data.visual_effects_boss)
-//            this.visual_effects_producer = str2num(data.visual_effects_producer)
-//            this.second_company_producer = str2num(data.second_company_producer)
-//            this.inside_coordinate = str2num(data.inside_coordinate)
-//            this.plan_time = [new Date(data.plan_start_timestamp * 1000), new Date(data.plan_end_timestamp * 1000)]
-//          })
-//        })
       }
     },
     created() {
-//      this.form.auth_key = Lockr.get('authKey')
       this.getCompleteData()
     },
     mixins: [http],
     props: ['message'],
     watch: {
       message: function(data, o) {
-        this.form = data
+//        this.form = data
+        this.form.project_id = data.project_id
+        this.getFields()
+        this.form.field_id = data.field_id
+        this.form.shot_number = data.shot_number
+        this.form.shot_byname = data.shot_byname
+        this.form.shot_name = data.shot_name
         this.form.shot_image = this.image = window.baseUrl + '/' + data.shot_image
         this.plan_time = [new Date(data.plan_start_timestamp * 1000), new Date(data.plan_end_timestamp * 1000)]
         this.form.time = data.time.toString()
@@ -673,6 +642,7 @@
         this.form.shot_explain = data.shot_explain
         this.form.change_speed_info = data.change_speed_info
         this.form.make_demand = data.make_demand
+
       }
     },
     computed: {
