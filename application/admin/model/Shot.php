@@ -12,7 +12,7 @@ class Shot extends Common{
     protected $ambient_arr = [1=>'室外',2=>'室内'];    //环境(1外 2内)
     protected $task_status_arr = [1=>0,5=>20,10=>40,15=>60,20=>80,25=>100];    //用于任务状态计算进度百分比 status=>0%
     //根据环节ID获取镜头页面进度条所用别名
-    protected $tache_byname_arr = [3=>'美术',4=>'模型',5=>'贴图',6=>'绑定',7=>'跟踪',8=>'动画',9=>'数绘',10=>'特效',11=>'灯光',12=>'合成'];
+    protected $tache_byname_arr = [3=>'美术部',4=>'模型部',5=>'贴图部',6=>'绑定部',7=>'跟踪部',8=>'动画部',9=>'数字绘景部',10=>'特效部',11=>'灯光部',12=>'合成部'];
 
     /**
      * 获取列表
@@ -158,10 +158,21 @@ class Shot extends Common{
         $data->ambient_name = $this->ambient_arr[$data->ambient];
         $data->difficulty_name = $this->difficulty_arr[$data->difficulty];
         $data->priority_level_name = $this->priority_level_arr[$data->priority_level];
-        $data->tache_info = $this->rate_of_progress($data->id);
+        $data->tache_info = $this->get_studio_byTache($data->id);
         if (!$data){
             $this->error = '暂无此数据';
             return false;
+        }
+        return $data;
+    }
+
+    //根据镜头ID获取所属环节下的工作室
+    public function get_studio_byTache($shot_id){
+        $tache_ids_arr = Tache::column('id');
+        unset($tache_ids_arr[0]);   //弹出视效总监部ID
+        unset($tache_ids_arr[1]);   //弹出制片部ID
+        foreach($tache_ids_arr as $key=>$value){
+            $data[$this->tache_byname_arr[$value]] = Workbench::where(['shot_id'=>$shot_id,'tache_id'=>$value])->column('studio_id');
         }
         return $data;
     }
