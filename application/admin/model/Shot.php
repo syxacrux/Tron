@@ -168,15 +168,13 @@ class Shot extends Common{
 
     //获取当前镜头各环节进度
     public function rate_of_progress($shot_id){
-        $tache_data = Tache::column('id');  //获取所有的环节
-        unset($tache_data[0]);//弹出环节中的视效总监部
-        unset($tache_data[1]);//弹出环节中的制片部
+        $tache_data = Workbench::where('shot_id',$shot_id)->column('tache_id');  //获取所属镜头的环节
         foreach($tache_data as $key=>$value){
             //根据当前镜头ID与环节ID查询是否有其任务
             $curr_task_data = Workbench::where(['shot_id'=>$shot_id,'tache_id'=>$value])->find();
             $finish_degree[$key]['tache_id'] = $value;
             $finish_degree[$key]['tache_byname'] = $this->tache_byname_arr[$value];
-            $finish_degree[$key]['finish_degree'] = !empty($curr_task_data) ?  $this->get_finish_degree_by_task(1,3): '' ;
+            $finish_degree[$key]['finish_degree'] = !empty($curr_task_data) ?  $this->get_finish_degree_by_task($shot_id,$value): '' ;
         }
         //根据环节ID获取所属任务
         return $finish_degree;
