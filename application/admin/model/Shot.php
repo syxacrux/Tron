@@ -236,7 +236,7 @@ class Shot extends Common
 			$studio_id_temp = Workbench::where(['shot_id' => $param['shot_id'], 'tache_id' => $param['tache_id']])->column('studio_id');
 			foreach ($studio_data as $key => $value) {
 				foreach ($studio_id_temp as $k => $v) {
-					if ($v == $value) unset($studio_data[$key]);
+					if ($v == $value['id']) unset($studio_data[$key]);
 				}
 			}
 			$data['list'] = array_values($studio_data);

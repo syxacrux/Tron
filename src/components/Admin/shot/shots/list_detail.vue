@@ -21,7 +21,7 @@
     </div>
     <div class="m-b-20 ovf-hd">
       <el-table v-if="isList" ref="multipleTable" :data="tableData" tooltip-effect="dark"
-                @selection-change="handleSelectionChange">
+                @selection-change="handleSelectionChange" @row-click="">
         <el-table-column type="selection" width="55"></el-table-column>
         <el-table-column prop="shot_image" label="缩略图">
           <template slot-scope="scope">
@@ -30,24 +30,23 @@
         </el-table-column>
         <el-table-column prop="field_name" label="场号"></el-table-column>
         <el-table-column prop="shot_number" label="镜头号"></el-table-column>
-        <el-table-column prop="difficulty" label="难度"></el-table-column>
-        <el-table-column prop="priority_level" label="优先级"></el-table-column>
+        <el-table-column prop="difficulty_name" label="难度"></el-table-column>
+        <el-table-column prop="priority_level_name" label="优先级"></el-table-column>
         <el-table-column prop="tache" label="进度" width="200">
-          <template slot-scope="scopes">
-            <!--这里插入子列表就可以了,子列表的数据来自scope-->
-            <!--<el-tag v-for="(taches, index) in scopes.row.tache" :key="item.id" type="success">{{taches.name}}</el-tag>-->
-            <el-tag type="success">标签二</el-tag>
-            <el-tag type="info">标签三</el-tag>
-            <el-tag type="warning">标签四</el-tag>
-            <el-tag type="danger">标签五</el-tag>
+          <template slot-scope="scope">
+            <el-tag v-for="value in scope.row.tache_info"
+                    v-if="value.finish_degree!==''?true:false" :key="value.id"
+                    :type="value.finish_degree<100?'warning':'success'">
+              {{ value.tache_byname }}：{{ value.finish_degree }}%
+            </el-tag>
           </template>
-
         </el-table-column>
         <el-table-column prop="plan_start_timestamp" label="计划开始"></el-table-column>
         <el-table-column prop="plan_end_timestamp" label="计划结束"></el-table-column>
         <el-table-column prop="actual_start_timestamp" label="实际开始"></el-table-column>
         <el-table-column prop="actual_end_timestamp" label="实际结束"></el-table-column>
         <el-table-column prop="make_demand" label="备注"></el-table-column>
+        <btnGroup :selectedData="multipleSelection" :type="'studios'"></btnGroup>
       </el-table>
       <el-tabs v-if="!isList" v-model="activeName" @tab-click="tabClick" class="fl">
         <el-tab-pane label="镜头制作中" name="shotsInDevelopment">
@@ -407,7 +406,12 @@
             <p class="m-0 h-28">环境：<span>{{ editShotDetail.ambient_name }}</span></p>
             <p class="m-0 h-28">镜头优先级：<span>{{ editShotDetail.priority_level_name }}</span></p>
             <p class="m-0 h-28">镜头难度：<span>{{ editShotDetail.difficulty_name }}</span></p>
-            <p class="m-0 h-28">环节所属工作室：<span v-for="item in editShotDetail.tache_info" v-if="item.finish_degree !== ''?true:false">{{item.tache_byname}}: {{ item.finish_degree }}%;</span></p>
+            <p class="m-0 h-28">
+              环节所属工作室：
+              <span v-for="(item, index) in editShotDetail.tache_info" v-if="item.length !== 0?true:false">
+                {{ index }}: {{ item }};
+              </span>
+            </p>
             <p class="m-0 h-28">资产：<span>001</span></p>
             <p class="m-0 h-28">帧长范围：<span>{{ editShotDetail.frame_range }}</span></p>
             <p class="m-0 h-28">手柄帧：<span>{{ editShotDetail.handle_frame }}</span></p>
@@ -426,6 +430,7 @@
   </div>
 </template>
 <script>
+  import btnGroup from '../../../Common/btn-group.vue'
   import editShots from '../shots/edit.vue'
   import http from '../../../../assets/js/http'
   import _g from '@/assets/js/global'
@@ -433,6 +438,7 @@
   export default {
     data() {
       return {
+        multipleSelection: [],
         currentPage: 1,
         isShotDetailShow: false,    //是否显示镜头详情
         activeName: 'shotInDevelopment', //镜头tab当前选中值
@@ -475,7 +481,6 @@
       },
 //      点击镜头显示镜头详情
       shotDetail(id) {
-        console.log(id)
         this.apiGet('admin/shots/' + id).then((res) => {
           this.handelResponse(res, (data) => {
             this.editShotDetail = data
@@ -616,7 +621,8 @@
       this.init(this.activeName)
     },
     components: {
-      editShots
+      editShots,
+      btnGroup
     },
     mixins: [http],
     computed: {

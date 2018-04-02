@@ -139,79 +139,79 @@
                   <el-checkbox v-model="isArt" @change="changeTache">美术部</el-checkbox>
                   <el-select v-if="isArt" v-model="artOfStudio" multiple collapse-tags style="margin-left: 20px;"
                              placeholder="请选择">
-                    <el-option v-for="item1 in studiosList" :key="item1.id" :label="item1.name" :value="item1.id">
+                    <el-option v-for="item1 in studiosListArt" :key="item1.id" :label="item1.name" :value="item1.id" :disabled="item1.art_disabled">
                     </el-option>
                   </el-select>
                 </el-col>
                 <el-col :span="12" class="h-45">
-                  <el-checkbox v-model="isModel">模型部</el-checkbox>
+                  <el-checkbox v-model="isModel" @change="changeTache">模型部</el-checkbox>
                   <el-select v-if="isModel" v-model="modelOfStudio" multiple collapse-tags style="margin-left: 20px;"
                              placeholder="请选择">
-                    <el-option v-for="item1 in studiosList" :key="item1.id" :label="item1.name" :value="item1.id">
+                    <el-option v-for="item1 in studiosListModel" :key="item1.id" :label="item1.name" :value="item1.id">
                     </el-option>
                   </el-select>
                 </el-col>
                 <el-col :span="12" class="h-45">
-                  <el-checkbox v-model="isMap">贴图部</el-checkbox>
+                  <el-checkbox v-model="isMap" @change="changeTache">贴图部</el-checkbox>
                   <el-select v-if="isMap" v-model="mapOfStudio" multiple collapse-tags style="margin-left: 20px;"
                              placeholder="请选择">
-                    <el-option v-for="item1 in studiosList" :key="item1.id" :label="item1.name" :value="item1.id">
+                    <el-option v-for="item1 in studiosListMap" :key="item1.id" :label="item1.name" :value="item1.id">
                     </el-option>
                   </el-select>
                 </el-col>
                 <el-col :span="12" class="h-45">
-                  <el-checkbox v-model="isBind">绑定部</el-checkbox>
+                  <el-checkbox v-model="isBind" @change="changeTache">绑定部</el-checkbox>
                   <el-select v-if="isBind" v-model="bindOfStudio" multiple collapse-tags style="margin-left: 20px;"
                              placeholder="请选择">
-                    <el-option v-for="item1 in studiosList" :key="item1.id" :label="item1.name" :value="item1.id">
+                    <el-option v-for="item1 in studiosListBind" :key="item1.id" :label="item1.name" :value="item1.id">
                     </el-option>
                   </el-select>
                 </el-col>
                 <el-col :span="12" class="h-45">
-                  <el-checkbox v-model="isTrack">跟踪部</el-checkbox>
+                  <el-checkbox v-model="isTrack" @change="changeTache">跟踪部</el-checkbox>
                   <el-select v-if="isTrack" v-model="trackOfStudio" multiple collapse-tags style="margin-left: 20px;"
                              placeholder="请选择">
-                    <el-option v-for="item1 in studiosList" :key="item1.id" :label="item1.name" :value="item1.id">
+                    <el-option v-for="item1 in studiosListTrack" :key="item1.id" :label="item1.name" :value="item1.id">
                     </el-option>
                   </el-select>
                 </el-col>
                 <el-col :span="12" class="h-45">
-                  <el-checkbox v-model="isAni">动画部</el-checkbox>
+                  <el-checkbox v-model="isAni" @change="changeTache">动画部</el-checkbox>
                   <el-select v-if="isAni" v-model="animateOfStudio" multiple collapse-tags style="margin-left: 20px;"
                              placeholder="请选择">
-                    <el-option v-for="item1 in studiosList" :key="item1.id" :label="item1.name" :value="item1.id">
+                    <el-option v-for="item1 in studiosListAnimate" :key="item1.id" :label="item1.name" :value="item1.id">
                     </el-option>
                   </el-select>
                 </el-col>
                 <el-col :span="12" class="h-45">
-                  <el-checkbox v-model="isPaint">数字绘景部</el-checkbox>
+                  <el-checkbox v-model="isPaint" @change="changeTache">数字绘景部</el-checkbox>
                   <el-select v-if="isPaint" v-model="paintOfStudio" multiple collapse-tags style="margin-left: 20px;"
                              placeholder="请选择">
-                    <el-option v-for="item1 in studiosList" :key="item1.id" :label="item1.name" :value="item1.id">
+                    <el-option v-for="item1 in studiosListPaint" :key="item1.id" :label="item1.name" :value="item1.id">
                     </el-option>
                   </el-select>
                 </el-col>
                 <el-col :span="12" class="h-45">
-                  <el-checkbox v-model="isSpec">特效部</el-checkbox>
+                  <el-checkbox v-model="isSpec" @change="changeTache">特效部</el-checkbox>
                   <el-select v-if="isSpec" v-model="specialOfStudio" multiple collapse-tags style="margin-left: 20px;"
                              placeholder="请选择">
-                    <el-option v-for="item1 in studiosList" :key="item1.id" :label="item1.name" :value="item1.id">
+                    <el-option v-for="item1 in studiosListSpecial" :key="item1.id" :label="item1.name" :value="item1.id">
                     </el-option>
                   </el-select>
                 </el-col>
                 <el-col :span="12" class="h-45">
-                  <el-checkbox v-model="isLight">灯光部</el-checkbox>
+                  <el-checkbox v-model="isLight" @change="changeTache">灯光部</el-checkbox>
                   <el-select v-if="isLight" v-model="lightOfStudio" multiple collapse-tags style="margin-left: 20px;"
                              placeholder="请选择">
-                    <el-option v-for="item1 in studiosList" :key="item1.id" :label="item1.name" :value="item1.id">
+                    <el-option v-for="item1 in studiosListLight" :key="item1.id" :label="item1.name" :value="item1.id">
                     </el-option>
                   </el-select>
                 </el-col>
                 <el-col :span="12" class="h-45">
-                  <el-checkbox v-model="isSynch">合成部</el-checkbox>
+                  <el-checkbox v-model="isSynch" @change="changeTache">合成部</el-checkbox>
                   <el-select v-if="isSynch" v-model="synchOfStudio" multiple collapse-tags style="margin-left: 20px;"
                              placeholder="请选择">
-                    <el-option v-for="item1 in studiosList" :key="item1.id" :label="item1.name" :value="item1.id">
+                    <el-option v-for="item1 in studiosListSynch" :key="item1.id" :label="item1.name" :value="item1.id">
                     </el-option>
                   </el-select>
                 </el-col>
@@ -340,6 +340,10 @@
   .el-upload {
     width: 300px;
   }
+  
+  .el-tag__close{
+    display: none;
+  }
 
   .avatar-uploader-icon {
     font-size: 28px;
@@ -359,11 +363,9 @@
 <script>
   import http from '../../../../assets/js/http'
   import _g from '@/assets/js/global'
-
   export default {
     data() {
       return {
-        form: {},
         isArt: false,
         isModel: false,
         isMap: false,
@@ -389,7 +391,16 @@
         dialogFormVisible: false,
         uploadImageUrl: window.HOST + '/admin/upload_image',
         projectList: [],
-        studiosList: [],
+        studiosListArt: [],
+        studiosListModel: [],
+        studiosListMap: [],
+        studiosListBind: [],
+        studiosListTrack: [],
+        studiosListAnimate: [],
+        studiosListPaint: [],
+        studiosListSpecial: [],
+        studiosListLight: [],
+        studiosListSynch: [],
         fieldList: [],
         fieldForm: {
           project_id: '',
@@ -422,6 +433,7 @@
           make_demand: '',    //制作要求
           status: 1    //镜头状态
         },
+        id: '',
         image: '',
         plan_time: '',
         frame_range1: '',
@@ -489,16 +501,136 @@
       },
 //      改变环节选项任意复选框时执行方法
       changeTache() {
-        this.artOfStudio = this.isArt ? this.artOfStudio : []
-        this.modelOfStudio = this.isModel ? this.modelOfStudio : []
-        this.mapOfStudio = this.isMap ? this.mapOfStudio : []
-        this.bindOfStudio = this.isBind ? this.bindOfStudio : []
-        this.trackOfStudio = this.isTrack ? this.trackOfStudio : []
-        this.animateOfStudio = this.isAni ? this.animateOfStudio : []
-        this.paintOfStudio = this.isPaint ? this.paintOfStudio : []
-        this.specialOfStudio = this.isSpec ? this.specialOfStudio : []
-        this.lightOfStudio = this.isLight ? this.lightOfStudio : []
-        this.synchOfStudio = this.isSynch ? this.synchOfStudio : []
+//        美术环节
+        if(this.isArt){
+          if(this.studiosListArt.length === 0){  //美术环节id为3
+            this.apiGet(`shot/get_studio?shot_id=${this.id}&tache_id=3`).then((res) => {
+              this.handelResponse(res, (data) => {
+                this.studiosListArt = data.list
+              })
+            })
+          }
+          this.artOfStudio = this.artOfStudio
+        }else{
+          this.artOfStudio = []
+        }
+//        模型环节
+        if(this.isModel){
+          if(this.studiosListModel.length === 0){  //模型环节id为4
+            this.apiGet(`shot/get_studio?shot_id=${this.id}&tache_id=4`).then((res) => {
+              this.handelResponse(res, (data) => {
+                this.studiosListModel = data.list
+              })
+            })
+          }
+          this.modelOfStudio = this.modelOfStudio
+        }else{
+          this.modelOfStudio = []
+        }
+//        贴图环节
+        if(this.isMap){
+          if(this.studiosListMap.length === 0){  //贴图环节id为5
+            this.apiGet(`shot/get_studio?shot_id=${this.id}&tache_id=5`).then((res) => {
+              this.handelResponse(res, (data) => {
+                this.studiosListMap = data.list
+              })
+            })
+          }
+          this.mapOfStudio = this.mapOfStudio
+        }else{
+          this.mapOfStudio = []
+        }
+//        绑定环节
+        if(this.isBind){
+          if(this.studiosListBind.length === 0){  //绑定环节id为6
+            this.apiGet(`shot/get_studio?shot_id=${this.id}&tache_id=6`).then((res) => {
+              this.handelResponse(res, (data) => {
+                this.studiosListBind = data.list
+              })
+            })
+          }
+          this.bindOfStudio = this.bindOfStudio
+        }else{
+          this.bindOfStudio = []
+        }
+//        跟踪环节
+        if(this.isTrack){
+          if(this.studiosListTrack.length === 0){  //跟踪环节id为7
+            this.apiGet(`shot/get_studio?shot_id=${this.id}&tache_id=7`).then((res) => {
+              this.handelResponse(res, (data) => {
+                this.studiosListTrack = data.list
+              })
+            })
+          }
+          this.trackOfStudio = this.trackOfStudio
+        }else{
+          this.trackOfStudio = []
+        }
+//        动画环节
+        if(this.isAni){
+          if(this.studiosListAnimate.length === 0){  //动画环节id为8
+            this.apiGet(`shot/get_studio?shot_id=${this.id}&tache_id=8`).then((res) => {
+              this.handelResponse(res, (data) => {
+                this.studiosListAnimate = data.list
+              })
+            })
+          }
+          this.animateOfStudio = this.animateOfStudio
+        }else{
+          this.animateOfStudio = []
+        }
+//        数字绘景环节
+        if(this.isPaint){
+          if(this.studiosListPaint.length === 0){  //数字绘景环节id为9
+            this.apiGet(`shot/get_studio?shot_id=${this.id}&tache_id=9`).then((res) => {
+              this.handelResponse(res, (data) => {
+                this.studiosListPaint = data.list
+              })
+            })
+          }
+          this.paintOfStudio = this.paintOfStudio
+        }else{
+          this.paintOfStudio = []
+        }
+//        特效环节
+        if(this.isSpec){
+          if(this.studiosListSpecial.length === 0){  //特效环节id为10
+            this.apiGet(`shot/get_studio?shot_id=${this.id}&tache_id=10`).then((res) => {
+              this.handelResponse(res, (data) => {
+                this.studiosListSpecial = data.list
+              })
+            })
+          }
+          this.specialOfStudio = this.specialOfStudio
+        }else{
+          this.specialOfStudio = []
+        }
+//        灯光环节
+        if(this.isLight){
+          if(this.studiosListLight.length === 0){  //灯光环节id为11
+            this.apiGet(`shot/get_studio?shot_id=${this.id}&tache_id=11`).then((res) => {
+              this.handelResponse(res, (data) => {
+                this.studiosListLight = data.list
+              })
+            })
+          }
+          this.lightOfStudio = this.lightOfStudio
+        }else{
+          this.lightOfStudio = []
+        }
+//        合成环节
+        if(this.isSynch){
+          if(this.studiosListSynch.length === 0){  //灯光环节id为12
+            this.apiGet(`shot/get_studio?shot_id=${this.id}&tache_id=12`).then((res) => {
+              this.handelResponse(res, (data) => {
+                this.studiosListSynch = data.list
+              })
+            })
+          }
+          this.synchOfStudio = this.synchOfStudio
+        }else{
+          this.synchOfStudio = []
+        }
       },
 //      编辑镜头
       edit(form) {
@@ -571,17 +703,6 @@
           }
         })
       },
-//			获取所有工作室
-      getAllStudios() {
-        return new Promise((resolve, reject) => {
-          this.apiGet('admin/studios').then((res) => {
-            this.handelResponse(res, (data) => {
-              let studioList = _.drop(data.list, 1)
-              resolve(studioList)
-            })
-          })
-        })
-      },
 //      获取项目列表
       getAllProjects() {
         return new Promise((resolve, reject) => {
@@ -607,7 +728,6 @@
       },
       async getCompleteData() {
         this.projectList = await this.getAllProjects()
-        this.studiosList = await this.getAllStudios()
       }
     },
     created() {
@@ -617,7 +737,7 @@
     props: ['message'],
     watch: {
       message: function(data, o) {
-//        this.form = data
+        this.id = data.id
         this.form.project_id = data.project_id
         this.getFields()
         this.form.field_id = data.field_id
