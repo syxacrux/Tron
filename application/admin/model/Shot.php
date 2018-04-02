@@ -155,6 +155,21 @@ class Shot extends Common
 		}
 	}
 
+	//根据镜头ID进行编辑数据
+	public function updateData_ById($param)
+	{
+		file_put_contents('bb.txt',var_export($param,true));
+		//开启事务
+		$this->startTrans();
+		try{
+
+		}catch (\Exception $e){
+			$this->rollback();
+			$this->error = '编辑失败';
+			return false;
+		}
+	}
+
 	//根据镜头ID获取数据
 	public function getData_ById($id)
 	{

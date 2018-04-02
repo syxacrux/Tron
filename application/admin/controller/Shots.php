@@ -105,16 +105,18 @@ class Shots extends BaseCommon{
         return resultArray(['data' => '添加成功']);
     }
 
+    //编辑
     public function update(){
         $shot_model = model('Shot');
         $param = $this->param;
-        $data = $shot_model->updateDataById($param, $param['id']);
+        $data = $shot_model->updateData_ById($param, $param['id']);
         if (!$data) {
             return resultArray(['error' => $shot_model->getError()]);
         }
         return resultArray(['data' => '编辑成功']);
     }
 
+    //删除
     public function delete(){
         $shot_model = model('Shot');
         $param = $this->param;
