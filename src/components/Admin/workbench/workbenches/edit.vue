@@ -30,8 +30,12 @@
         <el-col :span="8">
           <div class="grid-content">
             <el-form-item label="制作人:" prop="field_id">
-              <el-select v-model="form.field_id" placeholder="请选择制作人">
-                <el-option label="我是场号1" value="1"></el-option>
+              <el-select v-model="field_id" placeholder="请选择制作人">
+                <el-option v-for="item in options"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value">
+                </el-option>
               </el-select>
             </el-form-item>
           </div>
@@ -40,7 +44,7 @@
           <div class="grid-content">
             <el-form-item label="优先级:" prop="asset_ids">
               <el-select v-model="form.asset_ids" multiple collapse-tags placeholder="请选择优先级" class="h-40 w-200">
-                <el-option label="我是资产1" value="1"></el-option>
+                <el-option label="我是资产2" value="2"></el-option>
                 <el-option label="我是资产2" value="2"></el-option>
               </el-select>
             </el-form-item>
@@ -97,6 +101,17 @@ export default {
         uploadImageUrl: window.HOST + '/admin/upload_image',
         plan_time: '',
         image:'',
+        field_id:[],
+        options:[{
+          value: '1',
+          label: '赵九四1'
+        },{
+          value: '2',
+          label: '赵九四2'
+        },{
+          value: '3',
+          label: '赵九四3'
+        }],
         form: {
           group_id:null,//角色ID
           user_id:null,//所属用户

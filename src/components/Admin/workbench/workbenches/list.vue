@@ -442,7 +442,17 @@
         console.log(id)
         console.log(status)
         console.log(arguments)
+        const data = {
+           'id':Number(id),
+           'status':status
+
+        }
         this.blocks.find(b => b.id === Number(id)).status = status;
+        this.apiPost('admin/task/change_status',data).then((res) => {
+          this.handelResponse(res, (data) => {
+          
+          })
+        })
 
       },
       handleClick(tab, event) {
