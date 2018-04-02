@@ -243,6 +243,7 @@ class Shot extends Common
 		} else {
 			$data['list'] = $studio_data;
 		}
+		return $data;
 	}
 
 }
