@@ -448,7 +448,7 @@
 
         }
         this.blocks.find(b => b.id === Number(id)).status = status;
-        this.apiPost('admin/task/change_status',data).then((res) => {
+        this.apiPost('task/change_status',data).then((res) => {
           this.handelResponse(res, (data) => {
           
           })
