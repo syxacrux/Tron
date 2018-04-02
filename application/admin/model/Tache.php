@@ -91,7 +91,7 @@ class Tache extends Common{
                 return true;
             }
         }catch(\Exception $e){
-            $this->eror = '编辑失败';
+            $this->error = '编辑失败';
             return false;
         }
     }
