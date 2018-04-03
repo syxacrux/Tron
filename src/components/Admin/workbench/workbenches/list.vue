@@ -156,6 +156,18 @@
                     </el-card>
                   </li>
                 </ul>
+                <div class="pos-rel p-t-20">
+                  <!-- <btnGroup :selectedData="multipleSelection" :type="'studios'"></btnGroup> -->
+                  <div class="block pages">
+                    <el-pagination
+                      @current-change="upstreamCurrentChange"
+                      layout="prev, pager, next, jumper"
+                      :page-size="20"
+                      :current-page="currentPage"
+                      :total="upstreamDataCount">
+                    </el-pagination>
+                  </div>
+                </div>
               </div>
             </el-col>
             <el-col :span="12">
@@ -219,18 +231,19 @@
                     </el-card>
                   </li>
                 </ul>
+                <div class="block task-block">
+                  <el-pagination
+                          @current-change="upstreamCurrentChange"
+                          layout="prev, pager, next, jumper"
+                          :page-size="20"
+                          :current-page="currentPage"
+                          :total="upstreamDataCount">
+                  </el-pagination>
+                </div>
               </div>
             </el-col>
           </div>
-          <div class="block task-block">
-            <el-pagination
-                    @current-change="upstreamCurrentChange"
-                    layout="prev, pager, next, jumper"
-                    :page-size="20"
-                    :current-page="currentPage"
-                    :total="upstreamDataCount">
-            </el-pagination>
-          </div>
+          
         </el-tab-pane>
         <el-tab-pane label="完成" name="complete">
           <div class="waiting ovf-hd">
@@ -442,7 +455,17 @@
         console.log(id)
         console.log(status)
         console.log(arguments)
+        const data = {
+           'id':Number(id),
+           'status':status
+
+        }
         this.blocks.find(b => b.id === Number(id)).status = status;
+        this.apiPost('task/change_status',data).then((res) => {
+          this.handelResponse(res, (data) => {
+          
+          })
+        })
 
       },
       handleClick(tab, event) {
@@ -471,23 +494,23 @@
       },
        // 任务切换页码
       taskCurrentChange(page) {
-        this.getAllWorkbenches(1,page)
+        this.getAllWorkbenches(page)
       },
       //等待上游切换页码
       upstreamCurrentChange(page){
-        this.getAllWorkbenches(2,page)
+        this.getAllWorkbenches(page)
       },
       //完成切换页码
       completeCurrentChange(page){
-        this.getAllWorkbenches(3,page)
+        this.getAllWorkbenches(page)
       },
 //      获取项目列表
-      getAllWorkbenches(status,page) {
+      getAllWorkbenches(page) {
         this.loading = true
         const data = {
           params: {
             keywords: {
-              list_type: status,
+              // list_type: status,
             },
             page: page,
             limit: this.limit
@@ -510,7 +533,7 @@
       },
 //      初始化项目列表内容
       init() {
-       this.getAllWorkbenches(1,1)
+       this.getAllWorkbenches(1)
       }
     },
     created() {
