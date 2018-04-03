@@ -83,6 +83,7 @@ class Shots extends BaseCommon{
         return resultArray(['data' => $data]);
     }
 
+    //详情
     public function read(){
         $shot_model = model('Shot');
         $param = $this->param;
@@ -93,6 +94,7 @@ class Shots extends BaseCommon{
         return resultArray(['data' => $data]);
     }
 
+    //新增
     public function save(){
         $shot_model = model('Shot');
         $uid = $this->uid;

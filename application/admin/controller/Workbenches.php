@@ -82,11 +82,12 @@ class Workbenches extends ApiCommon
 
 	}
 
+	//详情
 	public function read()
 	{
 		$workbench_model = model('Workbench');
 		$param = $this->param;
-		$data = $workbench_model->getDataById($param['id']);
+		$data = $workbench_model->getData_ById($param['id']);
 		if (!$data) {
 			return resultArray(['error' => $workbench_model->getError()]);
 		}
