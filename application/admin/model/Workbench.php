@@ -20,11 +20,11 @@ class Workbench extends Common
 	protected $status_arr = [1 => '等待制作', 5 => '制作中', 10 => '等待审核', 15 => '反馈中', 20 => '审核通过', 25 => '提交发布', 30 => '完成'];
 
 	public function project(){
-		return $this->hasOne('Project','project_id')->field('project_name,project_byname');
+		return $this->belongsTo('Project','project_id')->field('project_name,project_byname');
 	}
 
 	public function shot(){
-		return $this->hasOne('Shot','shot_id')->field('shot_number,shot_byname,shot_name');
+		return $this->belongsTo('Shot','shot_id')->field('shot_number,shot_byname,shot_name');
 	}
 
 	public function getList($keywords, $page, $limit, $uid, $group_id)
