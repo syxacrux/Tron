@@ -607,9 +607,9 @@
       },
 //			获取所有工作室
       getAllStudios() {
-        this.apiGet('admin/studios').then((res) => {
+        this.apiGet('shot/get_studio').then((res) => {
           this.handelResponse(res, (data) => {
-            this.studiosList = _.drop(data.list, 1)
+            this.studiosList = data.list
           })
         })
       },

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="shot_edit">
     <el-dialog title="编辑镜头" :visible.sync="dialogFormVisible" width="75%" top="6vh">
       <el-form ref="form" :model="form" :rules="rules" label-width="130px" class="shot_add">
         <el-row :gutter="20">
@@ -340,8 +340,8 @@
   .el-upload {
     width: 300px;
   }
-  
-  .el-tag__close{
+
+  .shot_edit .el-tag__close{
     display: none;
   }
 
@@ -694,7 +694,7 @@
                 _g.toastMsg('success', '编辑成功')
                 _g.clearVuex('setUsers')
                 setTimeout(() => {
-                  this.goback()
+                  this.dialogFormVisible = false
                 }, 1500)
               }, () => {
                 this.isLoading = !this.isLoading
