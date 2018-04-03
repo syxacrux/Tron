@@ -12,7 +12,7 @@ use app\common\controller\ApiCommon;
 
 class Workbenches extends ApiCommon
 {
-
+	//工作台任务列表
 	public function index()
 	{
 		$workbench_model = model('Workbench');
@@ -22,8 +22,50 @@ class Workbenches extends ApiCommon
 		$keywords = !empty($param['keywords']) ? json_decode($param['keywords'], true) : '';
 		$page = !empty($param['page']) ? $param['page'] : '';
 		$limit = !empty($param['limit']) ? $param['limit'] : '';
-		$data = $workbench_model->getList($keywords, $page, $limit, $uid, $group_id);
+		$data = $workbench_model->getTaskList($keywords, $page, $limit, $uid, $group_id);
 		return resultArray(['data' => $data]);
+	}
+
+	//工作台 - 等待上游 资产列表
+	public function wait_upper_assets(){
+		$workbench_model = model('Workbench');
+		$uid = $this->uid;
+		$group_id = Access::get($uid)->group_id;
+		$param = $this->param;
+		$keywords = !empty($param['keywords']) ? json_decode($param['keywords'],true) : '';
+		$page = !empty($param['page']) ? $param['page'] : '';
+		$limit = !empty($param['limit']) ? $param['limit'] : '';
+		$data = $workbench_model->getUpperAssets($keywords,$page,$limit,$uid,$group_id);
+		return resultArray(['data'=>$data]);
+	}
+
+	//工作台 - 等待上游 镜头列表
+	public function wait_upper_shots(){
+		$workbench_model = model('Workbench');
+		$uid = $this->uid;
+		$param = $this->param;
+		$keywords = !empty($param['keywords']) ? json_decode($param['keywords'],true) : '';
+		$page = !empty($param['page']) ? $param['page'] : '';
+		$limit = !empty($param['limit']) ? $param['limit'] : '';
+		$data = $workbench_model->getUpperShots($keywords,$page,$limit,$uid);
+		return resultArray(['data'=>$data]);
+	}
+
+	//工作台 - 完成
+	public function finish_list(){
+		$workbench_model = model('Workbench');
+		$uid = $this->uid;
+		$param = $this->param;
+		$keywords = !empty($param['keywords']) ? json_decode($param['keywords'],true) : '';
+		$page = !empty($param['page']) ? $param['page'] : '';
+		$limit = !empty($param['limit']) ? $param['limit'] : '';
+		$data = $workbench_model->getFinishTask($keywords,$page,$limit,$uid);
+		return resultArray(['data'=>$data]);
+	}
+
+	//工作台列表
+	public function workbenches_list(){
+
 	}
 
 	public function read()
@@ -65,7 +107,7 @@ class Workbenches extends ApiCommon
 		$workbench_model = model('Workbench');
 		$param = $this->param;
 		$uid = $this->uid;
-		$data = $workbench_model->change_task_status($param['id'], $param['task_status'], $uid);
+		$data = $workbench_model->change_task_status($param['id'], $param['status'], $uid);
 		if (!$data) {
 			return resultArray(['error' => $workbench_model->getError()]);
 		}

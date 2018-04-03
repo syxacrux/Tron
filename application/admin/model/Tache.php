@@ -6,17 +6,6 @@ class Tache extends Common{
     protected $name = "admin_tache";
 
     public function getDataList($keyword, $page, $limit){
-        $studio_data = Studio::where('pid',1)->column('id');
-        unset($studio_data[0]); //弹出视效工作室
-        unset($studio_data[1]); //制片工作室
-        $studio_id_arr = array_values($studio_data);
-        $curr_studio=[5,6];
-        foreach($studio_id_arr as $key=>$value){
-            foreach($curr_studio as $k=>$v){
-                if($v==$value) unset($studio_id_arr[$key]);
-            }
-        }
-        $data['studio'] = $studio_id_arr;
         $where = [];
         if ($keyword) {
             $where['tache_name|explain'] = ['like', '%'.$keyword.'%'];

@@ -32,74 +32,64 @@ class Workbench extends Common
 	 * @throws \think\exception\DbException
 	 * @author zjs 2018/3/26
 	 */
-	public function getList($keyword, $page, $limit, $uid, $group_id)
+	public function getTaskList($keyword, $page, $limit, $uid, $group_id)
 	{
 		$where = [];
 		$user_obj = User::get($uid);
-		//任务列表 暂定为 $keyword['list_type'] = 1;
-		//等待上游列表 $keyword['list_type'] = 2;
-		//完成列表 $keyword['list_type'] = 3;
-		switch ($keyword['list_type']) {
-			case 1:
-				/**
-				 * 项目ID为数组转成字符串，以逗号分割
-				 * 一、除工作室角色外的角色，获取当前用户包含的项目ID 可能为多个值
-				 * 1.四大状态
-				 * 二、工作室角色内的所有角色，根据当前用户所属工作室，获取包含的项目ID
-				 * 1.四大状态
-				 * 项目ID为数组转成字符串，以逗号分割
-				 */
-				if ($group_id == 1 || $group_id == 2 || $group_id == 3 || $group_id == 4) {
-					$project_where['producer|scene_producer|scene_director|visual_effects_boss|visual_effects_producer|inside_coordinate'] = ['like', '%' . $uid . '%'];
-					$project_ids_data = Project::where($project_where)->field('id')->select();
-					if (!empty($project_ids_data)) {
-						foreach ($project_ids_data as $key => $value) {
-							$project_id_arr[] = $value['id'];
-						}
-						$project_ids = implode(",", $project_id_arr);
-						$where['project_id'] = ['in', $project_ids];
-					} else {  //超级管理员 uid =1
-						$where = [];
-					}
+		//任务列表
+		/**
+		 * 项目ID为数组转成字符串，以逗号分割
+		 * 一、除工作室角色外的角色，获取当前用户包含的项目ID 可能为多个值
+		 * 1.四大状态
+		 * 二、工作室角色内的所有角色，根据当前用户所属工作室，获取包含的项目ID
+		 * 1.四大状态
+		 * 项目ID为数组转成字符串，以逗号分割
+		 */
+		if ($group_id == 1 || $group_id == 2 || $group_id == 3 || $group_id == 4) {
+			$project_where['producer|scene_producer|scene_director|visual_effects_boss|visual_effects_producer|inside_coordinate'] = ['like', '%' . $uid . '%'];
+			$project_ids_data = Project::where($project_where)->field('id')->select();
+			if (!empty($project_ids_data)) {
+				foreach ($project_ids_data as $key => $value) {
+					$project_id_arr[] = $value['id'];
+				}
+				$project_ids = implode(",", $project_id_arr);
+				$where['project_id'] = ['in', $project_ids];
+			} else {  //超级管理员 uid =1
+				$where = [];
+			}
 
-				} elseif ($group_id == 5 || $group_id == 6) {//工作室内角色 暂时为5 工作室总监，6组长
-					$where['studio_id'] = $user_obj->studio_id;
-				} elseif ($group_id == 7) {//工作室内角色  7制作人
-					$where['studio_id'] = $user_obj->studio_id;
-					$where['user_id'] = $uid;
-				} else { // uid 为超级管理员
-					$where = [];
-				}
-				//加入条件查询
-				if (!empty($keyword['project_id'])) {
-					$where['project_id'] = $keyword['project_id'];
-				}
-				if (!empty($keyword['field_id'])) {
-					$where['field_id'] = $keyword['field_id'];
-				}
-				$dataCount = $this->where($where)->count('id'); //全部数量
+		} elseif ($group_id == 5 || $group_id == 6) {//工作室内角色 暂时为5 工作室总监，6组长
+			$where['studio_id'] = $user_obj->studio_id;
+		} elseif ($group_id == 7) {//工作室内角色  7制作人
+			$where['studio_id'] = $user_obj->studio_id;
+			$where['user_id'] = $uid;
+		} else { // uid 为超级管理员
+			$where = [];
+		}
+		//加入条件查询
+		if (!empty($keyword['project_id'])) {
+			$where['project_id'] = $keyword['project_id'];
+		}
+		if (!empty($keyword['field_id'])) {
+			$where['field_id'] = $keyword['field_id'];
+		}
+		$dataCount = $this->where($where)->count('id'); //全部数量
 
-				// 若有分页
-				if ($page && $limit) {
-					//暂定为总页数为40 /每列显示10条数据 $limit 10
-					$every_limit = intval($limit) / 4;
-					$in_production_list = $this->where($where)->where('task_status', 5)->page($page, $every_limit)->select(); //制作中 in_production
-					$feedback_list = $this->where($where)->where('task_status', 'in', '10,15')->page($page, $every_limit)->select();   //反馈中 feedback  等待审核 反馈中
-					$submit_list = $this->where($where)->where('task_status', 25)->page($page, $every_limit)->select();  //提交发布 submit
-					$wait_production_list = $this->where($where)->where('task_status', 1)->page(1, 10)->select();  //等待制作 wait_production
-					$list_data = array_merge($in_production_list, $feedback_list, $submit_list, $wait_production_list);
-				} else {
-					$in_production_list = $this->where($where)->where('task_status', 5)->select();
-					$feedback_list = $this->where($where)->where('task_status', 'in', '10,15')->select();
-					$submit_list = $this->where($where)->where('task_status', 25)->select();
-					$wait_production_list = $this->where($where)->where('task_status', 1)->select();
-					$list_data = array_unique(array_merge($in_production_list, $feedback_list, $submit_list, $wait_production_list));
-				}
-				break;
-			case 2:
-				break;
-			case 3:
-				break;
+		// 若有分页
+		if ($page && $limit) {
+			//暂定为总页数为40 /每列显示10条数据 $limit 10
+			$every_limit = intval($limit) / 4;
+			$in_production_list = $this->where($where)->where('task_status', 5)->page($page, $every_limit)->select(); //制作中 in_production
+			$feedback_list = $this->where($where)->where('task_status', 'in', '10,15')->page($page, $every_limit)->select();   //反馈中 feedback  等待审核 反馈中
+			$submit_list = $this->where($where)->where('task_status', 25)->page($page, $every_limit)->select();  //提交发布 submit
+			$wait_production_list = $this->where($where)->where('task_status', 1)->page(1, 10)->select();  //等待制作 wait_production
+			$list_data = array_merge($in_production_list, $feedback_list, $submit_list, $wait_production_list);
+		} else {
+			$in_production_list = $this->where($where)->where('task_status', 5)->select();
+			$feedback_list = $this->where($where)->where('task_status', 'in', '10,15')->select();
+			$submit_list = $this->where($where)->where('task_status', 25)->select();
+			$wait_production_list = $this->where($where)->where('task_status', 1)->select();
+			$list_data = array_unique(array_merge($in_production_list, $feedback_list, $submit_list, $wait_production_list));
 		}
 		//重组数组
 		foreach ($list_data as $key => $value) {
@@ -116,6 +106,41 @@ class Workbench extends Common
 		$data['list'] = $list_data;
 		$data['dataCount'] = $dataCount;
 		return $data;
+	}
+
+	//工作台 - 等待上游 资产
+	public function getUpperAssets($keyword, $page, $limit, $uid, $group_id)
+	{
+
+	}
+
+	//工作台 - 等待上游 镜头
+
+	//工作台 - 任务完成 列表
+	public function getFinishTask($keywords,$page,$limit,$uid){
+		$where = [];
+		//加入条件查询
+		if (!empty($keyword['project_id'])) {
+			$where['project_id'] = $keywords['project_id'];
+		}
+		if (!empty($keyword['field_id'])) {
+			$where['field_id'] = $keywords['field_id'];
+		}
+		$where['user_id'] = $uid;
+		$where['task_status'] = ['in','25,30'];	//提交发布 完成
+		$dataCount = $this->where($where)->count('id'); //全部数量
+		$list = $this->where($where);
+		//若有分页
+		if ($page && $limit) {
+			$list = $list->page($page, $limit);
+		}
+		$list = $list ->select();
+		foreach($list as $key=>$value){
+			$list[$key]['create_time'] = date("Y-m-d H:i:s",$value['create_time']);
+		}
+		$data['list'] = $list;
+		$data['dataCount'] = $dataCount;
+
 	}
 
 	//新增
@@ -183,7 +208,7 @@ class Workbench extends Common
 
 	//任务状态改变并记录
 	public function change_task_status($task_id,$status,$uid){
-		$task_status = $this->status_cn_arr[$status];
+		$task_status['task_status'] = $this->status_cn_arr[$status];
 		$curr_task_data = $this->get($task_id);
 		if (!$curr_task_data) {
 			$this->error = '暂无此数据';
@@ -194,7 +219,7 @@ class Workbench extends Common
 			//记录状态更新记录
 			$task_status_record['user_id'] = $uid;
 			$task_status_record['task_id'] = $task_id;
-			$task_status_record['task_status'] = $task_status;
+			$task_status_record['task_status'] = $task_status['task_status'];
 			$task_status_record['create_timestamp'] = time();
 			$task_status_record['create_time'] = date("Y-m-d H:i:s");
 			Db::name('task_state_record')->insert($task_status_record);
