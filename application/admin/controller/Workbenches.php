@@ -26,6 +26,20 @@ class Workbenches extends ApiCommon
 		return resultArray(['data' => $data]);
 	}
 
+	//工作台 - 任务标准列表
+	public function index_list()
+	{
+		$workbench_model = new Workbenches();
+		$uid = $this->uid;
+		$group_id = Access::get($uid)->group_id;
+		$param = $this->param;
+		$keywords = !empty($param['keywords']) ? json_decode($param['keywords'],true) : '';
+		$page = !empty($param['page']) ? $param['page'] : '';
+		$limit = !empty($param['limit']) ? $param['limit'] : '';
+		$data = $workbench_model->getList($keywords,$page,$limit,$uid,$group_id);
+		return resultArray(['data'=>$data]);
+	}
+
 	//工作台 - 等待上游 资产列表
 	public function wait_upper_assets(){
 		$workbench_model = model('Workbench');
