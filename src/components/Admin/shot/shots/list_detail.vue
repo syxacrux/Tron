@@ -395,33 +395,36 @@
               <i class="el-icon-delete m-l-5 fz-14 c-light-gray pointer"></i>
               <i class="el-icon-close fr pointer" @click="isShotDetailShow = !isShotDetailShow"></i>
             </div>
-            <p class="m-0 h-28">镜头缩略图：<span><img :src="editShotDetail.shot_image" alt=""></span></p>
-            <p class="m-0 h-28">镜头编号：<span>{{ editShotDetail.shot_number }}</span></p>
-            <p class="m-0 h-28">镜头名称：<span>{{ editShotDetail.shot_name }}</span></p>
-            <p class="m-0 h-28">镜头简称：<span>{{ editShotDetail.shot_byname }}</span></p>
-            <p class="m-0 h-28">计划起止时间：<span>001</span></p>
-            <p class="m-0 h-28">场号/集号：<span>{{ editShotDetail.field_name }}</span></p>
-            <p class="m-0 h-28">所属项目：<span>{{ editShotDetail.project_name }}</span></p>
-            <p class="m-0 h-28">时刻：<span>{{ editShotDetail.time_name }}</span></p>
-            <p class="m-0 h-28">环境：<span>{{ editShotDetail.ambient_name }}</span></p>
-            <p class="m-0 h-28">镜头优先级：<span>{{ editShotDetail.priority_level_name }}</span></p>
-            <p class="m-0 h-28">镜头难度：<span>{{ editShotDetail.difficulty_name }}</span></p>
-            <p class="m-0 h-28">
+            <p class="m-0">镜头缩略图：<span><img :src="editShotDetail.shot_image" alt=""></span></p>
+            <p class="m-0">镜头编号：<span>{{ editShotDetail.shot_number }}</span></p>
+            <p class="m-0">镜头名称：<span>{{ editShotDetail.shot_name }}</span></p>
+            <p class="m-0">镜头简称：<span>{{ editShotDetail.shot_byname }}</span></p>
+            <p class="m-0">计划起止时间：<span>001</span></p>
+            <p class="m-0">场号/集号：<span>{{ editShotDetail.field_name }}</span></p>
+            <p class="m-0">所属项目：<span>{{ editShotDetail.project_name }}</span></p>
+            <p class="m-0">时刻：<span>{{ editShotDetail.time_name }}</span></p>
+            <p class="m-0">环境：<span>{{ editShotDetail.ambient_name }}</span></p>
+            <p class="m-0">镜头优先级：<span>{{ editShotDetail.priority_level_name }}</span></p>
+            <p class="m-0">镜头难度：<span>{{ editShotDetail.difficulty_name }}</span></p>
+            <p class="m-0">
               环节所属工作室：
-              <span v-for="(item, index) in editShotDetail.tache_info" v-if="item.length !== 0?true:false">
-                {{ index }}: {{ item }};
+              <span class="shot_detail_tache" v-for="(item, index) in editShotDetail.tache_info">
+                {{ index }}
+                <el-tag closable type="info" v-if="item.length !== 0?true:false">
+                  {{ item }};
+                </el-tag>
               </span>
             </p>
-            <p class="m-0 h-28">资产：<span>001</span></p>
-            <p class="m-0 h-28">帧长范围：<span>{{ editShotDetail.frame_range }}</span></p>
-            <p class="m-0 h-28">手柄帧：<span>{{ editShotDetail.handle_frame }}</span></p>
-            <p class="m-0 h-28">素材号：<span>{{ editShotDetail.material_number }}</span></p>
-            <p class="m-0 h-28">剪辑帧长：<span>{{ editShotDetail.clip_frame_length }}</span></p>
-            <p class="m-0 h-28">素材帧长：<span>{{ editShotDetail.material_frame_length }}</span></p>
-            <p class="m-0 h-28">二级公司：<span>{{ editShotDetail.second_company }}</span></p>
-            <p class="m-0 h-28">镜头备注：<span>{{ editShotDetail.shot_explain }}</span></p>
-            <p class="m-0 h-28">变速信息：<span>{{ editShotDetail.charge_speed_info }}</span></p>
-            <p class="m-0 h-28">制作要求：<span>{{ editShotDetail.make_demand }}</span></p>
+            <p class="m-0">资产：<span>001</span></p>
+            <p class="m-0">帧长范围：<span>{{ editShotDetail.frame_range }}</span></p>
+            <p class="m-0">手柄帧：<span>{{ editShotDetail.handle_frame }}</span></p>
+            <p class="m-0">素材号：<span>{{ editShotDetail.material_number }}</span></p>
+            <p class="m-0">剪辑帧长：<span>{{ editShotDetail.clip_frame_length }}</span></p>
+            <p class="m-0">素材帧长：<span>{{ editShotDetail.material_frame_length }}</span></p>
+            <p class="m-0">二级公司：<span>{{ editShotDetail.second_company }}</span></p>
+            <p class="m-0">镜头备注：<span>{{ editShotDetail.shot_explain }}</span></p>
+            <p class="m-0">变速信息：<span>{{ editShotDetail.charge_speed_info }}</span></p>
+            <p class="m-0">制作要求：<span>{{ editShotDetail.make_demand }}</span></p>
           </el-card>
         </div>
       </transition>
