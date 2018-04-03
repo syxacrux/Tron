@@ -156,6 +156,18 @@
                     </el-card>
                   </li>
                 </ul>
+                <div class="pos-rel p-t-20">
+                  <!-- <btnGroup :selectedData="multipleSelection" :type="'studios'"></btnGroup> -->
+                  <div class="block pages">
+                    <el-pagination
+                      @current-change="upstreamCurrentChange"
+                      layout="prev, pager, next, jumper"
+                      :page-size="20"
+                      :current-page="currentPage"
+                      :total="upstreamDataCount">
+                    </el-pagination>
+                  </div>
+                </div>
               </div>
             </el-col>
             <el-col :span="12">
@@ -219,18 +231,19 @@
                     </el-card>
                   </li>
                 </ul>
+                <div class="block task-block">
+                  <el-pagination
+                          @current-change="upstreamCurrentChange"
+                          layout="prev, pager, next, jumper"
+                          :page-size="20"
+                          :current-page="currentPage"
+                          :total="upstreamDataCount">
+                  </el-pagination>
+                </div>
               </div>
             </el-col>
           </div>
-          <div class="block task-block">
-            <el-pagination
-                    @current-change="upstreamCurrentChange"
-                    layout="prev, pager, next, jumper"
-                    :page-size="20"
-                    :current-page="currentPage"
-                    :total="upstreamDataCount">
-            </el-pagination>
-          </div>
+          
         </el-tab-pane>
         <el-tab-pane label="完成" name="complete">
           <div class="waiting ovf-hd">
@@ -492,12 +505,12 @@
         this.getAllWorkbenches(3,page)
       },
 //      获取项目列表
-      getAllWorkbenches(status,page) {
+      getAllWorkbenches(page) {
         this.loading = true
         const data = {
           params: {
             keywords: {
-              list_type: status,
+              // list_type: status,
             },
             page: page,
             limit: this.limit
@@ -520,7 +533,7 @@
       },
 //      初始化项目列表内容
       init() {
-       this.getAllWorkbenches(1,1)
+       this.getAllWorkbenches(1)
       }
     },
     created() {
