@@ -322,12 +322,12 @@
       </el-tabs>
       <el-table v-if="!isList" :data="finishList" stripe class="fl">
         <el-table-column type="selection" width="50"></el-table-column>
-        <!-- <el-table-column prop="shot_image" label="缩略图"></el-table-column> -->
-        <el-table-column prop="shot_image" label="缩略图">
+        <el-table-column prop="project_name" label="项目"></el-table-column>
+        <!-- <el-table-column prop="shot_image" label="缩略图">
           <template slot-scope="scope">
             <img :src="address + scope.row.shot_image" alt="" style="width: 50px;height: 50px">
           </template>
-        </el-table-column>
+        </el-table-column> -->
         <el-table-column prop="field_id" label="场号"></el-table-column>
         <el-table-column prop="shot_number" label="镜头号"></el-table-column>
         <el-table-column prop="difficulty" label="难度"></el-table-column>
@@ -337,7 +337,8 @@
         <el-table-column prop="plan_end_timestamp" label="计划结束"></el-table-column>
         <el-table-column prop="actually_start_timestamp" label="实际开始"></el-table-column>
         <el-table-column prop="actually_end_timestamp" label="实际结束"></el-table-column>
-        <el-table-column prop="make_demand" label="备注"></el-table-column>
+        <el-table-column prop="make_demand" label="制作人"></el-table-column>
+        <!-- <el-table-column prop="make_demand" label="备注"></el-table-column> -->
       </el-table>
       <transition name="el-zoom-in-top">
         <div class="task_detail fr" v-show="task2">
@@ -372,7 +373,7 @@
                 layout="prev, pager, next, jumper"
                 :page-size="limit"
                 :current-page="currentPage"
-                :total="finishList">
+                :total="finishListDataCount">
         </el-pagination>
       </div>
 		</div>
@@ -444,6 +445,7 @@
         completeDataCount:0,//完成数量
         completeList:[],//完成列表
         finishList: [],  //任务列表
+        finishListDataCount:0//任务数量
         // limit: 10,
       }
     },
