@@ -87,6 +87,18 @@ return [
 	'admin/save_field'      =>      ['admin/base/save_field',['method' => 'POST']],
 	// [工作台] 改变状态
 	'task/change_status'    =>      ['admin/Workbenches/change_status',['method' => 'POST']],
+	// [工作台] 等待上游 资产列表
+	'task/upper_assets'    =>      ['admin/Workbenches/wait_upper_assets',['method' => 'POST|GET']],
+	// [工作台] 等待上游 镜头列表
+	'task/upper_shots'    =>      ['admin/Workbenches/wait_upper_shots',['method' => 'POST|GET']],
+	// [工作台] 完成列表
+	'task/finish_task'    =>      ['admin/Workbenches/finish_list',['method' => 'GET']],
+
+
+
+
+
+
 
 	// MISS路由
 	'__miss__'  => 'admin/base/miss',
