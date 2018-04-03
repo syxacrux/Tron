@@ -494,15 +494,15 @@
       },
        // 任务切换页码
       taskCurrentChange(page) {
-        this.getAllWorkbenches(1,page)
+        this.getAllWorkbenches(page)
       },
       //等待上游切换页码
       upstreamCurrentChange(page){
-        this.getAllWorkbenches(2,page)
+        this.getAllWorkbenches(page)
       },
       //完成切换页码
       completeCurrentChange(page){
-        this.getAllWorkbenches(3,page)
+        this.getAllWorkbenches(page)
       },
 //      获取项目列表
       getAllWorkbenches(page) {
