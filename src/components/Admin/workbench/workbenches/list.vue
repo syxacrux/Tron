@@ -487,7 +487,7 @@
       list(){
         // @click="isList = false"
         this.isList = false
-        this.getAllWorkbenches('task/index_list',1)
+        this.getAllWorkbenches('task/index_list',1,11)
       },
       //      时间抽转换为时间格式
       j2time(time) {
@@ -543,6 +543,11 @@
                 })
                 console.log(this.blocks)
                 this.dataCount=data.dataCount
+                break;
+              case 11:
+                this.finishList=data.list
+                console.log(this.blocks)
+                this.finishListDataCount=data.dataCount
                 break;
             }
             
