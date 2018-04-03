@@ -319,8 +319,8 @@ class Workbench extends Common
 		$task_obj->shot_number = $this->shot->shot_number;
 		$task_obj->shot_byname = $this->shot->shot_byname;
 		$task_obj->shot_name = $this->shot->shot_name;
-		$task_obj->difficulty = $this->difficulty_arr[$task_obj->difficulty];
-		$task_obj->task_priority_level = $this->task_priority_level_arr[$task_obj->task_priority_level];
+		$task_obj->difficulty_name = $this->difficulty_arr[$task_obj->difficulty];
+		$task_obj->task_priority_level_name = $this->task_priority_level_arr[$task_obj->task_priority_level];
 		return $task_obj;
 	}
 
