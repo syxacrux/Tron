@@ -26,7 +26,7 @@
               <div>
                 <!-- {{ block.title }} -->
                 <el-card class="work-box box-card box-texts">
-                  <div class="text" @click="task2 = !task2">
+                  <div class="text" @click="taskDetail(block.id)">
                     <div class="text-Lens pos-rel">
                       <p class="text-Lens-name">{{block.project_name}}：<span>{{block.shot_number}}:{{block.task_byname}}</span></p>
                       <p class="text-Lens-rank pos-abs">
@@ -328,11 +328,11 @@
             <img :src="address + scope.row.shot_image" alt="" style="width: 50px;height: 50px">
           </template>
         </el-table-column> -->
-        <el-table-column prop="field_id" label="场号"></el-table-column>
+        <el-table-column prop="field_number" label="场号"></el-table-column>
         <el-table-column prop="shot_number" label="镜头号"></el-table-column>
         <el-table-column prop="difficulty" label="难度"></el-table-column>
         <el-table-column prop="task_priority_level" label="优先级"></el-table-column>
-        <el-table-column prop="finish_degree" label="进度"></el-table-column>
+        <el-table-column prop="status_cn" label="进度"></el-table-column>
         <el-table-column prop="plan_start_timestamp" label="计划开始"></el-table-column>
         <el-table-column prop="plan_end_timestamp" label="计划结束"></el-table-column>
         <el-table-column prop="actually_start_timestamp" label="实际开始"></el-table-column>
@@ -445,8 +445,9 @@
         completeDataCount:0,//完成数量
         completeList:[],//完成列表
         finishList: [],  //任务列表
-        finishListDataCount:0//任务数量
+        finishListDataCount:0,//任务数量
         // limit: 10,
+        editWorkbenchesDetail: {}
       }
     },
     methods: {
@@ -482,6 +483,7 @@
           break;
         }
       },
+      //工作台列表
       list(){
         // @click="isList = false"
         this.isList = false
@@ -546,6 +548,21 @@
             
           })
         })
+      },
+ //      点击任务显示任务详情
+      taskDetail(id) {
+        console.log(id)
+        this.apiGet('admin/workbenches/' + id).then((res) => {
+          this.handelResponse(res, (data) => {
+            // this.editShotDetail = data
+          })
+        })
+        if (this.task2) {
+
+        } else {
+          this.task2 = !this.task2
+          //  @click="task2 = !task2"
+        }
       },
 //      初始化项目列表内容
       init() {
