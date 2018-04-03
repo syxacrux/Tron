@@ -12,7 +12,7 @@
         <el-button type="primary" plain size="mini" @click="isList = true"><i class="el-icon-menu"></i></el-button>
       </el-tooltip>
       <el-tooltip effect="dark" content="工作台列表" placement="bottom-start">
-        <el-button type="primary" plain size="mini" @click="isList = false"><i class="el-icon-document"></i></el-button>
+        <el-button type="primary" plain size="mini" @click="list()"><i class="el-icon-document"></i></el-button>
       </el-tooltip>
     </div>
     <div class="m-b-20 ovf-hd">
@@ -481,6 +481,11 @@
             this.getAllWorkbenches('task/finish_task',1,parseInt(tab.index)+1)
           break;
         }
+      },
+      list(){
+        // @click="isList = false"
+        this.isList = false
+        this.getAllWorkbenches('task/index_list',1)
       },
       //      时间抽转换为时间格式
       j2time(time) {
