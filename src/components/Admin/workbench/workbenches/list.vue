@@ -86,7 +86,7 @@
             <el-pagination
                     @current-change="taskCurrentChange"
                     layout="prev, pager, next, jumper"
-                    :page-size="40"
+                    :page-size="limit"
                     :current-page="currentPage"
                     :total="blocksDataCount">
             </el-pagination>
@@ -390,7 +390,7 @@
       return {
         isList:true,
         task2: false,
-        // limit: 40,
+        limit: 40,
         currentPage: 1,
         activeName: 'task',
         address: window.baseUrl + '/',
@@ -444,7 +444,7 @@
         completeDataCount:0,//完成数量
         completeList:[],//完成列表
         finishList: [],  //任务列表
-        limit: 10,
+        // limit: 10,
       }
     },
     methods: {
@@ -471,7 +471,14 @@
       handleClick(tab, event) {
         console.log(tab, event);
         console.log(tab)
-        this.getAllWorkbenches(parseInt(tab.index)+1,1)
+        switch (tab.label){
+          case '任务':
+            this.getAllWorkbenches('admin/workbenches',1,parseInt(tab.index)+1)
+          break;
+          case '完成':
+            this.getAllWorkbenches('task/finish_task',1,parseInt(tab.index)+1)
+          break;
+        }
       },
       //      时间抽转换为时间格式
       j2time(time) {
@@ -505,7 +512,8 @@
         this.getAllWorkbenches(page)
       },
 //      获取项目列表
-      getAllWorkbenches(page) {
+      getAllWorkbenches(state,page,status) {
+
         this.loading = true
         const data = {
           params: {
@@ -516,7 +524,7 @@
             limit: this.limit
           }
         }
-        this.apiGet('admin/workbenches',data).then((res) => {
+        this.apiGet(state,data).then((res) => {
           this.handelResponse(res, (data) => {
             switch (status){
               case 1:
@@ -524,6 +532,7 @@
                 _(this.blocks).forEach((res1,res2) => {
                   this.blocks[res2].status = res1.task_status == 1 ? '等待制作' : (res1.task_status == 5 ? '制作中' : (res1.task_status == 15 ? '反馈中' : '提交发布'))
                 })
+                console.log(this.blocks)
                 this.dataCount=data.dataCount
                 break;
             }
@@ -533,7 +542,7 @@
       },
 //      初始化项目列表内容
       init() {
-       this.getAllWorkbenches(1)
+       this.getAllWorkbenches('admin/workbenches',1,1)
       }
     },
     created() {
