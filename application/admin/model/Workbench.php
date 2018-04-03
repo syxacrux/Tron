@@ -19,14 +19,6 @@ class Workbench extends Common
 	protected $status_cn_arr = ['等待制作' => 1, '制作中' => 5, '等待审核' => 10, '反馈中' => 15, '审核通过' => 20, '提交发布' => 25, '完成' => 30];
 	protected $status_arr = [1 => '等待制作', 5 => '制作中', 10 => '等待审核', 15 => '反馈中', 20 => '审核通过', 25 => '提交发布', 30 => '完成'];
 
-	public function project(){
-		return $this->hasOne('Project','project_id')->field('project_name,project_byname');
-	}
-
-	public function shot(){
-		return $this->hasOne('Shot','shot_id')->field('shot_number,shot_byname,shot_name');
-	}
-
 	public function getList($keywords, $page, $limit, $uid, $group_id)
 	{
 		$where = [];
@@ -84,6 +76,7 @@ class Workbench extends Common
 			$list[$i]['plan_end_time'] = date("Y-m-d H:i:s", $list[$i]['plan_end_timestamp']);
 			$list[$i]['actually_start_time'] = ($list[$i]['actually_start_timestamp'] !=0 ) ? date("Y-m-d H:i:s", $list[$i]['actually_start_timestamp']): '';
 			$list[$i]['actually_end_time'] = ($list[$i]['actually_end_timestamp'] != 0) ? date("Y-m-d H:i:s", $list[$i]['actually_end_timestamp']) : '';
+			$list[$i]['user_name'] = ($list[$i]['user_id'] != 0) ? User::get($list[$i]['user_id'])->realname : '任务未分配制作人';
 		}
 		$data['list'] = $list;
 		$data['dataCount'] = $dataCount;
@@ -311,15 +304,20 @@ class Workbench extends Common
 			$this->error = '暂无此数据';
 			return false;
 		}
-		//$project_obj = Project::get($task_obj->project_id);
-		$task_obj->project_name = $this->project->project_name;
-		$task_obj->project_byname = $this->project->project_byname;
+		$project_obj = Project::get($task_obj->project_id);
+		$shot_obj = Shot::get($task_obj->shot_id);
+		$task_obj->project_name = $project_obj->project_name;
+		$task_obj->project_byname = $project_obj->project_byname;
 		$task_obj->field_number = Db::name('field')->where('id',$task_obj->field_id)->value('name');
-		$task_obj->shot_number = $this->shot->shot_number;
-		$task_obj->shot_byname = $this->shot->shot_byname;
-		$task_obj->shot_name = $this->shot->shot_name;
+		$task_obj->shot_number = $shot_obj->shot_number;
+		$task_obj->shot_byname = $shot_obj->shot_byname;
+		$task_obj->shot_name = $shot_obj->shot_name;
 		$task_obj->difficulty_name = $this->difficulty_arr[$task_obj->difficulty];
 		$task_obj->task_priority_level_name = $this->task_priority_level_arr[$task_obj->task_priority_level];
+		$task_obj->plan_start_time = date("Y-m-d H:i:s",$task_obj->plan_start_timestamp);
+		$task_obj->plan_end_time = date("Y-m-d H:i:s",$task_obj->plan_end_timestamp);
+		$task_obj->actually_start_time = date("Y-m-d H:i:s",$task_obj->actually_start_timestamp);
+		$task_obj->actually_end_time = date("Y-m-d H:i:s",$task_obj->actually_end_timestamp);
 		return $task_obj;
 	}
 
