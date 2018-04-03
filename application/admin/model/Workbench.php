@@ -17,7 +17,72 @@ class Workbench extends Common
 	//根据环节ID获取镜头页面进度条所用别名
 	protected $tache_byname_arr = [3 => '美术', 4 => '模型', 5 => '贴图', 6 => '绑定', 7 => '跟踪', 8 => '动画', 9 => '数绘', 10 => '特效', 11 => '灯光', 12 => '合成'];
 	protected $status_cn_arr = ['等待制作'=>1,'制作中'=>5,'等待审核'=>10,'反馈中'=>15,'审核通过'=>20,'提交发布'=>25,'完成'=>30];
+	protected $status_arr = [1=>'等待制作',5=>'制作中',10=>'等待审核',15=>'反馈中',20=>'审核通过',25=>'提交发布',30=>'完成'];
 
+
+	public function getList($keywords,$page,$limit,$uid,$group_id)
+	{
+		$where = [];
+		$user_obj = User::get($uid);
+		/**
+		 * 项目ID为数组转成字符串，以逗号分割
+		 * 一、除工作室角色外的角色，获取当前用户包含的项目ID 可能为多个值
+		 * 1.四大状态
+		 * 二、工作室角色内的所有角色，根据当前用户所属工作室，获取包含的项目ID
+		 * 1.四大状态
+		 * 项目ID为数组转成字符串，以逗号分割
+		 */
+		if ($group_id == 1 || $group_id == 2 || $group_id == 3 || $group_id == 4) {
+			$project_where['producer|scene_producer|scene_director|visual_effects_boss|visual_effects_producer|inside_coordinate'] = ['like', '%' . $uid . '%'];
+			$project_ids_data = Project::where($project_where)->field('id')->select();
+			if (!empty($project_ids_data)) {
+				foreach ($project_ids_data as $key => $value) {
+					$project_id_arr[] = $value['id'];
+				}
+				$project_ids = implode(",", $project_id_arr);
+				$where['project_id'] = ['in', $project_ids];
+			} else {  //超级管理员 uid =1
+				$where = [];
+			}
+
+		} elseif ($group_id == 5 || $group_id == 6) {//工作室内角色 暂时为5 工作室总监，6组长
+			$where['studio_id'] = $user_obj->studio_id;
+		} elseif ($group_id == 7) {//工作室内角色  7制作人
+			$where['studio_id'] = $user_obj->studio_id;
+			$where['user_id'] = $uid;
+		} else { // uid 为超级管理员
+			$where = [];
+		}
+		//加入条件查询
+		if (!empty($keyword['project_id'])) {
+			$where['project_id'] = $keywords['project_id'];
+		}
+		if (!empty($keyword['field_id'])) {
+			$where['field_id'] = $keywords['field_id'];
+		}
+		$dataCount = $this->where($where)->count('id'); //全部数量
+		$list = $this->where($where);
+		//若有分页
+		if($page && $limit){
+			$list = $list->page($page,$limit);
+		}
+		$list = $list->select();
+		for($i=0;$i<count($list);$i++){
+			$list[$i]['project_name'] = Project::get($list[$i]['project_id'])->project_name;
+			$list[$i]['field_number'] = Db::name('field')->where('id',$list[$i]['field_id'])->value('name');
+			$list[$i]['shot_number'] = Shot::get($list[$i]['shot_id'])->shot_number;
+			$list[$i]['difficulty'] = $this->difficulty_arr[$list[$i]['difficulty']];
+			$list[$i]['task_priority_level'] = $this->task_priority_level_arr[$list[$i]['task_priority_level']];
+			$list[$i]['status_cn'] = $this->status_arr[$list[$i]['task_status']];
+			$list[$i]['plan_start_time'] = date("Y-m-d H:i:s",$list[$i]['plan_start_timestamp']);
+			$list[$i]['plan_end_time'] = date("Y-m-d H:i:s",$list[$i]['plan_end_timestamp']);
+			$list[$i]['actually_start_time'] = date("Y-m-d H:i:s",$list[$i]['actually_start_timestamp']);
+			$list[$i]['actually_end_time'] = date("Y-m-d H:i:s",$list[$i]['actually_end_timestamp']);
+		}
+		$data['list'] = $list;
+		$data['dataCount'] = $dataCount;
+		return $data;
+	}
 
 	/**
 	 * 获取列表
