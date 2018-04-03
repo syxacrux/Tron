@@ -29,7 +29,7 @@ class Workbenches extends ApiCommon
 	//工作台 - 任务标准列表
 	public function index_list()
 	{
-		$workbench_model = new Workbenches();
+		$workbench_model = model('Workbench');
 		$uid = $this->uid;
 		$group_id = Access::get($uid)->group_id;
 		$param = $this->param;

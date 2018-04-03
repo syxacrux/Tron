@@ -51,7 +51,6 @@ class Workbench extends Common
 			} else {  //超级管理员 uid =1
 				$where = [];
 			}
-
 		} elseif ($group_id == 5 || $group_id == 6) {//工作室内角色 暂时为5 工作室总监，6组长
 			$where['studio_id'] = $user_obj->studio_id;
 		} elseif ($group_id == 7) {//工作室内角色  7制作人
@@ -83,8 +82,8 @@ class Workbench extends Common
 			$list[$i]['status_cn'] = $this->status_arr[$list[$i]['task_status']];
 			$list[$i]['plan_start_time'] = date("Y-m-d H:i:s", $list[$i]['plan_start_timestamp']);
 			$list[$i]['plan_end_time'] = date("Y-m-d H:i:s", $list[$i]['plan_end_timestamp']);
-			$list[$i]['actually_start_time'] = date("Y-m-d H:i:s", $list[$i]['actually_start_timestamp']);
-			$list[$i]['actually_end_time'] = date("Y-m-d H:i:s", $list[$i]['actually_end_timestamp']);
+			$list[$i]['actually_start_time'] = ($list[$i]['actually_start_timestamp'] !=0 ) ? date("Y-m-d H:i:s", $list[$i]['actually_start_timestamp']): '';
+			$list[$i]['actually_end_time'] = ($list[$i]['actually_end_timestamp'] != 0) ? date("Y-m-d H:i:s", $list[$i]['actually_end_timestamp']) : '';
 		}
 		$data['list'] = $list;
 		$data['dataCount'] = $dataCount;
