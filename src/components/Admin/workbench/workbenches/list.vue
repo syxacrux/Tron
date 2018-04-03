@@ -555,6 +555,7 @@
         this.apiGet('admin/workbenches/' + id).then((res) => {
           this.handelResponse(res, (data) => {
             // this.editShotDetail = data
+            console.log(data)
           })
         })
         if (this.task2) {
