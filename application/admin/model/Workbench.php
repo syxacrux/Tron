@@ -16,11 +16,18 @@ class Workbench extends Common
 	protected $task_status_degree_arr = [1 => 0, 5 => 20, 10 => 40, 15 => 60, 20 => 80, 25 => 100];    //用于任务状态计算进度百分比 status=>0%
 	//根据环节ID获取镜头页面进度条所用别名
 	protected $tache_byname_arr = [3 => '美术', 4 => '模型', 5 => '贴图', 6 => '绑定', 7 => '跟踪', 8 => '动画', 9 => '数绘', 10 => '特效', 11 => '灯光', 12 => '合成'];
-	protected $status_cn_arr = ['等待制作'=>1,'制作中'=>5,'等待审核'=>10,'反馈中'=>15,'审核通过'=>20,'提交发布'=>25,'完成'=>30];
-	protected $status_arr = [1=>'等待制作',5=>'制作中',10=>'等待审核',15=>'反馈中',20=>'审核通过',25=>'提交发布',30=>'完成'];
+	protected $status_cn_arr = ['等待制作' => 1, '制作中' => 5, '等待审核' => 10, '反馈中' => 15, '审核通过' => 20, '提交发布' => 25, '完成' => 30];
+	protected $status_arr = [1 => '等待制作', 5 => '制作中', 10 => '等待审核', 15 => '反馈中', 20 => '审核通过', 25 => '提交发布', 30 => '完成'];
 
+	public function project(){
+		return $this->hasOne('Project','project_id')->field('project_name,project_byname');
+	}
 
-	public function getList($keywords,$page,$limit,$uid,$group_id)
+	public function shot(){
+		return $this->hasOne('Shot','shot_id')->field('shot_number,shot_byname,shot_name');
+	}
+
+	public function getList($keywords, $page, $limit, $uid, $group_id)
 	{
 		$where = [];
 		$user_obj = User::get($uid);
@@ -63,21 +70,21 @@ class Workbench extends Common
 		$dataCount = $this->where($where)->count('id'); //全部数量
 		$list = $this->where($where);
 		//若有分页
-		if($page && $limit){
-			$list = $list->page($page,$limit);
+		if ($page && $limit) {
+			$list = $list->page($page, $limit);
 		}
 		$list = $list->select();
-		for($i=0;$i<count($list);$i++){
+		for ($i = 0; $i < count($list); $i++) {
 			$list[$i]['project_name'] = Project::get($list[$i]['project_id'])->project_name;
-			$list[$i]['field_number'] = Db::name('field')->where('id',$list[$i]['field_id'])->value('name');
+			$list[$i]['field_number'] = Db::name('field')->where('id', $list[$i]['field_id'])->value('name');
 			$list[$i]['shot_number'] = Shot::get($list[$i]['shot_id'])->shot_number;
 			$list[$i]['difficulty'] = $this->difficulty_arr[$list[$i]['difficulty']];
 			$list[$i]['task_priority_level'] = $this->task_priority_level_arr[$list[$i]['task_priority_level']];
 			$list[$i]['status_cn'] = $this->status_arr[$list[$i]['task_status']];
-			$list[$i]['plan_start_time'] = date("Y-m-d H:i:s",$list[$i]['plan_start_timestamp']);
-			$list[$i]['plan_end_time'] = date("Y-m-d H:i:s",$list[$i]['plan_end_timestamp']);
-			$list[$i]['actually_start_time'] = date("Y-m-d H:i:s",$list[$i]['actually_start_timestamp']);
-			$list[$i]['actually_end_time'] = date("Y-m-d H:i:s",$list[$i]['actually_end_timestamp']);
+			$list[$i]['plan_start_time'] = date("Y-m-d H:i:s", $list[$i]['plan_start_timestamp']);
+			$list[$i]['plan_end_time'] = date("Y-m-d H:i:s", $list[$i]['plan_end_timestamp']);
+			$list[$i]['actually_start_time'] = date("Y-m-d H:i:s", $list[$i]['actually_start_timestamp']);
+			$list[$i]['actually_end_time'] = date("Y-m-d H:i:s", $list[$i]['actually_end_timestamp']);
 		}
 		$data['list'] = $list;
 		$data['dataCount'] = $dataCount;
@@ -182,7 +189,8 @@ class Workbench extends Common
 	//工作台 - 等待上游 镜头
 
 	//工作台 - 任务完成 列表
-	public function getFinishTask($keywords,$page,$limit,$uid){
+	public function getFinishTask($keywords, $page, $limit, $uid)
+	{
 		$where = [];
 		//加入条件查询
 		if (!empty($keyword['project_id'])) {
@@ -192,16 +200,16 @@ class Workbench extends Common
 			$where['field_id'] = $keywords['field_id'];
 		}
 		$where['user_id'] = $uid;
-		$where['task_status'] = ['in','25,30'];	//提交发布 完成
+		$where['task_status'] = ['in', '25,30'];  //提交发布 完成
 		$dataCount = $this->where($where)->count('id'); //全部数量
 		$list = $this->where($where);
 		//若有分页
 		if ($page && $limit) {
 			$list = $list->page($page, $limit);
 		}
-		$list = $list ->select();
-		foreach($list as $key=>$value){
-			$list[$key]['create_time'] = date("Y-m-d H:i:s",$value['create_time']);
+		$list = $list->select();
+		foreach ($list as $key => $value) {
+			$list[$key]['create_time'] = date("Y-m-d H:i:s", $value['create_time']);
 		}
 		$data['list'] = $list;
 		$data['dataCount'] = $dataCount;
@@ -272,15 +280,16 @@ class Workbench extends Common
 	}
 
 	//任务状态改变并记录
-	public function change_task_status($task_id,$status,$uid){
+	public function change_task_status($task_id, $status, $uid)
+	{
 		$task_status['task_status'] = $this->status_cn_arr[$status];
 		$curr_task_data = $this->get($task_id);
 		if (!$curr_task_data) {
 			$this->error = '暂无此数据';
 			return false;
 		}
-		try{
-			$this->save($task_status,[$this->getPk() => $task_id]);
+		try {
+			$this->save($task_status, [$this->getPk() => $task_id]);
 			//记录状态更新记录
 			$task_status_record['user_id'] = $uid;
 			$task_status_record['task_id'] = $task_id;
@@ -289,10 +298,31 @@ class Workbench extends Common
 			$task_status_record['create_time'] = date("Y-m-d H:i:s");
 			Db::name('task_state_record')->insert($task_status_record);
 			return true;
-		}catch(\Exception $e){
+		} catch (\Exception $e) {
 			$this->error = '更新状态失败';
 			return false;
 		}
 	}
+
+	//根据主键获取数据
+	public function getData_ById($task_id)
+	{
+		$task_obj = $this->get($task_id);
+		if(!$task_obj){
+			$this->error = '暂无此数据';
+			return false;
+		}
+		//$project_obj = Project::get($task_obj->project_id);
+		$task_obj->project_name = $this->project->project_name;
+		$task_obj->project_byname = $this->project->project_byname;
+		$task_obj->field_number = Db::name('field')->where('id',$task_obj->field_id)->value('name');
+		$task_obj->shot_number = $this->shot->shot_number;
+		$task_obj->shot_byname = $this->shot->shot_byname;
+		$task_obj->shot_name = $this->shot->shot_name;
+		$task_obj->difficulty_name = $this->difficulty_arr[$task_obj->difficulty];
+		$task_obj->task_priority_level_name = $this->task_priority_level_arr[$task_obj->task_priority_level];
+		return $task_obj;
+	}
+
 
 }
