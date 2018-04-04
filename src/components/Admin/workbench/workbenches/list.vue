@@ -12,7 +12,7 @@
         <el-button type="primary" plain size="mini" @click="isList = true"><i class="el-icon-menu"></i></el-button>
       </el-tooltip>
       <el-tooltip effect="dark" content="工作台列表" placement="bottom-start">
-        <el-button type="primary" plain size="mini" @click="list()"><i class="el-icon-document"></i></el-button>
+        <el-button type="primary" plain size="mini" @click="workList()"><i class="el-icon-document"></i></el-button>
       </el-tooltip>
     </div>
     <div class="m-b-20 ovf-hd">
@@ -320,14 +320,9 @@
           </div>
         </el-tab-pane>
       </el-tabs>
-      <el-table v-if="!isList" :data="finishList" stripe class="fl">
+      <el-table v-if="!isList" :data="tableList" stripe class="fl">
         <el-table-column type="selection" width="50"></el-table-column>
         <el-table-column prop="project_name" label="项目"></el-table-column>
-        <!-- <el-table-column prop="shot_image" label="缩略图">
-          <template slot-scope="scope">
-            <img :src="address + scope.row.shot_image" alt="" style="width: 50px;height: 50px">
-          </template>
-        </el-table-column> -->
         <el-table-column prop="field_number" label="场号"></el-table-column>
         <el-table-column prop="shot_number" label="镜头号"></el-table-column>
         <el-table-column prop="difficulty" label="难度"></el-table-column>
@@ -338,7 +333,6 @@
         <el-table-column prop="actually_start_timestamp" label="实际开始"></el-table-column>
         <el-table-column prop="actually_end_timestamp" label="实际结束"></el-table-column>
         <el-table-column prop="make_demand" label="制作人"></el-table-column>
-        <!-- <el-table-column prop="make_demand" label="备注"></el-table-column> -->
       </el-table>
       <transition name="el-zoom-in-top">
         <div class="task_detail fr" v-show="task2">
@@ -377,7 +371,7 @@
                 layout="prev, pager, next, jumper"
                 :page-size="limit"
                 :current-page="currentPage"
-                :total="finishListDataCount">
+                :total="tableListDataCount">
         </el-pagination>
       </div>
 		</div>
@@ -448,8 +442,8 @@
         upstreamList:[],//等待上游列表
         completeDataCount:0,//完成数量
         completeList:[],//完成列表
-        finishList: [],  //任务列表
-        finishListDataCount:0,//任务数量
+        tableList: [],  //任务列表
+        tableListDataCount:0,//任务数量
         // limit: 10,
         finishList: {},//任务详情
       }
@@ -460,9 +454,9 @@
 
       },
       updateBlock(id, status) {
-        console.log(id)
-        console.log(status)
-        console.log(arguments)
+        // console.log(arguments)
+        // if()
+        // console.log()
         const data = {
            'id':Number(id),
            'status':status
@@ -471,7 +465,10 @@
         this.blocks.find(b => b.id === Number(id)).status = status;
         this.apiPost('task/change_status',data).then((res) => {
           this.handelResponse(res, (data) => {
-          
+
+          }, () => {
+            this.isLoading = !this.isLoading
+            getAllWorkbenches('admin/workbenches',this.currentPage,1)
           })
         })
 
@@ -489,7 +486,7 @@
         }
       },
       //工作台列表
-      list(){
+      workList(){
         // @click="isList = false"
         this.isList = false
         this.getAllWorkbenches('task/index_list',1,11)
@@ -547,12 +544,12 @@
                   this.blocks[res2].status = res1.task_status == 1 ? '等待制作' : (res1.task_status == 5 ? '制作中' : (res1.task_status == 15 ? '反馈中' : '提交发布'))
                 })
                 console.log(this.blocks)
-                this.dataCount=data.dataCount
+                this.blocksDataCount=data.dataCount
                 break;
               case 11:
-                this.finishList=data.list
+                this.tableList=data.list
                 console.log(this.blocks)
-                this.finishListDataCount=data.dataCount
+                this.tableListDataCount=data.dataCount
                 break;
             }
             
