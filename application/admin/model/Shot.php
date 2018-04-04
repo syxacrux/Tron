@@ -2,7 +2,6 @@
 
 namespace app\admin\model;
 
-use app\admin\controller\Workbenches;
 use think\Db;
 use app\common\model\Common;
 
@@ -332,7 +331,7 @@ class Shot extends Common
 		}
 		try {
 			$tache_id = array_flip($this->tache_byname_arr)[$tache_name];
-			$result = Workbenches::where(['shot_id' => $shot_id, 'tache_id' => $tache_id])->delete();
+			$result = Workbench::destroy(['shot_id' => $shot_id, 'tache_id' => $tache_id]);
 			if ($result === false) {
 				$this->error = '删除失败';
 				return false;
@@ -346,7 +345,7 @@ class Shot extends Common
 	}
 
 	//根据镜头ID与工作室ID删除对应的任务
-	public function StudioDel_ByShotId($shot_id, $studio_id)
+	public function StudioDel_ByShotId($shot_id,$tache_name,$studio_id)
 	{
 		$shot_obj = $this->get($shot_id);
 		if (!$shot_obj) {
@@ -354,7 +353,8 @@ class Shot extends Common
 			return false;
 		}
 		try {
-			$result = Workbenches::where(['shot_id' => $shot_id, 'studio_id' => $studio_id])->delete();
+			$tache_id = array_flip($this->tache_byname_arr)[$tache_name];
+			$result = Workbench::destroy(['shot_id' => $shot_id,'tache_id'=>$tache_id,'studio_id' => $studio_id]);
 			if (false === $result) {
 				$this->error = '删除失败';
 				return false;
