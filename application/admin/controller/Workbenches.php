@@ -122,8 +122,9 @@ class Workbenches extends ApiCommon
 		$workbench_model = model('Workbench');
 		$param = $this->param;
 		$uid = $this->uid;
+		$group_id = Access::get($uid)->group_id;
 		$task_id = !empty($param['id']) ? $param['id'] : '';
-		$data = $workbench_model->change_task_status($task_id, $param['status'], $uid);
+		$data = $workbench_model->change_task_status($task_id, $param['status'], $uid,$group_id);
 		if (!$data) {
 			return resultArray(['error' => $workbench_model->getError()]);
 		}

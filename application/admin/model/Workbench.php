@@ -281,6 +281,7 @@ class Workbench extends Common
 			return false;
 		}
 		try {
+			//判断角色权限
 			$this->save($task_status, [$this->getPk() => $task_id]);
 			//记录状态更新记录
 			$task_status_record['user_id'] = $uid;

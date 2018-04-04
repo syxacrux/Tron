@@ -248,6 +248,35 @@ class Shot extends Common
 		return $data;
 	}
 
+	//根据镜头ID删除镜头及子任务
+	public function delData_ById($id){
+		//开启事务
+		$this->startTrans();
+		try{
+			$shot_result = $this->where($this->getPk(), $id)->delete();
+			if(false === $shot_result){
+				$this->error = '镜头删除失败';
+				return false;
+			}else{
+				//删除所属镜头的所有任务
+				$taskBy_shotDel_result = Workbench::destroy(['shot_id'=>$id]);
+				if(false === $taskBy_shotDel_result){
+					$this->error = '镜头所属任务删除失败';
+					$this->rollback();
+					return false;
+				}else {
+					$this->commit();
+				}
+				//python 脚本调用 未做
+				$this->commit();//镜头删除成功
+				return true;
+			}
+		}catch(\Exception $e){
+			$this->rollback();
+			return false;
+		}
+	}
+
 	//根据镜头ID获取所属环节下的工作室
 	public function get_studio_byTache($shot_id)
 	{

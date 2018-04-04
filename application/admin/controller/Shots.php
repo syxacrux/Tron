@@ -135,8 +135,7 @@ class Shots extends ApiCommon
 	{
 		$shot_model = model('Shot');
 		$param = $this->param;
-		file_put_contents('bb.txt',var_export($param,true));
-		$data = $shot_model->delDataById($param['id'], true);
+		$data = $shot_model->delData_ById($param['id'], true);//删除镜头还要删除目录 未做
 		if (!$data) {
 			return resultArray(['error' => $shot_model->getError()]);
 		}
