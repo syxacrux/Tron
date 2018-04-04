@@ -448,10 +448,10 @@
                 <p class="m-0">
                   环节所属工作室：
                   <span class="tache_studio dp-b" v-for="(item, index) in editShotDetail.tache_info" :key="index">
-                    <i class="el-icon-close m-l-5 c-light-gray pointer"></i>
+                    <i class="el-icon-close m-l-5 c-light-gray pointer" v-if="deleteShowTache" @click="deleteTache(index)" ></i>
                     <span>{{ index }}：</span>
-                    <el-tag size="mini" closable type="info" @close="deleteTacheStudio()">
-                      {{ item }}
+                    <el-tag size="mini" v-for="studio in item" closable type="info" @close="deleteTacheStudio(studio)">
+                      {{ studio.name }}
                     </el-tag>
                   </span>
                 </p>
@@ -553,6 +553,7 @@
       },
 //      点击镜头显示镜头详情
       shotDetail(id) {
+        this.id = id
         this.apiGet('admin/shots/' + id).then((res) => {
           this.handelResponse(res, (data) => {
             this.editShotDetail = data
@@ -564,9 +565,31 @@
           this.isShotDetailShow = !this.isShotDetailShow
         }
       },
-//      镜头详情删除环节所属工作室
-      deleteTacheStudio(tag) {
-        console.log(tag)
+//      镜头详情删除环节
+      deleteTache(tache_name) {
+        this.$confirm('确认删除该环节?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          _g.openGlobalLoading()
+          console.log(tache_name)
+          const data = {
+            id: this.id,
+            tache_name: tache_name
+          }
+          this.apiDelete('admin/shots/', data).then((res) => {
+            _g.closeGlobalLoading()
+            this.handelResponse(res, (data) => {
+              _g.toastMsg('success', '删除成功')
+//              setTimeout(() => {
+//                _g.shallowRefresh(this.$route.name)
+//              }, 1500)
+            })
+          })
+        }).catch(() => {
+          // catch error
+        })
       },
 //      制作中切换分页
       inProductionCurrentChange(page) {
@@ -711,6 +734,9 @@
 //      deleteShow() {
 //        return _g.getHasRule('projects-delete')
 //      }
+      deleteShowTache() {
+        return _g.getHasRule('shots-delete_tache')
+      }
     }
   }
 </script>
