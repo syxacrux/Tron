@@ -450,7 +450,7 @@
                   <span class="tache_studio dp-b" v-for="(item, index) in editShotDetail.tache_info" :key="index">
                     <i class="el-icon-close m-l-5 c-light-gray pointer" v-if="deleteShowTache" @click="deleteTache(index)" ></i>
                     <span>{{ index }}：</span>
-                    <el-tag size="mini" v-for="studio in item" :closable="deleteShowTacheStudio" type="info" @close="deleteTacheStudio(studio)" :key="studio.id">
+                    <el-tag size="mini" v-for="studio in item" :closable="deleteShowTacheStudio" type="info" @close="deleteTacheStudio(index, studio)" :key="studio.id">
                       {{ studio.name }}
                     </el-tag>
                   </span>
@@ -591,7 +591,7 @@
         })
       },
 //      镜头详情删除环节所属工作室
-      deleteTacheStudio(item) {
+      deleteTacheStudio(tache_name, item) {
         console.log(item)
         this.$confirm('确认删除该环节所属工作室?', '提示', {
           confirmButtonText: '确定',
@@ -601,6 +601,7 @@
           _g.openGlobalLoading()
           const data = {
             id: this.id,
+            tache_name: tache_name,
             studio_id: item.id
           }
           this.apiPost('shot/studio_del', data).then((res) => {
