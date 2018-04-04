@@ -388,43 +388,112 @@
       </el-tabs>
       <transition name="el-zoom-in-top">
         <div v-show="isShotDetailShow" class="shot_detail fr">
-          <el-card class="">
+          <el-card>
             <div slot="header" class="clearfix">
               <span>镜头详情</span>
               <i class="el-icon-edit m-l-5 fz-14 c-light-gray pointer" @click="editShot"></i>
               <i class="el-icon-delete m-l-5 fz-14 c-light-gray pointer"></i>
               <i class="el-icon-close fr pointer" @click="isShotDetailShow = !isShotDetailShow"></i>
             </div>
-            <p class="m-0">镜头缩略图：<span><img :src="editShotDetail.shot_image" alt=""></span></p>
-            <p class="m-0">镜头编号：<span>{{ editShotDetail.shot_number }}</span></p>
-            <p class="m-0">镜头名称：<span>{{ editShotDetail.shot_name }}</span></p>
-            <p class="m-0">镜头简称：<span>{{ editShotDetail.shot_byname }}</span></p>
-            <p class="m-0">计划起止时间：<span>001</span></p>
-            <p class="m-0">场号/集号：<span>{{ editShotDetail.field_name }}</span></p>
-            <p class="m-0">所属项目：<span>{{ editShotDetail.project_name }}</span></p>
-            <p class="m-0">时刻：<span>{{ editShotDetail.time_name }}</span></p>
-            <p class="m-0">环境：<span>{{ editShotDetail.ambient_name }}</span></p>
-            <p class="m-0">镜头优先级：<span>{{ editShotDetail.priority_level_name }}</span></p>
-            <p class="m-0">镜头难度：<span>{{ editShotDetail.difficulty_name }}</span></p>
-            <p class="m-0">
-              环节所属工作室：
-              <span class="shot_detail_tache" v-for="(item, index) in editShotDetail.tache_info">
-                {{ index }}
-                <el-tag closable type="info" v-if="item.length !== 0?true:false">
-                  {{ item }};
-                </el-tag>
-              </span>
-            </p>
-            <p class="m-0">资产：<span>001</span></p>
-            <p class="m-0">帧长范围：<span>{{ editShotDetail.frame_range }}</span></p>
-            <p class="m-0">手柄帧：<span>{{ editShotDetail.handle_frame }}</span></p>
-            <p class="m-0">素材号：<span>{{ editShotDetail.material_number }}</span></p>
-            <p class="m-0">剪辑帧长：<span>{{ editShotDetail.clip_frame_length }}</span></p>
-            <p class="m-0">素材帧长：<span>{{ editShotDetail.material_frame_length }}</span></p>
-            <p class="m-0">二级公司：<span>{{ editShotDetail.second_company }}</span></p>
-            <p class="m-0">镜头备注：<span>{{ editShotDetail.shot_explain }}</span></p>
-            <p class="m-0">变速信息：<span>{{ editShotDetail.charge_speed_info }}</span></p>
-            <p class="m-0">制作要求：<span>{{ editShotDetail.make_demand }}</span></p>
+            <el-row :gutter="20" class="m-b-5">
+              <el-col :span="12">
+                <p class="m-0">镜头简称：<span>{{ editShotDetail.shot_byname }}</span></p>
+              </el-col>
+              <el-col :span="12">
+                <p class="m-0">镜头缩略图：<img :src="editShotDetail.shot_image" alt=""></p>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20" class="m-b-5">
+              <el-col :span="12">
+                <p class="m-0">镜头编号：<span>{{ editShotDetail.shot_number }}</span></p>
+              </el-col>
+              <el-col :span="12">
+                <p class="m-0">镜头名称：<span>{{ editShotDetail.shot_name }}</span></p>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20" class="m-b-5">
+              <el-col :span="12">
+                <p class="m-0">所属项目：<span>{{ editShotDetail.project_name }}</span></p>
+              </el-col>
+              <el-col :span="12">
+                <p class="m-0">计划起止时间：<span>001</span></p>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20" class="m-b-5">
+              <el-col :span="12">
+                <p class="m-0">资产：<span>001</span></p>
+              </el-col>
+              <el-col :span="12">
+                <p class="m-0">场号/集号：<span>{{ editShotDetail.field_name }}</span></p>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20" class="m-b-5">
+              <el-col :span="12">
+                <p class="m-0">镜头优先级：<span>{{ editShotDetail.priority_level_name }}</span></p>
+              </el-col>
+              <el-col :span="12">
+                <p class="m-0">镜头难度：<span>{{ editShotDetail.difficulty_name }}</span></p>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20" class="m-b-5">
+              <el-col :span="12">
+                <p class="m-0">时刻：<span>{{ editShotDetail.time_name }}</span></p>
+              </el-col>
+              <el-col :span="12">
+                <p class="m-0">环境：<span>{{ editShotDetail.ambient_name }}</span></p>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20" class="m-b-5">
+              <el-col :span="24">
+                <p class="m-0">
+                  环节所属工作室：
+                  <span class="tache_studio dp-b" v-for="(item, index) in editShotDetail.tache_info" :key="index">
+                    <i class="el-icon-close m-l-5 c-light-gray pointer"></i>
+                    <span>{{ index }}：</span>
+                    <el-tag size="mini" closable type="info" @close="deleteTacheStudio()">
+                      {{ item }}
+                    </el-tag>
+                  </span>
+                </p>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20" class="m-b-5">
+              <el-col :span="12">
+                <p class="m-0">帧长范围：<span>{{ editShotDetail.frame_range }}</span></p>
+              </el-col>
+              <el-col :span="12">
+                <p class="m-0">手柄帧：<span>{{ editShotDetail.handle_frame }}</span></p>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20" class="m-b-5">
+              <el-col :span="12">
+                <p class="m-0">剪辑帧长：<span>{{ editShotDetail.clip_frame_length }}</span></p>
+              </el-col>
+              <el-col :span="12">
+                <p class="m-0">素材帧长：<span>{{ editShotDetail.material_frame_length }}</span></p>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20" class="m-b-5">
+              <el-col :span="12">
+                <p class="m-0">素材号：<span>{{ editShotDetail.material_number }}</span></p>
+              </el-col>
+              <el-col :span="12">
+                <p class="m-0">二级公司：<span>{{ editShotDetail.second_company }}</span></p>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20" class="m-b-5">
+              <el-col :span="12">
+                <p class="m-0">镜头备注：<span>{{ editShotDetail.shot_explain }}</span></p>
+              </el-col>
+              <el-col :span="12">
+                <p class="m-0">变速信息：<span>{{ editShotDetail.charge_speed_info }}</span></p>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20" class="m-b-5">
+              <el-col :span="24">
+                <p class="m-0">制作要求：<span>{{ editShotDetail.make_demand }}</span></p>
+              </el-col>
+            </el-row>
           </el-card>
         </div>
       </transition>
@@ -494,6 +563,10 @@
         } else {
           this.isShotDetailShow = !this.isShotDetailShow
         }
+      },
+//      镜头详情删除环节所属工作室
+      deleteTacheStudio(tag) {
+        console.log(tag)
       },
 //      制作中切换分页
       inProductionCurrentChange(page) {
@@ -671,6 +744,20 @@
     transform: translateY(-50%);
     z-index: 2;
     overflow: scroll;
+  }
+  .shot_list_detail .shot_detail p{
+    font-size: .8rem;
+    color: #666;
+  }
+  .shot_list_detail .shot_detail p span{
+    color: #333;
+  }
+  .shot_list_detail .shot_detail p span.tache_studio{
+    font-size: .75rem;
+  }
+  .shot_list_detail .shot_detail .el-card__header{
+    padding: 10px 15px;
+    font-size: 14px;
   }
 
   .shot_list_detail .shot_card h2 {
