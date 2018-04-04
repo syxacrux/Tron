@@ -85,6 +85,8 @@ return [
 	'shot/get_studio'       =>      ['admin/shots/get_studio_list',['method'=>'GET']],
 	//  [镜头] 添加场号
 	'admin/save_field'      =>      ['admin/base/save_field',['method' => 'POST']],
+	//	[镜头] 删除环节
+	'shot/tache_del'				=>			['admin/shots/delete_tache',['method'=>'POST']],
 	//	[工作台] 标准列表
 	'task/index_list'				=>			['admin/Workbenches/index_list',['method' => 'GET']],
 	//  [工作台] 改变状态

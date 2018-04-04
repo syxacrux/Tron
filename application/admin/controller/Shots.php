@@ -135,6 +135,7 @@ class Shots extends BaseCommon
 	{
 		$shot_model = model('Shot');
 		$param = $this->param;
+		file_put_contents('bb.txt',var_export($param,true));
 		$data = $shot_model->delDataById($param['id'], true);
 		if (!$data) {
 			return resultArray(['error' => $shot_model->getError()]);
@@ -179,8 +180,8 @@ class Shots extends BaseCommon
 		$shot_model = model('Shot');
 		$param = $this->param;
 		$shot_id = !empty($param['id']) ? $param['id'] : '';
-		$tache_id = !empty($param['tache_id']) ? $param['tache_id'] : '';
-		$data = $shot_model->TacheDel_ByShotId($shot_id, $tache_id);
+		$tache_name = !empty($param['tache_name']) ? $param['tache_name'] : '';
+		$data = $shot_model->TacheDel_ByShotId($shot_id, $tache_name);
 		return resultArray(['data' => $data]);
 	}
 

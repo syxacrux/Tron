@@ -202,7 +202,7 @@ class Shot extends Common
 					foreach ($val as $k => $v) {
 						$task_data['project_id'] = $curr_shot_obj->project_id;   //所属项目ID
 						$task_data['field_id'] = $curr_shot_obj->field_id;   //场号ID
-						$task_data['shot_id'] = $this->id;  //镜头ID
+						$task_data['shot_id'] = $id;  //镜头ID
 						$task_data['tache_id'] = $key;  //环节ID
 						$task_data['tache_sort'] = Tache::get($key)->sort;  //环节排序
 						$task_data['studio_id'] = $v;   //工作室ID
@@ -332,7 +332,7 @@ class Shot extends Common
 		}
 		try {
 			$tache_id = array_flip($this->tache_byname_arr)[$tache_name];
-			$result = Workbenches::destroy(['shot_id' => $shot_id, 'tache_id' => $tache_id]);
+			$result = Workbenches::where(['shot_id' => $shot_id, 'tache_id' => $tache_id])->delete();
 			if ($result === false) {
 				$this->error = '删除失败';
 				return false;
