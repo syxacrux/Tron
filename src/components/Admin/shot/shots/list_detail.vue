@@ -450,7 +450,7 @@
                   <span class="tache_studio dp-b" v-for="(item, index) in editShotDetail.tache_info" :key="index">
                     <i class="el-icon-close m-l-5 c-light-gray pointer" v-if="deleteShowTache" @click="deleteTache(index)" ></i>
                     <span>{{ index }}：</span>
-                    <el-tag size="mini" v-for="studio in item" closable type="info" @close="deleteTacheStudio(studio)">
+                    <el-tag size="mini" v-for="studio in item" :closable="deleteShowTacheStudio" type="info" @close="deleteTacheStudio(studio)" :key="studio.id">
                       {{ studio.name }}
                     </el-tag>
                   </span>
@@ -573,12 +573,37 @@
           type: 'warning'
         }).then(() => {
           _g.openGlobalLoading()
-          console.log(tache_name)
           const data = {
             id: this.id,
             tache_name: tache_name
           }
-          this.apiDelete('admin/shots/', data).then((res) => {
+          this.apiPost('shot/tache_del', data).then((res) => {
+            _g.closeGlobalLoading()
+            this.handelResponse(res, (data) => {
+              _g.toastMsg('success', '删除成功')
+//              setTimeout(() => {
+//                _g.shallowRefresh(this.$route.name)
+//              }, 1500)
+            })
+          })
+        }).catch(() => {
+          // catch error
+        })
+      },
+//      镜头详情删除环节所属工作室
+      deleteTacheStudio(item) {
+        console.log(item)
+        this.$confirm('确认删除该环节所属工作室?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          _g.openGlobalLoading()
+          const data = {
+            id: this.id,
+            studio_id: item.id
+          }
+          this.apiPost('shot/studio_del', data).then((res) => {
             _g.closeGlobalLoading()
             this.handelResponse(res, (data) => {
               _g.toastMsg('success', '删除成功')
@@ -736,6 +761,9 @@
 //      }
       deleteShowTache() {
         return _g.getHasRule('shots-delete_tache')
+      },
+      deleteShowTacheStudio() {
+        return _g.getHasRule('shots-delete_studio')
       }
     }
   }
