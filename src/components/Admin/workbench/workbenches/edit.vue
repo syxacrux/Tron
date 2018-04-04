@@ -30,7 +30,7 @@
         <el-col :span="8">
           <div class="grid-content">
             <el-form-item label="制作人:" prop="field_id">
-              <el-select v-model="field_id" placeholder="请选择制作人">
+              <el-select v-model="field_id" multiple placeholder="请选择制作人">
                 <el-option v-for="item in options"
                   :key="item.value"
                   :label="item.label"

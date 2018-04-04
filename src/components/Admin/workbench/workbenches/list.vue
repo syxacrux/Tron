@@ -460,9 +460,9 @@
 
       },
       updateBlock(id, status) {
-        console.log(id)
-        console.log(status)
-        console.log(arguments)
+        // console.log(arguments)
+        // if()
+        // console.log()
         const data = {
            'id':Number(id),
            'status':status
@@ -471,7 +471,10 @@
         this.blocks.find(b => b.id === Number(id)).status = status;
         this.apiPost('task/change_status',data).then((res) => {
           this.handelResponse(res, (data) => {
-          
+
+          }, () => {
+            this.isLoading = !this.isLoading
+            getAllWorkbenches('admin/workbenches',this.currentPage,1)
           })
         })
 
