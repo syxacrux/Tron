@@ -131,7 +131,7 @@ class Shot extends Common
 						$task_data['tache_sort'] = Tache::get($key)->sort;  //环节排序
 						$task_data['studio_id'] = $v;   //工作室ID
 						$task_data['task_type'] = 1;    //镜头类型
-						$task_data['shot_image'] = $curr_shot_obj->shot_image;
+						$task_data['task_image'] = $curr_shot_obj->shot_image;
 						$task_data['task_byname'] = $curr_shot_obj->shot_byname;//任务简称暂且为镜头的简称，任务模块中，可修改
 						$task_data['task_priority_level'] = $curr_shot_obj->priority_level;   //任务优先级
 						$task_data['difficulty'] = $curr_shot_obj->difficulty;    //任务难度
@@ -206,7 +206,6 @@ class Shot extends Common
 						$task_data['tache_sort'] = Tache::get($key)->sort;  //环节排序
 						$task_data['studio_id'] = $v;   //工作室ID
 						$task_data['task_type'] = 1;    //镜头类型
-						$task_data['shot_image'] = $curr_shot_obj->shot_image;
 						$task_data['task_byname'] = $curr_shot_obj->shot_byname;//任务简称暂且为镜头的简称，任务模块中，可修改
 						$task_data['task_priority_level'] = $curr_shot_obj->priority_level;   //任务优先级
 						$task_data['difficulty'] = $curr_shot_obj->difficulty;    //任务难度
