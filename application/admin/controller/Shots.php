@@ -8,9 +8,9 @@
 namespace app\admin\controller;
 
 use app\admin\model\Access;
-use app\common\controller\BaseCommon;
+use app\common\controller\ApiCommon;
 
-class Shots extends BaseCommon
+class Shots extends ApiCommon
 {
 
 	public function index()
@@ -192,7 +192,8 @@ class Shots extends BaseCommon
 		$param = $this->param;
 		$shot_id = !empty($param['id']) ? $param['id'] : '';
 		$studio_id = !empty($param['studio_id']) ? $param['studio_id'] : '';
-		$data = $shot_model->StudioDel_ByShotId($shot_id, $studio_id);
+		$tache_name = !empty($param['tache_name']) ? $param['tache_name'] : '';
+		$data = $shot_model->StudioDel_ByShotId($shot_id,$tache_name,$studio_id);
 		return resultArray(['data' => $data]);
 	}
 
