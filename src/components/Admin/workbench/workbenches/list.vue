@@ -351,21 +351,25 @@
             </div>
             <div class="text item">
               <!-- {{'我是任务详情' + o }} -->
-              <p>项目名：</p>
-              <p>项目简称：</p>
-              <p>场号：</p>
-              <p>镜头名：</p>
-              <p>镜头简称：</p>
-              <p>镜头号：</p>
-              <p>优先级：</p>
-              <p>难度：</p>
-              
+              <p>项目名：{{finishList.project_name}}</p>
+              <p>项目简称：{{finishList.project_byname}}</p>
+              <p>场号：{{finishList.field_number}}</p>
+              <p>镜头名：{{finishList.shot_name}}</p>
+              <p>镜头简称：{{finishList.shot_byname}}</p>
+              <p>镜头号：{{finishList.shot_number}}</p>
+              <p>优先级：{{finishList.task_priority_level_name}}</p>
+              <p>难度：{{finishList.difficulty_name}}</p>
+              <p>制作人：{{finishList.make_demand}}</p>
+              <p>计划开始时间：{{finishList.plan_start_timestamp}}</p>
+              <p>计划结束时间：{{finishList.plan_end_timestamp}}</p>
+              <p>实际开始时间：{{finishList.actually_start_timestamp}}</p>
+              <p>实际结束时间：{{finishList.actually_end_timestamp}}</p>
             </div>
           </el-card>
         </div>
       </transition>
     </div>
-    <editWorkbenches ref="editWorkbenches"></editWorkbenches>
+    <editWorkbenches ref="editWorkbenches" :message="finishList"></editWorkbenches>
     <div v-if="!isList" class="pos-rel p-t-20">
       <div class="block pages">
         <el-pagination
@@ -447,12 +451,13 @@
         finishList: [],  //任务列表
         finishListDataCount:0,//任务数量
         // limit: 10,
-        editWorkbenchesDetail: {}
+        finishList: {},//任务详情
       }
     },
     methods: {
       editWorkbench() {
         this.$refs.editWorkbenches.open()
+
       },
       updateBlock(id, status) {
         console.log(id)
@@ -487,7 +492,7 @@
       list(){
         // @click="isList = false"
         this.isList = false
-        this.getAllWorkbenches('task/index_list',1)
+        this.getAllWorkbenches('task/index_list',1,11)
       },
       //      时间抽转换为时间格式
       j2time(time) {
@@ -544,6 +549,11 @@
                 console.log(this.blocks)
                 this.dataCount=data.dataCount
                 break;
+              case 11:
+                this.finishList=data.list
+                console.log(this.blocks)
+                this.finishListDataCount=data.dataCount
+                break;
             }
             
           })
@@ -554,7 +564,7 @@
         console.log(id)
         this.apiGet('admin/workbenches/' + id).then((res) => {
           this.handelResponse(res, (data) => {
-            // this.editShotDetail = data
+            this.finishList = data
             console.log(data)
           })
         })

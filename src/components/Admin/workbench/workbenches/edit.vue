@@ -4,10 +4,10 @@
       <el-row :gutter="20">
         <el-col :span="8">
           <div class="grid-content">
-            <el-form-item label="任务名称:" prop="field_id">
+            <!-- <el-form-item label="任务名称:" prop="field_id">
               <el-input v-model="form.field_id" placeholder="请选择制作人">
               </el-input>
-            </el-form-item>
+            </el-form-item> -->
           </div>
         </el-col>
       </el-row>
@@ -42,20 +42,25 @@
         </el-col>
         <el-col :span="8">
           <div class="grid-content">
-            <el-form-item label="优先级:" prop="asset_ids">
-              <el-select v-model="form.asset_ids" multiple collapse-tags placeholder="请选择优先级" class="h-40 w-200">
-                <el-option label="我是资产2" value="2"></el-option>
-                <el-option label="我是资产2" value="2"></el-option>
+            <el-form-item label="优先级:" prop="task_priority_level">
+              <el-select v-model="form.task_priority_level" placeholder="请选择优先级" class="h-40 w-200">
+                <el-option label="D" value="1"></el-option>
+                <el-option label="C" value="2"></el-option>
+                <el-option label="B" value="3"></el-option>
+                <el-option label="A" value="4"></el-option>
               </el-select>
             </el-form-item>
           </div>
         </el-col>
          <el-col :span="8">
           <div class="grid-content">
-            <el-form-item label="难度:" prop="asset_ids">
-              <el-select v-model="form.asset_ids" multiple collapse-tags placeholder="请选择难度" class="h-40 w-200">
-                <el-option label="我是资产1" value="1"></el-option>
-                <el-option label="我是资产2" value="2"></el-option>
+            <el-form-item label="难度:" prop="difficulty_name">
+              <el-select v-model="form.difficulty_name" placeholder="请选择难度" class="h-40 w-200">
+                <el-option label="D" value="1"></el-option>
+                <el-option label="C" value="2"></el-option>
+                <el-option label="B" value="3"></el-option>
+                <el-option label="A" value="4"></el-option>
+                <el-option label="S" value="5"></el-option> 
               </el-select>
             </el-form-item>
           </div>
@@ -101,6 +106,7 @@ export default {
         uploadImageUrl: window.HOST + '/admin/upload_image',
         plan_time: '',
         image:'',
+        id:0,
         field_id:[],
         options:[{
           value: '1',
@@ -174,6 +180,39 @@ export default {
         }
         return isLt2M;
       },
+      //编辑任务
+      edit(form){
+        this.form.plan_start_timestamp = _g.j2time(this.plan_time[0])
+        this.form.plan_end_timestamp = _g.j2time(this.plan_time[1])
+        this.form.difficulty = this.form.difficulty ? parseInt(this.form.difficulty) : 1
+        this.form.task_priority_level = this.form.task_priority_level ? parseInt(this.form.task_priority_level) : 1
+        this.$refs[form].validate((valid) => {
+          if (valid) {
+          this.isLoading = !this.isLoading
+          this.apiPut('admin/workbenches/', this.id, this.form).then((res) => {
+            this.handelResponse(res, (data) => {
+            _g.toastMsg('success', '编辑成功')
+            setTimeout(() => {
+              this.goback()
+            }, 1500)
+            }, () => {
+            this.isLoading = !this.isLoading
+            })
+          })
+          }
+        })
+      }
+  },
+  mixins: [http],
+  props: ['message'],
+  watch: {
+    message: function(data, o) {
+        this.id = data.id
+        this.form=data
+        this.form.shot_image = this.image = window.baseUrl + '/' + data.shot_image
+        this.form.task_priority_level = data.task_priority_level.toString()
+        this.plan_time = [new Date(data.plan_start_timestamp * 1000), new Date(data.plan_end_timestamp * 1000)]
+    }
   }
 }
 </script>
