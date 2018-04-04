@@ -272,7 +272,7 @@ class Workbench extends Common
 	}
 
 	//任务状态改变并记录
-	public function change_task_status($task_id, $status, $uid)
+	public function change_task_status($task_id, $status, $uid,$group_id)
 	{
 		$task_status['task_status'] = $this->status_cn_arr[$status];
 		$curr_task_data = $this->get($task_id);
@@ -281,7 +281,17 @@ class Workbench extends Common
 			return false;
 		}
 		try {
+			//获取所属任务当前状态值
+			$curr_task_status = $this->get($task_id)->task_status;
 			//判断角色权限
+			if($group_id == 7){	//制作人
+				if(($curr_task_status == 1) && ($status == 5)){	//等待制作改变状态为制作中，可进行更新，其他行为，均没有权限操作
+					$this->save($task_status,[$this->getPk() => $task_id]);
+				}else{
+					$this->error = '您没有权限操作';
+					return false;
+				}
+			}
 			$this->save($task_status, [$this->getPk() => $task_id]);
 			//记录状态更新记录
 			$task_status_record['user_id'] = $uid;
@@ -322,5 +332,17 @@ class Workbench extends Common
 		return $task_obj;
 	}
 
+	//根据主键编辑任务 并分配制作人
+	public function updateData_ById($task_data,$id){
+		$task_obj = $this->get($id);
+		if(!empty($task_obj)){
+			$this->error = '暂无此数据';
+			return false;
+		}
+
+
+
+
+	}
 
 }

@@ -20,7 +20,7 @@
                 :show-file-list="false"
                 :on-success="handleAvatarSuccess"
                 :before-upload="beforeAvatarUpload">
-              <img v-if="form.shot_image" :src="image" class="avatar">
+              <img v-if="form.task_image" :src="image" class="avatar">
               <i v-else class="el-icon-plus avatar-uploader-icon"></i>
             </el-upload>
           </el-form-item>
@@ -129,7 +129,7 @@ export default {
           tache_sort:null,//环节序号
           studio_id:2,//工作室ID
           task_type:'',//任务类型
-          shot_image:'',//镜头缩略图
+          task_image:'',//镜头缩略图
           task_byname:'FUY',//镜头简称
           make_demand:'',//制作要求
           shot_number:'001',//镜头
@@ -167,7 +167,7 @@ export default {
       },
       handleAvatarSuccess(res, file) {
         this.image = URL.createObjectURL(file.raw);
-        this.form.shot_image = res.data;
+        this.form.task_image = res.data;
       },
       beforeAvatarUpload(file) {
         //  const isJPG = file.type === 'image/jpeg';
@@ -209,7 +209,7 @@ export default {
     message: function(data, o) {
         this.id = data.id
         this.form=data
-        this.form.shot_image = this.image = window.baseUrl + '/' + data.shot_image
+        this.form.task_image = this.image = window.baseUrl + '/' + data.task_image
         this.form.task_priority_level = data.task_priority_level.toString()
         this.plan_time = [new Date(data.plan_start_timestamp * 1000), new Date(data.plan_end_timestamp * 1000)]
     }
