@@ -581,9 +581,7 @@
             _g.closeGlobalLoading()
             this.handelResponse(res, (data) => {
               _g.toastMsg('success', '删除成功')
-//              setTimeout(() => {
-//                _g.shallowRefresh(this.$route.name)
-//              }, 1500)
+              this.shotDetail(this.id)
             })
           })
         }).catch(() => {
@@ -608,9 +606,7 @@
             _g.closeGlobalLoading()
             this.handelResponse(res, (data) => {
               _g.toastMsg('success', '删除成功')
-//              setTimeout(() => {
-//                _g.shallowRefresh(this.$route.name)
-//              }, 1500)
+              this.shotDetail(this.id)
             })
           })
         }).catch(() => {
