@@ -156,14 +156,74 @@ class Shot extends Common
 	}
 
 	//根据镜头ID进行编辑数据
-	public function updateData_ById($param)
+	public function updateData_ById($data, $id)
 	{
-		file_put_contents('bb.txt',var_export($param,true));
+		$shot_obj = $this->get($id);
+		if (!$shot_obj) {
+			$this->error = '暂无此数据';
+			return false;
+		}
+		// 验证
+		$validate = validate($this->name);
+		if (!$validate->check($data)) {
+			$this->error = $validate->getError();
+			return false;
+		}
 		//开启事务
 		$this->startTrans();
-		try{
-
-		}catch (\Exception $e){
+		try {
+			//资产ID 多项 字符串 以逗号分割(现在没有不加资产)
+			//$param['asset_ids'] = implode(",",$param['asset_ids']);
+			$param['shot_image'] = str_replace('\\', '/', $param['shot_image']);
+			$param['plan_start_timestamp'] = strtotime($param['plan_start_timestamp']);
+			$param['plan_end_timestamp'] = strtotime($param['plan_end_timestamp']);
+			$param['create_time'] = time();
+			foreach ($param['tache'] as $key => $value) {
+				if (!empty($value)) {
+					$tache_data[$key] = $value;
+				}
+			}
+			//保存镜头表
+			$result = $this->allowField(true)->save($param);
+			//获取自增ID的镜头对象
+			$curr_shot_obj = $this->get($this->id);
+			if (false === $result) {
+				$this->error = $this->getError();
+				return false;
+			} else {
+				$project_byname = Project::get($param['project_id'])->project_byname;
+				$field_name = Db::name('field')->where('id', $param['field_id'])->value('name');
+				//执行redis添加镜头所属目录 python
+				$str = "'Shot' '{$project_byname}' '{$field_name}' '{$param['shot_name']}'";
+				//exec_python($str);
+				//根据环节分配任务给各大工作室
+				foreach ($tache_data as $key => $val) {
+					foreach ($val as $k => $v) {
+						$task_data['project_id'] = $curr_shot_obj->project_id;   //所属项目ID
+						$task_data['field_id'] = $curr_shot_obj->field_id;   //场号ID
+						$task_data['shot_id'] = $id;  //镜头ID
+						$task_data['tache_id'] = $key;  //环节ID
+						$task_data['tache_sort'] = Tache::get($key)->sort;  //环节排序
+						$task_data['studio_id'] = $v;   //工作室ID
+						$task_data['task_type'] = 1;    //镜头类型
+						$task_data['shot_image'] = $curr_shot_obj->shot_image;
+						$task_data['task_byname'] = $curr_shot_obj->shot_byname;//任务简称暂且为镜头的简称，任务模块中，可修改
+						$task_data['task_priority_level'] = $curr_shot_obj->priority_level;   //任务优先级
+						$task_data['difficulty'] = $curr_shot_obj->difficulty;    //任务难度
+						$task_data['plan_start_timestamp'] = $curr_shot_obj->plan_start_timestamp;  //计划开始时间
+						$task_data['plan_end_timestamp'] = $curr_shot_obj->plan_end_timestamp;    //计划结束时间
+						$task_data['task_status'] = 1;  //任务状态
+						$task_data['is_assets'] = 2; //是否为等待资产 1是 2否
+						$task_data['pid'] = 0;  //工作室顶级任务ID都为0
+						$task_data['create_time'] = time();//创建时间
+						$task_model = new Workbench();
+						$task_model->data($task_data)->save();
+					}
+				}
+				$this->commit();
+				return true;
+			}
+		} catch (\Exception $e) {
 			$this->rollback();
 			$this->error = '编辑失败';
 			return false;
@@ -188,6 +248,35 @@ class Shot extends Common
 		return $data;
 	}
 
+	//根据镜头ID删除镜头及子任务
+	public function delData_ById($id){
+		//开启事务
+		$this->startTrans();
+		try{
+			$shot_result = $this->where($this->getPk(), $id)->delete();
+			if(false === $shot_result){
+				$this->error = '镜头删除失败';
+				return false;
+			}else{
+				//删除所属镜头的所有任务
+				$taskBy_shotDel_result = Workbench::destroy(['shot_id'=>$id]);
+				if(false === $taskBy_shotDel_result){
+					$this->error = '镜头所属任务删除失败';
+					$this->rollback();
+					return false;
+				}else {
+					$this->commit();
+				}
+				//python 脚本调用 未做
+				$this->commit();//镜头删除成功
+				return true;
+			}
+		}catch(\Exception $e){
+			$this->rollback();
+			return false;
+		}
+	}
+
 	//根据镜头ID获取所属环节下的工作室
 	public function get_studio_byTache($shot_id)
 	{
@@ -202,10 +291,10 @@ class Shot extends Common
 	public function get_studio_name($studio_id_arr)
 	{
 		foreach ($studio_id_arr as $key => $value) {
-			$arr[] = Studio::get($value)->name;
+			$arr[$key]['id'] = $value;
+			$arr[$key]['name'] = Studio::get($value)->name;
 		}
-		$data = implode(",", $arr);
-		return $data;
+		return $arr;
 	}
 
 	//获取当前镜头各环节进度
@@ -261,4 +350,49 @@ class Shot extends Common
 		return $data;
 	}
 
+	//根据镜头ID及环节ID删除所属环节的所有任务
+	public function TacheDel_ByShotId($shot_id, $tache_name)
+	{
+		$shot_obj = $this->get($shot_id);
+		if (!$shot_obj) {
+			$this->error = '暂无此数据';
+			return false;
+		}
+		try {
+			$tache_id = array_flip($this->tache_byname_arr)[$tache_name];
+			$result = Workbench::destroy(['shot_id' => $shot_id, 'tache_id' => $tache_id]);
+			if ($result === false) {
+				$this->error = '删除失败';
+				return false;
+			} else {
+				return true;
+			}
+		} catch (\Exception $e) {
+			$this->error = '删除失败';
+			return false;
+		}
+	}
+
+	//根据镜头ID与工作室ID删除对应的任务
+	public function StudioDel_ByShotId($shot_id,$tache_name,$studio_id)
+	{
+		$shot_obj = $this->get($shot_id);
+		if (!$shot_obj) {
+			$this->error = '暂无此数据';
+			return false;
+		}
+		try {
+			$tache_id = array_flip($this->tache_byname_arr)[$tache_name];
+			$result = Workbench::destroy(['shot_id' => $shot_id,'tache_id'=>$tache_id,'studio_id' => $studio_id]);
+			if (false === $result) {
+				$this->error = '删除失败';
+				return false;
+			} else {
+				return true;
+			}
+		} catch (\Exception $e) {
+			$this->error = '删除失败';
+			return false;
+		}
+	}
 }

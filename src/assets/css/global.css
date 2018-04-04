@@ -6,6 +6,15 @@ a {
     color: #c0ccda;
     /*color: inherit;*/
 }
+.dp-b{
+    display: block;
+}
+.dp-ib{
+    display: inline-block;
+}
+.dp-i{
+    display: inline;
+}
 .pos-rel {
     position: relative;
 }

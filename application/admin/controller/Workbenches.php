@@ -109,7 +109,8 @@ class Workbenches extends ApiCommon
 	{
 		$workbench_model = model('Workbench');
 		$param = $this->param;
-		$data = $workbench_model->updateDataById($param, $param['id']);
+		$task_id = !empty($param['id']) ? $param['id'] : '';
+		$data = $workbench_model->updateData_ById($param, $task_id);
 		if (!$data) {
 			return resultArray(['error' => $workbench_model->getError()]);
 		}
@@ -122,7 +123,9 @@ class Workbenches extends ApiCommon
 		$workbench_model = model('Workbench');
 		$param = $this->param;
 		$uid = $this->uid;
-		$data = $workbench_model->change_task_status($param['id'], $param['status'], $uid);
+		$group_id = Access::get($uid)->group_id;
+		$task_id = !empty($param['id']) ? $param['id'] : '';
+		$data = $workbench_model->change_task_status($task_id, $param['status'], $uid,$group_id);
 		if (!$data) {
 			return resultArray(['error' => $workbench_model->getError()]);
 		}
@@ -164,5 +167,6 @@ class Workbenches extends ApiCommon
 		}
 		return resultArray(['data' => '操作成功']);
 	}
+
 
 }
