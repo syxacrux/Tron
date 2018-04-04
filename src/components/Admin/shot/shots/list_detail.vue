@@ -392,7 +392,7 @@
             <div slot="header" class="clearfix">
               <span>镜头详情</span>
               <i class="el-icon-edit m-l-5 fz-14 c-light-gray pointer" @click="editShot"></i>
-              <i class="el-icon-delete m-l-5 fz-14 c-light-gray pointer"></i>
+              <i v-if="deleteShow" class="el-icon-delete m-l-5 fz-14 c-light-gray pointer" @click="deleteShot"></i>
               <i class="el-icon-close fr pointer" @click="isShotDetailShow = !isShotDetailShow"></i>
             </div>
             <el-row :gutter="20" class="m-b-5">
@@ -613,6 +613,26 @@
           // catch error
         })
       },
+//      删除镜头
+      deleteShot(id) {
+        this.$confirm('确认删除该镜头?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          _g.openGlobalLoading()
+          this.apiDelete('admin/shots/', this.id).then((res) => {
+            _g.closeGlobalLoading()
+            this.handelResponse(res, (data) => {
+              _g.toastMsg('success', '删除成功')
+              this.init(this.activeName)
+              this.isShotDetailShow = false
+            })
+          })
+        }).catch(() => {
+          // catch error
+        })
+      },
 //      制作中切换分页
       inProductionCurrentChange(page) {
         this.getShots('in_production', page)
@@ -753,9 +773,9 @@
 //      editShow() {
 //        return _g.getHasRule('projects-update')
 //      },
-//      deleteShow() {
-//        return _g.getHasRule('projects-delete')
-//      }
+      deleteShow() {
+        return _g.getHasRule('shots-delete')
+      },
       deleteShowTache() {
         return _g.getHasRule('shots-delete_tache')
       },
