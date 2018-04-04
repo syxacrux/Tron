@@ -354,7 +354,7 @@ class Shot extends Common
 			return false;
 		}
 		try {
-			$result = Workbenches::destroy(['shot_id' => $shot_id, 'studio_id' => $studio_id]);
+			$result = Workbenches::where(['shot_id' => $shot_id, 'studio_id' => $studio_id])->delete();
 			if (false === $result) {
 				$this->error = '删除失败';
 				return false;

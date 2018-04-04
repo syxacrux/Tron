@@ -122,7 +122,8 @@ class Workbenches extends ApiCommon
 		$workbench_model = model('Workbench');
 		$param = $this->param;
 		$uid = $this->uid;
-		$data = $workbench_model->change_task_status($param['id'], $param['status'], $uid);
+		$task_id = !empty($param['id']) ? $param['id'] : '';
+		$data = $workbench_model->change_task_status($task_id, $param['status'], $uid);
 		if (!$data) {
 			return resultArray(['error' => $workbench_model->getError()]);
 		}
