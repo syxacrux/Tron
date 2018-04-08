@@ -47,6 +47,7 @@
         <el-table-column prop="actual_end_timestamp" label="实际结束"></el-table-column>
         <el-table-column prop="make_demand" label="备注"></el-table-column>
         <btnGroup :selectedData="multipleSelection" :type="'studios'"></btnGroup>
+
       </el-table>
       <el-tabs v-if="!isList" v-model="activeName" @tab-click="tabClick" class="fl">
         <el-tab-pane label="镜头制作中" name="shotsInDevelopment">
@@ -755,8 +756,7 @@
             break;
           case 'list':
             this.activeName = 'shotsInDevelopment'
-            this.getShots('in_production', 1)
-            this.getShots('feedback', 1)
+            this.init('shotsInDevelopment')
             break;
         }
       }
