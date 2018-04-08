@@ -753,6 +753,11 @@
           case 'shotsFinish':
             this.getShots('finish', 1)
             break;
+          case 'list':
+            this.activeName = 'shotsInDevelopment'
+            this.getShots('in_production', 1)
+            this.getShots('feedback', 1)
+            break;
         }
       }
     },
