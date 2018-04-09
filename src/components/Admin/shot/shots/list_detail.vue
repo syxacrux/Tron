@@ -754,7 +754,7 @@
           case 'shotsFinish':
             this.getShots('finish', 1)
             break;
-          case 'list':
+          default:
             this.activeName = 'shotsInDevelopment'
             this.init('shotsInDevelopment')
             break;
