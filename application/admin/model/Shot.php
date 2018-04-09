@@ -30,7 +30,7 @@ class Shot extends Common
 	 * @throws \think\exception\DbException
 	 * @author zjs 2018/3/16
 	 */
-	public function getList($keyword, $page, $limit, $uid, $group_id)
+	public function getList($keyword, $page, $limit)
 	{
 		$where = [];
 		$dataCount = $this->where($where)->count('id');

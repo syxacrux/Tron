@@ -20,35 +20,44 @@
       </div>
     </div>
     <div class="m-b-20 ovf-hd">
-      <el-table v-if="isList" ref="multipleTable" :data="tableData" tooltip-effect="dark"
-                @selection-change="handleSelectionChange" @row-click="">
-        <el-table-column type="selection" width="55"></el-table-column>
-        <el-table-column prop="shot_image" label="缩略图">
-          <template slot-scope="scope">
-            <img :src="address + scope.row.shot_image" alt="" style="width: 50px;height: 50px">
-          </template>
-        </el-table-column>
-        <el-table-column prop="field_name" label="场号"></el-table-column>
-        <el-table-column prop="shot_number" label="镜头号"></el-table-column>
-        <el-table-column prop="difficulty_name" label="难度"></el-table-column>
-        <el-table-column prop="priority_level_name" label="优先级"></el-table-column>
-        <el-table-column prop="tache" label="进度" width="200">
-          <template slot-scope="scope">
-            <el-tag v-for="value in scope.row.tache_info"
-                    v-if="value.finish_degree!==''?true:false" :key="value.id"
-                    :type="value.finish_degree<100?'warning':'success'">
-              {{ value.tache_byname }}：{{ value.finish_degree }}%
-            </el-tag>
-          </template>
-        </el-table-column>
-        <el-table-column prop="plan_start_timestamp" label="计划开始"></el-table-column>
-        <el-table-column prop="plan_end_timestamp" label="计划结束"></el-table-column>
-        <el-table-column prop="actual_start_timestamp" label="实际开始"></el-table-column>
-        <el-table-column prop="actual_end_timestamp" label="实际结束"></el-table-column>
-        <el-table-column prop="make_demand" label="备注"></el-table-column>
-        <btnGroup :selectedData="multipleSelection" :type="'studios'"></btnGroup>
-
-      </el-table>
+      <div v-if="isList">
+        <el-table ref="multipleTable" :data="tableData" tooltip-effect="dark"
+                  @selection-change="handleSelectionChange" @row-click="shotDetail">
+          <el-table-column type="selection" width="55"></el-table-column>
+          <el-table-column prop="shot_image" label="缩略图">
+            <template slot-scope="scope">
+              <!--<img :src="address + 'uploads/Projects/images/20180315/0ac2a237e3803fed26471175554c180a.jpg'" alt="" class="dp-b h-60">-->
+              <img :src="address + scope.row.shot_image" alt="" class="dp-b h-60">
+            </template>
+          </el-table-column>
+          <el-table-column prop="field_number" label="场号"></el-table-column>
+          <el-table-column prop="shot_number" label="镜头号"></el-table-column>
+          <el-table-column prop="difficulty" label="难度"></el-table-column>
+          <el-table-column prop="priority_level" label="优先级"></el-table-column>
+          <el-table-column prop="tache" label="进度" width="200">
+            <template slot-scope="scope">
+              <el-tag v-for="value in scope.row.tache_info"
+                      v-if="value.finish_degree!==''?true:false" :key="value.id"
+                      :type="value.finish_degree<100?'warning':'success'">
+                {{ value.tache_byname }}：{{ value.finish_degree }}%
+              </el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column prop="plan_start_time" label="计划开始"></el-table-column>
+          <el-table-column prop="plan_end_time" label="计划结束"></el-table-column>
+          <el-table-column prop="actual_start_timestamp" label="实际开始"></el-table-column>
+          <el-table-column prop="actual_end_timestamp" label="实际结束"></el-table-column>
+          <!--<el-table-column prop="make_demand" label="备注"></el-table-column>-->
+        </el-table>
+        <!--<btnGroup :selectedData="multipleSelection" :type="'studios'"></btnGroup>-->
+        <el-pagination
+            @current-change="listCurrentChange"
+            layout="prev, pager, next"
+            :page-size="limit"
+            :current-page="listCurrentPage"
+            :total="listDataCount">
+        </el-pagination>
+      </div>
       <el-tabs v-if="!isList" v-model="activeName" @tab-click="tabClick" class="fl">
         <el-tab-pane label="镜头制作中" name="shotsInDevelopment">
           <div class="shot_card ovf-hd">
@@ -56,7 +65,7 @@
               <div class="grid-content">
                 <h2 class="m-0">制作中</h2>
                 <ul class="p-l-0 m-0">
-                  <li v-for="item in inProductionList" :key="item.id" @click="shotDetail(item.id)">
+                  <li v-for="item in inProductionList" :key="item.id" @click="shotDetail(item)">
                     <el-card>
                       <div>
                         <div class="text-Lens pos-rel">
@@ -513,26 +522,12 @@
       return {
         multipleSelection: [],
         currentPage: 1,
+//        listLimit: ,
+        listCurrentPage: 1,
         isShotDetailShow: false,    //是否显示镜头详情
         activeName: 'shotInDevelopment', //镜头tab当前选中值
         isList: false,    // 是否显示镜头列表
-        address: window.baseUrl + '/',
-        tableData: [{
-          date: '2016-05-02',
-          name: '王小虎',
-          address: 'S',
-          shot_image: 'uploads/Projects/images/20180315/0fb7566809a188ba7e330564d7a9c644.jpg',
-          field_name: '',
-          shot_number: '',
-          difficulty: '',
-          priority_level: '',
-          plan_start_timestamp: '',
-          plan_end_timestamp: '',
-          make_demand: '',
-          tache: [{name: 'ANI', lmane: '100%'}, {name: 'MMV', lmane: '100%'}],
-          actual_start_timestamp: '1',
-          actual_end_timestamp: '2'
-        }],
+        address: window.baseUrl + '',
         inProductionDataCount: 0,  //制作中总数量
         inProductionList: [],  //制作中列表
         feedbackDataCount: 0,  //反馈中总数量
@@ -543,6 +538,8 @@
         pauseList: [],  //镜头暂停列表
         finishDataCount: 0,  //镜头完成总数量
         finishList: [],  //镜头完成列表
+        listDataCount: 0,  //镜头表格列表总数量
+        tableData: [], //镜头表格列表
         limit: 10,
         editShotDetail: {}
       }
@@ -553,9 +550,11 @@
         this.$refs.editShots.open()
       },
 //      点击镜头显示镜头详情
-      shotDetail(id) {
-        this.id = id
-        this.apiGet('admin/shots/' + id).then((res) => {
+      shotDetail(data) {
+        console.log(data.id)
+//        console.log(id)
+        this.id = data.id
+        this.apiGet('admin/shots/' + data.id).then((res) => {
           this.handelResponse(res, (data) => {
             this.editShotDetail = data
           })
@@ -654,6 +653,9 @@
       finishCurrentChange(page) {
         this.getShots('finish', page)
       },
+      listCurrentChange(page) {
+        this.getShotList(page)
+      },
       /*
       * 镜头列表批量点击checkbox
       * params: {
@@ -733,6 +735,22 @@
           })
         })
       },
+//      初始化镜头列表
+      getShotList(page) {
+        const data = {
+          params: {
+//            keywords: this.keywords,
+            page: page,
+            limit: this.limit
+          }
+        }
+        this.apiGet('admin/shots', data).then((res) => {
+          this.handelResponse(res, (data) => {
+            this.tableData = data.list
+            this.listDataCount = data.dataCount
+          })
+        })
+      },
       /*
       * 初始化镜头看板内容
       * params: {
@@ -765,6 +783,7 @@
       this.activeName = this.$route.query.type
       this.isList = this.$route.query.list
       this.init(this.activeName)
+      this.getShotList(1)
     },
     components: {
       editShots,
