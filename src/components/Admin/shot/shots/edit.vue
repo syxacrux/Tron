@@ -20,7 +20,7 @@
                   <el-option v-for="item in fieldList" :label="item.name" :value="item.id"
                              :key="item.id"></el-option>
                 </el-select>
-                <el-button @click="isAddField = true" size="small" v-if="addShow">添加</el-button>
+                <el-button type="text" size="small" @click="isAddField = true" v-if="addShow">添加</el-button>
               </el-form-item>
             </div>
           </el-col>

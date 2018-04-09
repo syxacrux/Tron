@@ -47,6 +47,7 @@
         <el-table-column prop="actual_end_timestamp" label="实际结束"></el-table-column>
         <el-table-column prop="make_demand" label="备注"></el-table-column>
         <btnGroup :selectedData="multipleSelection" :type="'studios'"></btnGroup>
+
       </el-table>
       <el-tabs v-if="!isList" v-model="activeName" @tab-click="tabClick" class="fl">
         <el-tab-pane label="镜头制作中" name="shotsInDevelopment">
@@ -752,6 +753,10 @@
             break;
           case 'shotsFinish':
             this.getShots('finish', 1)
+            break;
+          default:
+            this.activeName = 'shotsInDevelopment'
+            this.init('shotsInDevelopment')
             break;
         }
       }

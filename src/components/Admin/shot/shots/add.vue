@@ -8,6 +8,10 @@
         <el-breadcrumb-item>添加镜头</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
+    <div class="m-r-30 m-b-20 m-t-30 tx-r">
+      <el-button type="primary" size="small" plain v-if="importAddShow" @click="isImportShot = true">批量导入</el-button>
+      <el-button type="text" size="mini" class="fz-12 m-0">点击获取模板</el-button>
+    </div>
     <div class="m-l-50 m-t-30 w-1000">
       <el-form ref="form" :model="form" :rules="rules" label-width="130px" class="shot_add">
         <el-row :gutter="20">
@@ -28,7 +32,7 @@
                   <el-option v-for="item in fieldList" :label="item.name" :value="item.id"
                              :key="item.id"></el-option>
                 </el-select>
-                <el-button @click="isAddField = true" size="small" v-if="addShow">添加</el-button>
+                <el-button type="text" size="small" @click="isAddField = true" v-if="addShow">添加</el-button>
               </el-form-item>
             </div>
           </el-col>
@@ -332,6 +336,34 @@
         <el-button type="primary" @click="addField(fieldForm)">确 定</el-button>
       </span>
     </el-dialog>
+    <el-dialog title="批量导入镜头" :visible.sync="isImportShot" width="30%" center>
+      <el-form :model="importForm" :rules="importShotRules" label-width="130px">
+        <el-form-item label="项目名称：" prop="project_id">
+          <el-select v-model="importForm.project_id" placeholder="请选择项目" class="w-200">
+            <el-option v-for="item in projectList" :label="item.project_name" :value="item.id"
+                       :key="item.id"></el-option>
+          </el-select>
+        </el-form-item>
+        <!--<el-form-item label="场号/集号：" prop="name">-->
+          <!--<el-input v-model.trim="importForm.name" class="w-200"></el-input>-->
+        <!--</el-form-item>-->
+        <el-form-item label="镜头文件：" prop="shot_file">
+          <el-upload class="upload_shotFile" ref="upload"
+                     action="https://jsonplaceholder.typicode.com/posts/"
+                     :on-preview="handlePreview"
+                     :file-list="fileList"
+                     :limit="1"
+                     :auto-upload="false">
+            <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
+            <div slot="tip" class="el-upload__tip">只能上传一个xls/xlsx格式文件</div>
+          </el-upload>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="isImportShot = false">取 消</el-button>
+        <el-button type="primary" @click="importShot(importForm)">确 认</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 <style type="text/css">
@@ -353,6 +385,10 @@
 
   .el-upload {
     width: 300px;
+  }
+
+  .upload_shotFile .el-upload{
+    text-align: left;
   }
 
   .avatar-uploader-icon {
@@ -425,11 +461,18 @@
         lightOfStudio: [],
         synchOfStudio: [],
         isAddField: false,
+        isImportShot: false,
         isLoading: false,
         uploadImageUrl: window.HOST + '/admin/upload_image',
         projectList: [],
         studiosList: [],
         fieldList: [],
+        importForm: {
+          project_id: '',  //所属项目id
+          shot_file: ''    //导入镜头文件
+//          name: ''    //场号/集号
+        },
+        fileList: [],
         fieldForm: {
           project_id: '',  //所属项目id
           name: ''    //场号/集号
@@ -487,6 +530,11 @@
         addFieldRules: {
           project_id: [{required: true, message: '请选择项目'}],
           name: [{required: true, message: '请输入场号/集号'}]
+        },
+        importShotRules: {
+          project_id: [{required: true, message: '请选择项目'}],
+          shot_file: [{required: true, message: '请输入场号/集号'}]
+//          name: [{required: true, message: '请输入场号/集号'}]
         }
       }
     },
@@ -522,6 +570,15 @@
             })
           })
         }
+      },
+      handlePreview(file) {
+        console.log(file);
+      },
+//      批量导入镜头
+      importShot() {
+        console.log(this.$refs.upload.uploadFiles)
+
+//        this.$refs.upload.submit();
       },
 //      改变环节选项中的任意复选框时执行方法
       changeTache() {
@@ -643,6 +700,9 @@
     computed: {
       addShow() {
         return _g.getHasRule('shots-filed_save')
+      },
+      importAddShow() {
+        return _g.getHasRule('shot_import')
       }
     }
   }
