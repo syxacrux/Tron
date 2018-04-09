@@ -40,16 +40,16 @@ class Shot extends Common
 			$list = $list->page($page, $limit);
 		}
 		$list = $list->select();
-		for($i=0;$i<count($list);$i++){
+		for ($i = 0; $i < count($list); $i++) {
 			$list[$i]['project_name'] = Project::get($list[$i]['project_id'])->project_byname;
-			$list[$i]['field_number'] = Db::name('field')->where('id',$list[$i]['field_id'])->value('name');
+			$list[$i]['field_number'] = Db::name('field')->where('id', $list[$i]['field_id'])->value('name');
 			$list[$i]['difficulty'] = $this->difficulty_arr[$list[$i]['difficulty']];
 			$list[$i]['priority_level'] = $this->priority_level_arr[$list[$i]['priority_level']];
 			$list[$i]['tache_info'] = $this->rate_of_progress($list[$i]['id']);
-			$list[$i]['plan_start_time'] = date('Y-m-d H:i:s',$list[$i]['plan_start_timestamp']);
-			$list[$i]['plan_end_time'] = date('Y-m-d H:i:s',$list[$i]['plan_end_timestamp']);
-			$list[$i]['actual_start_time'] = !empty($list[$i]['actual_start_timestamp']) ? date('Y-m-d H:i:s',$list[$i]['actual_start_timestamp']) : '';
-			$list[$i]['actual_end_time'] = !empty($list[$i]['actual_end_timestamp']) ? date('Y-m-d H:i:s',$list[$i]['actual_end_timestamp']) : '';
+			$list[$i]['plan_start_time'] = date('Y-m-d H:i:s', $list[$i]['plan_start_timestamp']);
+			$list[$i]['plan_end_time'] = date('Y-m-d H:i:s', $list[$i]['plan_end_timestamp']);
+			$list[$i]['actual_start_time'] = !empty($list[$i]['actual_start_timestamp']) ? date('Y-m-d H:i:s', $list[$i]['actual_start_timestamp']) : '';
+			$list[$i]['actual_end_time'] = !empty($list[$i]['actual_end_timestamp']) ? date('Y-m-d H:i:s', $list[$i]['actual_end_timestamp']) : '';
 		}
 		$data['list'] = $list;
 		$data['dataCount'] = $dataCount;
@@ -185,7 +185,7 @@ class Shot extends Common
 		try {
 			//资产ID 多项 字符串 以逗号分割(现在没有不加资产)
 			//$param['asset_ids'] = implode(",",$param['asset_ids']);
-			$param['shot_image'] = str_replace('\\', '/', $param['shot_image']);
+			$param['shot_image'] = $param['shot_image'];
 			$param['plan_start_timestamp'] = strtotime($param['plan_start_timestamp']);
 			$param['plan_end_timestamp'] = strtotime($param['plan_end_timestamp']);
 			$param['create_time'] = time();
@@ -194,13 +194,11 @@ class Shot extends Common
 					$tache_data[$key] = $value;
 				}
 			}
-			//更新当前镜头行记录
 			$shot_model = new Shot();
-			$result = $shot_model->allowField(true)->save($param,[$this->getPk() => $id]);
-			if (false === $result) {
-				$this->error = $this->getError();
-				return false;
-			} else {
+			if (!empty($tache_data)) {  //环节不为空  执行更新本镜头数据及添加相应环节的任务
+				//更新当前镜头行记录
+
+				$shot_model->allowField(true)->save($param, [$this->getPk() => $id]);
 				$project_byname = Project::get($param['project_id'])->project_byname;
 				$field_name = Db::name('field')->where('id', $param['field_id'])->value('name');
 				//执行redis添加镜头所属目录 python
@@ -209,7 +207,7 @@ class Shot extends Common
 				//根据环节分配任务给各大工作室
 				foreach ($tache_data as $key => $val) {
 					foreach ($val as $k => $v) {
-						$task_data['group_id'] = 5;	//角色为工作室总监
+						$task_data['group_id'] = 5;  //角色为工作室总监
 						$task_data['user_id'] = 0;
 						$task_data['project_id'] = $param['project_id'];   //所属项目ID
 						$task_data['field_id'] = $param['field_id'];   //场号ID
@@ -229,12 +227,18 @@ class Shot extends Common
 						$task_data['pid'] = 0;  //工作室顶级任务ID都为0
 						$task_data['create_time'] = time();//创建时间
 						$task_model = new Workbench();
-						$task_model->data($task_data,true)->isUpdate(false)->save();
+						$task_model->data($task_data, true)->isUpdate(false)->save();
 					}
 				}
 				$this->commit();
 				return true;
+			} else {  //更新本镜头数据
+				$shot_model->allowField(true)->save($param, [$this->getPk() => $id]);
+				$this->commit();
+				return true;
 			}
+
+
 		} catch (\Exception $e) {
 			$this->rollback();
 			$this->error = '编辑失败';
@@ -261,29 +265,30 @@ class Shot extends Common
 	}
 
 	//根据镜头ID删除镜头及子任务
-	public function delData_ById($id){
+	public function delData_ById($id)
+	{
 		//开启事务
 		$this->startTrans();
-		try{
+		try {
 			$shot_result = $this->where($this->getPk(), $id)->delete();
-			if(false === $shot_result){
+			if (false === $shot_result) {
 				$this->error = '镜头删除失败';
 				return false;
-			}else{
+			} else {
 				//删除所属镜头的所有任务
-				$taskBy_shotDel_result = Workbench::destroy(['shot_id'=>$id]);
-				if(false === $taskBy_shotDel_result){
+				$taskBy_shotDel_result = Workbench::destroy(['shot_id' => $id]);
+				if (false === $taskBy_shotDel_result) {
 					$this->error = '镜头所属任务删除失败';
 					$this->rollback();
 					return false;
-				}else {
+				} else {
 					$this->commit();
 				}
 				//python 脚本调用 未做
 				$this->commit();//镜头删除成功
 				return true;
 			}
-		}catch(\Exception $e){
+		} catch (\Exception $e) {
 			$this->rollback();
 			return false;
 		}
@@ -386,7 +391,7 @@ class Shot extends Common
 	}
 
 	//根据镜头ID与工作室ID删除对应的任务
-	public function StudioDel_ByShotId($shot_id,$tache_name,$studio_id)
+	public function StudioDel_ByShotId($shot_id, $tache_name, $studio_id)
 	{
 		$shot_obj = $this->get($shot_id);
 		if (!$shot_obj) {
@@ -395,7 +400,7 @@ class Shot extends Common
 		}
 		try {
 			$tache_id = array_flip($this->tache_byname_arr)[$tache_name];
-			$result = Workbench::destroy(['shot_id' => $shot_id,'tache_id'=>$tache_id,'studio_id' => $studio_id]);
+			$result = Workbench::destroy(['shot_id' => $shot_id, 'tache_id' => $tache_id, 'studio_id' => $studio_id]);
 			if (false === $result) {
 				$this->error = '删除失败';
 				return false;
