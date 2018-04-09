@@ -134,7 +134,7 @@
         <el-row :gutter="20">
           <el-col :span="24">
             <div class="grid-content">
-              <el-form-item label="环节:" prop="hahah" class="is-required">
+              <el-form-item label="环节:" prop="">
                 <el-col :span="12" class="h-45">
                   <el-checkbox v-model="isArt" @change="changeTache">美术部</el-checkbox>
                   <el-select v-if="isArt" v-model="artOfStudio" multiple collapse-tags style="margin-left: 20px;"
@@ -301,7 +301,7 @@
         </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="goback()">取 消</el-button>
+        <el-button @click="dialogFormVisible = false">取 消</el-button>
         <el-button type="primary" @click="edit('form')" :loading="isLoading">确 定</el-button>
       </div>
     </el-dialog>
@@ -430,8 +430,7 @@
           charge_speed_info: '',    //变速信息
           material_number: '',    //素材号
           second_company: '',    //二级公司
-          make_demand: '',    //制作要求
-          status: 1    //镜头状态
+          make_demand: ''    //制作要求
         },
         id: '',
         image: '',
@@ -685,6 +684,7 @@
                 _g.clearVuex('setUsers')
                 setTimeout(() => {
                   this.dialogFormVisible = false
+                  this.isLoading = !this.isLoading
                 }, 1500)
               }, () => {
                 this.isLoading = !this.isLoading

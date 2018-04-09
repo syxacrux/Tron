@@ -268,7 +268,7 @@
           project_byname: '', //项目简称
           movies_type: '',//影视类型
           project_image: '', //项目缩略图
-          status: 0, //项目状态
+//          status: 0, //项目状态
 //          duration: '',//总时长
           aspect_ratio: '',//遮幅比
 //          frame_sum: '', //总帧长
