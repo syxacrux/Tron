@@ -1,5 +1,6 @@
 import axios from 'axios'
 import bus from '@/assets/js/bus.js'
+import _g from '@/assets/js/global.js'
 
 export default {
   apiGet(url, data) {
