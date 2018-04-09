@@ -6,6 +6,7 @@
 // +----------------------------------------------------------------------
 
 namespace app\admin\model;
+
 use think\Db;
 use app\common\model\Common;
 use com\verify\HonrayVerify;
@@ -14,70 +15,74 @@ use Lcobucci\JWT\Signer\Hmac\Sha256;
 use Lcobucci\JWT\Parser;
 use Lcobucci\JWT\ValidationData;
 
-class User extends Common{
+class User extends Common
+{
 	protected $name = 'admin_user';
-    protected $createTime = 'create_time';
-    protected $updateTime = false;
+	protected $createTime = 'create_time';
+	protected $updateTime = false;
 	protected $autoWriteTimestamp = true;
 	protected $insert = [
 		'status' => 1,
-	];  
+	];
 
-    /**
-     * 获取用户所属所有用户组
-     * @return \think\model\relation\BelongsToMany
-     * @author zjs 2018/3/14
-     */
-    public function groups(){
-        return $this->belongsToMany('group', '__ADMIN_ACCESS__', 'group_id', 'user_id');
-    }
+	/**
+	 * 获取用户所属所有用户组
+	 * @return \think\model\relation\BelongsToMany
+	 * @author zjs 2018/3/14
+	 */
+	public function groups()
+	{
+		return $this->belongsToMany('group', '__ADMIN_ACCESS__', 'group_id', 'user_id');
+	}
 
-    /**
-     * 列表
-     * @param $keywords
-     * @param $page
-     * @param $limit
-     * @return mixed
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
-     * @throws \think\exception\DbException
-     * @author zjs 2018/3/14
-     */
-	public function getDataList($keywords, $page, $limit){
+	/**
+	 * 列表
+	 * @param $keywords
+	 * @param $page
+	 * @param $limit
+	 * @return mixed
+	 * @throws \think\db\exception\DataNotFoundException
+	 * @throws \think\db\exception\ModelNotFoundException
+	 * @throws \think\exception\DbException
+	 * @author zjs 2018/3/14
+	 */
+	public function getDataList($keywords, $page, $limit)
+	{
 		$where = [];
 		if ($keywords) {
-            $where['username|realname'] = ['like', '%'.$keywords.'%'];
+			$where['username|realname'] = ['like', '%' . $keywords . '%'];
 		}
 		// 默认除去超级管理员
-        $where['user.id'] = array('neq', 1);
+		$where['user.id'] = array('neq', 1);
 		$dataCount = $this->alias('user')->where($where)->count('id');
-		
+
 		$list = $this->where($where)->alias('user')
-                    ->join('__ADMIN_ACCESS__ access','access.user_id=user.id','inner')
-                    ->field('user.*,access.group_id');
+			->join('__ADMIN_ACCESS__ access', 'access.user_id=user.id', 'inner')
+			->field('user.*,access.group_id');
 		// 若有分页
 		if ($page && $limit) {
 			$list = $list->page($page, $limit);
 		}
 		$list = $list->select();
-		foreach($list as $key=>$value){
-            $list[$key]['role_name'] = Group::getGroupData($value['group_id'],'remark');
-            $list[$key]['studio_name'] = Studio::get($value['studio_id'])->name;
-            $list[$key]['tache_name'] = Tache::get_tache_names($value['tache_ids'],'explain',',');
-        }
+		foreach ($list as $key => $value) {
+			$list[$key]['role_name'] = Group::getGroupData($value['group_id'], 'remark');
+			$list[$key]['studio_name'] = Studio::get($value['studio_id'])->name;
+			$list[$key]['tache_name'] = Tache::get_tache_names($value['tache_ids'], 'explain', ',');
+		}
 		$data['list'] = $list;
 		$data['dataCount'] = $dataCount;
 		return $data;
 	}
 
-    /**
-     * 根据主键获取详情
-     * @param string $id
-     * @return bool|static
-     * @throws \think\exception\DbException
-     * @author zjs 2018/3/14
-     */
-	public function getDataById($id = ''){
+	/**
+	 * 根据主键获取详情
+	 * @param string $id
+	 * @return bool|static
+	 * @throws \think\exception\DbException
+	 * @author zjs 2018/3/14
+	 */
+	public function getDataById($id = '')
+	{
 		$data = $this->get($id);
 		if (!$data) {
 			$this->error = '暂无此数据';
@@ -87,49 +92,51 @@ class User extends Common{
 		return $data;
 	}
 
-    /**
-     * 创建用户
-     * @param array $param
-     * @return bool
-     * @throws \think\exception\PDOException
-     * @author zjs 2018/3/14
-     */
-	public function createData($param){
-        // 验证
-        $validate = validate($this->name);
-        if (!$validate->check($param)) {
-            $this->error = $validate->getError();
-            return false;
-        }
-        //开启事务
+	/**
+	 * 创建用户
+	 * @param array $param
+	 * @return bool
+	 * @throws \think\exception\PDOException
+	 * @author zjs 2018/3/14
+	 */
+	public function createData($param)
+	{
+		// 验证
+		$validate = validate($this->name);
+		if (!$validate->check($param)) {
+			$this->error = $validate->getError();
+			return false;
+		}
+		//开启事务
 		$this->startTrans();
 		try {
 			$param['password'] = user_md5($param['password']);
-			$param['tache_ids'] = implode(",",array_unique($param['tache_ids']));
+			$param['tache_ids'] = implode(",", array_unique($param['tache_ids']));
 			$this->data($param)->allowField(true)->save();
-            //将关联项加入用户关联表
-            $userGroup['user_id'] = $this->id;
-            $userGroup['group_id'] = $param['group_id'];
+			//将关联项加入用户关联表
+			$userGroup['user_id'] = $this->id;
+			$userGroup['group_id'] = $param['group_id'];
 			Db::name('admin_access')->insert($userGroup);
 			$this->commit();
 			return true;
-		} catch(\Exception $e) {
+		} catch (\Exception $e) {
 			$this->rollback();
 			$this->error = '添加失败';
 			return false;
 		}
 	}
 
-    /**
-     * 通过id修改用户
-     * @param $param
-     * @param $id
-     * @return bool
-     * @throws \think\exception\DbException
-     * @throws \think\exception\PDOException
-     * @author zjs 2018/3/14
-     */
-	public function updateDataById($param, $id){
+	/**
+	 * 通过id修改用户
+	 * @param $param
+	 * @param $id
+	 * @return bool
+	 * @throws \think\exception\DbException
+	 * @throws \think\exception\PDOException
+	 * @author zjs 2018/3/14
+	 */
+	public function updateDataById($param, $id)
+	{
 		// 不能操作超级管理员
 		if ($id == 1) {
 			$this->error = '非法操作';
@@ -144,297 +151,306 @@ class User extends Common{
 
 		try {
 			$userGroups['group_id'] = $param['group_id'];
-			Db::name('admin_access')->where('user_id',$id)->update($userGroups);
+			Db::name('admin_access')->where('user_id', $id)->update($userGroups);
 
 			if (!empty($param['password'])) {
 				$param['password'] = user_md5($param['password']);
 			}
-            $param['tache_ids'] = implode(",",$param['tache_ids']);
+			$param['tache_ids'] = implode(",", $param['tache_ids']);
 			$this->allowField(true)->save($param, ['id' => $id]);
 			$this->commit();
 			return true;
-		} catch(\Exception $e) {
+		} catch (\Exception $e) {
 			$this->rollback();
 			$this->error = '编辑失败';
 			return false;
 		}
 	}
 
-    /**
-     * 根据用户ID删除记录
-     * @param $id
-     * @return bool
-     * @throws \think\exception\PDOException
-     * @author zjs 2018/3/14
-     */
-	public function delById($id){
-        // 不能操作超级管理员
-        if ($id == 1) {
-            $this->error = '非法操作';
-            return false;
-        }
-        $this->startTrans();
-	    try{
-            $this->where('id',$id)->delete();
-            Db::name('admin_access')->where('user_id',$id)->delete();
-            $this->commit();
-            return true;
-        }catch(\Exception $e){
-            $this->rollback();
-            $this->error= "删除失败";
-            return false;
-        }
-    }
+	/**
+	 * 根据用户ID删除记录
+	 * @param $id
+	 * @return bool
+	 * @throws \think\exception\PDOException
+	 * @author zjs 2018/3/14
+	 */
+	public function delById($id)
+	{
+		// 不能操作超级管理员
+		if ($id == 1) {
+			$this->error = '非法操作';
+			return false;
+		}
+		$this->startTrans();
+		try {
+			$this->where('id', $id)->delete();
+			Db::name('admin_access')->where('user_id', $id)->delete();
+			$this->commit();
+			return true;
+		} catch (\Exception $e) {
+			$this->rollback();
+			$this->error = "删除失败";
+			return false;
+		}
+	}
 
-    /**
-     * 获取用户信息
-     * @param $uid
-     * @return array|false|\PDOStatement|string|\think\Model
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
-     * @throws \think\exception\DbException
-     * @author zjs 2018/3/14
-     */
-	public function getUserById($uid){
+	/**
+	 * 获取用户信息
+	 * @param $uid
+	 * @return array|false|\PDOStatement|string|\think\Model
+	 * @throws \think\db\exception\DataNotFoundException
+	 * @throws \think\db\exception\ModelNotFoundException
+	 * @throws \think\exception\DbException
+	 * @author zjs 2018/3/14
+	 */
+	public function getUserById($uid)
+	{
 		$map = array(
 			'id' => $uid,
 		);
 		return $this->where($map)->find();
 	}
 
-    /**
-     * 根据uid返回用户信息(权限，菜单，用户信息)
-     * @param $uid
-     * @return mixed
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
-     * @throws \think\exception\DbException
-     * @author zjs 2018/3/14
-     */
-	public function getInfo($uid){
+	/**
+	 * 根据uid返回用户信息(权限，菜单，用户信息)
+	 * @param $uid
+	 * @return mixed
+	 * @throws \think\db\exception\DataNotFoundException
+	 * @throws \think\db\exception\ModelNotFoundException
+	 * @throws \think\exception\DbException
+	 * @author zjs 2018/3/14
+	 */
+	public function getInfo($uid)
+	{
 		$map['id'] = $uid;
 		$userInfo = $this->where($map)->find();
 		$dataList = $this->getMenuAndRule($userInfo['id']);
-		$data['userInfo']		= $userInfo;
-        $data['authList']		= $dataList['rulesList'];
-		$data['menusList']		= $dataList['menusList'];
+		$data['userInfo'] = $userInfo;
+		$data['authList'] = $dataList['rulesList'];
+		$data['menusList'] = $dataList['menusList'];
 		return $data;
 	}
 
-    /**
-     * 登录
-     * @param $username
-     * @param $password
-     * @param string $verifyCode
-     * @param bool $isRemember
-     * @param bool $type
-     * @return array|bool
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
-     * @throws \think\exception\DbException
-     * @author zjs 2018/3/14
-     */
-	public function login($username, $password, $verifyCode = '', $isRemember = false, $type = false){
-        if (!$username) {
+	/**
+	 * 登录
+	 * @param $username
+	 * @param $password
+	 * @param string $verifyCode
+	 * @param bool $isRemember
+	 * @param bool $type
+	 * @return array|bool
+	 * @throws \think\db\exception\DataNotFoundException
+	 * @throws \think\db\exception\ModelNotFoundException
+	 * @throws \think\exception\DbException
+	 * @author zjs 2018/3/14
+	 */
+	public function login($username, $password, $verifyCode = '', $isRemember = false, $type = false)
+	{
+		if (!$username) {
 			$this->error = '帐号不能为空';
 			return false;
 		}
-		if (!$password){
+		if (!$password) {
 			$this->error = '密码不能为空';
 			return false;
 		}
-        if (config('IDENTIFYING_CODE') && !$type) {
-            if (!$verifyCode) {
+		if (config('IDENTIFYING_CODE') && !$type) {
+			if (!$verifyCode) {
 				$this->error = '验证码不能为空';
 				return false;
-            }
-            $captcha = new HonrayVerify(config('captcha'));
-            if (!$captcha->check($verifyCode)) {
+			}
+			$captcha = new HonrayVerify(config('captcha'));
+			if (!$captcha->check($verifyCode)) {
 				$this->error = '验证码错误';
 				return false;
-            }
-        }
+			}
+		}
 
 		$map['username'] = $username;
 		$userInfo = $this->where($map)->find();
-    	if (!$userInfo) {
+		if (!$userInfo) {
 			$this->error = '帐号不存在';
 			return false;
-    	}
-    	if (user_md5($password) !== $userInfo['password']) {
+		}
+		if (user_md5($password) !== $userInfo['password']) {
 			$this->error = '密码错误';
 			return false;
-    	}
-    	if ($userInfo['status'] === 0) {
+		}
+		if ($userInfo['status'] === 0) {
 			$this->error = '帐号已被禁用';
 			return false;
-    	}
-        // 获取菜单和权限
-        $dataList = $this->getMenuAndRule($userInfo['id']);
+		}
+		// 获取菜单和权限
+		$dataList = $this->getMenuAndRule($userInfo['id']);
 
-        if (!$dataList['menusList']) {
+		if (!$dataList['menusList']) {
 			$this->error = '没有权限';
 			return false;
-        }
+		}
 
-        if ($isRemember || $type) {
-        	$secret['username'] = $username;
-        	$secret['password'] = $password;
-        	$data['rememberKey'] = encrypt($secret);
-        }
+		if ($isRemember || $type) {
+			$secret['username'] = $username;
+			$secret['password'] = $password;
+			$data['rememberKey'] = encrypt($secret);
+		}
 		$jwt = $this->createJwt($userInfo['id']);
-        $data['userInfo']		= $userInfo;
-        $data['authList']		= $dataList['rulesList'];
-		$data['menusList']		= $dataList['menusList'];
-		$data = array_merge($data,$jwt);
-        return $data;
+		$data['userInfo'] = $userInfo;
+		$data['authList'] = $dataList['rulesList'];
+		$data['menusList'] = $dataList['menusList'];
+		$data = array_merge($data, $jwt);
+		return $data;
 	}
 
-    /**
-     * 通过jwt获取uid
-     * @param $jwt
-     * @return bool|mixed
-     * @author zjs 2018/3/14
-     */
-	public function getUid($jwt){
-        $token = (new Parser())->parse((string)$jwt);
-        $valid = new ValidationData();
-        $signer = new Sha256();
-        if($token->validate($valid) && $token->verify($signer, config('cus_config.secret'))){
+	/**
+	 * 通过jwt获取uid
+	 * @param $jwt
+	 * @return bool|mixed
+	 * @author zjs 2018/3/14
+	 */
+	public function getUid($jwt)
+	{
+		$token = (new Parser())->parse((string)$jwt);
+		$valid = new ValidationData();
+		$signer = new Sha256();
+		if ($token->validate($valid) && $token->verify($signer, config('cus_config.secret'))) {
 			return $token->getClaim('uid');
-		}else{
+		} else {
 			return false;
 		}
 	}
 
-    /**
-     * 生成jwt
-     * @param $uid
-     * @return array
-     * @author zjs 2018/3/14
-     */
-	public function createJwt($uid){
+	/**
+	 * 生成jwt
+	 * @param $uid
+	 * @return array
+	 * @author zjs 2018/3/14
+	 */
+	public function createJwt($uid)
+	{
 		$nbf = time();
 		$expire = time() + config('LOGIN_SESSION_VALID');
 		$signer = new Sha256();
-		$authKey = (new Builder())->setIssuedAt(time()) // Configures the time that the token was issue (iat claim)
-		->setNotBefore($nbf) // Configures the time that the token can be used (nbf claim)
-		->setExpiration($expire) // Configures the expiration time of the token (nbf claim)
-		->set('uid', $uid) // Configures a new claim, called "uid"
-		->sign($signer, config('cus_config.secret')) // creates a signature using "testing" 
+		$authKey = (new Builder())->setIssuedAt(time())// Configures the time that the token was issue (iat claim)
+		->setNotBefore($nbf)// Configures the time that the token can be used (nbf claim)
+		->setExpiration($expire)// Configures the expiration time of the token (nbf claim)
+		->set('uid', $uid)// Configures a new claim, called "uid"
+		->sign($signer, config('cus_config.secret'))// creates a signature using "testing"
 		->getToken(); // Retrieves the generated token
 		$result = array(
 			'authKey' => (string)$authKey,
-			'expire' =>	$expire,
+			'expire' => $expire,
 		);
 		return $result;
 	}
 
-    /**
-     * 修改密码
-     * @param $auth_key
-     * @param $old_pwd
-     * @param $new_pwd
-     * @return bool
-     * @author zjs 2018/3/14
-     */
-    public function setInfo($auth_key, $old_pwd, $new_pwd){
-        $uid = $this->getUid($auth_key);
-        if (!$uid) {
+	/**
+	 * 修改密码
+	 * @param $auth_key
+	 * @param $old_pwd
+	 * @param $new_pwd
+	 * @return bool
+	 * @author zjs 2018/3/14
+	 */
+	public function setInfo($auth_key, $old_pwd, $new_pwd)
+	{
+		$uid = $this->getUid($auth_key);
+		if (!$uid) {
 			$this->error = '请先进行登录';
 			return false;
-        }
-        if (!$old_pwd) {
+		}
+		if (!$old_pwd) {
 			$this->error = '请输入旧密码';
 			return false;
-        }
-        if (!$new_pwd) {
-            $this->error = '请输入新密码';
-			return false; 
-        }
-        if ($new_pwd == $old_pwd) {
-            $this->error = '新旧密码不能一致';
-			return false; 
-        }
-
-        $password = $this->where('id', $uid)->value('password');
-        if (user_md5($old_pwd) != $password) {
-            $this->error = '原密码错误';
-			return false; 
-        }
-        if (user_md5($new_pwd) == $password) {
-            $this->error = '密码没改变';
+		}
+		if (!$new_pwd) {
+			$this->error = '请输入新密码';
 			return false;
-        }
-        if ($this->where('id', $uid)->setField('password', user_md5($new_pwd))) {
-            return $auth_key;//把auth_key传回给前端
-        }
-        
-        $this->error = '修改失败';
+		}
+		if ($new_pwd == $old_pwd) {
+			$this->error = '新旧密码不能一致';
+			return false;
+		}
+
+		$password = $this->where('id', $uid)->value('password');
+		if (user_md5($old_pwd) != $password) {
+			$this->error = '原密码错误';
+			return false;
+		}
+		if (user_md5($new_pwd) == $password) {
+			$this->error = '密码没改变';
+			return false;
+		}
+		if ($this->where('id', $uid)->setField('password', user_md5($new_pwd))) {
+			return $auth_key;//把auth_key传回给前端
+		}
+
+		$this->error = '修改失败';
 		return false;
-    }
+	}
 
-    /**
-     * 获取菜单和权限
-     * @param $u_id
-     * @return null
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
-     * @throws \think\exception\DbException
-     * @author zjs 2018/3/14
-     */
-    protected function getMenuAndRule($u_id){
-    	if ($u_id === 1) {
-            $map['status'] = 1;            
-    		$menusList = Db::name('admin_menu')->where($map)->order('sort asc')->select();
-    	} else {
-    		$groups = $this->get($u_id)->groups;
-            $ruleIds = [];
-    		foreach($groups as $k => $v) {
-    			$ruleIds = array_unique(array_merge($ruleIds, explode(',', $v['rules'])));
-    		}
+	/**
+	 * 获取菜单和权限
+	 * @param $u_id
+	 * @return null
+	 * @throws \think\db\exception\DataNotFoundException
+	 * @throws \think\db\exception\ModelNotFoundException
+	 * @throws \think\exception\DbException
+	 * @author zjs 2018/3/14
+	 */
+	protected function getMenuAndRule($u_id)
+	{
+		if ($u_id === 1) {
+			$map['status'] = 1;
+			$menusList = Db::name('admin_menu')->where($map)->order('sort asc')->select();
+		} else {
+			$groups = $this->get($u_id)->groups;
+			$ruleIds = [];
+			foreach ($groups as $k => $v) {
+				$ruleIds = array_unique(array_merge($ruleIds, explode(',', $v['rules'])));
+			}
 
-            $ruleMap['id'] = array('in', $ruleIds);
-            $ruleMap['status'] = 1;
-            // 重新设置ruleIds，除去部分已删除或禁用的权限。
-            $rules =Db::name('admin_rule')->where($ruleMap)->select();
-            foreach ($rules as $k => $v) {
-            	$ruleIds[] = $v['id'];
-            	$rules[$k]['name'] = strtolower($v['name']);
-            }
-            empty($ruleIds)&&$ruleIds = '';
-    		$menuMap['status'] = 1;
-            $menuMap['rule_id'] = array('in',$ruleIds);
-            $menusList = Db::name('admin_menu')->where($menuMap)->order('sort asc')->select();
-        }
-        if (!$menusList) {
-            return null;
-        }
-        //处理菜单成树状
-        $tree = new \com\Tree();
-        $ret['menusList'] = $tree->list_to_tree($menusList, 'id', 'pid', 'child', 0, true, array('pid'));
-        $ret['menusList'] = memuLevelClear($ret['menusList']);
-        // 处理规则成树状
-        $ret['rulesList'] = $tree->list_to_tree($rules, 'id', 'pid', 'child', 0, true, array('pid'));
-        $ret['rulesList'] = rulesDeal($ret['rulesList']);
+			$ruleMap['id'] = array('in', $ruleIds);
+			$ruleMap['status'] = 1;
+			// 重新设置ruleIds，除去部分已删除或禁用的权限。
+			$rules = Db::name('admin_rule')->where($ruleMap)->select();
+			foreach ($rules as $k => $v) {
+				$ruleIds[] = $v['id'];
+				$rules[$k]['name'] = strtolower($v['name']);
+			}
+			empty($ruleIds) && $ruleIds = '';
+			$menuMap['status'] = 1;
+			$menuMap['rule_id'] = array('in', $ruleIds);
+			$menusList = Db::name('admin_menu')->where($menuMap)->order('sort asc')->select();
+		}
+		if (!$menusList) {
+			return null;
+		}
+		//处理菜单成树状
+		$tree = new \com\Tree();
+		$ret['menusList'] = $tree->list_to_tree($menusList, 'id', 'pid', 'child', 0, true, array('pid'));
+		$ret['menusList'] = memuLevelClear($ret['menusList']);
+		// 处理规则成树状
+		$ret['rulesList'] = $tree->list_to_tree($rules, 'id', 'pid', 'child', 0, true, array('pid'));
+		$ret['rulesList'] = rulesDeal($ret['rulesList']);
 
-        return $ret;
-    }
+		return $ret;
+	}
 
-    /**
-     * 根据多个ID获取值内容
-     * @param $ids
-     * @param $value
-     * @param $tag
-     * @return string
-     * @author zjs 2018/3/16
-     */
-    public static function getName_ById($ids,$value,$tag){
-        $ids_arr = explode(",",$ids);
-        foreach($ids_arr as $key=>$val){
-            $res[] = self::where('id',$val)->value($value);
-        }
-        $data = implode($tag,$res);
-        return $data;
-    }
+	/**
+	 * 根据多个ID获取值内容
+	 * @param $ids
+	 * @param $value
+	 * @param $tag
+	 * @return string
+	 * @author zjs 2018/3/16
+	 */
+	public static function getName_ById($ids, $value, $tag)
+	{
+		$ids_arr = explode(",", $ids);
+		foreach ($ids_arr as $key => $val) {
+			$res[] = self::where('id', $val)->value($value);
+		}
+		$data = implode($tag, $res);
+		return $data;
+	}
 }
