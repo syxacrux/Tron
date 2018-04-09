@@ -69,7 +69,7 @@
               <div class="grid-content">
                 <h2 class="m-0">制作中</h2>
                 <ul class="p-l-0 m-0">
-                  <li v-for="item in inProductionList" :key="item.id" @click="shotDetail(item)">
+                  <li v-for="item in inProductionList" :key="item.id" @click="shotDetail(item.id)">
                     <el-card>
                       <div>
                         <div class="text-Lens pos-rel">
@@ -142,7 +142,7 @@
               <div class="grid-content bg-purple-light">
                 <h2 class="m-0">反馈中</h2>
                 <ul class="p-l-0 m-0">
-                  <li v-for="item in feedbackList" :key="item.id" @click="show2 = !show2">
+                  <li v-for="item in feedbackList" :key="item.id" @click="shotDetail(item.id)">
                     <el-card class="">
                       <div class="">
                         <div class="text-Lens pos-rel">
@@ -217,7 +217,7 @@
           <div class="shot_card ovf-hd">
             <div class="grid-content bg-purple">
               <h2 class="m-0">等待资产</h2>
-              <el-col :span="12" v-for="item in waitingList" :key="item.id">
+              <el-col :span="12" v-for="item in waitingList" :key="item.id" @click="shotDetail(item.id)">
                 <div class="grid-content bg-purple p-b-5">
                   <el-card class="">
                     <div class="">
@@ -288,7 +288,7 @@
           </div>
         </el-tab-pane>
         <el-tab-pane label="镜头暂停" name="shotsSuspend">
-          <el-col :span="12" v-for="item in pauseList" :key="item.id">
+          <el-col :span="12" v-for="item in pauseList" :key="item.id" @click="shotDetail(item.id)">
             <div class="grid-content p-b-5">
               <el-card>
                 <div class="text-Lens pos-rel">
@@ -354,7 +354,7 @@
           </div>
         </el-tab-pane>
         <el-tab-pane label="镜头完成" name="shotsFinish">
-          <el-col :span="12" v-for="item in finishList" :key="item.id">
+          <el-col :span="12" v-for="item in finishList" :key="item.id" @click="shotDetail(item.id)">
             <div class="grid-content p-b-5">
               <el-card>
                 <div class="text-Lens pos-rel">
@@ -581,11 +581,13 @@
         this.$refs.editShots.open()
       },
 //      点击镜头显示镜头详情
-      shotDetail(data) {
-        console.log(data.id)
-//        console.log(id)
-        this.id = data.id
-        this.apiGet('admin/shots/' + data.id).then((res) => {
+      shotDetail(id) {
+//        判断镜头详情传入值是否为数字
+        if(!/^[0-9]*$/.test(id)){
+          id = id.id
+        }
+        this.id = id
+        this.apiGet('admin/shots/' + id).then((res) => {
           this.handelResponse(res, (data) => {
             this.editShotDetail = data
           })

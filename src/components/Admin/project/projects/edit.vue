@@ -395,6 +395,7 @@
           _g.toastMsg('warning', '请选择内部协调制片')
           return
         }
+        this.form.project_image = this.form.project_image.slice(this.form.project_image.indexOf('uploads'))
         this.form.handle_frame = this.form.handle_frame.handle_frame1 + ',' + this.form.handle_frame.handle_frame2
         this.form.movies_type = parseInt(this.form.movies_type) ? parseInt(this.form.movies_type) : ''
         this.form.resolutic = parseInt(this.form.resolutic) ? parseInt(this.form.resolutic) : ''
