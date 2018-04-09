@@ -32,9 +32,9 @@
             <el-form-item label="制作人:" prop="field_id">
               <el-select v-model="field_id" multiple placeholder="请选择制作人">
                 <el-option v-for="item in options"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
+                  :key="item.id"
+                  :label="item.real_name"
+                  :value="item.id">
                 </el-option>
               </el-select>
             </el-form-item>
@@ -54,8 +54,8 @@
         </el-col>
          <el-col :span="8">
           <div class="grid-content">
-            <el-form-item label="难度:" prop="difficulty_name">
-              <el-select v-model="form.difficulty_name" placeholder="请选择难度" class="h-40 w-200">
+            <el-form-item label="难度:" prop="difficulty">
+              <el-select v-model="form.difficulty" placeholder="请选择难度" class="h-40 w-200">
                 <el-option label="D" value="1"></el-option>
                 <el-option label="C" value="2"></el-option>
                 <el-option label="B" value="3"></el-option>
@@ -108,19 +108,10 @@ export default {
         image:'',
         id:0,
         field_id:[],
-        options:[{
-          value: '1',
-          label: '赵九四1'
-        },{
-          value: '2',
-          label: '赵九四2'
-        },{
-          value: '3',
-          label: '赵九四3'
-        }],
+        options:[],
         form: {
           group_id:null,//角色ID
-          user_id:null,//所属用户
+          user_id:'',//制作人
           project_id:2,//所属项目ID
           field_id:3,//	场号/集号ID
           shot_id:null,//镜头ID 根据任务类型存值
@@ -186,10 +177,14 @@ export default {
         this.form.plan_end_timestamp = _g.j2time(this.plan_time[1])
         this.form.difficulty = this.form.difficulty ? parseInt(this.form.difficulty) : 1
         this.form.task_priority_level = this.form.task_priority_level ? parseInt(this.form.task_priority_level) : 1
+        // console.log(this.field_id)
+        this.form.user_id = this.field_id.join(',')
+        console.log(this.user_id)
         this.$refs[form].validate((valid) => {
           if (valid) {
           this.isLoading = !this.isLoading
-          this.apiPut('admin/workbenches/', this.id, this.form).then((res) => {
+          console.log(this.form)
+          this.apiPut('admin/workbenches/', this.id, this.form ).then((res) => {
             this.handelResponse(res, (data) => {
             _g.toastMsg('success', '编辑成功')
             setTimeout(() => {
@@ -207,10 +202,18 @@ export default {
   props: ['message'],
   watch: {
     message: function(data, o) {
+        this.apiGet(`task/get_user?task_id=${data.id}`).then((res) => {
+          this.handelResponse(res, (data) => {
+            this.options = data.list
+            console.log(data.list)
+          })
+        })
         this.id = data.id
         this.form=data
         this.form.task_image = this.image = window.baseUrl + '/' + data.task_image
         this.form.task_priority_level = data.task_priority_level.toString()
+        this.form.difficulty = data.difficulty.toString()
+        console.log(data.difficulty.toString())
         this.plan_time = [new Date(data.plan_start_timestamp * 1000), new Date(data.plan_end_timestamp * 1000)]
     }
   }
