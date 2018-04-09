@@ -27,7 +27,7 @@ class ApiCommon extends BaseCommon
         }
         $authAdapter = new AuthAdapter($userInfo['id']);
         $request = Request::instance();
-        $ruleName = $request->module().'-'.$request->controller() .'-'.$request->action(); 
+        $ruleName = $request->module().'-'.$request->controller() .'-'.$request->action();
         if (!$authAdapter->checkLogin($ruleName, $userInfo['id'])) {
             header('Content-Type:application/json; charset=utf-8');
             exit(json_encode(['code'=>102,'error'=>'没有权限']));
