@@ -374,6 +374,7 @@ class Workbench extends Common
 
 	//根据主键编辑任务 并分配制作人
 	public function updateData_ById($data,$id){
+		file_put_contents('aa.txt',var_export($data,true));
 		$task_obj = $this->get($id);
 		if(empty($task_obj)){
 			$this->error = '暂无此数据';
@@ -397,7 +398,7 @@ class Workbench extends Common
 					$task_data['tache_sort'] = $task_obj->tache_sort;
 					$task_data['studio_id'] = $task_obj->studio_id;
 					$task_data['task_type'] = $task_obj->task_type;
-					$task_data['task_image'] = str_replace('\\', '/',$data['task_image']);
+					$task_data['task_image'] = $data['task_image'];
 					$task_data['task_byname'] = !empty($data['task_byname']) ? $data['task_byname'] : '';
 					$task_data['make_demand'] = !empty($data['make_demand']) ? $data['make_demand'] : '';
 					$task_data['task_priority_level'] = $data['task_priority_level'];
@@ -426,7 +427,7 @@ class Workbench extends Common
 				$this->commit();
 				return true;
 			}else{	//更新
-				$task_data['task_image'] = str_replace('\\', '/',$data['task_image']);
+				$task_data['task_image'] = $data['task_image'];
 				$task_data['task_priority_level'] = $data['task_priority_level'];
 				$task_data['difficulty'] = $data['difficulty'];
 				$task_data['plan_start_timestamp'] = strtotime($data['plan_start_time']);
