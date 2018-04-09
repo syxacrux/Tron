@@ -182,7 +182,6 @@ export default {
         this.form.difficulty = this.form.difficulty ? parseInt(this.form.difficulty) : 1
         this.form.task_priority_level = this.form.task_priority_level ? parseInt(this.form.task_priority_level) : 1
         this.form.user_id = this.field_id.join(',')
-        console.log(this.user_id)
         this.$refs[form].validate((valid) => {
           if (valid) {
           this.isLoading = !this.isLoading
@@ -192,6 +191,7 @@ export default {
             _g.toastMsg('success', '编辑成功')
             setTimeout(() => {
               // this.goback()
+               this.dialogFormVisible = false
             }, 1500)
             }, () => {
             this.isLoading = !this.isLoading
@@ -216,9 +216,8 @@ export default {
         this.form.task_image = this.image = window.baseUrl + '/' + data.task_image
         this.form.task_priority_level = data.task_priority_level.toString()
         this.form.difficulty = data.difficulty.toString()
-        console.log(data.difficulty.toString())
         this.plan_time = [new Date(data.plan_start_timestamp * 1000), new Date(data.plan_end_timestamp * 1000)]
-
+        
     }
   }
 }
@@ -258,6 +257,42 @@ export default {
     height: 178px;
     line-height: 178px;
     text-align: center;
+  }
+
+
+    .avatar-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .avatar-uploader .el-upload:hover {
+    border-color: #409EFF;
+  }
+
+  .el-upload {
+    width: 300px;
+  }
+
+  .shot_edit .el-tag__close{
+    display: none;
+  }
+
+  .avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 178px;
+    height: 178px;
+    line-height: 178px;
+    text-align: center;
+  }
+
+  .avatar {
+    display: block;
+    width: 100% !important;
+    height: 100% !important;
   }
 </style>
 

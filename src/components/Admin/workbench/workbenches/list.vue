@@ -340,12 +340,12 @@
             <div slot="header" class="clearfix">
               <span>任务详情</span>
               <i class="el-icon-edit m-l-5 fz-14 c-light-gray pointer" @click="editWorkbench"></i>
-                <i class="el-icon-delete m-l-5 fz-14 c-light-gray pointer"></i>
+                <i class="el-icon-delete m-l-5 fz-14 c-light-gray pointer" @click="deleteTask(finishList.id)"></i>
                 <i class="el-icon-close fr pointer" @click="task2 = !task2"></i>
             </div>
             <el-row :gutter="20" class="m-b-5">
               <el-col :span="12">
-                <p class="m-0">镜头简称：<span>{{ finishList.shot_byname }}</span></p>
+                <p class="m-0">镜头简称：<span>{{ finishList.shot_byname }},{{finishList.id}}</span></p>
               </el-col>
               <el-col :span="12">
                 <p class="m-0">镜头缩略图：<img :src="finishList.shot_image" alt=""></p>
@@ -531,6 +531,26 @@
       editWorkbench() {
         this.$refs.editWorkbenches.open()
 
+      },
+      //      删除任务
+      deleteTask(id) {
+        this.$confirm('确认删除该镜头?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          _g.openGlobalLoading()
+          this.apiDelete('admin/workbenches/',id).then((res) => {
+            _g.closeGlobalLoading()
+            this.handelResponse(res, (data) => {
+              _g.toastMsg('success', '删除成功')
+              this.init(this.activeName)
+              this.task2 = false
+            })
+          })
+        }).catch(() => {
+          // catch error
+        })
       },
       updateBlock(id, status) {
         // console.log(arguments)
