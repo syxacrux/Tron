@@ -34,12 +34,12 @@
           <el-table-column prop="shot_number" label="镜头号"></el-table-column>
           <el-table-column prop="difficulty" label="难度"></el-table-column>
           <el-table-column prop="priority_level" label="优先级"></el-table-column>
-          <el-table-column prop="tache" label="进度" width="200">
+          <el-table-column prop="tache" label="进度">
             <template slot-scope="scope">
               <el-tag v-for="value in scope.row.tache_info"
                       v-if="value.finish_degree!==''?true:false" :key="value.id"
                       :type="value.finish_degree<100?'warning':'success'">
-                {{ value.tache_byname }}：{{ value.finish_degree }}%
+                {{ value.tache_byname }}:{{ value.finish_degree }}%
               </el-tag>
             </template>
           </el-table-column>
@@ -49,14 +49,18 @@
           <el-table-column prop="actual_end_timestamp" label="实际结束"></el-table-column>
           <!--<el-table-column prop="make_demand" label="备注"></el-table-column>-->
         </el-table>
-        <!--<btnGroup :selectedData="multipleSelection" :type="'studios'"></btnGroup>-->
-        <el-pagination
-            @current-change="listCurrentChange"
-            layout="prev, pager, next"
-            :page-size="limit"
-            :current-page="listCurrentPage"
-            :total="listDataCount">
-        </el-pagination>
+        <div class="pos-rel p-t-20">
+          <!--<btnGroup :selectedData="multipleSelection" :type="'studios'"></btnGroup>-->
+          <div class="block tx-r">
+            <el-pagination
+                @current-change="listCurrentChange"
+                layout="total, prev, pager, next"
+                :page-size="limit"
+                :current-page="listCurrentPage"
+                :total="listDataCount">
+            </el-pagination>
+          </div>
+        </div>
       </div>
       <el-tabs v-if="!isList" v-model="activeName" @tab-click="tabClick" class="fl">
         <el-tab-pane label="镜头制作中" name="shotsInDevelopment">
@@ -121,13 +125,17 @@
                     </el-card>
                   </li>
                 </ul>
-                <el-pagination
-                    @current-change="inProductionCurrentChange"
-                    :current-page.sync="currentPage"
-                    :page-size="10"
-                    layout="prev, pager, next, jumper"
-                  :total="inProductionDataCount">
-                </el-pagination>
+                <div class="pos-rel p-t-20" v-if="inProductionList.length">
+                  <div class="block tx-r">
+                    <el-pagination
+                        @current-change="inProductionCurrentChange"
+                        :current-page.sync="currentPage"
+                        :page-size="10"
+                        layout="prev, pager, next, jumper"
+                        :total="inProductionDataCount">
+                    </el-pagination>
+                  </div>
+                </div>
               </div>
             </el-col>
             <el-col :span="12">
@@ -190,13 +198,17 @@
                     </el-card>
                   </li>
                 </ul>
-                <el-pagination
-                    @current-change="feedbackCurrentChange"
-                    :current-page.sync="currentPage"
-                    :page-size="10"
-                    layout="prev, pager, next, jumper"
-                    :total="feedbackDataCount">
-                </el-pagination>
+                <div class="pos-rel p-t-20" v-if="feedbackList.length">
+                  <div class="block tx-r">
+                    <el-pagination
+                        @current-change="feedbackCurrentChange"
+                        :current-page.sync="currentPage"
+                        :page-size="10"
+                        layout="prev, pager, next, jumper"
+                        :total="feedbackDataCount">
+                    </el-pagination>
+                  </div>
+                </div>
               </div>
             </el-col>
           </div>
@@ -261,13 +273,17 @@
                   </el-card>
                 </div>
               </el-col>
-              <el-pagination
-                  @current-change="waitingCurrentChange"
-                  :current-page.sync="currentPage"
-                  :page-size="10"
-                  layout="prev, pager, next, jumper"
-                  :total="waitingDataCount">
-              </el-pagination>
+              <div class="pos-rel p-t-20" v-if="waitingList.length">
+                <div class="block tx-r">
+                  <el-pagination
+                      @current-change="waitingCurrentChange"
+                      :current-page.sync="currentPage"
+                      :page-size="10"
+                      layout="prev, pager, next, jumper"
+                      :total="waitingDataCount">
+                  </el-pagination>
+                </div>
+              </div>
             </div>
           </div>
         </el-tab-pane>
@@ -325,13 +341,17 @@
               </el-card>
             </div>
           </el-col>
-          <el-pagination
-              @current-change="pauseCurrentChange"
-              :current-page.sync="currentPage"
-              :page-size="10"
-              layout="prev, pager, next, jumper"
-              :total="pauseDataCount">
-          </el-pagination>
+          <div class="pos-rel p-t-20" v-if="pauseList.length">
+            <div class="block tx-r">
+              <el-pagination
+                  @current-change="pauseCurrentChange"
+                  :current-page.sync="currentPage"
+                  :page-size="10"
+                  layout="prev, pager, next, jumper"
+                  :total="pauseDataCount">
+              </el-pagination>
+            </div>
+          </div>
         </el-tab-pane>
         <el-tab-pane label="镜头完成" name="shotsFinish">
           <el-col :span="12" v-for="item in finishList" :key="item.id">
@@ -387,13 +407,17 @@
               </el-card>
             </div>
           </el-col>
-          <el-pagination
-              @current-change="finishCurrentChange"
-              :current-page.sync="currentPage"
-              :page-size="10"
-              layout="prev, pager, next, jumper"
-              :total="finishDataCount">
-          </el-pagination>
+          <div class="pos-rel p-t-20" v-if="finishList.length">
+            <div class="block tx-r">
+              <el-pagination
+                  @current-change="finishCurrentChange"
+                  :current-page.sync="currentPage"
+                  :page-size="10"
+                  layout="prev, pager, next, jumper"
+                  :total="finishDataCount">
+              </el-pagination>
+            </div>
+          </div>
         </el-tab-pane>
       </el-tabs>
       <transition name="el-zoom-in-top">
@@ -407,10 +431,15 @@
             </div>
             <el-row :gutter="20" class="m-b-5">
               <el-col :span="12">
+                <p class="m-0">镜头缩略图：<img :src="address + editShotDetail.shot_image" alt="" class="vtcal-mid h-40"></p>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20" class="m-b-5">
+              <el-col :span="12">
                 <p class="m-0">镜头简称：<span>{{ editShotDetail.shot_byname }}</span></p>
               </el-col>
               <el-col :span="12">
-                <p class="m-0">镜头缩略图：<img :src="editShotDetail.shot_image" alt=""></p>
+                <p class="m-0">所属项目：<span>{{ editShotDetail.project_name }}</span></p>
               </el-col>
             </el-row>
             <el-row :gutter="20" class="m-b-5">
@@ -422,16 +451,18 @@
               </el-col>
             </el-row>
             <el-row :gutter="20" class="m-b-5">
-              <el-col :span="12">
-                <p class="m-0">所属项目：<span>{{ editShotDetail.project_name }}</span></p>
+              <el-col :span="24">
+                <p class="m-0">计划开始时间：<span>{{ j2time(editShotDetail.plan_start_timestamp) }}</span></p>
               </el-col>
-              <el-col :span="12">
-                <p class="m-0">计划起止时间：<span>001</span></p>
+            </el-row>
+            <el-row :gutter="20" class="m-b-5">
+              <el-col :span="24">
+                <p class="m-0">计划结束时间：<span>{{ j2time(editShotDetail.plan_end_timestamp) }}</span></p>
               </el-col>
             </el-row>
             <el-row :gutter="20" class="m-b-5">
               <el-col :span="12">
-                <p class="m-0">资产：<span>001</span></p>
+                <p class="m-0">资产：<span>没写</span></p>
               </el-col>
               <el-col :span="12">
                 <p class="m-0">场号/集号：<span>{{ editShotDetail.field_name }}</span></p>
@@ -828,6 +859,7 @@
 
   .shot_list_detail .el-tag {
     padding: 0 8px;
+    margin-bottom: 2px;
   }
 
   .shot_list_detail .shot_detail {

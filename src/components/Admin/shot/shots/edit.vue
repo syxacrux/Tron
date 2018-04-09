@@ -661,6 +661,8 @@
 //        this.form.is_parse = parseInt(this.form.is_parse)
         this.form.plan_start_timestamp = _g.j2time(this.plan_time[0])
         this.form.plan_end_timestamp = _g.j2time(this.plan_time[1])
+        console.log(this.form.plan_start_timestamp)
+        console.log(this.form.plan_end_timestamp)
 
 //        选填项
         this.form.asset_ids = this.form.asset_ids.join('')
@@ -744,7 +746,7 @@
         this.form.shot_number = data.shot_number
         this.form.shot_byname = data.shot_byname
         this.form.shot_name = data.shot_name
-        this.form.shot_image = this.image = window.baseUrl + '/' + data.shot_image
+        this.form.shot_image = this.image = window.baseUrl + '' + data.shot_image
         this.plan_time = [new Date(data.plan_start_timestamp * 1000), new Date(data.plan_end_timestamp * 1000)]
         this.form.time = data.time.toString()
         this.form.ambient = data.ambient.toString()
