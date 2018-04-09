@@ -192,9 +192,8 @@ class Workbench extends Common
 		if(!empty($keywords['shot_id'])){
 			$where['id'] = $keywords['shot_id'];
 		}
-		$project_where['producer|scene_producer|scene_director|visual_effects_boss|visual_effects_producer|inside_coordinate'] = ['like', '%' . $uid . '%'];
-		$project_ids_arr = Project::where($project_where)->column('id');
-
+		//获取当前人的最小环节ID
+		$min_tache_id = min(explode(',',User::get($uid)->tache_ids));
 
 	}
 
@@ -219,7 +218,14 @@ class Workbench extends Common
 		}
 		$list = $list->select();
 		foreach ($list as $key => $value) {
-			$list[$key]['create_time'] = date("Y-m-d H:i:s", $value['create_time']);
+			$list_data[$key]['project_name'] = Project::get($value['project_id'])->project_byname;
+			$list_data[$key]['shot_number'] = Db::name('field')->where('id', $value['field_id'])->value('name') . Shot::get($value['shot_id'])->shot_number;
+			$list_data[$key]['task_priority_level'] = $this->task_priority_level_arr[$value['task_priority_level']];    //任务优先级
+			$list_data[$key]['difficulty'] = $this->difficulty_arr[$value['difficulty']];   //任务难度
+			$list_data[$key]['surplus_days'] = floatval(sprintf("%.2f", ($value['plan_end_timestamp'] - time()) / 86400)) . "天";   //剩余天数
+			$list_data[$key]['task_allot_days'] = (!empty($value['actually_start_timestamp']) || !empty($value['actually_end_timestamp'])) ? floatval(sprintf("%.2f", ($value['actually_end_timestamp'] - $value['actually_start_timestamp']) / 86400)) . "天" : '0天';//任务分配时间
+			$list_data[$key]['create_timestamp'] = $value['create_time'];
+			$list_data[$key]['create_time'] = date("Y-m-d H:i:s", $value['create_time']);
 		}
 		$data['list'] = $list;
 		$data['dataCount'] = $dataCount;
