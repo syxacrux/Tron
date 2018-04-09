@@ -343,22 +343,167 @@
                 <i class="el-icon-delete m-l-5 fz-14 c-light-gray pointer"></i>
                 <i class="el-icon-close fr pointer" @click="task2 = !task2"></i>
             </div>
-            <div class="text item">
-              <!-- {{'我是任务详情' + o }} -->
-              <p>项目名：{{finishList.project_name}}</p>
-              <p>项目简称：{{finishList.project_byname}}</p>
-              <p>场号：{{finishList.field_number}}</p>
-              <p>镜头名：{{finishList.shot_name}}</p>
-              <p>镜头简称：{{finishList.shot_byname}}</p>
-              <p>镜头号：{{finishList.shot_number}}</p>
-              <p>优先级：{{finishList.task_priority_level_name}}</p>
-              <p>难度：{{finishList.difficulty_name}}</p>
-              <p>制作人：{{finishList.make_demand}}</p>
+            <!-- <div class="text item">
+              <el-row :gutter="20" class="m-b-5">
+                <el-col :span="12">
+                  <p class="m-0">项目名：<span>{{finishList.project_name}}</span></p>
+                </el-col>
+                <el-col :span="12">
+                  <p class="m-0">项目简称：<span>{{finishList.project_byname}}</span></p>
+                </el-col>
+              </el-row>
+              <el-row :gutter="20" class="m-b-5">
+                <el-col :span="12">
+                  <p class="m-0">镜头简称：<span>{{ finishList.shot_byname }}</span></p>
+                </el-col>
+                <el-col :span="12">
+                  <p class="m-0">镜头缩略图：<img :src="finishList.shot_image" alt=""></p>
+                </el-col>
+              </el-row>
+              <el-row :gutter="20" class="m-b-5">
+                <el-col :span="12">
+                  <p class="m-0">场号：<span>{{finishList.field_number}}</span></p>
+                </el-col>
+                <el-col :span="12">
+                  <p class="m-0">镜头名：<span>{{finishList.shot_name}}</span></p>
+                </el-col>
+              </el-row>
+              <el-row :gutter="20" class="m-b-5">
+                <el-col :span="12">
+                  <p class="m-0">镜头号：<span>{{finishList.field_number}}</span></p>
+                </el-col>
+                <el-col :span="12">
+                  <p class="m-0">优先级：<span>{{finishList.task_priority_level_name}}</span></p>
+                </el-col>
+              </el-row>
+              <el-row :gutter="20" class="m-b-5">
+                <el-col :span="12">
+                  <p class="m-0">难度：<span>{{finishList.difficulty_name}}</span></p>
+                </el-col>
+                <el-col :span="12">
+                  <p class="m-0">制作人：<span>{{finishList.make_demand}}</span></p>
+                </el-col>
+              </el-row>
+              <el-row :gutter="20" class="m-b-5">
+                <el-col :span="12">
+                  <p class="m-0">时刻：<span>{{finishList.difficulty_name}}</span></p>
+                </el-col>
+                <el-col :span="12">
+                  <p class="m-0">计划结束时间：<span>{{finishList.make_demand}}</span></p>
+                </el-col>
+              </el-row>
+              <el-row :gutter="20" class="m-b-5">
+                <el-col :span="12">
+                  <p class="m-0">计划开始时间：<span>{{finishList.difficulty_name}}</span></p>
+                </el-col>
+                <el-col :span="12">
+                  <p class="m-0">计划结束时间：<span>{{finishList.make_demand}}</span></p>
+                </el-col>
+              </el-row>
               <p>计划开始时间：{{finishList.plan_start_timestamp}}</p>
               <p>计划结束时间：{{finishList.plan_end_timestamp}}</p>
               <p>实际开始时间：{{finishList.actually_start_timestamp}}</p>
               <p>实际结束时间：{{finishList.actually_end_timestamp}}</p>
-            </div>
+            </div> -->
+            <el-row :gutter="20" class="m-b-5">
+              <el-col :span="12">
+                <p class="m-0">镜头简称：<span>{{ finishList.shot_byname }}</span></p>
+              </el-col>
+              <el-col :span="12">
+                <p class="m-0">镜头缩略图：<img :src="finishList.shot_image" alt=""></p>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20" class="m-b-5">
+              <el-col :span="12">
+                <p class="m-0">镜头编号：<span>{{ finishList.shot_number }}</span></p>
+              </el-col>
+              <el-col :span="12">
+                <p class="m-0">镜头名称：<span>{{ finishList.shot_name }}</span></p>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20" class="m-b-5">
+              <el-col :span="12">
+                <p class="m-0">所属项目：<span>{{ finishList.project_name }}</span></p>
+              </el-col>
+              <el-col :span="12">
+                <p class="m-0">计划起止时间：<span>001</span></p>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20" class="m-b-5">
+              <el-col :span="12">
+                <p class="m-0">资产：<span>001</span></p>
+              </el-col>
+              <el-col :span="12">
+                <p class="m-0">场号/集号：<span>{{ finishList.field_name }}</span></p>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20" class="m-b-5">
+              <el-col :span="12">
+                <p class="m-0">镜头优先级：<span>{{ finishList.priority_level_name }}</span></p>
+              </el-col>
+              <el-col :span="12">
+                <p class="m-0">镜头难度：<span>{{ finishList.difficulty_name }}</span></p>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20" class="m-b-5">
+              <el-col :span="12">
+                <p class="m-0">时刻：<span>{{ finishList.time_name }}</span></p>
+              </el-col>
+              <el-col :span="12">
+                <p class="m-0">环境：<span>{{ finishList.ambient_name }}</span></p>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20" class="m-b-5">
+              <el-col :span="24">
+                <p class="m-0">
+                  环节制作人：
+                  <!-- <span class="tache_studio dp-b" v-for="(item, index) in finishList.tache_info" :key="index">
+                    <i class="el-icon-close m-l-5 c-light-gray pointer" v-if="deleteShowTache" @click="deleteTache(index)" ></i>
+                    <span>{{ index }}：</span>
+                    <el-tag size="mini" v-for="studio in item" :closable="deleteShowTacheStudio" type="info" @close="deleteTacheStudio(index, studio)" :key="studio.id">
+                      {{ studio.name }}
+                    </el-tag>
+                  </span> -->
+                </p>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20" class="m-b-5">
+              <el-col :span="12">
+                <p class="m-0">帧长范围：<span>{{ finishList.frame_range }}</span></p>
+              </el-col>
+              <el-col :span="12">
+                <p class="m-0">手柄帧：<span>{{ finishList.handle_frame }}</span></p>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20" class="m-b-5">
+              <el-col :span="12">
+                <p class="m-0">剪辑帧长：<span>{{ finishList.clip_frame_length }}</span></p>
+              </el-col>
+              <el-col :span="12">
+                <p class="m-0">素材帧长：<span>{{ finishList.material_frame_length }}</span></p>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20" class="m-b-5">
+              <el-col :span="12">
+                <p class="m-0">素材号：<span>{{ finishList.material_number }}</span></p>
+              </el-col>
+              <el-col :span="12">
+                <p class="m-0">二级公司：<span>{{ finishList.second_company }}</span></p>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20" class="m-b-5">
+              <el-col :span="12">
+                <p class="m-0">镜头备注：<span>{{ finishList.shot_explain }}</span></p>
+              </el-col>
+              <el-col :span="12">
+                <p class="m-0">变速信息：<span>{{ finishList.charge_speed_info }}</span></p>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20" class="m-b-5">
+              <el-col :span="24">
+                <p class="m-0">制作要求：<span>{{ finishList.make_demand }}</span></p>
+              </el-col>
+            </el-row>
           </el-card>
         </div>
       </transition>
@@ -565,6 +710,15 @@
             console.log(data)
           })
         })
+        const data = {
+          task_id:id
+        }
+        this.apiGet(`task/get_user?task_id=${id}`,data).then((res) => {
+          this.handelResponse(res, (data) => {
+            this.finishList = data
+            console.log(data)
+          })
+        })
         if (this.task2) {
 
         } else {
@@ -748,5 +902,9 @@
   }
   .workbench_list .task-block{
     text-align: right;
+  }
+  .workbench_list .task_detail p{
+    font-size: .8rem;
+    color: #666;
   }
 </style>

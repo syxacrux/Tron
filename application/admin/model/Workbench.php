@@ -432,12 +432,12 @@ class Workbench extends Common
 
 	//根据所属任务ID弹出已存在的制作人列表
 	public function getUser_byTask($task_id,$uid){
-		$tache_ids_arr = explode(',',User::get($uid)->tache_id);
+		$tache_ids_arr = explode(',',User::get($uid)->tache_ids);
 		if(($uid != 1) || ($task_id != '')){
 			foreach($tache_ids_arr as $key=>$value){
-				$user_ids_arr[] = User::where('tache_id','like','%'.$value.'%')->column('id');
+				$user_ids_arr[] = User::where('tache_ids','like','%'.$value.'%')->column('id');
 			}
-			$user_arr_byTache = array_unique($user_ids_arr);
+			$user_arr_byTache = array_unique($user_ids_arr)[0];
 			//获取所属任务的制作人 用户ID
 			$curr_task_userId_arr = $this->where('pid',$task_id)->column('user_id');
 			foreach($user_arr_byTache as $key=>$value){
@@ -445,7 +445,7 @@ class Workbench extends Common
 					if($v == $value) unset($user_arr_byTache[$key]);
 				}
 			}
-			$user_data = array_values($user_arr_byTache);
+			$user_arr = array_values($user_arr_byTache);
 		}else{	//获取所有用户
 			$user_arr = User::column('id');
 			unset($user_arr[0]);//弹出超级管理员自己

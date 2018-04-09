@@ -45,6 +45,7 @@ class Shot extends Common
 			$list[$i]['field_number'] = Db::name('field')->where('id',$list[$i]['field_id'])->value('name');
 			$list[$i]['difficulty'] = $this->difficulty_arr[$list[$i]['difficulty']];
 			$list[$i]['priority_level'] = $this->priority_level_arr[$list[$i]['priority_level']];
+			$list[$i]['tache_info'] = $this->rate_of_progress($list[$i]['id']);
 			$list[$i]['plan_start_time'] = date('Y-m-d H:i:s',$list[$i]['plan_start_timestamp']);
 			$list[$i]['plan_end_time'] = date('Y-m-d H:i:s',$list[$i]['plan_end_timestamp']);
 			$list[$i]['actual_start_time'] = !empty($list[$i]['actual_start_timestamp']) ? date('Y-m-d H:i:s',$list[$i]['actual_start_timestamp']) : '';
