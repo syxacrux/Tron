@@ -287,22 +287,20 @@
                         </p>
                         <p class="text-Lens-time tx-r">
                           <span>
-                              <el-tooltip class="m-r-5 pointer" effect="dark" content="实际开始时间"
-                                              placement="bottom-start">
-                              <span>{{block.actually_start_timestamp}}</span>
-                                  </el-tooltip>
                               <el-tooltip class="m-r-5 pointer" effect="dark" content="实际结束时间"
                                               placement="bottom-start">
-                              <span>{{block.actually_end_timestamp}}</span>
+                              <span>{{ j2time(block.actually_start_timestamp) }}</span>
+                                  </el-tooltip>
+                              <el-tooltip class="m-r-5 pointer" effect="dark" content="预计结束时间"
+                                              placement="bottom-start">
+                              <span>{{ j2time(block.plan_end_timestamp) }}</span>
                                   </el-tooltip>
                           </span>
                         </p>
                       </div>
                       <div class="text-Lens-link m-t-10">
-                        <el-tag type="warn"></el-tag>
-
-                        <el-tag type="danger" v-if="block.task_finish_degree.finish_degree < 100">{{block.task_finish_degree.tache_byname}}:{{block.task_finish_degree.finish_degree}}%</el-tag>
-                        <el-tag type="success" v-else>{{block.task_finish_degree.tache_byname}}:{{block.task_finish_degree.finish_degree}}%</el-tag>
+                        <!-- <el-tag type="warn"></el-tag> -->
+                        <el-tag type="success" >已完成</el-tag>
                       </div>
                     </div>
                 </el-card>
@@ -613,15 +611,16 @@
         })
 
       },
+      //tab切换
       handleClick(tab, event) {
         console.log(tab, event);
         console.log(tab)
         switch (tab.label){
           case '任务':
-            this.getAllWorkbenches('admin/workbenches',1,parseInt(tab.index)+1)
+            this.getAllWorkbenches('admin/workbenches',1,parseInt(tab.index)+1,40)
           break;
           case '完成':
-            this.getAllWorkbenches('task/finish_task',1,parseInt(tab.index)+1)
+            this.getAllWorkbenches('task/finish_task',1,parseInt(tab.index)+1,10)
           break;
         }
       },
@@ -652,7 +651,7 @@
       },
        // 任务切换页码
       taskCurrentChange(page) {
-        this.getAllWorkbenches(page)
+        this.getAllWorkbenches('admin/workbenches',page,1,40)
       },
       //等待上游切换页码
       upstreamCurrentChange(page){
@@ -663,7 +662,7 @@
         this.getAllWorkbenches(page)
       },
 //      获取项目列表
-      getAllWorkbenches(state,page,status) {
+      getAllWorkbenches(state,page,status,limit) {
 
         this.loading = true
         const data = {
@@ -672,7 +671,8 @@
               // list_type: status,
             },
             page: page,
-            limit: this.limit
+            // limit: this.limit
+            limit: limit
           }
         }
         this.apiGet(state,data).then((res) => {
@@ -686,9 +686,13 @@
                 console.log(this.blocks)
                 this.blocksDataCount=data.dataCount
                 break;
-              case 11:
+              case 3://完成列表
+                this.completeList=data.list
+                console.log(this.completeList)
+                this.completeDataCount=data.dataCount
+                break;
+              case 11://工作台列表
                 this.tableList=data.list
-                console.log(this.blocks)
                 this.tableListDataCount=data.dataCount
                 break;
             }
@@ -714,7 +718,7 @@
       },
 //      初始化项目列表内容
       init() {
-       this.getAllWorkbenches('admin/workbenches',1,1)
+       this.getAllWorkbenches('admin/workbenches',1,1,40)
       }
     },
     created() {
