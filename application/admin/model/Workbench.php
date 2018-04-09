@@ -374,7 +374,6 @@ class Workbench extends Common
 
 	//根据主键编辑任务 并分配制作人
 	public function updateData_ById($data,$id){
-		file_put_contents('aa.txt',var_export($data,true));
 		$task_obj = $this->get($id);
 		if(empty($task_obj)){
 			$this->error = '暂无此数据';
@@ -385,7 +384,7 @@ class Workbench extends Common
 		try{
 			//$data['user_id'] 以逗号分割的字符串转为数组
 			$user_ids_arr = explode(',',$data['user_id']);
-			if(!empty($user_ids_arr)){
+			if(!empty($data['user_id'])){
 				//根据制作人分配任务 默认为新增操作
 				foreach($user_ids_arr as $key=>$value){
 					$task_data['group_id'] = $task_obj->group_id;
