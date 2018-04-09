@@ -182,6 +182,7 @@ export default {
         this.form.difficulty = this.form.difficulty ? parseInt(this.form.difficulty) : 1
         this.form.task_priority_level = this.form.task_priority_level ? parseInt(this.form.task_priority_level) : 1
         this.form.user_id = this.field_id.join(',')
+        this.form.task_image = this.form.task_image.slice(this.form.task_image.indexOf('uploads'))
         this.$refs[form].validate((valid) => {
           if (valid) {
           this.isLoading = !this.isLoading
