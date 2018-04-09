@@ -354,14 +354,20 @@ class Workbench extends Common
 		$shot_obj = Shot::get($task_obj->shot_id);
 		$user_ids_arr = $this->where('pid',$task_id)->column('user_id');
 		//组合当前任务所属制作人数据
-		if(!empty($user_ids_arr)){
-			foreach($user_ids_arr as $key=>$value){
-				$user_ids_data[$key]['user_id'] = $value;
-				$user_ids_data[$key]['realname'] = User::get($value)->realname;
+		if($task_obj->user_id==0){
+			if(!empty($user_ids_arr)){
+				foreach($user_ids_arr as $key=>$value){
+					$user_ids_data[$key]['user_id'] = $value;
+					$user_ids_data[$key]['realname'] = User::get($value)->realname;
+				}
+			}else{
+				$user_ids_data = [];
 			}
 		}else{
-			$user_ids_data = [];
+			$user_ids_data[0]['user_id'] = $task_obj->user_id;
+			$user_ids_data[0]['realname'] = User::get($task_obj->user_id)->realname;
 		}
+
 
 		$task_obj->project_name = $project_obj->project_name;
 		$task_obj->project_byname = $project_obj->project_byname;
@@ -452,8 +458,6 @@ class Workbench extends Common
 
 	//删除所属任务的制作人 同时调用python删除相应的目录
 	public function TaskDel_ById($task_id,$user_id){
-		file_put_contents('aa.txt',var_export($task_id,true));
-		file_put_contents('bb.txt',var_export($user_id,true));
 		$task_obj = $this->get($task_id);
 		if (!$task_obj) {
 			$this->error = '暂无此数据';
