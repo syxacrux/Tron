@@ -710,15 +710,6 @@
             console.log(data)
           })
         })
-        const data = {
-          task_id:id
-        }
-        this.apiGet(`task/get_user?task_id=${id}`,data).then((res) => {
-          this.handelResponse(res, (data) => {
-            this.finishList = data
-            console.log(data)
-          })
-        })
         if (this.task2) {
 
         } else {
@@ -907,4 +898,5 @@
     font-size: .8rem;
     color: #666;
   }
+  
 </style>
