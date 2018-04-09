@@ -184,7 +184,7 @@ export default {
           if (valid) {
           this.isLoading = !this.isLoading
           console.log(this.form)
-          this.apiPut('admin/workbenches/', this.form , this.id).then((res) => {
+          this.apiPut('admin/workbenches/', this.id, this.form ).then((res) => {
             this.handelResponse(res, (data) => {
             _g.toastMsg('success', '编辑成功')
             setTimeout(() => {

@@ -434,12 +434,12 @@
                 <p class="m-0">资产：<span>001</span></p>
               </el-col>
               <el-col :span="12">
-                <p class="m-0">场号/集号：<span>{{ finishList.field_name }}</span></p>
+                <p class="m-0">场号/集号：<span>{{ finishList.field_number }}</span></p>
               </el-col>
             </el-row>
             <el-row :gutter="20" class="m-b-5">
               <el-col :span="12">
-                <p class="m-0">镜头优先级：<span>{{ finishList.priority_level_name }}</span></p>
+                <p class="m-0">镜头优先级：<span>{{ finishList.task_priority_level_name }}</span></p>
               </el-col>
               <el-col :span="12">
                 <p class="m-0">镜头难度：<span>{{ finishList.difficulty_name }}</span></p>
