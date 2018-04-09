@@ -831,6 +831,7 @@
 //        return _g.getHasRule('projects-update')
 //      },
       deleteShow() {
+        console.log(_g.getHasRule('shots-delete'), 890)
         return _g.getHasRule('shots-delete')
       },
       deleteShowTache() {
