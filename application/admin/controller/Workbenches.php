@@ -174,9 +174,8 @@ class Workbenches extends ApiCommon
 		$param = $this->param;
 		$task_id = !empty($param['task_id']) ? $param['task_id'] : '';
 		$data = $workbench_model->TaskDel_ById($task_id,$param['user_id']);
-		if(!$data){
 			return resultArray(['data'=>$data]);
-		}
+
 	}
 
 	//接口 - 根据所属任务弹出已存在的制作人 用于获取角色 工作室总监或组长 获取用户列表

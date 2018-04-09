@@ -272,10 +272,9 @@ class Shot extends Common
 					return false;
 				} else {
 					$this->commit();
+					return true;
 				}
 				//python 脚本调用 未做
-				$this->commit();//镜头删除成功
-				return true;
 			}
 		} catch (\Exception $e) {
 			$this->rollback();

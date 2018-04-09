@@ -452,21 +452,28 @@ class Workbench extends Common
 
 	//删除所属任务的制作人 同时调用python删除相应的目录
 	public function TaskDel_ById($task_id,$user_id){
+		file_put_contents('aa.txt',var_export($task_id,true));
+		file_put_contents('bb.txt',var_export($user_id,true));
 		$task_obj = $this->get($task_id);
 		if (!$task_obj) {
 			$this->error = '暂无此数据';
 			return false;
 		}
+		//开启事务
+		$this->startTrans();
 		try{
 			$result = $this->destroy(['pid'=>$task_id,'user_id'=>$user_id]);
 			if($result === false){
 				$this->error = '删除失败';
+				$this->rollback();
 				return false;
 			}else{
+				$this->commit();
 				return true;
 			}
 		}catch(\Exception $e){
 			$this->error = '删除失败';
+			$this->rollback();
 			return false;
 		}
 	}
