@@ -374,6 +374,7 @@ class Workbench extends Common
 
 	//根据主键编辑任务 并分配制作人
 	public function updateData_ById($data,$id){
+		file_put_contents('aa.txt',var_export($data,true));
 		$task_obj = $this->get($id);
 		if(empty($task_obj)){
 			$this->error = '暂无此数据';
@@ -433,6 +434,8 @@ class Workbench extends Common
 				$task_data['plan_end_timestamp'] = strtotime($data['plan_end_time']);
 				$task_data['make_demand'] = !empty($data['make_demand']) ? $data['make_demand'] : '';
 				$this->allowField(true)->save($task_data, [$this->getPk() => $id]);
+				$this->commit();
+				return true;
 			}
 		}catch(\Exception $e){
 			$this->rollback();
