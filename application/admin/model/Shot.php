@@ -174,18 +174,10 @@ class Shot extends Common
 			$this->error = '暂无此数据';
 			return false;
 		}
-		// 验证
-		$validate = validate($this->name);
-		if (!$validate->check($param)) {
-			$this->error = $validate->getError();
-			return false;
-		}
 		//开启事务
 		$this->startTrans();
 		try {
 			//资产ID 多项 字符串 以逗号分割(现在没有不加资产)
-			//$param['asset_ids'] = implode(",",$param['asset_ids']);
-			$param['shot_image'] = $param['shot_image'];
 			$param['plan_start_timestamp'] = strtotime($param['plan_start_timestamp']);
 			$param['plan_end_timestamp'] = strtotime($param['plan_end_timestamp']);
 			$param['create_time'] = time();
@@ -197,7 +189,6 @@ class Shot extends Common
 			$shot_model = new Shot();
 			if (!empty($tache_data)) {  //环节不为空  执行更新本镜头数据及添加相应环节的任务
 				//更新当前镜头行记录
-
 				$shot_model->allowField(true)->save($param, [$this->getPk() => $id]);
 				$project_byname = Project::get($param['project_id'])->project_byname;
 				$field_name = Db::name('field')->where('id', $param['field_id'])->value('name');
@@ -237,8 +228,6 @@ class Shot extends Common
 				$this->commit();
 				return true;
 			}
-
-
 		} catch (\Exception $e) {
 			$this->rollback();
 			$this->error = '编辑失败';

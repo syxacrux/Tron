@@ -26,7 +26,14 @@
           </el-form-item>
         </el-col>
       </el-row>
-      <el-row :gutter="20">
+       <el-row :gutter="20">
+        <el-col :span="8">
+          <div class="grid-content">
+            <el-form-item label="任务简称:" prop="task_priority_level">
+              <el-input  v-model="plan_time" class="h-40 w-200"></el-input>
+            </el-form-item>
+          </div>
+        </el-col>
         <el-col :span="8">
           <div class="grid-content">
             <el-form-item label="制作人:" prop="field_id">
@@ -40,6 +47,8 @@
             </el-form-item>
           </div>
         </el-col>
+      </el-row>
+      <el-row :gutter="20">
         <el-col :span="8">
           <div class="grid-content">
             <el-form-item label="优先级:" prop="task_priority_level">
@@ -193,6 +202,7 @@ export default {
             setTimeout(() => {
               // this.goback()
                this.dialogFormVisible = false
+               this.isLoading = !this.isLoading
             }, 1500)
             }, () => {
             this.isLoading = !this.isLoading

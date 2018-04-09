@@ -195,6 +195,7 @@ class Workbench extends Common
 		$project_where['producer|scene_producer|scene_director|visual_effects_boss|visual_effects_producer|inside_coordinate'] = ['like', '%' . $uid . '%'];
 		$project_ids_arr = Project::where($project_where)->column('id');
 
+
 	}
 
 	//工作台 - 任务完成 列表
@@ -222,7 +223,7 @@ class Workbench extends Common
 		}
 		$data['list'] = $list;
 		$data['dataCount'] = $dataCount;
-
+		return $data;
 	}
 
 	//新增 此方法暂时未用
@@ -374,7 +375,6 @@ class Workbench extends Common
 
 	//根据主键编辑任务 并分配制作人
 	public function updateData_ById($data,$id){
-		file_put_contents('aa.txt',var_export($data,true));
 		$task_obj = $this->get($id);
 		if(empty($task_obj)){
 			$this->error = '暂无此数据';
