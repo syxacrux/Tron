@@ -248,7 +248,7 @@
         <el-tab-pane label="完成" name="complete">
           <div class="waiting ovf-hd">
             <el-col :span="6" v-for="block in completeList" :key="block.id">
-              <div class="grid-content bg-purple p-b-5" @click="task2 = !task2">
+              <div class="grid-content bg-purple p-b-5" @click="taskDetail(block.id)">
                 <el-card class="box-card ">
                     <div class="text">
                       <div class="text-Lens pos-rel">
@@ -328,15 +328,15 @@
         <el-table-column prop="difficulty" label="难度"></el-table-column>
         <el-table-column prop="task_priority_level" label="优先级"></el-table-column>
         <el-table-column prop="status_cn" label="进度"></el-table-column>
-        <el-table-column prop="plan_start_timestamp" label="计划开始"></el-table-column>
-        <el-table-column prop="plan_end_timestamp" label="计划结束"></el-table-column>
+        <el-table-column prop="plan_start_time" label="计划开始"></el-table-column>
+        <el-table-column prop="plan_end_time" label="计划结束"></el-table-column>
         <el-table-column prop="actually_start_timestamp" label="实际开始"></el-table-column>
         <el-table-column prop="actually_end_timestamp" label="实际结束"></el-table-column>
         <el-table-column prop="make_demand" label="制作人"></el-table-column>
       </el-table>
       <transition name="el-zoom-in-top">
         <div class="task_detail fr" v-show="task2">
-          <el-card class="box-card">
+          <el-card class="box-card task-xing">
             <div slot="header" class="clearfix">
               <span>任务详情</span>
               <i class="el-icon-edit m-l-5 fz-14 c-light-gray pointer" @click="editWorkbench"></i>
@@ -345,10 +345,58 @@
             </div>
             <el-row :gutter="20" class="m-b-5">
               <el-col :span="12">
-                <p class="m-0">镜头简称：<span>{{ finishList.shot_byname }},{{finishList.id}}</span></p>
+                <p class="m-0">任务缩略图：<img :src="finishList.task_image" alt="" class="vtcal-mid h-40"></p>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20" class="m-b-5">
+              <el-col :span="12">
+                <p class="m-0">任务简称：<span>无</span></p>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20" class="m-b-5">
+              <el-col :span="12">
+                <p class="m-0">任务优先级：<span>{{ finishList.task_priority_level_name }}</span></p>
               </el-col>
               <el-col :span="12">
-                <p class="m-0">镜头缩略图：<img :src="finishList.shot_image" alt=""></p>
+                <p class="m-0">任务难度：<span>{{ finishList.difficulty_name }}</span></p>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20" class="m-b-5">
+              <el-col :span="24">
+                <p class="m-0">任务计划开始时间：<span>无</span></p>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20" class="m-b-5">
+               <el-col :span="24">
+                <p class="m-0">任务计划结束时间：<span>无</span></p>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20" class="m-b-5">
+              <el-col :span="24">
+                <p class="m-0">
+                  环节制作人：
+                  <span class="" v-for="(item, index) in finishList.user_data" :key="index">
+                    {{item.realname}}
+                  </span>
+                </p>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20" class="m-b-5">
+              <el-col :span="24">
+                <p class="m-0">任务制作要求：<span>无</span></p>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20" class="m-b-5">
+              <el-col :span="12">
+                <p class="m-0">镜头缩略图：<img :src="finishList.shot_image" alt="" class="vtcal-mid h-40"></p>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20" class="m-b-5">
+              <el-col :span="12">
+                <p class="m-0">镜头简称：<span>{{ finishList.shot_byname }}</span></p>
+              </el-col>
+               <el-col :span="12">
+                <p class="m-0">所属项目：<span>{{ finishList.project_name }}</span></p>
               </el-col>
             </el-row>
             <el-row :gutter="20" class="m-b-5">
@@ -360,16 +408,18 @@
               </el-col>
             </el-row>
             <el-row :gutter="20" class="m-b-5">
-              <el-col :span="12">
-                <p class="m-0">所属项目：<span>{{ finishList.project_name }}</span></p>
+              <el-col :span="24">
+                <p class="m-0">镜头计划开始时间：<span>{{ finishList.plan_start_time }}</span></p>
               </el-col>
-              <el-col :span="12">
-                <p class="m-0">计划起止时间：<span>001</span></p>
+            </el-row>
+            <el-row :gutter="20" class="m-b-5">
+               <el-col :span="24">
+                <p class="m-0">镜头计划结束时间：<span>{{ finishList.plan_end_time }}</span></p>
               </el-col>
             </el-row>
             <el-row :gutter="20" class="m-b-5">
               <el-col :span="12">
-                <p class="m-0">资产：<span>001</span></p>
+                <p class="m-0">资产：<span>无</span></p>
               </el-col>
               <el-col :span="12">
                 <p class="m-0">场号/集号：<span>{{ finishList.field_number }}</span></p>
@@ -383,22 +433,13 @@
                 <p class="m-0">镜头难度：<span>{{ finishList.difficulty_name }}</span></p>
               </el-col>
             </el-row>
+            
             <el-row :gutter="20" class="m-b-5">
               <el-col :span="12">
                 <p class="m-0">时刻：<span>{{ finishList.time_name }}</span></p>
               </el-col>
               <el-col :span="12">
                 <p class="m-0">环境：<span>{{ finishList.ambient_name }}</span></p>
-              </el-col>
-            </el-row>
-            <el-row :gutter="20" class="m-b-5">
-              <el-col :span="24">
-                <p class="m-0">
-                  环节制作人：
-                  <span class="" v-for="(item, index) in finishList.user_data" :key="index">
-                    {{item.realname}}
-                  </span>
-                </p>
               </el-col>
             </el-row>
             <el-row :gutter="20" class="m-b-5">
@@ -753,7 +794,9 @@
     background: #00b961;
   }
 
-
+  .workbench_list .task_detail .task-xing .el-card__body {
+    padding: 15px;
+  }
   .workbench_list .text-Lens:after {
     content: '';
     height: 0;
