@@ -533,18 +533,16 @@
         }).then(() => {
           _g.openGlobalLoading()
           const data = {
-            id: this.id,
-            tache_name: tache_name,
-            studio_id: item.user_id
+            task_id: this.id,
+            user_id: item.user_id
           }
-          console.log(data)
-          // this.apiPost('shot/studio_del', data).then((res) => {
-          //   _g.closeGlobalLoading()
-          //   this.handelResponse(res, (data) => {
-          //     _g.toastMsg('success', '删除成功')
-          //     // this.shotDetail(this.id)
-          //   })
-          // })
+          this.apiPost('task/user_del', data).then((res) => {
+            _g.closeGlobalLoading()
+            this.handelResponse(res, (data) => {
+              _g.toastMsg('success', '删除成功')
+              this.taskDetail(this.id)
+            })
+          })
         }).catch(() => {
           // catch error
         })
@@ -664,11 +662,12 @@
         if(!/^[0-9]*$/.test(id)){
           id = id.id
         }
+        this.id = id
         console.log(id)
         this.apiGet('admin/workbenches/' + id).then((res) => {
           this.handelResponse(res, (data) => {
             this.finishList = data
-            this.id = data.id
+            // this.id = data.id
             console.log(this.finishList)
           })
         })
