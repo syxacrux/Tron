@@ -34,12 +34,12 @@
           <el-table-column prop="shot_number" label="镜头号"></el-table-column>
           <el-table-column prop="difficulty" label="难度"></el-table-column>
           <el-table-column prop="priority_level" label="优先级"></el-table-column>
-          <el-table-column prop="tache" label="进度" width="200">
+          <el-table-column prop="tache" label="进度">
             <template slot-scope="scope">
               <el-tag v-for="value in scope.row.tache_info"
                       v-if="value.finish_degree!==''?true:false" :key="value.id"
                       :type="value.finish_degree<100?'warning':'success'">
-                {{ value.tache_byname }}：{{ value.finish_degree }}%
+                {{ value.tache_byname }}:{{ value.finish_degree }}%
               </el-tag>
             </template>
           </el-table-column>
@@ -407,10 +407,15 @@
             </div>
             <el-row :gutter="20" class="m-b-5">
               <el-col :span="12">
+                <p class="m-0">镜头缩略图：<img :src="address + editShotDetail.shot_image" alt="" class="vtcal-mid h-40"></p>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20" class="m-b-5">
+              <el-col :span="12">
                 <p class="m-0">镜头简称：<span>{{ editShotDetail.shot_byname }}</span></p>
               </el-col>
               <el-col :span="12">
-                <p class="m-0">镜头缩略图：<img :src="editShotDetail.shot_image" alt=""></p>
+                <p class="m-0">所属项目：<span>{{ editShotDetail.project_name }}</span></p>
               </el-col>
             </el-row>
             <el-row :gutter="20" class="m-b-5">
@@ -422,16 +427,18 @@
               </el-col>
             </el-row>
             <el-row :gutter="20" class="m-b-5">
-              <el-col :span="12">
-                <p class="m-0">所属项目：<span>{{ editShotDetail.project_name }}</span></p>
+              <el-col :span="24">
+                <p class="m-0">计划开始时间：<span>{{ j2time(editShotDetail.plan_start_timestamp) }}</span></p>
               </el-col>
-              <el-col :span="12">
-                <p class="m-0">计划起止时间：<span>001</span></p>
+            </el-row>
+            <el-row :gutter="20" class="m-b-5">
+              <el-col :span="24">
+                <p class="m-0">计划结束时间：<span>{{ j2time(editShotDetail.plan_end_timestamp) }}</span></p>
               </el-col>
             </el-row>
             <el-row :gutter="20" class="m-b-5">
               <el-col :span="12">
-                <p class="m-0">资产：<span>001</span></p>
+                <p class="m-0">资产：<span>没写</span></p>
               </el-col>
               <el-col :span="12">
                 <p class="m-0">场号/集号：<span>{{ editShotDetail.field_name }}</span></p>
@@ -828,6 +835,7 @@
 
   .shot_list_detail .el-tag {
     padding: 0 8px;
+    margin-bottom: 2px;
   }
 
   .shot_list_detail .shot_detail {

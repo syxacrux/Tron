@@ -6,6 +6,9 @@ a {
     color: #c0ccda;
     /*color: inherit;*/
 }
+.vtcal-mid{
+    vertical-align: middle;
+}
 .dp-b{
     display: block;
 }
