@@ -46,7 +46,7 @@ ul.drag-list, ul.drag-inner-list {
 }
 
 .drag-inner-list {
-  min-height: 500px;
+  min-height: 1000px;
   color: white;
 }
 

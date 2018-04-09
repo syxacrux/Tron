@@ -30,7 +30,7 @@
         <el-col :span="8">
           <div class="grid-content">
             <el-form-item label="任务简称:" prop="task_priority_level">
-              <el-input  v-model="plan_time" class="h-40 w-200"></el-input>
+              <el-input  v-model="form.task_byname" class="h-40 w-200"></el-input>
             </el-form-item>
           </div>
         </el-col>

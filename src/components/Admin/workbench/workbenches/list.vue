@@ -318,7 +318,7 @@
           </div>
         </el-tab-pane>
       </el-tabs>
-      <el-table v-if="!isList" :data="tableList" stripe class="fl">
+      <el-table v-if="!isList" :data="tableList" stripe class="fl" @row-click="taskDetail">
         <el-table-column type="selection" width="50"></el-table-column>
         <el-table-column prop="project_name" label="项目"></el-table-column>
         <el-table-column prop="field_number" label="场号"></el-table-column>
@@ -348,7 +348,7 @@
             </el-row>
             <el-row :gutter="20" class="m-b-5">
               <el-col :span="12">
-                <p class="m-0">任务简称：<span>无</span></p>
+                <p class="m-0">任务简称：<span>{{ finishList.task_byname }}</span></p>
               </el-col>
             </el-row>
             <el-row :gutter="20" class="m-b-5">
@@ -361,63 +361,43 @@
             </el-row>
             <el-row :gutter="20" class="m-b-5">
               <el-col :span="24">
-                <p class="m-0">任务计划开始时间：<span>无</span></p>
+                <p class="m-0">任务计划开始时间：<span>{{ finishList.plan_start_time }}</span></p>
               </el-col>
             </el-row>
             <el-row :gutter="20" class="m-b-5">
                <el-col :span="24">
-                <p class="m-0">任务计划结束时间：<span>无</span></p>
+                <p class="m-0">任务计划结束时间：<span>{{ finishList.plan_end_time }}</span></p>
               </el-col>
             </el-row>
             <el-row :gutter="20" class="m-b-5">
               <el-col :span="24">
                 <p class="m-0">
                   环节制作人：
-                  <span class="" v-for="(item, index) in finishList.user_data" :key="index">
+                  <!-- <span class="" v-for="(item, index) in finishList.user_data" :key="index">
                     {{item.realname}}
-                  </span>
+                  </span> -->
+                  <el-tag size="mini" v-for="(item, index) in finishList.user_data" :closable="deleteShowTacheStudio" type="info" @close="deleteTacheStudio(index, item)" :key="item.id">
+                       {{item.realname}}
+                    </el-tag>
                 </p>
               </el-col>
             </el-row>
             <el-row :gutter="20" class="m-b-5">
               <el-col :span="24">
-                <p class="m-0">任务制作要求：<span>无</span></p>
+                <p class="m-0">任务制作要求：<span>{{ finishList.make_demand }}</span></p>
               </el-col>
             </el-row>
             <el-row :gutter="20" class="m-b-5">
               <el-col :span="12">
-                <p class="m-0">镜头缩略图：<img :src="finishList.shot_image" alt="" class="vtcal-mid h-40"></p>
+                <p class="m-0">所属项目：<span>{{ finishList.project_name }}</span></p>
+              </el-col>
+               <el-col :span="12">
+                <p class="m-0">镜头名称：<span>{{ finishList.shot_name }}</span></p>
               </el-col>
             </el-row>
             <el-row :gutter="20" class="m-b-5">
               <el-col :span="12">
                 <p class="m-0">镜头简称：<span>{{ finishList.shot_byname }}</span></p>
-              </el-col>
-               <el-col :span="12">
-                <p class="m-0">所属项目：<span>{{ finishList.project_name }}</span></p>
-              </el-col>
-            </el-row>
-            <el-row :gutter="20" class="m-b-5">
-              <el-col :span="12">
-                <p class="m-0">镜头编号：<span>{{ finishList.shot_number }}</span></p>
-              </el-col>
-              <el-col :span="12">
-                <p class="m-0">镜头名称：<span>{{ finishList.shot_name }}</span></p>
-              </el-col>
-            </el-row>
-            <el-row :gutter="20" class="m-b-5">
-              <el-col :span="24">
-                <p class="m-0">镜头计划开始时间：<span>{{ finishList.plan_start_time }}</span></p>
-              </el-col>
-            </el-row>
-            <el-row :gutter="20" class="m-b-5">
-               <el-col :span="24">
-                <p class="m-0">镜头计划结束时间：<span>{{ finishList.plan_end_time }}</span></p>
-              </el-col>
-            </el-row>
-            <el-row :gutter="20" class="m-b-5">
-              <el-col :span="12">
-                <p class="m-0">资产：<span>无</span></p>
               </el-col>
               <el-col :span="12">
                 <p class="m-0">场号/集号：<span>{{ finishList.field_number }}</span></p>
@@ -425,56 +405,7 @@
             </el-row>
             <el-row :gutter="20" class="m-b-5">
               <el-col :span="12">
-                <p class="m-0">镜头优先级：<span>{{ finishList.task_priority_level_name }}</span></p>
-              </el-col>
-              <el-col :span="12">
-                <p class="m-0">镜头难度：<span>{{ finishList.difficulty_name }}</span></p>
-              </el-col>
-            </el-row>
-            
-            <el-row :gutter="20" class="m-b-5">
-              <el-col :span="12">
-                <p class="m-0">时刻：<span>{{ finishList.time_name }}</span></p>
-              </el-col>
-              <el-col :span="12">
-                <p class="m-0">环境：<span>{{ finishList.ambient_name }}</span></p>
-              </el-col>
-            </el-row>
-            <el-row :gutter="20" class="m-b-5">
-              <el-col :span="12">
-                <p class="m-0">帧长范围：<span>{{ finishList.frame_range }}</span></p>
-              </el-col>
-              <el-col :span="12">
-                <p class="m-0">手柄帧：<span>{{ finishList.handle_frame }}</span></p>
-              </el-col>
-            </el-row>
-            <el-row :gutter="20" class="m-b-5">
-              <el-col :span="12">
-                <p class="m-0">剪辑帧长：<span>{{ finishList.clip_frame_length }}</span></p>
-              </el-col>
-              <el-col :span="12">
-                <p class="m-0">素材帧长：<span>{{ finishList.material_frame_length }}</span></p>
-              </el-col>
-            </el-row>
-            <el-row :gutter="20" class="m-b-5">
-              <el-col :span="12">
-                <p class="m-0">素材号：<span>{{ finishList.material_number }}</span></p>
-              </el-col>
-              <el-col :span="12">
-                <p class="m-0">二级公司：<span>{{ finishList.second_company }}</span></p>
-              </el-col>
-            </el-row>
-            <el-row :gutter="20" class="m-b-5">
-              <el-col :span="12">
-                <p class="m-0">镜头备注：<span>{{ finishList.shot_explain }}</span></p>
-              </el-col>
-              <el-col :span="12">
-                <p class="m-0">变速信息：<span>{{ finishList.charge_speed_info }}</span></p>
-              </el-col>
-            </el-row>
-            <el-row :gutter="20" class="m-b-5">
-              <el-col :span="24">
-                <p class="m-0">制作要求：<span>{{ finishList.make_demand }}</span></p>
+                <p class="m-0">镜头编号：<span>{{ finishList.shot_number }}</span></p>
               </el-col>
             </el-row>
           </el-card>
@@ -508,6 +439,7 @@
         isList:true,
         task2: false,
         limit: 40,
+        id:0,
         currentPage: 1,
         activeName: 'task',
         address: window.baseUrl + '/',
@@ -587,6 +519,32 @@
               this.task2 = false
             })
           })
+        }).catch(() => {
+          // catch error
+        })
+      },
+            //      工作台详情删除制作人
+      deleteTacheStudio(tache_name, item) {
+        console.log(item)
+        this.$confirm('确认删除该制作人?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          _g.openGlobalLoading()
+          const data = {
+            id: this.id,
+            tache_name: tache_name,
+            studio_id: item.user_id
+          }
+          console.log(data)
+          // this.apiPost('shot/studio_del', data).then((res) => {
+          //   _g.closeGlobalLoading()
+          //   this.handelResponse(res, (data) => {
+          //     _g.toastMsg('success', '删除成功')
+          //     // this.shotDetail(this.id)
+          //   })
+          // })
         }).catch(() => {
           // catch error
         })
@@ -702,10 +660,15 @@
       },
  //      点击任务显示任务详情
       taskDetail(id) {
+        //        判断任务详情传入值是否为数字
+        if(!/^[0-9]*$/.test(id)){
+          id = id.id
+        }
         console.log(id)
         this.apiGet('admin/workbenches/' + id).then((res) => {
           this.handelResponse(res, (data) => {
             this.finishList = data
+            this.id = data.id
             console.log(this.finishList)
           })
         })
@@ -738,6 +701,9 @@
 //      deleteShow() {
 //        return _g.getHasRule('workbenches-delete')
 //      }
+      deleteShowTacheStudio() {
+        return _g.getHasRule('shots-delete_studio')
+      }
     }
   }
 </script>
