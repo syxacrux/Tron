@@ -174,22 +174,38 @@ class Workbench extends Common
 	}
 
 	//工作台 - 等待上游 资产
-	public function getUpperAssets($keyword, $page, $limit, $uid, $group_id)
+	public function getUpperAssets($keywords, $page, $limit, $uid, $group_id)
 	{
 
 	}
 
 	//工作台 - 等待上游 镜头
+	public function getUpperShots($keywords,$page,$limit,$uid){
+		$where = [];
+		//加入条件查询
+		if(!empty($keywords['project_id'])){
+			$where['project_id'] = $keywords['project_id'];
+		}
+		if(!empty($keywords['field_id'])){
+			$where['field_id'] = $keywords['field_id'];
+		}
+		if(!empty($keywords['shot_id'])){
+			$where['id'] = $keywords['shot_id'];
+		}
+		$project_where['producer|scene_producer|scene_director|visual_effects_boss|visual_effects_producer|inside_coordinate'] = ['like', '%' . $uid . '%'];
+		$project_ids_arr = Project::where($project_where)->column('id');
+
+	}
 
 	//工作台 - 任务完成 列表
 	public function getFinishTask($keywords, $page, $limit, $uid)
 	{
 		$where = [];
 		//加入条件查询
-		if (!empty($keyword['project_id'])) {
+		if (!empty($keywords['project_id'])) {
 			$where['project_id'] = $keywords['project_id'];
 		}
-		if (!empty($keyword['field_id'])) {
+		if (!empty($keywords['field_id'])) {
 			$where['field_id'] = $keywords['field_id'];
 		}
 		$where['user_id'] = $uid;
@@ -359,7 +375,7 @@ class Workbench extends Common
 	//根据主键编辑任务 并分配制作人
 	public function updateData_ById($data,$id){
 		$task_obj = $this->get($id);
-		if(!empty($task_obj)){
+		if(empty($task_obj)){
 			$this->error = '暂无此数据';
 			return false;
 		}
