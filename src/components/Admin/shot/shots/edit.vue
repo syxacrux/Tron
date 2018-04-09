@@ -645,6 +645,7 @@
 
 
 //        必填项
+        this.form.shot_image = this.form.shot_image.slice(this.form.shot_image.indexOf('uploads'))
         this.form.project_id = parseInt(this.form.project_id)
         this.form.field_id = parseInt(this.form.field_id)
         this.form.time = parseInt(this.form.time)
@@ -652,11 +653,8 @@
 //        this.form.is_parse = parseInt(this.form.is_parse)
         this.form.plan_start_timestamp = _g.j2time(this.plan_time[0])
         this.form.plan_end_timestamp = _g.j2time(this.plan_time[1])
-        console.log(this.form.plan_start_timestamp)
-        console.log(this.form.plan_end_timestamp)
-
 //        选填项
-        this.form.asset_ids = this.form.asset_ids.join('')
+        this.form.asset_ids = this.form.asset_ids ? this.form.asset_ids.join('') : ''
 //        this.form.is_assets = this.form.is_assets ? parseInt(this.form.is_assets) : 2
         this.form.frame_range = this.frame_range1 && this.frame_range2 ? this.frame_range1 + ',' + this.frame_range2 : ''
         this.form.handle_frame = this.handle_frame1 && this.handle_frame2 ? this.handle_frame1 + ',' + this.handle_frame2 : ''
@@ -678,7 +676,6 @@
           12: this.synchOfStudio
         }
 
-        console.log(this.form)
         this.$refs.form.validate((pass) => {
           if (pass) {
             this.isLoading = !this.isLoading
