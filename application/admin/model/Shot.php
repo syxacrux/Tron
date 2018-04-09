@@ -209,6 +209,8 @@ class Shot extends Common
 				//根据环节分配任务给各大工作室
 				foreach ($tache_data as $key => $val) {
 					foreach ($val as $k => $v) {
+						$task_data['group_id'] = 5;	//角色为工作室总监
+						$task_data['user_id'] = 0;
 						$task_data['project_id'] = $param['project_id'];   //所属项目ID
 						$task_data['field_id'] = $param['field_id'];   //场号ID
 						$task_data['shot_id'] = $id;  //镜头ID
