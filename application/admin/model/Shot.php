@@ -40,6 +40,16 @@ class Shot extends Common
 			$list = $list->page($page, $limit);
 		}
 		$list = $list->select();
+		for($i=0;$i<count($list);$i++){
+			$list[$i]['project_name'] = Project::get($list[$i]['project_id'])->project_byname;
+			$list[$i]['field_number'] = Db::name('field')->where('id',$list[$i]['field_id'])->value('name');
+			$list[$i]['difficulty'] = $this->difficulty_arr[$list[$i]['difficulty']];
+			$list[$i]['priority_level'] = $this->priority_level_arr[$list[$i]['priority_level']];
+			$list[$i]['plan_start_time'] = date('Y-m-d H:i:s',$list[$i]['plan_start_timestamp']);
+			$list[$i]['plan_end_time'] = date('Y-m-d H:i:s',$list[$i]['plan_end_timestamp']);
+			$list[$i]['actual_start_time'] = !empty($list[$i]['actual_start_timestamp']) ? date('Y-m-d H:i:s',$list[$i]['actual_start_timestamp']) : '';
+			$list[$i]['actual_end_time'] = !empty($list[$i]['actual_end_timestamp']) ? date('Y-m-d H:i:s',$list[$i]['actual_end_timestamp']) : '';
+		}
 		$data['list'] = $list;
 		$data['dataCount'] = $dataCount;
 		return $data;

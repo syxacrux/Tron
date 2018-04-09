@@ -168,5 +168,25 @@ class Workbenches extends ApiCommon
 		return resultArray(['data' => '操作成功']);
 	}
 
+	//删除所属任务的制作人 操作时，同时删除相应的目录 python
+	public function delete_userId(){
+		$workbench_model = model('Workbench');
+		$param = $this->param;
+		$task_id = !empty($param['task_id']) ? $param['task_id'] : '';
+		$data = $workbench_model->TaskDel_ById($task_id,$param['user_id']);
+		if(!$data){
+			return resultArray(['data'=>$data]);
+		}
+	}
+
+	//接口 - 根据所属任务弹出已存在的制作人 用于获取角色 工作室总监或组长 获取用户列表
+	public function get_user_list(){
+		$workbench_model = model('Workbench');
+		$param = $this->param;
+		$task_id = !empty($param['task_id']) ? $param['task_id'] : '';
+		$uid = $this->uid;
+		$data = $workbench_model->getUser_byTask($task_id,$uid);
+		return resultArray(['data'=>$data]);
+	}
 
 }

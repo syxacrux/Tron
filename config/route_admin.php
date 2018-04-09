@@ -99,6 +99,8 @@ return [
 	'task/upper_shots'    	=>      ['admin/Workbenches/wait_upper_shots',['method' => 'POST|GET']],
 	//	[工作台] 完成列表
 	'task/finish_task'    	=>      ['admin/Workbenches/finish_list',['method' => 'GET']],
+	//	[工作台] 获取制作人列表
+	'task/get_user'					=>			['admin/Workbenches/get_user_list',['method'=>'GET']],
 
 
 

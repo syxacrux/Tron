@@ -167,6 +167,7 @@ class Workbench extends Common
 			$list_data[$key]['create_time'] = !empty($value['update_time']) ? '读任务状态记录表的最新时间' : date("Y-m-d H:i:s", $value['create_time']);
 			$list_data[$key]['task_finish_degree'] = $this->rate_of_progress($value['task_status'], $value['tache_id']);//任务完成度
 		}
+
 		$data['list'] = $list_data;
 		$data['dataCount'] = $dataCount;
 		return $data;
@@ -294,12 +295,16 @@ class Workbench extends Common
 					return false;
 				}
 			}else{	//除制作人角色外，其他角色没有把当前任务 未制作——>制作中 的权限
-				if(($curr_task_status == 1) && ($task_data['task_status'] == 5)){
-					$this->error = '您没有权限操作,只有当前制作人可操作';
-					return false;
+				//区分管理员
+				if($uid != 1){
+					if(($curr_task_status == 1) && ($task_data['task_status'] == 5)){
+						$this->error = '您没有权限操作,只有当前制作人可操作';
+						return false;
+					}
+				}else{
+					$this->save($task_data, [$this->getPk() => $task_id]);
 				}
 			}
-			$this->save($task_data, [$this->getPk() => $task_id]);
 			//记录状态更新记录
 			$task_status_record['user_id'] = $uid;
 			$task_status_record['task_id'] = $task_id;
@@ -324,6 +329,17 @@ class Workbench extends Common
 		}
 		$project_obj = Project::get($task_obj->project_id);
 		$shot_obj = Shot::get($task_obj->shot_id);
+		$user_ids_arr = $this->where('pid',$task_id)->column('user_id');
+		//组合当前任务所属制作人数据
+		if(!empty($user_ids_arr)){
+			foreach($user_ids_arr as $key=>$value){
+				$user_ids_data[$key]['user_id'] = $value;
+				$user_ids_data[$key]['realname'] = User::get($value)->realname;
+			}
+		}else{
+			$user_ids_data = [];
+		}
+
 		$task_obj->project_name = $project_obj->project_name;
 		$task_obj->project_byname = $project_obj->project_byname;
 		$task_obj->field_number = Db::name('field')->where('id',$task_obj->field_id)->value('name');
@@ -336,6 +352,7 @@ class Workbench extends Common
 		$task_obj->plan_end_time = date("Y-m-d H:i:s",$task_obj->plan_end_timestamp);
 		$task_obj->actually_start_time = date("Y-m-d H:i:s",$task_obj->actually_start_timestamp);
 		$task_obj->actually_end_time = date("Y-m-d H:i:s",$task_obj->actually_end_timestamp);
+		$task_obj->user_data = $user_ids_data;
 		return $task_obj;
 	}
 
@@ -346,23 +363,99 @@ class Workbench extends Common
 			$this->error = '暂无此数据';
 			return false;
 		}
-		//$data['user_id'] 可能为以逗号分割的字符串
+
+		//$data['user_id'] 以逗号分割的字符串转为数组
 		$user_ids_arr = explode(',',$data['user_id']);
 		//根据制作人分配任务 默认为新增操作
 		foreach($user_ids_arr as $key=>$value){
+			$task_data['group_id'] = $task_obj->group_id;
+			$task_data['user_id'] = $value;
+			$task_data['project_id'] = $task_obj->project_id;
+			$task_data['field_id'] = $task_obj->field_id;
+			$task_data['shot_id'] = $task_obj->shot_id;
+			$task_data['assets_id'] = !empty($task_obj->assets_id) ? $task_obj->assets_id : 0;
+			$task_data['tache_id'] = $task_obj->tache_id;
+			$task_data['tache_sort'] = $task_obj->tache_sort;
+			$task_data['studio_id'] = $task_obj->studio_id;
+			$task_data['task_type'] = $task_obj->task_type;
 			$task_data['task_image'] = str_replace('\\', '/',$data['task_image']);
 			$task_data['task_byname'] = !empty($data['task_byname']) ? $data['task_byname'] : '';
 			$task_data['make_demand'] = !empty($data['make_demand']) ? $data['make_demand'] : '';
-			$task_data[''] = $data[''];
-			$task_data[''] = $data[''];
-			$task_data[''] = $data[''];
-			$task_data[''] = $data[''];
-			$task_data[''] = $data[''];
-			$task_data[''] = $data[''];
+			$task_data['task_priority_level'] = $data['task_priority_level'];
+			$task_data['difficulty'] = $data['difficulty'];
+			$task_data['second_company'] = $data['second_company'];
+			$task_data['plan_start_timestamp'] = strtotime($data['plan_start_time']);
+			$task_data['plan_end_timestamp'] = strtotime($data['plan_end_time']);
+			$task_data['task_status'] = $task_obj->task_status;
+			$task_data['is_assets'] = $task_obj->is_assets;
+			$task_data['is_pause'] = $task_obj->is_pause;
+			$task_data['camera_motion'] = 1;	//相机运动
+			$task_data['pid'] = $id;	//父任务ID
+			$task_data['create_time'] = time();
+			$task_data['update_time'] = time();
+			$this->data($task_data)->save();
+			//为制作人创建目录  python
+
+			//根据自增任务ID添加任务记录表记录
+			$task_record_data['task_id'] = $this->id;
+			$task_record_data['task_status'] = 1;
+			$task_record_data['user_id'] = $value;
+			$task_record_data['create_timestamp'] = time();
+			$task_record_data['create_time'] = date('Y-m-d H:i:s');
+			Db::name('task_state_record')->insert($task_record_data);
 		}
+		return true;
 
 
+	}
 
+	//删除所属任务的制作人 同时调用python删除相应的目录
+	public function TaskDel_ById($task_id,$user_id){
+		$task_obj = $this->get($task_id);
+		if (!$task_obj) {
+			$this->error = '暂无此数据';
+			return false;
+		}
+		try{
+			$result = $this->destroy(['pid'=>$task_id,'user_id'=>$user_id]);
+			if($result === false){
+				$this->error = '删除失败';
+				return false;
+			}else{
+				return true;
+			}
+		}catch(\Exception $e){
+			$this->error = '删除失败';
+			return false;
+		}
+	}
+
+	//根据所属任务ID弹出已存在的制作人列表
+	public function getUser_byTask($task_id,$uid){
+		$tache_ids_arr = explode(',',User::get($uid)->tache_id);
+		if(($uid != 1) || ($task_id != '')){
+			foreach($tache_ids_arr as $key=>$value){
+				$user_ids_arr[] = User::where('tache_id','like','%'.$value.'%')->column('id');
+			}
+			$user_arr_byTache = array_unique($user_ids_arr);
+			//获取所属任务的制作人 用户ID
+			$curr_task_userId_arr = $this->where('pid',$task_id)->column('user_id');
+			foreach($user_arr_byTache as $key=>$value){
+				foreach($curr_task_userId_arr as $k=>$v){
+					if($v == $value) unset($user_arr_byTache[$key]);
+				}
+			}
+			$user_data = array_values($user_arr_byTache);
+		}else{	//获取所有用户
+			$user_arr = User::column('id');
+			unset($user_arr[0]);//弹出超级管理员自己
+		}
+		foreach($user_arr as $key=>$value){
+			$user_data[$key]['id'] = $value;
+			$user_data[$key]['real_name'] = User::get($value)->realname;
+		}
+		$data['list'] = $user_data;
+		return $data;
 	}
 
 }
