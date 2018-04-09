@@ -379,50 +379,56 @@ class Workbench extends Common
 			$this->error = '暂无此数据';
 			return false;
 		}
+		//开启事务
+		$this->startTrans();
+		try{
+			//$data['user_id'] 以逗号分割的字符串转为数组
+			$user_ids_arr = explode(',',$data['user_id']);
+			//根据制作人分配任务 默认为新增操作
+			foreach($user_ids_arr as $key=>$value){
+				$task_data['group_id'] = $task_obj->group_id;
+				$task_data['user_id'] = $value;
+				$task_data['project_id'] = $task_obj->project_id;
+				$task_data['field_id'] = $task_obj->field_id;
+				$task_data['shot_id'] = $task_obj->shot_id;
+				$task_data['assets_id'] = !empty($task_obj->assets_id) ? $task_obj->assets_id : 0;
+				$task_data['tache_id'] = $task_obj->tache_id;
+				$task_data['tache_sort'] = $task_obj->tache_sort;
+				$task_data['studio_id'] = $task_obj->studio_id;
+				$task_data['task_type'] = $task_obj->task_type;
+				$task_data['task_image'] = str_replace('\\', '/',$data['task_image']);
+				$task_data['task_byname'] = !empty($data['task_byname']) ? $data['task_byname'] : '';
+				$task_data['make_demand'] = !empty($data['make_demand']) ? $data['make_demand'] : '';
+				$task_data['task_priority_level'] = $data['task_priority_level'];
+				$task_data['difficulty'] = $data['difficulty'];
+				$task_data['second_company'] = $data['second_company'];
+				$task_data['plan_start_timestamp'] = strtotime($data['plan_start_time']);
+				$task_data['plan_end_timestamp'] = strtotime($data['plan_end_time']);
+				$task_data['task_status'] = $task_obj->task_status;
+				$task_data['is_assets'] = $task_obj->is_assets;
+				$task_data['is_pause'] = $task_obj->is_pause;
+				$task_data['camera_motion'] = 1;	//相机运动
+				$task_data['pid'] = $id;	//父任务ID
+				$task_data['create_time'] = time();
+				$task_data['update_time'] = time();
+				$this->data($task_data,true)->isUpdate(false)->save();
+				//为制作人创建目录  python
 
-		//$data['user_id'] 以逗号分割的字符串转为数组
-		$user_ids_arr = explode(',',$data['user_id']);
-		//根据制作人分配任务 默认为新增操作
-		foreach($user_ids_arr as $key=>$value){
-			$task_data['group_id'] = $task_obj->group_id;
-			$task_data['user_id'] = $value;
-			$task_data['project_id'] = $task_obj->project_id;
-			$task_data['field_id'] = $task_obj->field_id;
-			$task_data['shot_id'] = $task_obj->shot_id;
-			$task_data['assets_id'] = !empty($task_obj->assets_id) ? $task_obj->assets_id : 0;
-			$task_data['tache_id'] = $task_obj->tache_id;
-			$task_data['tache_sort'] = $task_obj->tache_sort;
-			$task_data['studio_id'] = $task_obj->studio_id;
-			$task_data['task_type'] = $task_obj->task_type;
-			$task_data['task_image'] = str_replace('\\', '/',$data['task_image']);
-			$task_data['task_byname'] = !empty($data['task_byname']) ? $data['task_byname'] : '';
-			$task_data['make_demand'] = !empty($data['make_demand']) ? $data['make_demand'] : '';
-			$task_data['task_priority_level'] = $data['task_priority_level'];
-			$task_data['difficulty'] = $data['difficulty'];
-			$task_data['second_company'] = $data['second_company'];
-			$task_data['plan_start_timestamp'] = strtotime($data['plan_start_time']);
-			$task_data['plan_end_timestamp'] = strtotime($data['plan_end_time']);
-			$task_data['task_status'] = $task_obj->task_status;
-			$task_data['is_assets'] = $task_obj->is_assets;
-			$task_data['is_pause'] = $task_obj->is_pause;
-			$task_data['camera_motion'] = 1;	//相机运动
-			$task_data['pid'] = $id;	//父任务ID
-			$task_data['create_time'] = time();
-			$task_data['update_time'] = time();
-			$this->data($task_data)->save();
-			//为制作人创建目录  python
-
-			//根据自增任务ID添加任务记录表记录
-			$task_record_data['task_id'] = $this->id;
-			$task_record_data['task_status'] = 1;
-			$task_record_data['user_id'] = $value;
-			$task_record_data['create_timestamp'] = time();
-			$task_record_data['create_time'] = date('Y-m-d H:i:s');
-			Db::name('task_state_record')->insert($task_record_data);
+				//根据自增任务ID添加任务记录表记录
+				$task_record_data['task_id'] = $this->id;
+				$task_record_data['task_status'] = 1;
+				$task_record_data['user_id'] = $value;
+				$task_record_data['create_timestamp'] = time();
+				$task_record_data['create_time'] = date('Y-m-d H:i:s');
+				Db::name('task_state_record')->insert($task_record_data);
+			}
+			$this->commit();
+			return true;
+		}catch(\Exception $e){
+			$this->rollback();
+			$this->error = '编辑失败';
+			return false;
 		}
-		return true;
-
-
 	}
 
 	//删除所属任务的制作人 同时调用python删除相应的目录

@@ -167,7 +167,7 @@ class Shot extends Common
 	}
 
 	//根据镜头ID进行编辑数据
-	public function updateData_ById($data, $id)
+	public function updateData_ById($param, $id)
 	{
 		$shot_obj = $this->get($id);
 		if (!$shot_obj) {
@@ -176,7 +176,7 @@ class Shot extends Common
 		}
 		// 验证
 		$validate = validate($this->name);
-		if (!$validate->check($data)) {
+		if (!$validate->check($param)) {
 			$this->error = $validate->getError();
 			return false;
 		}
@@ -194,10 +194,9 @@ class Shot extends Common
 					$tache_data[$key] = $value;
 				}
 			}
-			//保存镜头表
-			$result = $this->allowField(true)->save($param);
-			//获取自增ID的镜头对象
-			$curr_shot_obj = $this->get($this->id);
+			//更新当前镜头行记录
+			$shot_model = new Shot();
+			$result = $shot_model->allowField(true)->save($param,[$this->getPk() => $id]);
 			if (false === $result) {
 				$this->error = $this->getError();
 				return false;
@@ -210,24 +209,24 @@ class Shot extends Common
 				//根据环节分配任务给各大工作室
 				foreach ($tache_data as $key => $val) {
 					foreach ($val as $k => $v) {
-						$task_data['project_id'] = $curr_shot_obj->project_id;   //所属项目ID
-						$task_data['field_id'] = $curr_shot_obj->field_id;   //场号ID
+						$task_data['project_id'] = $param['project_id'];   //所属项目ID
+						$task_data['field_id'] = $param['field_id'];   //场号ID
 						$task_data['shot_id'] = $id;  //镜头ID
 						$task_data['tache_id'] = $key;  //环节ID
 						$task_data['tache_sort'] = Tache::get($key)->sort;  //环节排序
 						$task_data['studio_id'] = $v;   //工作室ID
 						$task_data['task_type'] = 1;    //镜头类型
-						$task_data['task_byname'] = $curr_shot_obj->shot_byname;//任务简称暂且为镜头的简称，任务模块中，可修改
-						$task_data['task_priority_level'] = $curr_shot_obj->priority_level;   //任务优先级
-						$task_data['difficulty'] = $curr_shot_obj->difficulty;    //任务难度
-						$task_data['plan_start_timestamp'] = $curr_shot_obj->plan_start_timestamp;  //计划开始时间
-						$task_data['plan_end_timestamp'] = $curr_shot_obj->plan_end_timestamp;    //计划结束时间
+						$task_data['task_byname'] = $shot_obj->shot_byname;//任务简称暂且为镜头的简称，任务模块中，可修改
+						$task_data['task_priority_level'] = $shot_obj->priority_level;   //任务优先级
+						$task_data['difficulty'] = $shot_obj->difficulty;    //任务难度
+						$task_data['plan_start_timestamp'] = $shot_obj->plan_start_timestamp;  //计划开始时间
+						$task_data['plan_end_timestamp'] = $shot_obj->plan_end_timestamp;    //计划结束时间
 						$task_data['task_status'] = 1;  //任务状态
 						$task_data['is_assets'] = 2; //是否为等待资产 1是 2否
 						$task_data['pid'] = 0;  //工作室顶级任务ID都为0
 						$task_data['create_time'] = time();//创建时间
 						$task_model = new Workbench();
-						$task_model->data($task_data)->save();
+						$task_model->data($task_data,true)->isUpdate(false)->save();
 					}
 				}
 				$this->commit();
