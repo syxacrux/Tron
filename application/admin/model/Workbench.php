@@ -374,7 +374,6 @@ class Workbench extends Common
 
 	//根据主键编辑任务 并分配制作人
 	public function updateData_ById($data,$id){
-		file_put_contents('aa.txt',var_export($data,true));
 		$task_obj = $this->get($id);
 		if(empty($task_obj)){
 			$this->error = '暂无此数据';
