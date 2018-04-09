@@ -661,6 +661,8 @@
 //        this.form.is_parse = parseInt(this.form.is_parse)
         this.form.plan_start_timestamp = _g.j2time(this.plan_time[0])
         this.form.plan_end_timestamp = _g.j2time(this.plan_time[1])
+        console.log(this.form.plan_start_timestamp)
+        console.log(this.form.plan_end_timestamp)
 
 //        选填项
         this.form.asset_ids = this.form.asset_ids.join('')

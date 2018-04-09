@@ -70,9 +70,13 @@
         <el-col :span="24">
           <div class="grid-content">
             <el-form-item label="计划起止时间:" prop="plan_time" class="is-required">
-              <el-date-picker v-model="plan_time" type="datetimerange" range-separator="至" start-placeholder="计划开始时间"
-                              end-placeholder="计划结束时间">
-              </el-date-picker>
+              <el-date-picker
+                v-model="plan_time"
+                type="datetimerange"
+                range-separator="至"
+                start-placeholder="开始日期"
+                end-placeholder="结束日期">
+            </el-date-picker>
             </el-form-item>
           </div>
         </el-col>
@@ -89,7 +93,7 @@
       </el-row>
     </el-form>
     <div slot="footer" class="dialog-footer">
-      <el-button @click="goback()">取 消</el-button>
+      <el-button @click="dialogFormVisible = !dialogFormVisible">取 消</el-button>
       <el-button type="primary" @click="edit('form')" :loading="isLoading">确 定</el-button>
     </div>
   </el-dialog>
@@ -104,7 +108,7 @@ export default {
         dialogFormVisible: false,
         isLoading: false,
         uploadImageUrl: window.HOST + '/admin/upload_image',
-        plan_time: '',
+        plan_time:[],
         image:'',
         id:0,
         field_id:[],
@@ -173,11 +177,10 @@ export default {
       },
       //编辑任务
       edit(form){
-        this.form.plan_start_timestamp = _g.j2time(this.plan_time[0])
-        this.form.plan_end_timestamp = _g.j2time(this.plan_time[1])
+        this.form.plan_start_time = _g.j2time(this.plan_time[0])
+        this.form.plan_end_time = _g.j2time(this.plan_time[1])
         this.form.difficulty = this.form.difficulty ? parseInt(this.form.difficulty) : 1
         this.form.task_priority_level = this.form.task_priority_level ? parseInt(this.form.task_priority_level) : 1
-        // console.log(this.field_id)
         this.form.user_id = this.field_id.join(',')
         console.log(this.user_id)
         this.$refs[form].validate((valid) => {
@@ -188,7 +191,7 @@ export default {
             this.handelResponse(res, (data) => {
             _g.toastMsg('success', '编辑成功')
             setTimeout(() => {
-              this.goback()
+              // this.goback()
             }, 1500)
             }, () => {
             this.isLoading = !this.isLoading
@@ -215,11 +218,23 @@ export default {
         this.form.difficulty = data.difficulty.toString()
         console.log(data.difficulty.toString())
         this.plan_time = [new Date(data.plan_start_timestamp * 1000), new Date(data.plan_end_timestamp * 1000)]
+
     }
   }
 }
 </script>
 <style>
+    .avatar-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .avatar-uploader .el-upload:hover {
+    border-color: #409EFF;
+  }
   .workbenches-edit .avatar-uploader .el-upload {
     border: 1px dashed #d9d9d9;
     border-radius: 6px;

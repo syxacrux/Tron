@@ -49,14 +49,18 @@
           <el-table-column prop="actual_end_timestamp" label="实际结束"></el-table-column>
           <!--<el-table-column prop="make_demand" label="备注"></el-table-column>-->
         </el-table>
-        <!--<btnGroup :selectedData="multipleSelection" :type="'studios'"></btnGroup>-->
-        <el-pagination
-            @current-change="listCurrentChange"
-            layout="prev, pager, next"
-            :page-size="limit"
-            :current-page="listCurrentPage"
-            :total="listDataCount">
-        </el-pagination>
+        <div class="pos-rel p-t-20">
+          <!--<btnGroup :selectedData="multipleSelection" :type="'studios'"></btnGroup>-->
+          <div class="block tx-r">
+            <el-pagination
+                @current-change="listCurrentChange"
+                layout="total, prev, pager, next"
+                :page-size="limit"
+                :current-page="listCurrentPage"
+                :total="listDataCount">
+            </el-pagination>
+          </div>
+        </div>
       </div>
       <el-tabs v-if="!isList" v-model="activeName" @tab-click="tabClick" class="fl">
         <el-tab-pane label="镜头制作中" name="shotsInDevelopment">
@@ -121,13 +125,17 @@
                     </el-card>
                   </li>
                 </ul>
-                <el-pagination
-                    @current-change="inProductionCurrentChange"
-                    :current-page.sync="currentPage"
-                    :page-size="10"
-                    layout="prev, pager, next, jumper"
-                  :total="inProductionDataCount">
-                </el-pagination>
+                <div class="pos-rel p-t-20" v-if="inProductionList.length">
+                  <div class="block tx-r">
+                    <el-pagination
+                        @current-change="inProductionCurrentChange"
+                        :current-page.sync="currentPage"
+                        :page-size="10"
+                        layout="prev, pager, next, jumper"
+                        :total="inProductionDataCount">
+                    </el-pagination>
+                  </div>
+                </div>
               </div>
             </el-col>
             <el-col :span="12">
@@ -190,13 +198,17 @@
                     </el-card>
                   </li>
                 </ul>
-                <el-pagination
-                    @current-change="feedbackCurrentChange"
-                    :current-page.sync="currentPage"
-                    :page-size="10"
-                    layout="prev, pager, next, jumper"
-                    :total="feedbackDataCount">
-                </el-pagination>
+                <div class="pos-rel p-t-20" v-if="feedbackList.length">
+                  <div class="block tx-r">
+                    <el-pagination
+                        @current-change="feedbackCurrentChange"
+                        :current-page.sync="currentPage"
+                        :page-size="10"
+                        layout="prev, pager, next, jumper"
+                        :total="feedbackDataCount">
+                    </el-pagination>
+                  </div>
+                </div>
               </div>
             </el-col>
           </div>
@@ -261,13 +273,17 @@
                   </el-card>
                 </div>
               </el-col>
-              <el-pagination
-                  @current-change="waitingCurrentChange"
-                  :current-page.sync="currentPage"
-                  :page-size="10"
-                  layout="prev, pager, next, jumper"
-                  :total="waitingDataCount">
-              </el-pagination>
+              <div class="pos-rel p-t-20" v-if="waitingList.length">
+                <div class="block tx-r">
+                  <el-pagination
+                      @current-change="waitingCurrentChange"
+                      :current-page.sync="currentPage"
+                      :page-size="10"
+                      layout="prev, pager, next, jumper"
+                      :total="waitingDataCount">
+                  </el-pagination>
+                </div>
+              </div>
             </div>
           </div>
         </el-tab-pane>
@@ -325,13 +341,17 @@
               </el-card>
             </div>
           </el-col>
-          <el-pagination
-              @current-change="pauseCurrentChange"
-              :current-page.sync="currentPage"
-              :page-size="10"
-              layout="prev, pager, next, jumper"
-              :total="pauseDataCount">
-          </el-pagination>
+          <div class="pos-rel p-t-20" v-if="pauseList.length">
+            <div class="block tx-r">
+              <el-pagination
+                  @current-change="pauseCurrentChange"
+                  :current-page.sync="currentPage"
+                  :page-size="10"
+                  layout="prev, pager, next, jumper"
+                  :total="pauseDataCount">
+              </el-pagination>
+            </div>
+          </div>
         </el-tab-pane>
         <el-tab-pane label="镜头完成" name="shotsFinish">
           <el-col :span="12" v-for="item in finishList" :key="item.id">
@@ -387,13 +407,17 @@
               </el-card>
             </div>
           </el-col>
-          <el-pagination
-              @current-change="finishCurrentChange"
-              :current-page.sync="currentPage"
-              :page-size="10"
-              layout="prev, pager, next, jumper"
-              :total="finishDataCount">
-          </el-pagination>
+          <div class="pos-rel p-t-20" v-if="finishList.length">
+            <div class="block tx-r">
+              <el-pagination
+                  @current-change="finishCurrentChange"
+                  :current-page.sync="currentPage"
+                  :page-size="10"
+                  layout="prev, pager, next, jumper"
+                  :total="finishDataCount">
+              </el-pagination>
+            </div>
+          </div>
         </el-tab-pane>
       </el-tabs>
       <transition name="el-zoom-in-top">
