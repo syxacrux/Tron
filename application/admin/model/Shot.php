@@ -228,8 +228,6 @@ class Shot extends Common
 				$this->commit();
 				return true;
 			}
-
-
 		} catch (\Exception $e) {
 			$this->rollback();
 			$this->error = '编辑失败';
