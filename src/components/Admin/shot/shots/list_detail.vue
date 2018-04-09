@@ -49,14 +49,18 @@
           <el-table-column prop="actual_end_timestamp" label="实际结束"></el-table-column>
           <!--<el-table-column prop="make_demand" label="备注"></el-table-column>-->
         </el-table>
-        <!--<btnGroup :selectedData="multipleSelection" :type="'studios'"></btnGroup>-->
-        <el-pagination
-            @current-change="listCurrentChange"
-            layout="prev, pager, next"
-            :page-size="limit"
-            :current-page="listCurrentPage"
-            :total="listDataCount">
-        </el-pagination>
+        <div class="pos-rel p-t-20">
+          <!--<btnGroup :selectedData="multipleSelection" :type="'studios'"></btnGroup>-->
+          <div class="block tx-r">
+            <el-pagination
+                @current-change="listCurrentChange"
+                layout="total, prev, pager, next"
+                :page-size="limit"
+                :current-page="listCurrentPage"
+                :total="listDataCount">
+            </el-pagination>
+          </div>
+        </div>
       </div>
       <el-tabs v-if="!isList" v-model="activeName" @tab-click="tabClick" class="fl">
         <el-tab-pane label="镜头制作中" name="shotsInDevelopment">
