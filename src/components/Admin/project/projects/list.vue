@@ -26,7 +26,7 @@
         </el-badge>
       </div>
     </div>
-    <div>
+    <div v-if="listShow">
       <el-col class="project_list" :span="11" v-for="(item, index) in tableData" :key="item.id">
         <el-card :body-style="{ padding: '0px' }">
           <img :src="address + item.project_image" class="image">
@@ -41,21 +41,14 @@
               </p>
             </div>
             <div class="bottom clearfix tx-r">
-              <span v-if="editShow">
-                <!-- <router-link :to="{ name: 'projectsEdit', params: { id: item.id }}">
-                  <el-button size="small" type="primary">编辑</el-button>
-                </router-link> -->
-                 <el-button size="small" type="primary" @click="ProjectEdit(item.id)">编辑</el-button>
-              </span>
+              <el-button v-if="editShow" size="small" type="primary" @click="ProjectEdit(item.id)">编辑</el-button>
               <el-button size="small" type="danger" @click="confirmDelete(item)">删除</el-button>
             </div>
           </div>
         </el-card>
       </el-col>
-    <div class="pos-rel p-t-20">
-      <!--<btnGroup :selectedData="multipleSelection" :type="'studios'"></btnGroup>-->
+      <div class="pos-rel p-t-20"></div>
     </div>
-  </div>
   </div>
 </template>
 
@@ -78,9 +71,6 @@
       }
     },
     methods: {
-      updateBlock(id, status) {
-        this.blocks.find(b => b.id === Number(id)).status = status;
-      },
 //      删除项目执行方法
       confirmDelete(item) {
         this.$confirm('确认删除该项目?', '提示', {
@@ -149,12 +139,19 @@
     },
     mixins: [http],
     computed: {
+//      项目列表
+      listShow() {
+        return _g.getHasRule('projects-index')
+      },
+//      添加项目按钮
       addShow() {
         return _g.getHasRule('projects-save')
       },
+//      编辑项目按钮
       editShow() {
         return _g.getHasRule('projects-update')
       },
+//      删除项目按钮
       deleteShow() {
         return _g.getHasRule('projects-delete')
       }
