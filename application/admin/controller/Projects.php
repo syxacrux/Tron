@@ -14,7 +14,7 @@ class Projects extends BaseCommon
 	{
 		$project_model = new Project();
 		$uid = $this->uid;
-		$group_id = Access::get($uid)->group_id;
+		$group_id = Access::where('user_id',$uid)->value('group_id');
 		$param = $this->param;
 		$keywords = !empty($param['keywords']) ? json_decode($param['keywords'], true) : '';
 		$data = $project_model->getList($keywords, $uid, $group_id);
@@ -80,7 +80,7 @@ class Projects extends BaseCommon
 		$project_model = model('Project');
 		$param = $this->param;
 		$uid = $this->uid;
-		$group_id = Access::get($uid)->group_id;
+		$group_id = Access::where('user_id',$uid)->value('group_id');
 		$data = $project_model->getAuth_byUid($param,$uid,$group_id);
 		return resultArray(['data'=>$data]);
 	}

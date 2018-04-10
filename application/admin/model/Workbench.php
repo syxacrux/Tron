@@ -132,7 +132,6 @@ class Workbench extends Common
 			$where['field_id'] = $keyword['field_id'];
 		}
 		$dataCount = $this->where($where)->count('id'); //全部数量
-
 		// 若有分页
 		if ($page && $limit) {
 			//暂定为总页数为40 /每列显示10条数据 $limit 10

@@ -28,7 +28,7 @@ class Shots extends BaseCommon
 	{
 		$shot_model = model('Shot');
 		$uid = $this->uid;
-		$group_id = Access::get($uid)->group_id; //所属角色
+		$group_id = Access::where('user_id',$uid)->value('group_id'); //所属角色
 		$param = $this->param;
 		$keywords = !empty($param['keywords']) ? $param['keywords'] : '';
 		$page = !empty($param['page']) ? $param['page'] : '';
@@ -109,7 +109,7 @@ class Shots extends BaseCommon
 	{
 		$shot_model = model('Shot');
 		$uid = $this->uid;
-		$group_id = Access::get($uid)->group_id; //所属角色
+		$group_id = Access::where('user_id',$uid)->value('group_id'); //所属角色
 		$param = $this->param;
 		$data = $shot_model->addData($param, $uid, $group_id);
 		if (!$data) {
