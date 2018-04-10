@@ -173,7 +173,7 @@ class Workbenches extends BaseCommon
 	}
 
 	//删除所属任务的制作人 操作时，同时删除相应的目录 python
-	public function delete_userId()
+	public function delete_userid()
 	{
 		$workbench_model = model('Workbench');
 		$param = $this->param;
