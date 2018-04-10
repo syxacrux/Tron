@@ -65,7 +65,7 @@
       <el-tabs v-if="!isList" v-model="activeName" @tab-click="tabClick" class="fl">
         <el-tab-pane label="镜头制作中" name="shotsInDevelopment">
           <div class="shot_card ovf-hd">
-            <el-col :span="12">
+            <el-col v-if="inDevelopmentShow" :span="12">
               <div class="grid-content">
                 <h2 class="m-0">制作中</h2>
                 <ul class="p-l-0 m-0">
@@ -138,7 +138,7 @@
                 </div>
               </div>
             </el-col>
-            <el-col :span="12">
+            <el-col v-if="feedbackShow" :span="12">
               <div class="grid-content bg-purple-light">
                 <h2 class="m-0">反馈中</h2>
                 <ul class="p-l-0 m-0">
@@ -287,7 +287,7 @@
             </div>
           </div>
         </el-tab-pane>
-        <el-tab-pane label="镜头暂停" name="shotsSuspend">
+        <el-tab-pane v-if="suspendShow" label="镜头暂停" name="shotsSuspend">
           <el-col :span="12" v-for="item in pauseList" :key="item.id" @click="shotDetail(item.id)">
             <div class="grid-content p-b-5">
               <el-card>
@@ -353,7 +353,7 @@
             </div>
           </div>
         </el-tab-pane>
-        <el-tab-pane label="镜头完成" name="shotsFinish">
+        <el-tab-pane v-if="finishShow" label="镜头完成" name="shotsFinish">
           <el-col :span="12" v-for="item in finishList" :key="item.id" @click="shotDetail(item.id)">
             <div class="grid-content p-b-5">
               <el-card>
@@ -425,7 +425,7 @@
           <el-card>
             <div slot="header" class="clearfix">
               <span>镜头详情</span>
-              <i class="el-icon-edit m-l-5 fz-14 c-light-gray pointer" @click="editShot"></i>
+              <i v-if="editShow" class="el-icon-edit m-l-5 fz-14 c-light-gray pointer" @click="editShot"></i>
               <i v-if="deleteShow" class="el-icon-delete m-l-5 fz-14 c-light-gray pointer" @click="deleteShot"></i>
               <i class="el-icon-close fr pointer" @click="isShotDetailShow = !isShotDetailShow"></i>
             </div>
@@ -824,21 +824,45 @@
     },
     mixins: [http],
     computed: {
-//      addShow() {
-//        return _g.getHasRule('projects-save')
-//      },
-//      editShow() {
-//        return _g.getHasRule('projects-update')
-//      },
+//      编辑镜头按钮
+      editShow() {
+        return _g.getHasRule('shots-update')
+      },
+//      删除镜头按钮
       deleteShow() {
-        console.log(_g.getHasRule('shots-delete'), 890)
         return _g.getHasRule('shots-delete')
       },
+//      删除镜头所属环节按钮
       deleteShowTache() {
         return _g.getHasRule('shots-delete_tache')
       },
+//      删除镜头环节所属工作室按钮
       deleteShowTacheStudio() {
         return _g.getHasRule('shots-delete_studio')
+      },
+//      制作中按钮
+      inDevelopmentShow() {
+        return _g.getHasRule('shots-in_production_data')
+      },
+//      反馈中按钮
+      feedbackShow() {
+        return _g.getHasRule('shots-feedback_data')
+      },
+//      镜头暂停按钮
+      suspendShow() {
+        return _g.getHasRule('shots-pause_data')
+      },
+////      等待制作按钮
+//      waitDevelopmentShow() {
+//        return _g.getHasRule('shots-save')
+//      },
+////      等待资产按钮
+//      waitAssetShow() {
+//        return _g.getHasRule('shots-save')
+//      },
+//      镜头完成按钮
+      finishShow() {
+        return _g.getHasRule('shots-finish_data')
       }
     }
   }

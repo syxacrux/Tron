@@ -698,9 +698,11 @@
     },
     mixins: [http, fomrMixin],
     computed: {
+//      添加场号按钮
       addShow() {
-        return _g.getHasRule('shots-filed_save')
+        return _g.getHasRule('shots-save_filed')
       },
+//      批量导入镜头按钮
       importAddShow() {
         return _g.getHasRule('shot_import')
       }

@@ -756,9 +756,10 @@
       }
     },
     computed: {
+//      添加场号按钮
       addShow() {
-        return _g.getHasRule('shots-filed_save')
-      }
+        return _g.getHasRule('shots-save_filed')
+      },
     }
   }
 </script>
