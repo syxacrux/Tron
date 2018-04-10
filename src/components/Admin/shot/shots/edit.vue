@@ -681,7 +681,7 @@
             this.apiPut('admin/shots/', this.id, this.form).then((res) => {
               this.handelResponse(res, (data) => {
                 _g.toastMsg('success', '编辑成功')
-                _g.clearVuex('setUsers')
+//                _g.clearVuex('setUsers')
                 setTimeout(() => {
                   this.dialogFormVisible = false
                   this.isLoading = !this.isLoading
