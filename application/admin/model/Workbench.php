@@ -194,7 +194,7 @@ class Workbench extends Common
 				//每个镜头
 				$min_tache_sort = min($this->where(['shot_id'=>$shot_id,'user_id'=>$uid])->column('tache_sort'));
 				if($min_tache_sort == 1){
-					$list = [];
+					$list_data = [];
 					$dataCount[] = 0;
 				}else{	//2
 					$range_tache_sort = $min_tache_sort-1;
@@ -203,15 +203,21 @@ class Workbench extends Common
 						$where['shot_id'] = $shot_id;
 						$where['tache_sort'] = 1;
 						$dataCount[] = $this->where($where)->count('id');
-						$list[] = $this->where(['shot_id'=>$shot_id,'tache_sort'=>1])->page($page,$limit)->select();
+						$list_data[] = $this->where(['shot_id'=>$shot_id,'tache_sort'=>1])->page($page,$limit)->select();
 					}else{
 						$where['shot_id'] = $shot_id;
 						$where['tache_sort'] = ['between',[1,$range_tache_sort]];
 						$dataCount[] = $this->where($where)->count('id');
-						$list[] = $this->where($where)->page($page,$limit)->select();
+						$list_data[] = $this->where($where)->page($page,$limit)->select();
 					}
 				}
 			}
+			foreach($list_data as $key=>$value){
+				if(empty($value)){
+					unset($list_data[$key]);
+				}
+			}
+			$list = array_values($list_data)[0];
 			$dataCount = array_sum($dataCount);
 			foreach($list as $key=>$value){
 				$list[$key]['project_name'] = Project::get($value['project_id'])->project_byname;
