@@ -9,14 +9,14 @@
     </div>
     <div class="tx-r">
       <el-tooltip effect="dark" content="工作台进度" placement="bottom-start">
-        <el-button type="primary" plain size="mini" @click="isList = true"><i class="el-icon-menu"></i></el-button>
+        <el-button type="primary" plain size="mini" @click="isTaskLIst = true"><i class="el-icon-menu"></i></el-button>
       </el-tooltip>
       <el-tooltip effect="dark" content="工作台列表" placement="bottom-start">
         <el-button type="primary" plain size="mini" @click="workList()"><i class="el-icon-document"></i></el-button>
       </el-tooltip>
     </div>
     <div class="m-b-20 ovf-hd">
-      <el-tabs v-model="activeName" @tab-click="handleClick" class="fl" v-if="isList">
+      <el-tabs v-model="activeName" @tab-click="handleClick" class="fl" v-if="isTaskLIst">
         <el-tab-pane label="任务" name="task">
           <kanban-board :stages="stages" :blocks="blocks" @update-block="updateBlock">
             <el-card class="box-card point" v-for="block in blocks" :slot="block.id" :key="block.id">
@@ -99,7 +99,7 @@
               <div class="grid-content bg-purple">
                 <h2 class="m-0 h-40 tx-c c-white">资产</h2>
                 <ul class="p-l-0 m-0">
-                  <li v-for="block in upstreamListTask" :key="block.id" class="text" @click="task2 = !task2">
+                  <li v-for="block in upstreamListTask" :key="block.id" class="text" @click="isTaskDetailShow = !isTaskDetailShow">
                     <el-card class="box-card">
                       <!-- <div v-for="o in 4" :key="o" class="text item">
                         {{'列表内容 ' + o }}
@@ -175,11 +175,8 @@
               <div class="grid-content bg-purple-light">
                 <h2 class="m-0 h-40 tx-c c-white" style="background: yellowgreen">镜头</h2>
                 <ul class="p-l-0 m-0">
-                  <li v-for="block in upstreamListShot" :key="block.id" class="text" @click="task2 = !task2">
+                  <li v-for="block in upstreamListShot" :key="block.id" class="text" @click="isTaskDetailShow = !isTaskDetailShow">
                     <el-card class="box-card">
-                      <!-- <div v-for="o in 4" :key="o" class="text item">
-                        {{'列表内容 ' + o }}
-                      </div> -->
                       <div class="text item">
                         <div class="text-Lens pos-rel">
                           <p class="text-Lens-name">{{block.project_name}}：<span>{{block.shot_number}}:{{block.task_byname}}</span></p>
@@ -207,7 +204,7 @@
                                     </el-tooltip>
                                     <el-tooltip class="m-r-5 pointer" effect="dark" content="任务在此状态时间"
                                                 placement="bottom-start">
-                                      <span>无</span>
+                                      <span>{{ shotCreateTime(block.create_timestamp) }}天</span>
                                     </el-tooltip>
                                     <el-tooltip class="m-r-5 pointer" effect="dark" content="任务分配时间"
                                                 placement="bottom-start">
@@ -319,7 +316,7 @@
           </div>
         </el-tab-pane>
       </el-tabs>
-      <el-table v-if="!isList" :data="tableList" stripe class="fl" @row-click="taskDetail">
+      <el-table v-if="!isTaskLIst" :data="tableList" stripe class="fl" @row-click="taskDetail">
         <el-table-column type="selection" width="50"></el-table-column>
         <el-table-column prop="project_name" label="项目"></el-table-column>
         <el-table-column prop="field_number" label="场号"></el-table-column>
@@ -334,13 +331,13 @@
         <el-table-column prop="user_name" label="制作人"></el-table-column>
       </el-table>
       <transition name="el-zoom-in-top">
-        <div class="task_detail fr" v-show="task2">
+        <div class="task_detail fr" v-show="isTaskDetailShow">
           <el-card class="box-card task-xing">
             <div slot="header" class="clearfix">
               <span>任务详情</span>
               <i class="el-icon-edit m-l-5 fz-14 c-light-gray pointer" @click="editWorkbench"></i>
                 <i class="el-icon-delete m-l-5 fz-14 c-light-gray pointer" @click="deleteTask(finishList.id)"></i>
-                <i class="el-icon-close fr pointer" @click="task2 = !task2"></i>
+                <i class="el-icon-close fr pointer" @click="isTaskDetailShow = !isTaskDetailShow"></i>
             </div>
             <el-row :gutter="20" class="m-b-5">
               <el-col :span="12">
@@ -377,7 +374,7 @@
                   <!-- <span class="" v-for="(item, index) in finishList.user_data" :key="index">
                     {{item.realname}}
                   </span> -->
-                  <el-tag size="mini" v-for="(item, index) in finishList.user_data" :closable="deleteShowTacheStudio" type="info" @close="deleteTacheStudio(index, item)" :key="item.id">
+                  <el-tag size="mini" v-for="(item, index) in finishList.user_data" :closable="deleteTaskTacheStudio" type="info" @close="deletetLink(index, item)" :key="item.id">
                        {{item.realname}}
                     </el-tag>
                 </p>
@@ -414,7 +411,7 @@
       </transition>
     </div>
     <editWorkbenches ref="editWorkbenches" :message="finishList"></editWorkbenches>
-    <div v-if="!isList" class="pos-rel p-t-20">
+    <div v-if="!isTaskLIst" class="pos-rel p-t-20">
       <div class="block pages">
         <el-pagination
                 @current-change="tableListCurrentChange"
@@ -437,55 +434,15 @@
   export default {
     data() {
       return {
-        isList:true,
-        task2: false,
+        // isTaskLIst:true,
+        isTaskLIst: true,//是否显示任务
+        isTaskDetailShow:false,//是否显示详情
         limit: 40,
         id:0,
         currentPage: 1,
-        activeName: 'task',
+        activeName: 'task',//默认任务页面显示
         address: window.baseUrl + '/',
         // frequencyState:true,
-        tableData: [{
-          id:0,
-            group_id:null,//角色ID
-            user_id:null,//所属用户
-            project_id:2,//所属项目ID
-            project_name:'',//项目简称
-            field_id:3,//	场号/集号ID
-            shot_id:null,//镜头ID 根据任务类型存值
-            assets_id:null,//资产ID 根据任务类型存值
-            tache_id:1,//环节ID
-            tache_sort:null,//环节序号
-            studio_id:2,//工作室ID
-            task_type:'',//任务类型
-            shot_image:'FUY',//镜头缩略图
-            task_byname:'FUY',//任务简称
-            make_demand:'',//制作要求
-            shot_number:'001',//镜头
-            task_priority_level:'A',//优先级
-            difficulty:'S',//难度
-            second_company:'',//二级公司(相当于其他工作室ID )
-            task_is_status_time:'32',//任务在此状态时间 分
-            task_allocated_time:'9',//任务分配时间 小时
-            plan_start_timestamp:'',//计划开始时间
-            plan_end_timestamp:'2018/02/08 14:00',//计划结束时间
-            actually_start_timestamp:'',//任务实际开始时间
-            actually_end_timestamp:'',//任务实际结时时间	
-            finish_degree:'',//完成度
-            task_status:1,//任务状态 1等待制作 5制作中 10等待审核 15 镜头反馈中 16 资产反馈中 20内部审核通过 25完成 30客户通过
-            is_pause:1,//是否暂停 1 非暂停 2暂停
-            camera_model:'',//相机型号
-            camera_catch:'',//相机捕捉	
-            camera_motion:1,//相机运动 1匀速
-            camera_height:null,//相机高度
-            camera_focus:'',//相机焦距
-            focus_distance:'',//对焦距离
-            depth_of_field:'',//景深
-            pid:1,//所属任务主键
-            create_time:'',//创建时间
-            update_time:0,//改变状态时更新时间
-
-        }],
         stages: ['制作中', '反馈中',  '等待制作', '提交发布'],
         blocksDataCount:0,//任务的数量
         blocks: [],//任务页面列表
@@ -495,7 +452,6 @@
         upstreamListShot:[],//等待上游列表
         completeDataCount:0,//完成数量
         completeList:[],//完成列表
-
         tableList: [],  //工作台列表
         tableListDataCount:0,//工作台列表数量
         // limit: 10,
@@ -520,7 +476,7 @@
             this.handelResponse(res, (data) => {
               _g.toastMsg('success', '删除成功')
               this.init(this.activeName)
-              this.task2 = false
+              this.isTaskDetailShow = false
             })
           })
         }).catch(() => {
@@ -528,7 +484,7 @@
         })
       },
             //      工作台详情删除制作人
-      deleteTacheStudio(tache_name, item) {
+      deletetLink(tache_name, items) {
         // console.log(item)
         this.$confirm('确认删除该制作人?', '提示', {
           confirmButtonText: '确定',
@@ -538,7 +494,7 @@
           _g.openGlobalLoading()
           const data = {
             task_id: this.id,
-            user_id: item.user_id
+            user_id: items.user_id
           }
           this.apiPost('task/user_del', data).then((res) => {
             _g.closeGlobalLoading()
@@ -573,10 +529,10 @@
         // console.log(tab)
         switch (tab.label){
           case '任务':
-            this.getAllWorkbenches('admin/workbenches',1,parseInt(tab.index)+1,40)
+            this.getAllWorkbenches('admin/workbenches',1,parseInt(tab.index)+1,40)//任务页面传参数
           break;
           case '完成':
-            this.getAllWorkbenches('task/finish_task',1,parseInt(tab.index)+1,10)
+            this.getAllWorkbenches('task/finish_task',1,parseInt(tab.index)+1,10)//完成页面传参数
           break;
           case '等待上游':
             this.getAllWorkbenches('task/upper_shots',1,parseInt(tab.index)+1,10)//镜头
@@ -585,8 +541,7 @@
       },
       //工作台列表
       workList(){
-        // @click="isList = false"
-        this.isList = false
+        this.isTaskLIst = false
         this.getAllWorkbenches('task/index_list',1,11,10)
       },
       //      时间抽转换为时间格式
@@ -630,16 +585,18 @@
         this.getAllWorkbenches('task/index_list',page,11,10)
       },
 //      获取项目列表
-      getAllWorkbenches(state,page,status,limit) {
 
+      // params: {
+      //   state:请求地址
+      //   status:tab切换传入的值
+      // },
+      getAllWorkbenches(state,page,status,limit) {
         this.loading = true
         const data = {
           params: {
             keywords: {
-              // list_type: status,
             },
             page: page,
-            // limit: this.limit
             limit: limit
           }
         }
@@ -651,17 +608,14 @@
                 _(this.blocks).forEach((res1,res2) => {
                   this.blocks[res2].status = res1.task_status == 1 ? '等待制作' : (res1.task_status == 5 ? '制作中' : (res1.task_status == 15 ? '反馈中' : '提交发布'))
                 })
-                // console.log(this.blocks)
                 this.blocksDataCount=data.dataCount
                 break;
               case 2://等待上游列表
                 this.upstreamListShot=data.list
-                // console.log(this.completeList)
                 this.upstreamDataCountShot=data.dataCount
                 break;
               case 3://完成列表
                 this.completeList=data.list
-                // console.log(this.completeList)
                 this.completeDataCount=data.dataCount
                 break;
               case 11://工作台列表
@@ -680,16 +634,15 @@
           id = id.id
         }
         this.id = id
-        // console.log(id)
         this.apiGet('admin/workbenches/' + id).then((res) => {
           this.handelResponse(res, (data) => {
             this.finishList = data
           })
         })
-        if (this.task2) {
+        if (this.isTaskDetailShow) {
 
         } else {
-          this.task2 = !this.task2
+          this.isTaskDetailShow = !this.isTaskDetailShow
         }
       },
 //      初始化项目列表内容
@@ -705,17 +658,8 @@
     },
     mixins: [http],
     computed: {
-//      addShow() {
-//        return _g.getHasRule('workbenches-save')
-//      },
-//      editShow() {
-//        return _g.getHasRule('workbenches-update')
-//      },
-//      deleteShow() {
-//        return _g.getHasRule('workbenches-delete')
-//      }
-      deleteShowTacheStudio() {
-        return _g.getHasRule('workbenches-delete_userId')
+      deleteTaskTacheStudio() {
+        return _g.getHasRule('workbenches-delete_userid')
       }
     }
   }
