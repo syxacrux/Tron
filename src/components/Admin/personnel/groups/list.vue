@@ -1,5 +1,11 @@
 <template>
   <div>
+    <div class="m-b-20">
+      <el-breadcrumb separator="/">
+        <el-breadcrumb-item :to="{ path: '/admin' }">首页</el-breadcrumb-item>
+        <el-breadcrumb-item>角色管理</el-breadcrumb-item>
+      </el-breadcrumb>
+    </div>
     <div class="m-b-20" v-if="addShow">
       <router-link class="btn-link-large add-btn" to="add">
         <i class="el-icon-plus"></i>&nbsp;&nbsp;添加角色
