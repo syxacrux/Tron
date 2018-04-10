@@ -192,7 +192,7 @@ class Shots extends ApiCommon
 		$shot_id = !empty($param['id']) ? $param['id'] : '';
 		$studio_id = !empty($param['studio_id']) ? $param['studio_id'] : '';
 		$tache_name = !empty($param['tache_name']) ? $param['tache_name'] : '';
-		$data = $shot_model->StudioDel_ByShotId($shot_id,$tache_name,$studio_id);
+		$data = $shot_model->StudioDel_ByShotId($shot_id, $tache_name, $studio_id);
 		return resultArray(['data' => $data]);
 	}
 
