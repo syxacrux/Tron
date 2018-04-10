@@ -1,75 +1,53 @@
 <template>
-	<div>
-		<div class="m-b-20" v-if="addShow">
-			<router-link class="btn-link-large add-btn" to="add">
-				<i class="el-icon-plus"></i>&nbsp;&nbsp;添加角色
-			</router-link>
-		</div>
-		<el-table
-		:data="tableData"
-		style="width: 100%"
-		@selection-change="selectItem">
-			<el-table-column
-			type="selection"
-			width="50">
-			</el-table-column>
-			<el-table-column
-			label="角色名称"
-			prop="title">
-			</el-table-column>
-      <el-table-column
-      label="描述"
-      prop="remark">
+  <div>
+    <div class="m-b-20">
+      <el-breadcrumb separator="/">
+        <el-breadcrumb-item :to="{ path: '/admin' }">首页</el-breadcrumb-item>
+        <el-breadcrumb-item>角色管理</el-breadcrumb-item>
+      </el-breadcrumb>
+    </div>
+    <div class="m-b-20" v-if="addShow">
+      <router-link class="btn-link-large add-btn" to="add">
+        <i class="el-icon-plus"></i>&nbsp;&nbsp;添加角色
+      </router-link>
+    </div>
+    <el-table v-if="listShow" :data="tableData" style="width: 100%" @selection-change="selectItem">
+      <el-table-column type="selection" width="50"></el-table-column>
+      <el-table-column label="角色名称" prop="title"></el-table-column>
+      <el-table-column label="描述" prop="remark"></el-table-column>
+      <el-table-column label="状态" prop="status" width="100">
+        <template slot-scope="scope">
+          <div>{{ scope.row.status | status }}</div>
+        </template>
       </el-table-column>
-			<el-table-column
-			label="状态"
-      prop="status"
-			width="100">
+      <el-table-column label="操作" width="200" v-if="editShow || deleteShow">
         <template slot-scope="scope">
           <div>
-            {{ scope.row.status | status }}
-          </div>
-        </template>
-			</el-table-column>
-			<el-table-column
-			label="操作"
-			width="200">
-        <template slot-scope="scope">
-  				<div>
   					<span v-if="editShow">
   						<router-link :to="{ name: 'groupsEdit', params: { id: scope.row.id }}">
-  						  <el-button
-                size="small"
-                type="primary">
-                编辑
-                </el-button>
+  						  <el-button size="small" type="primary">编辑</el-button>
   						</router-link>
   					</span>
-  					<span v-if="deleteShow">
-  						<el-button
-  						size="small"
-  						type="danger"
-  						@click="confirmDelete(scope.row)">
-  						删除
-  						</el-button>
+            <span v-if="deleteShow">
+  						<el-button size="small" type="danger" @click="confirmDelete(scope.row)">删除</el-button>
   					</span>
-  				</div>
+          </div>
         </template>
-			</el-table-column>
-		</el-table>
-		<div class="pos-rel p-t-20">
-			<btnGroup :selectedData="multipleSelection" :type="'groups'"></btnGroup>
+      </el-table-column>
+    </el-table>
+    <div class="pos-rel p-t-20">
+      <btnGroup :selectedData="multipleSelection" :type="'groups'"></btnGroup>
       <div class="block pages">
         <el-pagination
-                @current-change="handleCurrentChange"
-                layout="prev, pager, next"
-                :page-size="limit"
-                :current-page="currentPage"
-                :total="dataCount">
+            @current-change="handleCurrentChange"
+            layout="prev, pager, next"
+            :page-size="limit"
+            :current-page="currentPage"
+            :total="dataCount">
         </el-pagination>
       </div>
-		</div>
-	</div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -78,26 +56,20 @@
   import _g from '@/assets/js/global'
 
   export default {
-    data() {
+    data () {
       return {
-        tableData: [],
-        multipleSelection: [],
-        limit: 10,
-        currentPage: 1,
-        dataCount: null,
+        tableData: [], multipleSelection: [], limit: 10, currentPage: 1, dataCount: null,
       }
     },
     methods: {
-      //      当表格列表选项发生改变时出发
-      selectItem(val) {
+//      当表格列表选项发生改变时出发
+      selectItem (val) {
         this.multipleSelection = val
       },
-       //      删除角色执行方法
-      confirmDelete(item) {
+//      删除角色执行方法
+      confirmDelete (item) {
         this.$confirm('确认删除该角色?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
+          confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning'
         }).then(() => {
           _g.openGlobalLoading()
           this.apiDelete('admin/groups/', item.id).then((res) => {
@@ -113,17 +85,15 @@
           // handle error
         })
       },
-      //      切换页码
-      handleCurrentChange(page) {
-      this.getGroups(page)
+//      切换页码
+      handleCurrentChange (page) {
+        this.getGroups(page)
       },
-      getGroups(page) {
+      getGroups (page) {
         this.loading = true
         const data = {
           params: {
-          keywords: this.keywords,
-          page: page,
-          limit: this.limit
+            keywords: this.keywords, page: page, limit: this.limit
           }
         }
         this.apiGet('admin/groups', data).then((res) => {
@@ -134,17 +104,23 @@
         })
       }
     },
-    created() {
+    created () {
       this.getGroups(1)
     },
     computed: {
-      addShow() {
+      listShow() {
+        return _g.getHasRule('groups-index')
+      },
+//      添加角色按钮
+      addShow () {
         return _g.getHasRule('groups-save')
       },
-      editShow() {
+//      编辑角色按钮
+      editShow () {
         return _g.getHasRule('groups-update')
       },
-      deleteShow() {
+//      删除角色按钮
+      deleteShow () {
         return _g.getHasRule('groups-delete')
       }
     },
