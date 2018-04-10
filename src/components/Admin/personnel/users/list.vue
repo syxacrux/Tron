@@ -13,7 +13,7 @@
         </router-link>
       </div>
       <div class="fl w-200" :class="{'m-l-30':addShow}">
-        <el-input placeholder="请输入成员" v-model="keywords.name">
+        <el-input placeholder="请输入成员" v-model="name">
           <el-button slot="append" icon="el-icon-search" @click="search()"></el-button>
         </el-input>
       </div>
@@ -115,6 +115,7 @@
       },
       getAllUsers(page) {
         this.loading = true
+        console.log(this.keywords)
         const data = {
           params: {
             keywords: this.keywords,
