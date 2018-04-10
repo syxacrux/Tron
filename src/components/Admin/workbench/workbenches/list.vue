@@ -52,7 +52,8 @@
                               <span>
                                 <el-tooltip class="m-r-5 pointer" effect="dark" content="任务剩余天数"
                                             placement="bottom-start">
-                                  <span>{{block.surplus_days}}</span>
+                                  <!-- <span>{{(block.surplus_days) + shotRemainDay(block.plan_end_timestamp)}}</span> -->
+                                  <span>{{shotRemainDay(block.plan_end_timestamp)}}天</span>
                                 </el-tooltip>
                                 <el-tooltip class="m-r-5 pointer" effect="dark" content="任务在次状态时间"
                                             placement="bottom-start">
@@ -98,7 +99,7 @@
               <div class="grid-content bg-purple">
                 <h2 class="m-0 h-40 tx-c c-white">资产</h2>
                 <ul class="p-l-0 m-0">
-                  <li v-for="block in upstreamList" :key="block.id" class="text" @click="task2 = !task2">
+                  <li v-for="block in upstreamListTask" :key="block.id" class="text" @click="task2 = !task2">
                     <el-card class="box-card">
                       <!-- <div v-for="o in 4" :key="o" class="text item">
                         {{'列表内容 ' + o }}
@@ -174,7 +175,7 @@
               <div class="grid-content bg-purple-light">
                 <h2 class="m-0 h-40 tx-c c-white" style="background: yellowgreen">镜头</h2>
                 <ul class="p-l-0 m-0">
-                  <li v-for="block in blocks" :key="block.id" class="text" @click="task2 = !task2">
+                  <li v-for="block in upstreamListShot" :key="block.id" class="text" @click="task2 = !task2">
                     <el-card class="box-card">
                       <!-- <div v-for="o in 4" :key="o" class="text item">
                         {{'列表内容 ' + o }}
@@ -416,9 +417,9 @@
     <div v-if="!isList" class="pos-rel p-t-20">
       <div class="block pages">
         <el-pagination
-                @current-change="taskCurrentChange"
+                @current-change="tableListCurrentChange"
                 layout="prev, pager, next, jumper"
-                :page-size="limit"
+                :page-size="10"
                 :current-page="currentPage"
                 :total="tableListDataCount">
         </el-pagination>
@@ -490,11 +491,13 @@
         blocks: [],//任务页面列表
         upstreamDataCountTask:0,//等待上游资产的数量
         upstreamDataCountShot:0,//等待上游镜头的数量
-        upstreamList:[],//等待上游列表
+        upstreamListTask:[],//等待上游列表
+        upstreamListShot:[],//等待上游列表
         completeDataCount:0,//完成数量
         completeList:[],//完成列表
-        tableList: [],  //任务列表
-        tableListDataCount:0,//任务数量
+
+        tableList: [],  //工作台列表
+        tableListDataCount:0,//工作台列表数量
         // limit: 10,
         finishList: {},//任务详情
       }
@@ -613,6 +616,10 @@
       //完成切换页码
       completeCurrentChange(page){
         this.getAllWorkbenches('task/finish_task',page,3,10)
+      },
+      //工作台列表切换页码
+      tableListCurrentChange(page){
+        this.getAllWorkbenches('task/index_list',page,11,10)
       },
 //      获取项目列表
       getAllWorkbenches(state,page,status,limit) {
