@@ -4,9 +4,9 @@ namespace app\admin\controller;
 
 use app\admin\model\Access;
 use app\admin\model\Project;
-use app\common\controller\ApiCommon;
+use app\common\controller\BaseCommon;
 
-class Projects extends ApiCommon
+class Projects extends BaseCommon
 {
 
 	//首页

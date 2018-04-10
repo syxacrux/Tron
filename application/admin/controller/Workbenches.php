@@ -8,9 +8,9 @@
 namespace app\admin\controller;
 
 use app\admin\model\Access;
-use app\common\controller\ApiCommon;
+use app\common\controller\BaseCommon;
 
-class Workbenches extends ApiCommon
+class Workbenches extends BaseCommon
 {
 	//工作台任务列表
 	public function index()

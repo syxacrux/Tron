@@ -20,6 +20,7 @@ class Studio extends Common{
      * @author zjs 2018/3/16
      */
     public function getList($keyword, $page, $limit,$uid,$group_id){
+    	file_put_contents('aa.txt',var_export($uid,true));
         $where = [];
         //区分工作室总监只能查看所属工作室
         if($group_id == 5){

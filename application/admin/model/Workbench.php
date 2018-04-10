@@ -111,12 +111,9 @@ class Workbench extends Common
 		 */
 		if ($group_id == 1 || $group_id == 2 || $group_id == 3 || $group_id == 4) {
 			$project_where['producer|scene_producer|scene_director|visual_effects_boss|visual_effects_producer|inside_coordinate'] = ['like', '%' . $uid . '%'];
-			$project_ids_data = Project::where($project_where)->field('id')->select();
-			if (!empty($project_ids_data)) {
-				foreach ($project_ids_data as $key => $value) {
-					$project_id_arr[] = $value['id'];
-				}
-				$project_ids = implode(",", $project_id_arr);
+			$project_ids_arr = Project::where($project_where)->column('id');
+			if (!empty($project_ids_arr)) {
+				$project_ids = implode(",", $project_ids_arr);
 				$where['project_id'] = ['in', $project_ids];
 			} else {  //超级管理员 uid =1
 				$where = [];

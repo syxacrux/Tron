@@ -7,7 +7,6 @@
 
 namespace app\admin\controller;
 use app\admin\model\Access;
-use app\admin\model\Group;
 use app\common\controller\BaseCommon;
 
 class Studios extends BaseCommon{

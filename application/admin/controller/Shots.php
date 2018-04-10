@@ -8,9 +8,9 @@
 namespace app\admin\controller;
 
 use app\admin\model\Access;
-use app\common\controller\ApiCommon;
+use app\common\controller\BaseCommon;
 
-class Shots extends ApiCommon
+class Shots extends BaseCommon
 {
 
 	public function index()
