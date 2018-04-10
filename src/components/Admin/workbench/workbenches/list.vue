@@ -161,7 +161,7 @@
                   <!-- <btnGroup :selectedData="multipleSelection" :type="'studios'"></btnGroup> -->
                   <div class="block pages">
                     <el-pagination
-                      @current-change="upstreamCurrentChange"
+                      @current-change="upstreamTaskCurrentChange"
                       layout="prev, pager, next, jumper"
                       :page-size="20"
                       :current-page="currentPage"
@@ -234,11 +234,11 @@
                 </ul>
                 <div class="block task-block">
                   <el-pagination
-                          @current-change="upstreamCurrentChange"
+                          @current-change="upstreamShotCurrentChange"
                           layout="prev, pager, next, jumper"
                           :page-size="10"
                           :current-page="currentPage"
-                          :total="upstreamShotCurrentChange">
+                          :total="upstreamDataCountShot">
                   </el-pagination>
                 </div>
               </div>
@@ -612,10 +612,14 @@
       taskCurrentChange(page) {
         this.getAllWorkbenches('admin/workbenches',page,1,40)
       },
-      //等待上游切换页码
+      //等待上游镜头切换页码
       upstreamShotCurrentChange(page){
         // this.getAllWorkbenches(page)
         this.getAllWorkbenches('task/upper_shots',page,2,10)
+      },
+      //等待上游资产切换页码
+      upstreamTaskCurrentChange(page){
+        //  this.getAllWorkbenches('task/upper_shots',page,2,10)
       },
       //完成切换页码
       completeCurrentChange(page){
