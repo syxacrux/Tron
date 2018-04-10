@@ -852,14 +852,6 @@
       suspendShow() {
         return _g.getHasRule('shots-pause_data')
       },
-////      等待制作按钮
-//      waitDevelopmentShow() {
-//        return _g.getHasRule('shots-save')
-//      },
-////      等待资产按钮
-//      waitAssetShow() {
-//        return _g.getHasRule('shots-save')
-//      },
 //      镜头完成按钮
       finishShow() {
         return _g.getHasRule('shots-finish_data')
