@@ -164,7 +164,7 @@
                       layout="prev, pager, next, jumper"
                       :page-size="20"
                       :current-page="currentPage"
-                      :total="upstreamDataCount">
+                      :total="upstreamDataCountTask">
                     </el-pagination>
                   </div>
                 </div>
@@ -237,7 +237,7 @@
                           layout="prev, pager, next, jumper"
                           :page-size="20"
                           :current-page="currentPage"
-                          :total="upstreamDataCount">
+                          :total="upstreamDataCountShot">
                   </el-pagination>
                 </div>
               </div>
@@ -330,7 +330,7 @@
         <el-table-column prop="plan_end_time" label="计划结束"></el-table-column>
         <el-table-column prop="actually_start_timestamp" label="实际开始"></el-table-column>
         <el-table-column prop="actually_end_timestamp" label="实际结束"></el-table-column>
-        <el-table-column prop="make_demand" label="制作人"></el-table-column>
+        <el-table-column prop="user_name" label="制作人"></el-table-column>
       </el-table>
       <transition name="el-zoom-in-top">
         <div class="task_detail fr" v-show="task2">
@@ -488,7 +488,8 @@
         stages: ['制作中', '反馈中',  '等待制作', '提交发布'],
         blocksDataCount:0,//任务的数量
         blocks: [],//任务页面列表
-        upstreamDataCount:0,//等待上游的数量
+        upstreamDataCountTask:0,//等待上游资产的数量
+        upstreamDataCountShot:0,//等待上游镜头的数量
         upstreamList:[],//等待上游列表
         completeDataCount:0,//完成数量
         completeList:[],//完成列表
@@ -525,7 +526,7 @@
       },
             //      工作台详情删除制作人
       deleteTacheStudio(tache_name, item) {
-        console.log(item)
+        // console.log(item)
         this.$confirm('确认删除该制作人?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
@@ -548,13 +549,9 @@
         })
       },
       updateBlock(id, status) {
-        // console.log(arguments)
-        // if()
-        // console.log()
         const data = {
            'id':Number(id),
            'status':status
-
         }
         this.blocks.find(b => b.id === Number(id)).status = status;
         this.apiPost('task/change_status',data).then((res) => {
@@ -569,8 +566,8 @@
       },
       //tab切换
       handleClick(tab, event) {
-        console.log(tab, event);
-        console.log(tab)
+        // console.log(tab, event);
+        // console.log(tab)
         switch (tab.label){
           case '任务':
             this.getAllWorkbenches('admin/workbenches',1,parseInt(tab.index)+1,40)
@@ -584,7 +581,7 @@
       workList(){
         // @click="isList = false"
         this.isList = false
-        this.getAllWorkbenches('task/index_list',1,11)
+        this.getAllWorkbenches('task/index_list',1,11,10)
       },
       //      时间抽转换为时间格式
       j2time(time) {
@@ -615,7 +612,7 @@
       },
       //完成切换页码
       completeCurrentChange(page){
-        this.getAllWorkbenches(page)
+        this.getAllWorkbenches('task/finish_task',page,3,10)
       },
 //      获取项目列表
       getAllWorkbenches(state,page,status,limit) {
@@ -639,12 +636,12 @@
                 _(this.blocks).forEach((res1,res2) => {
                   this.blocks[res2].status = res1.task_status == 1 ? '等待制作' : (res1.task_status == 5 ? '制作中' : (res1.task_status == 15 ? '反馈中' : '提交发布'))
                 })
-                console.log(this.blocks)
+                // console.log(this.blocks)
                 this.blocksDataCount=data.dataCount
                 break;
               case 3://完成列表
                 this.completeList=data.list
-                console.log(this.completeList)
+                // console.log(this.completeList)
                 this.completeDataCount=data.dataCount
                 break;
               case 11://工作台列表
@@ -663,19 +660,16 @@
           id = id.id
         }
         this.id = id
-        console.log(id)
+        // console.log(id)
         this.apiGet('admin/workbenches/' + id).then((res) => {
           this.handelResponse(res, (data) => {
             this.finishList = data
-            // this.id = data.id
-            console.log(this.finishList)
           })
         })
         if (this.task2) {
 
         } else {
           this.task2 = !this.task2
-          //  @click="task2 = !task2"
         }
       },
 //      初始化项目列表内容
@@ -701,7 +695,7 @@
 //        return _g.getHasRule('workbenches-delete')
 //      }
       deleteShowTacheStudio() {
-        return _g.getHasRule('shots-delete_studio')
+        return _g.getHasRule('workbenches-delete_userId')
       }
     }
   }
