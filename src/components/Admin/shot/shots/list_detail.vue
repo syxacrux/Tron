@@ -34,7 +34,7 @@
           <el-table-column prop="shot_number" label="镜头号"></el-table-column>
           <el-table-column prop="difficulty" label="难度"></el-table-column>
           <el-table-column prop="priority_level" label="优先级"></el-table-column>
-          <el-table-column prop="tache" label="进度">
+          <el-table-column prop="tache" label="进度" width="150">
             <template slot-scope="scope">
               <el-tag v-for="value in scope.row.tache_info"
                       v-if="value.finish_degree!==''?true:false" :key="value.id"

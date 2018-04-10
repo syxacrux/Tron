@@ -169,7 +169,7 @@
     mixins: [http],
     computed: {
       addShow() {
-        return _g.getHasRule('shots-index_detail')
+        return _g.getHasRule('shots-save')
       },
 //      editShow() {
 //        return _g.getHasRule('shots-index_detail-update')

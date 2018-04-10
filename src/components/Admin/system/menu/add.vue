@@ -88,7 +88,7 @@
             this.apiPost('admin/menus', this.form).then((res) => {
               this.handelResponse(res, (data) => {
                 this.isLoading = false
-                _g.clearVuex('setRules')
+//                _g.clearVuex('setRules')
                 _g.toastMsg('success', '添加成功')
                 setTimeout(() => {
                   this.goback()
