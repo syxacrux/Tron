@@ -193,8 +193,11 @@ class Workbench extends Common
 		if (!empty($keywords['shot_id'])) {
 			$where['id'] = $keywords['shot_id'];
 		}
-		//获取当前人的最小环节ID
-		$min_tache_id = min(explode(',', User::get($uid)->tache_ids));
+		//根据当前用户获取所属的所有镜头ID 去重
+		$shot_ids_arr = array_unique($this->where('user_id',$uid)->column('shot_id'));
+		$shot_ids = implode(',',$shot_ids_arr); //11,12,13
+		$common_tache_ids_arr = array_unique($this->where('shot_id','in',$shot_ids))->order('tache_sort asc')->column('tache_id');
+		$tache_ids_arr_byUserId = array_unique($this->where('shot_id','in',$shot_ids))->order('tache_sort asc')->column('tache_id');
 
 	}
 

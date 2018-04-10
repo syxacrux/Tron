@@ -75,4 +75,14 @@ class Projects extends ApiCommon
 		return resultArray(['data' => '删除成功']);
 	}
 
+	//检测当前登陆人是否有编辑当前项目的权限
+	public function editProject_ByAuth(){
+		$project_model = model('Project');
+		$param = $this->param;
+		$uid = $this->uid;
+		$group_id = Access::get($uid)->group_id;
+		$data = $project_model->getAuth_byUid($param,$uid,$group_id);
+		return resultArray(['data'=>$data]);
+	}
+
 }
