@@ -305,7 +305,7 @@ class Shot extends Common
 	//获取当前镜头各环节进度
 	public function rate_of_progress($shot_id)
 	{
-		$tache_data = Workbench::where('shot_id', $shot_id)->column('tache_id');  //获取所属镜头的环节
+		$tache_data = array_unique(Workbench::where(['pid'=>0,'shot_id'=>$shot_id])->column('tache_id'));  //获取所属镜头的环节
 		foreach ($tache_data as $key => $value) {
 			//根据当前镜头ID与环节ID查询是否有其任务
 			$curr_task_data = Workbench::where(['shot_id' => $shot_id, 'tache_id' => $value])->find();
