@@ -196,5 +196,12 @@ class Shots extends ApiCommon
 		return resultArray(['data' => $data]);
 	}
 
+	//添加场号
+	public function save_field(){
+		$shot_model = model('Shot');
+		$param = $this->param;
+		$data = $shot_model->field_add($param);
+		return resultArray(['data'=>$data]);
+	}
 
 }
