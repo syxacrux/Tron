@@ -26,22 +26,19 @@
         <i class="el-icon-plus"></i>&nbsp;&nbsp;添加镜头
       </router-link>
       <div class="pos-abs">
-        <el-badge :value="workingCount" :max="10" class="item">
+        <el-badge :value="workingCount" :max="10" class="item" v-if="inDevelopmentShow">
           <el-button size="large" @click="getShotsDetail('shotsInDevelopment')">制作中</el-button>
         </el-badge>
-        <el-badge :value="waitingCount" :max="10" class="item">
+        <el-badge :value="waitingCount" :max="10" class="item" v-if="feedbackShow">
           <el-button size="large" @click="getShotsDetail('shotsInDevelopment')">反馈中</el-button>
         </el-badge>
-        <el-badge :value="suspendCount" :max="10" class="item">
+        <el-badge :value="suspendCount" :max="10" class="item" v-if="suspendShow">
           <el-button size="large" @click="getShotsDetail('shotsSuspend')">暂停</el-button>
-        </el-badge>
-        <el-badge :value="waitingCount" :max="10" class="item">
-          <el-button size="large" @click="getShotsDetail('shotsNotDevelopment')">等待制作</el-button>
         </el-badge>
         <el-badge :value="waitingCount" :max="10" class="item">
           <el-button size="large" @click="getShotsDetail('shotsNotDevelopment')">等待资产</el-button>
         </el-badge>
-        <el-badge :value="finishCount" :max="10" class="item">
+        <el-badge :value="finishCount" :max="10" class="item" v-if="finishShow">
           <el-button size="large" @click="getShotsDetail('shotsFinish')">完成</el-button>
         </el-badge>
       </div>
@@ -115,25 +112,6 @@
           </div>
         </div>
       </el-col>
-      <!-- <el-col class="shots_list" :span="12"> -->
-      <!-- <el-card :body-style="{ padding: '0px' }">
-      <img class="image">
-      <div style="padding: 14px;">
-          <div class="content">
-          <p><span>总时长：</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>遮幅比：</span></p>
-          <p><span>计划开始</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>计划结束：</span></p>
-          <p><span>项目帧率：</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>分辨率：</span></p>
-          <p><span>视效总监：</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>视效总制片：</span></p>
-          <p><span>现场制片：</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>现场指导：</span></p>
-          <p><span :title="'二级公司制片：'">二级公司制片：</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>内部协调：}</span>
-          </p>
-          </div>
-      </div>
-      </el-card> -->
-      <!-- </el-col> -->
-      <div class="pos-rel p-t-20">
-        <!--<btnGroup :selectedData="multipleSelection" :type="'studios'"></btnGroup>-->
-      </div>
     </div>
   </div>
 </template>
@@ -168,15 +146,26 @@
     },
     mixins: [http],
     computed: {
+//      添加镜头按钮
       addShow() {
         return _g.getHasRule('shots-save')
       },
-//      editShow() {
-//        return _g.getHasRule('shots-index_detail-update')
-//      },
-//      deleteShow() {
-//        return _g.getHasRule('shots-index_detail-delete')
-//      }
+//      制作中按钮
+      inDevelopmentShow() {
+        return _g.getHasRule('shots-in_production_data')
+      },
+//      反馈中按钮
+      feedbackShow() {
+        return _g.getHasRule('shots-feedback_data')
+      },
+//      镜头暂停按钮
+      suspendShow() {
+        return _g.getHasRule('shots-pause_data')
+      },
+//      镜头完成按钮
+      finishShow() {
+        return _g.getHasRule('shots-finish_data')
+      }
     }
   }
 </script>
