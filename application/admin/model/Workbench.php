@@ -189,39 +189,45 @@ class Workbench extends Common
 		}
 		//根据当前用户获取所属的所有镜头ID 去重
 		$shot_ids_arr = array_unique($this->where('user_id',$uid)->column('shot_id'));
-		foreach($shot_ids_arr as $key=>$shot_id){
-			//每个镜头
-			$min_tache_sort = min($this->where(['shot_id'=>$shot_id,'user_id'=>$uid])->column('tache_sort'));
-			if($min_tache_sort == 1){
-				$list = [];
-				$dataCount[] = 0;
-			}else{	//2
-				$range_tache_sort = $min_tache_sort-1;
-				$first_tache_sort = 1;
-				if($first_tache_sort == $range_tache_sort){	//if 2 2-1 = 1
-					$where['shot_id'] = $shot_id;
-					$where['tache_sort'] = 1;
-					$dataCount[] = $this->where($where)->count('id');
-					$list[] = $this->where(['shot_id'=>$shot_id,'tache_sort'=>1])->page($page,$limit)->select();
-				}else{
-					$where['shot_id'] = $shot_id;
-					$where['tache_sort'] = ['between',[1,$range_tache_sort]];
-					$dataCount[] = $this->where($where)->count('id');
-					$list[] = $this->where($where)->page($page,$limit)->select();
+		if(!empty($shot_ids_arr)){
+			foreach($shot_ids_arr as $key=>$shot_id){
+				//每个镜头
+				$min_tache_sort = min($this->where(['shot_id'=>$shot_id,'user_id'=>$uid])->column('tache_sort'));
+				if($min_tache_sort == 1){
+					$list = [];
+					$dataCount[] = 0;
+				}else{	//2
+					$range_tache_sort = $min_tache_sort-1;
+					$first_tache_sort = 1;
+					if($first_tache_sort == $range_tache_sort){	//if 2 2-1 = 1
+						$where['shot_id'] = $shot_id;
+						$where['tache_sort'] = 1;
+						$dataCount[] = $this->where($where)->count('id');
+						$list[] = $this->where(['shot_id'=>$shot_id,'tache_sort'=>1])->page($page,$limit)->select();
+					}else{
+						$where['shot_id'] = $shot_id;
+						$where['tache_sort'] = ['between',[1,$range_tache_sort]];
+						$dataCount[] = $this->where($where)->count('id');
+						$list[] = $this->where($where)->page($page,$limit)->select();
+					}
 				}
 			}
+			$dataCount = array_sum($dataCount);
+			foreach($list as $key=>$value){
+				$list[$key]['project_name'] = Project::get($value['project_id'])->project_byname;
+				$list[$key]['shot_number'] = Db::name('field')->where('id', $value['field_id'])->value('name') . Shot::get($value['shot_id'])->shot_number;
+				$list[$key]['task_priority_level'] = $this->task_priority_level_arr[$value['task_priority_level']];    //任务优先级
+				$list[$key]['difficulty'] = $this->difficulty_arr[$value['difficulty']];   //任务难度
+				$list[$key]['surplus_days'] = floatval(sprintf("%.2f", ($value['plan_end_timestamp'] - time()) / 86400)) . "天";   //剩余天数
+				$list[$key]['task_allot_days'] = (!empty($value['actually_start_timestamp']) || !empty($value['actually_end_timestamp'])) ? floatval(sprintf("%.2f", ($value['actually_end_timestamp'] - $value['actually_start_timestamp']) / 86400)) . "天" : '0天';//任务分配时间
+				$list[$key]['create_timestamp'] = $value['create_time'];
+				$list[$key]['create_time'] = date("Y-m-d H:i:s", $value['create_time']);
+			}
+		}else{
+			$list = [];
+			$dataCount = 0;
 		}
-		$dataCount = array_sum($dataCount);
-		foreach($list as $key=>$value){
-			$list[$key]['project_name'] = Project::get($value['project_id'])->project_byname;
-			$list[$key]['shot_number'] = Db::name('field')->where('id', $value['field_id'])->value('name') . Shot::get($value['shot_id'])->shot_number;
-			$list[$key]['task_priority_level'] = $this->task_priority_level_arr[$value['task_priority_level']];    //任务优先级
-			$list[$key]['difficulty'] = $this->difficulty_arr[$value['difficulty']];   //任务难度
-			$list[$key]['surplus_days'] = floatval(sprintf("%.2f", ($value['plan_end_timestamp'] - time()) / 86400)) . "天";   //剩余天数
-			$list[$key]['task_allot_days'] = (!empty($value['actually_start_timestamp']) || !empty($value['actually_end_timestamp'])) ? floatval(sprintf("%.2f", ($value['actually_end_timestamp'] - $value['actually_start_timestamp']) / 86400)) . "天" : '0天';//任务分配时间
-			$list[$key]['create_timestamp'] = $value['create_time'];
-			$list[$key]['create_time'] = date("Y-m-d H:i:s", $value['create_time']);
-		}
+
 		$data['list'] = $list;
 		$data['dataCount'] = $dataCount;
 		return $data;
