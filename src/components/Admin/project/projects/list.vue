@@ -42,7 +42,7 @@
             </div>
             <div class="bottom clearfix tx-r">
               <el-button v-if="editShow" size="small" type="primary" @click="ProjectEdit(item.id)">编辑</el-button>
-              <el-button size="small" type="danger" @click="confirmDelete(item)">删除</el-button>
+              <el-button v-if="deleteShow" size="small" type="danger" @click="confirmDelete(item)">删除</el-button>
             </div>
           </div>
         </el-card>
