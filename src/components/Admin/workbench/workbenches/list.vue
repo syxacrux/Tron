@@ -8,15 +8,15 @@
       </el-breadcrumb>
     </div>
     <div class="tx-r">
-      <el-tooltip effect="dark" content="工作台进度" placement="bottom-start">
+      <el-tooltip v-if="kanbanShow" effect="dark" content="工作台进度" placement="bottom-start">
         <el-button type="primary" plain size="mini" @click="isTaskLIst = true"><i class="el-icon-menu"></i></el-button>
       </el-tooltip>
-      <el-tooltip effect="dark" content="工作台列表" placement="bottom-start">
+      <el-tooltip v-if="listShow" effect="dark" content="工作台列表" placement="bottom-start">
         <el-button type="primary" plain size="mini" @click="workList()"><i class="el-icon-document"></i></el-button>
       </el-tooltip>
     </div>
     <div class="m-b-20 ovf-hd">
-      <el-tabs v-model="activeName" @tab-click="handleClick" class="fl" v-if="isTaskLIst">
+      <el-tabs v-if="isTaskLIst" v-model="activeName" @tab-click="handleClick" class="fl">
         <el-tab-pane label="任务" name="task">
           <kanban-board :stages="stages" :blocks="blocks" @update-block="updateBlock">
             <el-card class="box-card point" v-for="block in blocks" :slot="block.id" :key="block.id">
@@ -93,9 +93,9 @@
             </el-pagination>
           </div>
         </el-tab-pane>
-        <el-tab-pane label="等待上游" name="waiting">
+        <el-tab-pane v-if="assetShow || shotShow" label="等待上游" name="waiting">
           <div class="waiting ovf-hd">
-            <el-col :span="12">
+            <el-col v-if="assetShow" :span="12">
               <div class="grid-content bg-purple">
                 <h2 class="m-0 h-40 tx-c c-white">资产</h2>
                 <ul class="p-l-0 m-0">
@@ -171,7 +171,7 @@
                 </div>
               </div>
             </el-col>
-            <el-col :span="12">
+            <el-col v-if="shotShow" :span="12">
               <div class="grid-content bg-purple-light">
                 <h2 class="m-0 h-40 tx-c c-white" style="background: yellowgreen">镜头</h2>
                 <ul class="p-l-0 m-0">
@@ -241,9 +241,8 @@
               </div>
             </el-col>
           </div>
-          
         </el-tab-pane>
-        <el-tab-pane label="完成" name="complete">
+        <el-tab-pane v-if="finishShow" label="完成" name="complete">
           <div class="waiting ovf-hd">
             <el-col :span="6" v-for="block in completeList" :key="block.id">
               <div class="grid-content bg-purple p-b-5" @click="taskDetail(block.id)">
@@ -316,27 +315,40 @@
           </div>
         </el-tab-pane>
       </el-tabs>
-      <el-table v-if="!isTaskLIst" :data="tableList" stripe class="fl" @row-click="taskDetail">
-        <el-table-column type="selection" width="50"></el-table-column>
-        <el-table-column prop="project_name" label="项目"></el-table-column>
-        <el-table-column prop="field_number" label="场号"></el-table-column>
-        <el-table-column prop="shot_number" label="镜头号"></el-table-column>
-        <el-table-column prop="difficulty" label="难度"></el-table-column>
-        <el-table-column prop="task_priority_level" label="优先级"></el-table-column>
-        <el-table-column prop="status_cn" label="进度"></el-table-column>
-        <el-table-column prop="plan_start_time" label="计划开始"></el-table-column>
-        <el-table-column prop="plan_end_time" label="计划结束"></el-table-column>
-        <el-table-column prop="actually_start_timestamp" label="实际开始"></el-table-column>
-        <el-table-column prop="actually_end_timestamp" label="实际结束"></el-table-column>
-        <el-table-column prop="user_name" label="制作人"></el-table-column>
-      </el-table>
+      <div v-if="!isTaskLIst">
+        <el-table :data="tableList" stripe @row-click="taskDetail">
+          <el-table-column type="selection" width="50"></el-table-column>
+          <el-table-column prop="project_name" label="项目"></el-table-column>
+          <el-table-column prop="field_number" label="场号"></el-table-column>
+          <el-table-column prop="shot_number" label="镜头号"></el-table-column>
+          <el-table-column prop="difficulty" label="难度"></el-table-column>
+          <el-table-column prop="task_priority_level" label="优先级"></el-table-column>
+          <el-table-column prop="status_cn" label="进度"></el-table-column>
+          <el-table-column prop="plan_start_time" label="计划开始"></el-table-column>
+          <el-table-column prop="plan_end_time" label="计划结束"></el-table-column>
+          <el-table-column prop="actually_start_timestamp" label="实际开始"></el-table-column>
+          <el-table-column prop="actually_end_timestamp" label="实际结束"></el-table-column>
+          <el-table-column prop="user_name" label="制作人"></el-table-column>
+        </el-table>
+        <div class="pos-rel p-t-20">
+          <div class="block tx-r">
+            <el-pagination
+                @current-change="tableListCurrentChange"
+                layout="prev, pager, next, jumper"
+                :page-size="10"
+                :current-page="currentPage"
+                :total="tableListDataCount">
+            </el-pagination>
+          </div>
+        </div>
+      </div>
       <transition name="el-zoom-in-top">
         <div class="task_detail fr" v-show="isTaskDetailShow">
           <el-card class="box-card task-xing">
             <div slot="header" class="clearfix">
               <span>任务详情</span>
-              <i class="el-icon-edit m-l-5 fz-14 c-light-gray pointer" @click="editWorkbench"></i>
-                <i class="el-icon-delete m-l-5 fz-14 c-light-gray pointer" @click="deleteTask(finishList.id)"></i>
+                <i v-if="editShow" class="el-icon-edit m-l-5 fz-14 c-light-gray pointer" @click="editWorkbench"></i>
+                <i v-if="deleteShow" class="el-icon-delete m-l-5 fz-14 c-light-gray pointer" @click="deleteTask(finishList.id)"></i>
                 <i class="el-icon-close fr pointer" @click="isTaskDetailShow = !isTaskDetailShow"></i>
             </div>
             <el-row :gutter="20" class="m-b-5">
@@ -411,17 +423,6 @@
       </transition>
     </div>
     <editWorkbenches ref="editWorkbenches" :message="finishList"></editWorkbenches>
-    <div v-if="!isTaskLIst" class="pos-rel p-t-20">
-      <div class="block pages">
-        <el-pagination
-                @current-change="tableListCurrentChange"
-                layout="prev, pager, next, jumper"
-                :page-size="10"
-                :current-page="currentPage"
-                :total="tableListDataCount">
-        </el-pagination>
-      </div>
-		</div>
   </div>
 </template>
 
@@ -584,12 +585,13 @@
       tableListCurrentChange(page){
         this.getAllWorkbenches('task/index_list',page,11,10)
       },
-//      获取项目列表
-
-      // params: {
-      //   state:请求地址
-      //   status:tab切换传入的值
-      // },
+      /*
+      * 获取项目列表
+      *   params: {
+      *     state:请求地址
+      *     status:tab切换传入的值
+      *   }
+      * */
       getAllWorkbenches(state,page,status,limit) {
         this.loading = true
         const data = {
@@ -658,8 +660,36 @@
     },
     mixins: [http],
     computed: {
+//      工作台列表
+      kanbanShow() {
+        return _g.getHasRule('workbenches-index')
+      },
+//      工作台标准列表
+      listShow() {
+        return _g.getHasRule('workbenches-index_list')
+      },
+//      编辑任务按钮
+      editShow() {
+        return _g.getHasRule('workbenches-update')
+      },
+//      删除任务按钮
+      deleteShow() {
+        return _g.getHasRule('workbenches-delete')
+      },
+//      删除所属任务制作人
       deleteTaskTacheStudio() {
         return _g.getHasRule('workbenches-delete_userid')
+      },
+//      等待上游资产列表
+      assetShow() {
+        return _g.getHasRule('workbenches-wait_upper_assets')
+      },
+//      等待上游镜头列表
+      shotShow() {
+        return _g.getHasRule('workbenches-wait_upper_shots')
+      },
+      finishShow() {
+        return _g.getHasRule('workbenches-finish_list')
       }
     }
   }
