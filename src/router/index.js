@@ -23,9 +23,9 @@ import ruleList from '@/components/Admin/system/rule/list.vue'
 import ruleAdd from '@/components/Admin/system/rule/add.vue'
 import ruleEdit from '@/components/Admin/system/rule/edit.vue'
 // 账户管理-角色管理
-import groupsList from '@/components/Admin/structures/groups/list.vue'
-import groupsAdd from '@/components/Admin/structures/groups/add.vue'
-import groupsEdit from '@/components/Admin/structures/groups/edit.vue'
+import groupsList from '@/components/Admin/personnel/groups/list.vue'
+import groupsAdd from '@/components/Admin/personnel/groups/add.vue'
+import groupsEdit from '@/components/Admin/personnel/groups/edit.vue'
 // 账户管理-成员管理
 import usersList from '@/components/Admin/personnel/users/list.vue'
 import usersAdd from '@/components/Admin/personnel/users/add.vue'

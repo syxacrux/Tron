@@ -33,52 +33,56 @@ class Workbenches extends ApiCommon
 		$uid = $this->uid;
 		$group_id = Access::get($uid)->group_id;
 		$param = $this->param;
-		$keywords = !empty($param['keywords']) ? json_decode($param['keywords'],true) : '';
+		$keywords = !empty($param['keywords']) ? json_decode($param['keywords'], true) : '';
 		$page = !empty($param['page']) ? $param['page'] : '';
 		$limit = !empty($param['limit']) ? $param['limit'] : '';
-		$data = $workbench_model->getList($keywords,$page,$limit,$uid,$group_id);
-		return resultArray(['data'=>$data]);
+		$data = $workbench_model->getList($keywords, $page, $limit, $uid, $group_id);
+		return resultArray(['data' => $data]);
 	}
 
 	//工作台 - 等待上游 资产列表
-	public function wait_upper_assets(){
+	public function wait_upper_assets()
+	{
 		$workbench_model = model('Workbench');
 		$uid = $this->uid;
 		$group_id = Access::get($uid)->group_id;
 		$param = $this->param;
-		$keywords = !empty($param['keywords']) ? json_decode($param['keywords'],true) : '';
+		$keywords = !empty($param['keywords']) ? json_decode($param['keywords'], true) : '';
 		$page = !empty($param['page']) ? $param['page'] : '';
 		$limit = !empty($param['limit']) ? $param['limit'] : '';
-		$data = $workbench_model->getUpperAssets($keywords,$page,$limit,$uid,$group_id);
-		return resultArray(['data'=>$data]);
+		$data = $workbench_model->getUpperAssets($keywords, $page, $limit, $uid, $group_id);
+		return resultArray(['data' => $data]);
 	}
 
 	//工作台 - 等待上游 镜头列表
-	public function wait_upper_shots(){
+	public function wait_upper_shots()
+	{
 		$workbench_model = model('Workbench');
 		$uid = $this->uid;
 		$param = $this->param;
-		$keywords = !empty($param['keywords']) ? json_decode($param['keywords'],true) : '';
+		$keywords = !empty($param['keywords']) ? json_decode($param['keywords'], true) : '';
 		$page = !empty($param['page']) ? $param['page'] : '';
 		$limit = !empty($param['limit']) ? $param['limit'] : '';
-		$data = $workbench_model->getUpperShots($keywords,$page,$limit,$uid);
-		return resultArray(['data'=>$data]);
+		$data = $workbench_model->getUpperShots($keywords, $page, $limit, $uid);
+		return resultArray(['data' => $data]);
 	}
 
 	//工作台 - 完成
-	public function finish_list(){
+	public function finish_list()
+	{
 		$workbench_model = model('Workbench');
 		$uid = $this->uid;
 		$param = $this->param;
-		$keywords = !empty($param['keywords']) ? json_decode($param['keywords'],true) : '';
+		$keywords = !empty($param['keywords']) ? json_decode($param['keywords'], true) : '';
 		$page = !empty($param['page']) ? $param['page'] : '';
 		$limit = !empty($param['limit']) ? $param['limit'] : '';
-		$data = $workbench_model->getFinishTask($keywords,$page,$limit,$uid);
-		return resultArray(['data'=>$data]);
+		$data = $workbench_model->getFinishTask($keywords, $page, $limit, $uid);
+		return resultArray(['data' => $data]);
 	}
 
 	//工作台列表
-	public function workbenches_list(){
+	public function workbenches_list()
+	{
 
 	}
 
@@ -125,7 +129,7 @@ class Workbenches extends ApiCommon
 		$uid = $this->uid;
 		$group_id = Access::get($uid)->group_id;
 		$task_id = !empty($param['id']) ? $param['id'] : '';
-		$data = $workbench_model->change_task_status($task_id, $param, $uid,$group_id);
+		$data = $workbench_model->change_task_status($task_id, $param, $uid, $group_id);
 		if (!$data) {
 			return resultArray(['error' => $workbench_model->getError()]);
 		}
@@ -169,23 +173,25 @@ class Workbenches extends ApiCommon
 	}
 
 	//删除所属任务的制作人 操作时，同时删除相应的目录 python
-	public function delete_userId(){
+	public function delete_userId()
+	{
 		$workbench_model = model('Workbench');
 		$param = $this->param;
 		$task_id = !empty($param['task_id']) ? $param['task_id'] : '';
-		$data = $workbench_model->TaskDel_ById($task_id,$param['user_id']);
-			return resultArray(['data'=>$data]);
+		$data = $workbench_model->TaskDel_ById($task_id, $param['user_id']);
+		return resultArray(['data' => $data]);
 
 	}
 
 	//接口 - 根据所属任务弹出已存在的制作人 用于获取角色 工作室总监或组长 获取用户列表
-	public function get_user_list(){
+	public function get_user_list()
+	{
 		$workbench_model = model('Workbench');
 		$param = $this->param;
 		$task_id = !empty($param['task_id']) ? $param['task_id'] : '';
 		$uid = $this->uid;
-		$data = $workbench_model->getUser_byTask($task_id,$uid);
-		return resultArray(['data'=>$data]);
+		$data = $workbench_model->getUser_byTask($task_id, $uid);
+		return resultArray(['data' => $data]);
 	}
 
 }

@@ -67,6 +67,7 @@ const commonFn = {
     } else {
       let authList = store.state.rules
       const ruleName = moduleRule + '-' + val
+      console.log(authList, ruleName)
       return _.includes(authList, ruleName)
     }
   }

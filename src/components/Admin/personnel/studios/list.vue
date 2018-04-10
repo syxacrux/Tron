@@ -11,18 +11,18 @@
         <i class="el-icon-plus"></i>&nbsp;&nbsp;添加工作室
       </router-link>
     </div>
-    <el-table :data="tableData" style="width: 100%" @selection-change="handleSelectionChange">
+    <el-table v-if="listShow" :data="tableData" style="width: 100%" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="50"></el-table-column>
       <el-table-column label="工作室名称" prop="name"></el-table-column>
       <el-table-column label="备注" prop="explain"></el-table-column>
-      <el-table-column label="状态" prop="status">
-        <template slot-scope="scope">
-          <div>
-            {{ scope.row.status | status }}
-          </div>
-        </template>
-      </el-table-column>
-      <el-table-column label="操作" width="200">
+      <!--<el-table-column label="状态" prop="status">-->
+        <!--<template slot-scope="scope">-->
+          <!--<div>-->
+            <!--{{ scope.row.status | status }}-->
+          <!--</div>-->
+        <!--</template>-->
+      <!--</el-table-column>-->
+      <el-table-column label="操作" width="200" v-if="editShow || deleteShow">
         <template slot-scope="scope">
           <div>
   					<span v-if="editShow">
@@ -38,7 +38,7 @@
       </el-table-column>
     </el-table>
     <div class="pos-rel p-t-20">
-      <btnGroup :selectedData="multipleSelection" :type="'studios'"></btnGroup>
+      <!--<btnGroup :selectedData="multipleSelection" :type="'studios'"></btnGroup>-->
       <div class="block pages">
         <el-pagination
             @current-change="handleCurrentChange"
@@ -135,12 +135,19 @@
       this.init()
     },
     computed: {
+//      工作室列表
+      listShow() {
+        return _g.getHasRule('studios-index')
+      },
+//      添加工作室按钮
       addShow() {
         return _g.getHasRule('studios-save')
       },
+//      编辑工作室按钮
       editShow() {
         return _g.getHasRule('studios-update')
       },
+//      删除工作室按钮
       deleteShow() {
         return _g.getHasRule('studios-delete')
       }

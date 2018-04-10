@@ -87,9 +87,11 @@
       }
     },
     computed: {
+//      启用/禁用按钮
       enableShow() {
         return _g.getHasRule(this.type + '-enables')
       },
+//			批量删除按钮
       deletesShow() {
         return _g.getHasRule(this.type + '-deletes')
       }

@@ -305,7 +305,7 @@ class Shot extends Common
 	//获取当前镜头各环节进度
 	public function rate_of_progress($shot_id)
 	{
-		$tache_data = Workbench::where('shot_id', $shot_id)->column('tache_id');  //获取所属镜头的环节
+		$tache_data = array_unique(Workbench::where(['pid'=>0,'shot_id'=>$shot_id])->column('tache_id'));  //获取所属镜头的环节
 		foreach ($tache_data as $key => $value) {
 			//根据当前镜头ID与环节ID查询是否有其任务
 			$curr_task_data = Workbench::where(['shot_id' => $shot_id, 'tache_id' => $value])->find();
@@ -398,6 +398,32 @@ class Shot extends Common
 		} catch (\Exception $e) {
 			$this->error = '删除失败';
 			return false;
+		}
+	}
+
+	//添加场号
+	public function field_add($param){
+		$project_id = $param['project_id'];
+		$name = trimall($param['name']);
+		$project_obj = Project::get($project_id);
+		if(!$project_obj){
+			$this->error = '暂无数据';
+			return false;
+		}
+		try{
+			$where = [];
+			$where['project_id'] = $project_id;
+			$where['name'] = $name;
+			$check_name = Db::name('field')->where($where)->find();
+			if(!empty($check_name) || !is_null($check_name)){
+				$this->error = '所属项目下场号重复';
+				return false;
+			}else{
+				Db::name('field')->insert($param);
+				return true;
+			}
+		}catch(\Exception $e){
+			$this->error = '添加失败';
 		}
 	}
 }
