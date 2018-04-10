@@ -236,9 +236,9 @@
                   <el-pagination
                           @current-change="upstreamCurrentChange"
                           layout="prev, pager, next, jumper"
-                          :page-size="20"
+                          :page-size="10"
                           :current-page="currentPage"
-                          :total="upstreamDataCountShot">
+                          :total="upstreamShotCurrentChange">
                   </el-pagination>
                 </div>
               </div>
@@ -578,6 +578,9 @@
           case '完成':
             this.getAllWorkbenches('task/finish_task',1,parseInt(tab.index)+1,10)
           break;
+          case '等待上游':
+            this.getAllWorkbenches('task/upper_shots',1,parseInt(tab.index)+1,10)//镜头
+            // this.getAllWorkbenches('task/upper_shots',1,parseInt(tab.index)+1,10)
         }
       },
       //工作台列表
@@ -610,8 +613,9 @@
         this.getAllWorkbenches('admin/workbenches',page,1,40)
       },
       //等待上游切换页码
-      upstreamCurrentChange(page){
-        this.getAllWorkbenches(page)
+      upstreamShotCurrentChange(page){
+        // this.getAllWorkbenches(page)
+        this.getAllWorkbenches('task/upper_shots',page,2,10)
       },
       //完成切换页码
       completeCurrentChange(page){
@@ -645,6 +649,11 @@
                 })
                 // console.log(this.blocks)
                 this.blocksDataCount=data.dataCount
+                break;
+              case 2://等待上游列表
+                this.upstreamListShot=data.list
+                // console.log(this.completeList)
+                this.upstreamDataCountShot=data.dataCount
                 break;
               case 3://完成列表
                 this.completeList=data.list
