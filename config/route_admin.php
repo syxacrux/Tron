@@ -102,7 +102,7 @@ return [
 	//	[工作台] 获取制作人列表
 	'task/get_user'					=>			['admin/Workbenches/get_user_list',['method'=>'GET']],
 	//	[工作台] 删除制作人
-	'task/user_del'					=>			['admin/Workbenches/delete_userId',['method'=>'POST']],
+	'task/user_del'					=>			['admin/Workbenches/delete_userid',['method'=>'POST']],
 
 
 
