@@ -18,7 +18,7 @@
         </el-input>
       </div>
     </div>
-    <el-table :data="tableData" style="width: 100%" @selection-change="selectItem">
+    <el-table v-if="listShow" :data="tableData" style="width: 100%" @selection-change="selectItem">
       <el-table-column type="expand">
         <template slot-scope="props">
           <el-form label-position="left" inline class="demo-table-expand">
@@ -35,7 +35,7 @@
       <el-table-column label="成员姓名" prop="realname"></el-table-column>
       <el-table-column label="用户名" prop="username"></el-table-column>
       <el-table-column label="角色" prop="role_name"></el-table-column>
-      <el-table-column label="操作" width="200">
+      <el-table-column label="操作" width="200" v-if="editShow || deleteShow">
         <template slot-scope="scope">
           <div>
             <span v-if="editShow">
@@ -148,12 +148,19 @@
       this.init()
     },
     computed: {
+//      成员列表
+      listShow() {
+        return _g.getHasRule('users-index')
+      },
+//      添加成员按钮
       addShow() {
         return _g.getHasRule('users-save')
       },
+//      编辑成员按钮
       editShow() {
         return _g.getHasRule('users-update')
       },
+//      删除成员按钮
       deleteShow() {
         return _g.getHasRule('users-delete')
       }

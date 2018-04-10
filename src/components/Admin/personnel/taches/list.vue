@@ -11,13 +11,13 @@
         <i class="el-icon-plus"></i>&nbsp;&nbsp;添加环节
       </router-link>
     </div>
-    <el-table :data="tableData" style="width: 100%" @selection-change="selectItem">
+    <el-table v-if="listShow" :data="tableData" style="width: 100%" @selection-change="selectItem">
       <el-table-column type="selection" width="50"></el-table-column>
       <el-table-column label="环节名称" prop="tache_name"></el-table-column>
       <el-table-column label="备注" prop="explain"></el-table-column>
       <el-table-column label="排序" prop="sort"></el-table-column>
       <!-- <el-table-column label="创建时间" prop="create_time"></el-table-column> -->
-      <el-table-column label="操作" width="200">
+      <el-table-column label="操作" width="200" v-if="editShow || deleteShow">
         <template slot-scope="scope">
           <div>
             <span v-if="editShow">
@@ -35,7 +35,7 @@
       </el-table-column>
     </el-table>
     <div class="pos-rel p-t-20">
-      <!-- <btnGroup :selectedData="multipleSelection" :type="'studios'"></btnGroup> -->
+      <!-- <btnGroup :selectedData="multipleSelection" :type="'taches'"></btnGroup> -->
       <div class="block pages">
         <el-pagination
             @current-change="handleCurrentChange"
@@ -130,12 +130,19 @@
       this.getKeywords()
     },
     computed: {
+//      环节列表
+      listShow() {
+        return _g.getHasRule('taches-index')
+      },
+//      添加环节按钮
       addShow() {
         return _g.getHasRule('taches-save')
       },
+//      编辑环节按钮
       editShow() {
         return _g.getHasRule('taches-update')
       },
+//      删除环节按钮
       deleteShow() {
         return _g.getHasRule('taches-delete')
       }

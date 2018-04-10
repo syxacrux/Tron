@@ -62,14 +62,12 @@ const commonFn = {
   getHasRule(val) {
     const moduleRule = 'admin'
     let userInfo = store.state.users
-    console.log(userInfo,123)
     if (userInfo.id == 1) {
       return true
     } else {
       let authList = store.state.rules
       const ruleName = moduleRule + '-' + val
       console.log(authList, ruleName)
-      console.log(_.includes(authList, ruleName))
       return _.includes(authList, ruleName)
     }
   }
