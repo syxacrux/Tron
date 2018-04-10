@@ -84,7 +84,7 @@ return [
 	//  [镜头] 获取工作室列表
 	'shot/get_studio'       =>      ['admin/shots/get_studio_list',['method'=>'GET']],
 	//  [镜头] 添加场号
-	'admin/save_field'      =>      ['admin/base/save_field',['method' => 'POST']],
+	'admin/save_field'      =>      ['admin/shots/save_field',['method' => 'POST']],
 	//	[镜头] 删除环节
 	'shot/tache_del'				=>			['admin/shots/delete_tache',['method'=>'POST']],
 	//	[镜头] 删除工作室
