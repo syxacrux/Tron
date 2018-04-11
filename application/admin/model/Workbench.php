@@ -97,7 +97,6 @@ class Workbench extends Common
 	{
 		$where = [];
 		$user_obj = User::get($uid);
-		file_put_contents('aa.txt', var_export())
 		//任务列表
 		/**
 		 * 项目ID为数组转成字符串，以逗号分割
