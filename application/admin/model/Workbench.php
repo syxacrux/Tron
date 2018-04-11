@@ -247,7 +247,7 @@ class Workbench extends Common
 	}
 
 	//工作台 - 任务完成 列表
-	public function getFinishTask($keywords, $page, $limit, $uid)
+	public function getFinishTask($keywords, $page, $limit, $uid,$group_id)
 	{
 		$where = [];
 		//加入条件查询
@@ -257,7 +257,7 @@ class Workbench extends Common
 		if (!empty($keywords['field_id'])) {
 			$where['field_id'] = $keywords['field_id'];
 		}
-		if(!empty($keywords['user_id']) || ($uid!=1)){
+		if(!empty($keywords['user_id']) || ($group_id == 7)){	//制作人只能看到自己完成的任务
 			$where['user_id'] = $uid;
 		}
 
