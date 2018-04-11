@@ -93,7 +93,7 @@ class Workbench extends Common
 	 * @throws \think\exception\DbException
 	 * @author zjs 2018/3/26
 	 */
-	public function getTaskList($keyword, $page, $limit, $uid, $group_id)
+	public function getTaskList($keywords, $page, $limit, $uid, $group_id)
 	{
 		$where = [];
 		$user_obj = User::get($uid);
@@ -125,11 +125,11 @@ class Workbench extends Common
 			$where = [];
 		}
 		//加入条件查询
-		if (!empty($keyword['project_id'])) {
-			$where['project_id'] = $keyword['project_id'];
+		if (!empty($keywords['project_id'])) {
+			$where['project_id'] = $keywords['project_id'];
 		}
-		if (!empty($keyword['field_id'])) {
-			$where['field_id'] = $keyword['field_id'];
+		if (!empty($keywords['field_id'])) {
+			$where['field_id'] = $keywords['field_id'];
 		}
 		$dataCount = $this->where($where)->count('id'); //全部数量
 		// 若有分页
@@ -247,7 +247,7 @@ class Workbench extends Common
 	}
 
 	//工作台 - 任务完成 列表
-	public function getFinishTask($keywords, $page, $limit, $uid)
+	public function getFinishTask($keywords, $page, $limit, $uid,$group_id)
 	{
 		$where = [];
 		//加入条件查询
@@ -257,7 +257,7 @@ class Workbench extends Common
 		if (!empty($keywords['field_id'])) {
 			$where['field_id'] = $keywords['field_id'];
 		}
-		if(!empty($keywords['user_id']) || ($uid!=1)){
+		if(!empty($keywords['user_id']) || ($group_id == 7)){	//制作人只能看到自己完成的任务
 			$where['user_id'] = $uid;
 		}
 
