@@ -8,7 +8,35 @@
         <el-breadcrumb-item>镜头详情</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
-    <div class="m-b-20">
+    <div class="m-b-20 pos-rel">
+      <div class="pos-abs">
+        <el-row :gutter="10" class="m-b-5">
+          <el-col :span="5">
+            <el-select v-model="search.project_id" placeholder="请选择项目">
+              <el-option label="动物" value="1"></el-option>
+              <el-option label="动物" value="1"></el-option>
+              <el-option label="动物" value="1"></el-option>
+            </el-select>
+          </el-col>
+          <el-col :span="5">
+            <el-select v-model="search.field_id" placeholder="请选择场号">
+              <el-option label="羊肉" value="1"></el-option>
+              <el-option label="羊肉" value="1"></el-option>
+              <el-option label="羊肉" value="1"></el-option>
+            </el-select>
+          </el-col>
+          <el-col :span="5">
+            <el-select v-model="search.shot_id" placeholder="请选择镜头号">
+              <el-option label="羊蝎子" value="1"></el-option>
+              <el-option label="羊蝎子" value="1"></el-option>
+              <el-option label="羊蝎子" value="1"></el-option>
+            </el-select>
+          </el-col>
+          <el-col :span="2">
+            <el-button icon="el-icon-search" circle></el-button>
+          </el-col>
+        </el-row>
+      </div>
       <div class="tx-r">
         <el-tooltip effect="dark" content="镜头进度" placement="bottom-start">
           <el-button type="primary" plain size="mini" @click="isList = false"><i class="el-icon-menu"></i></el-button>
@@ -572,7 +600,13 @@
         listDataCount: 0,  //镜头表格列表总数量
         tableData: [], //镜头表格列表
         limit: 10,
-        editShotDetail: {}
+        editShotDetail: {},
+        search: {
+          project_id: '',
+          field_id: '',
+          shot_id: ''
+        },
+        projectList: []
       }
     },
     methods: {
@@ -725,6 +759,14 @@
 //      镜头建立时间 = 当前时间戳 - 镜头创建时间戳
       shotCreateTime(create_time) {
         return Math.ceil((new Date() / 1000 - create_time) / 86400)
+      },
+//      获取所有项目
+      getProjects() {
+        this.apiGet('admin/projects').then((res) => {
+          this.handelResponse(res, (data) => {
+            this.projectList = data.list
+          })
+        })
       },
       /*
       * 获取某个状态的镜头看板内容
