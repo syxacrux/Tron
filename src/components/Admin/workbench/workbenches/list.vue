@@ -7,14 +7,38 @@
         <el-breadcrumb-item>工作台</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
-    <div class="tx-r">
-      <el-tooltip v-if="kanbanShow" effect="dark" content="工作台进度" placement="bottom-start">
-        <el-button type="primary" plain size="mini" @click="isTaskLIst = true"><i class="el-icon-menu"></i></el-button>
-      </el-tooltip>
-      <el-tooltip v-if="listShow" effect="dark" content="工作台列表" placement="bottom-start">
-        <el-button type="primary" plain size="mini" @click="workList()"><i class="el-icon-document"></i></el-button>
-      </el-tooltip>
+    <div class="m-b-20 ovf-hd">
+      <div class="fl w-600">
+        <template>
+          <el-select v-model="projectValue" placeholder="请选择项目" >
+            <el-option
+              v-for="item in screeningProject"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+          <el-select v-model="siteValue"  style="margin-left: 10px;" placeholder="请选择场号">
+            <el-option
+              v-for="item in screeningSite"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+          <el-button type="primary" icon="el-icon-search" @click="screenProjectValue">搜索</el-button>
+        </template>
+      </div>
+      <div class="tx-r">
+        <el-tooltip v-if="kanbanShow" effect="dark" content="工作台进度" placement="bottom-start">
+          <el-button type="primary" plain size="mini" @click="isTaskLIst = true"><i class="el-icon-menu"></i></el-button>
+        </el-tooltip>
+        <el-tooltip v-if="listShow" effect="dark" content="工作台列表" placement="bottom-start">
+          <el-button type="primary" plain size="mini" @click="workList()"><i class="el-icon-document"></i></el-button>
+        </el-tooltip>
+      </div>
     </div>
+    
     <div class="m-b-20 ovf-hd">
       <el-tabs v-if="isTaskLIst" v-model="activeName" @tab-click="handleClick" class="fl">
         <el-tab-pane label="任务" name="task">
@@ -444,6 +468,25 @@
         activeName: 'task',//默认任务页面显示
         address: window.baseUrl + '/',
         // frequencyState:true,
+        screeningProject:[{
+          value: '选项1',
+          label: '黄金糕'
+        }, {
+          value: '选项2',
+          label: '双皮奶'
+        }, {
+          value: '选项3',
+          label: '蚵仔煎'
+        }, {
+          value: '选项4',
+          label: '龙须面'
+        }, {
+          value: '选项5',
+          label: '北京烤鸭'
+        }],//项目下拉列表数据
+        projectValue:'',//项目下拉框选中的值
+        screeningSite:[],//场号下拉列表数据
+        siteValue:'',//场号下拉框选中的值
         stages: ['制作中', '反馈中',  '等待制作', '提交发布'],
         blocksDataCount:0,//任务的数量
         blocks: [],//任务页面列表
@@ -528,17 +571,36 @@
       handleClick(tab, event) {
         // console.log(tab, event);
         // console.log(tab)
-        switch (tab.label){
+        this.publicRequest(tab.label,parseInt(tab.index)+1)
+        // switch (tab.label){
+        //   case '任务':
+        //     this.getAllWorkbenches('admin/workbenches',1,parseInt(tab.index)+1,40)//任务页面传参数
+        //   break;
+        //   case '完成':
+        //     this.getAllWorkbenches('task/finish_task',1,parseInt(tab.index)+1,10)//完成页面传参数
+        //   break;
+        //   case '等待上游':
+        //     this.getAllWorkbenches('task/upper_shots',1,parseInt(tab.index)+1,10)//镜头
+        // }
+      },
+      //tab切换、搜索时 请求调用
+      publicRequest(type,value){
+        switch (type){
           case '任务':
-            this.getAllWorkbenches('admin/workbenches',1,parseInt(tab.index)+1,40)//任务页面传参数
-          break;
-          case '完成':
-            this.getAllWorkbenches('task/finish_task',1,parseInt(tab.index)+1,10)//完成页面传参数
+            this.getAllWorkbenches('admin/workbenches',1,value,40)//任务页面传参数
           break;
           case '等待上游':
-            this.getAllWorkbenches('task/upper_shots',1,parseInt(tab.index)+1,10)//镜头
-            // this.getAllWorkbenches('task/upper_shots',1,parseInt(tab.index)+1,10)
+            this.getAllWorkbenches('task/upper_shots',1,value,10)//镜头
+          break;
+          case '完成':
+            this.getAllWorkbenches('task/finish_task',1,value,10)//完成页面传参数
+          break;
         }
+      },
+      //项目筛选
+      screenProjectValue(){
+      //  console.log(this.activeName)
+      //   this.publicRequest(this.activeName)
       },
       //工作台列表
       workList(){
@@ -592,14 +654,16 @@
       *     status:tab切换传入的值
       *   }
       * */
-      getAllWorkbenches(state,page,status,limit) {
+      getAllWorkbenches(state,page,status,limit,projectValue,siteValue) {
         this.loading = true
         const data = {
           params: {
             keywords: {
             },
             page: page,
-            limit: limit
+            limit: limit,
+            project_id:projectValue,
+            field_id: siteValue
           }
         }
         this.apiGet(state,data).then((res) => {
@@ -649,7 +713,7 @@
       },
 //      初始化项目列表内容
       init() {
-       this.getAllWorkbenches('admin/workbenches',1,1,40)
+       this.getAllWorkbenches('admin/workbenches',1,1,40,this.projectValue,this.siteValue)
       }
     },
     created() {
