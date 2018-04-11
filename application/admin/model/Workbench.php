@@ -97,6 +97,7 @@ class Workbench extends Common
 	{
 		$where = [];
 		$user_obj = User::get($uid);
+		file_put_contents('aa.txt', var_export())
 		//任务列表
 		/**
 		 * 项目ID为数组转成字符串，以逗号分割
@@ -191,6 +192,7 @@ class Workbench extends Common
 		$where['user_id'] = $uid;
 		$shot_ids_arr = array_unique($this->where($where)->column('shot_id'));
 		if (!empty($shot_ids_arr)) {
+			//对每个镜头进行分页处理 ，似乎无法进行在循环外进行分页 需要优化
 			foreach ($shot_ids_arr as $key => $shot_id) {
 				//每个镜头
 				$min_tache_sort = min($this->where(['shot_id' => $shot_id, 'user_id' => $uid])->column('tache_sort'));
