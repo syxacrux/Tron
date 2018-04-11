@@ -257,7 +257,10 @@ class Workbench extends Common
 		if (!empty($keywords['field_id'])) {
 			$where['field_id'] = $keywords['field_id'];
 		}
-		$where['user_id'] = $uid;
+		if(!empty($keywords['user_id']) || ($uid!=1)){
+			$where['user_id'] = $uid;
+		}
+
 		$where['task_status'] = ['in', '25,30'];  //提交发布 完成
 		$dataCount = $this->where($where)->count('id'); //全部数量
 		$list = $this->where($where);

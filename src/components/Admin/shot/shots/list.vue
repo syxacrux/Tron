@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="shot_list">
     <div class="m-b-20">
       <el-breadcrumb separator="/">
         <el-breadcrumb-item :to="{ path: '/admin' }">首页</el-breadcrumb-item>
@@ -170,16 +170,11 @@
   }
 </script>
 <style>
-  .pos-abs {
+  .shot_list .pos-abs {
     display: inline-block;
     right: 0;
   }
 
-  .shots_list {
-    /* border: 1px solid #000; */
-    margin-bottom: 30px;
-    /* margin-right: 45px; */
-  }
 
   .text {
     font-size: 14px;
