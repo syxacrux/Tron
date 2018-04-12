@@ -30,7 +30,7 @@ class Shots extends BaseCommon
 		$uid = $this->uid;
 		$group_id = Access::where('user_id', $uid)->value('group_id'); //所属角色
 		$param = $this->param;
-		$keywords = !empty($param['keywords']) ? $param['keywords'] : '';
+		$keywords = !empty($param['keywords']) ? json_decode($param['keywords'],true) : '';
 		$page = !empty($param['page']) ? $param['page'] : '';
 		$limit = !empty($param['limit']) ? $param['limit'] : '';
 		$data = $shot_model->getList($keywords, $page, $limit, $uid, $group_id);
@@ -42,9 +42,10 @@ class Shots extends BaseCommon
 	{
 		$shot_model = model('Shot');
 		$param = $this->param;
+		$keywords = !empty($param['keywords']) ? json_decode($param['keywords'],true) : '';
 		$page = !empty($param['page']) ? $param['page'] : '';
 		$limit = !empty($param['limit']) ? $param['limit'] : '';
-		$data = $shot_model->getList_byStatus($page, $limit, 5, 2, 1);
+		$data = $shot_model->getList_byStatus($keywords,$page, $limit, 5, 2, 1);
 		return resultArray(['data' => $data]);
 	}
 
@@ -53,9 +54,10 @@ class Shots extends BaseCommon
 	{
 		$shot_model = model('Shot');
 		$param = $this->param;
+		$keywords = !empty($param['keywords']) ? json_decode($param['keywords'],true) : '';
 		$page = !empty($param['page']) ? $param['page'] : '';
 		$limit = !empty($param['limit']) ? $param['limit'] : '';
-		$data = $shot_model->getList_byStatus($page, $limit, 15, 2, 1);
+		$data = $shot_model->getList_byStatus($keywords,$page, $limit, 15, 2, 1);
 		return resultArray(['data' => $data]);
 	}
 
@@ -64,9 +66,10 @@ class Shots extends BaseCommon
 	{
 		$shot_model = model('Shot');
 		$param = $this->param;
+		$keywords = !empty($param['keywords']) ? json_decode($param['keywords'],true) : '';
 		$page = !empty($param['page']) ? $param['page'] : '';
 		$limit = !empty($param['limit']) ? $param['limit'] : '';
-		$data = $shot_model->getList_byStatus($page, $limit, 1, 1, 1);
+		$data = $shot_model->getList_byStatus($keywords,$page, $limit, 1, 1, 1);
 		return resultArray(['data' => $data]);
 	}
 
@@ -75,9 +78,10 @@ class Shots extends BaseCommon
 	{
 		$shot_model = model('Shot');
 		$param = $this->param;
+		$keywords = !empty($param['keywords']) ? json_decode($param['keywords'],true) : '';
 		$page = !empty($param['page']) ? $param['page'] : '';
 		$limit = !empty($param['limit']) ? $param['limit'] : '';
-		$data = $shot_model->getList_byStatus($page, $limit, 5, 2, 2);
+		$data = $shot_model->getList_byStatus($keywords,$page, $limit, 5, 2, 2);
 		return resultArray(['data' => $data]);
 	}
 
@@ -86,9 +90,10 @@ class Shots extends BaseCommon
 	{
 		$shot_model = model('Shot');
 		$param = $this->param;
+		$keywords = !empty($param['keywords']) ? json_decode($param['keywords'],true) : '';
 		$page = !empty($param['page']) ? $param['page'] : '';
 		$limit = !empty($param['limit']) ? $param['limit'] : '';
-		$data = $shot_model->getList_byStatus($page, $limit, 25, 1, 1);
+		$data = $shot_model->getList_byStatus($keywords,$page, $limit, 25, 1, 1);
 		return resultArray(['data' => $data]);
 	}
 
@@ -213,8 +218,21 @@ class Shots extends BaseCommon
 		return resultArray(['data'=>$data]);
 	}
 
+	//筛选 - 获取镜头号
+	public function get_number(){
+		$shot_model = model('Shot');
+		$param = $this->param;
+		$data = $shot_model->get_shot_number($param);
+		return resultArray(['data'=>$data]);
+	}
 
-
+	//接口 - 检测所属项目、所属场号下的镜头编号是否重复
+	public function check_shot_number(){
+		$shot_model = model('Shot');
+		$param = $this->param;
+		$data = $shot_model->check_shot_num($param);
+		return resultArray(['data'=>$data]);
+	}
 
 
 }

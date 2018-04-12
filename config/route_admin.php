@@ -70,38 +70,42 @@ return [
 	// [项目] 获取登陆者是否属于当前项目 应用于编辑操作的权限
 	'admin/check_auth'      =>      ['admin/projects/editProject_ByAuth', ['method'=> 'POST']],
 	// [镜头] 获取场/集列表
-	'admin/get_fields'      =>      ['admin/base/getField_ByPid',['method' => 'GET']],
+	'admin/get_fields'      =>      ['admin/shots/get_field',['method' => 'GET']],
+	// [镜头] 获取镜头号
+	'admin/get_shot_num'		=>			['admin/shots/get_number',['method' => 'GET']],
+	// [镜头] 校验镜头编号是否重复
+	'shot/check_num'				=>			['admin/shots/check_shot_number',['method' => 'GET']],
 	// [镜头] 镜头制作中列表数据
 	'shot/in_production'    =>      ['admin/shots/in_production_data',['method'=>'GET']],
-	//  [镜头] 镜头反馈中列表数据
+	// [镜头] 镜头反馈中列表数据
 	'shot/feedback'         =>      ['admin/shots/feedback_data',['method'=>'GET']],
-	//  [镜头] 镜头等待资产
+	// [镜头] 镜头等待资产
 	'shot/waiting_assets'   =>      ['admin/shots/waiting_assets_data',['method'=>'GET']],
-	//  [镜头] 镜头暂停
+	// [镜头] 镜头暂停
 	'shot/pause'            =>      ['admin/shots/pause_data',['method'=>'GET']],
-	//  [镜头] 镜头完成
+	// [镜头] 镜头完成
 	'shot/finish'           =>      ['admin/shots/finish_data',['method'=>'GET']],
-	//  [镜头] 获取工作室列表
+	// [镜头] 获取工作室列表
 	'shot/get_studio'       =>      ['admin/shots/get_studio_list',['method'=>'GET']],
-	//  [镜头] 添加场号
+	// [镜头] 添加场号
 	'admin/save_field'      =>      ['admin/shots/save_field',['method' => 'POST']],
-	//	[镜头] 删除环节
+	// [镜头] 删除环节
 	'shot/tache_del'				=>			['admin/shots/delete_tache',['method'=>'POST']],
-	//	[镜头] 删除工作室
+	// [镜头] 删除工作室
 	'shot/studio_del'				=>			['admin/shots/delete_studio',['method'=>'POST']],
-	//	[工作台] 标准列表
+	// [工作台] 标准列表
 	'task/index_list'				=>			['admin/Workbenches/index_list',['method' => 'GET']],
-	//  [工作台] 改变状态
+	// [工作台] 改变状态
 	'task/change_status'    =>      ['admin/Workbenches/change_status',['method' => 'POST']],
-	//	[工作台] 等待上游 资产列表
+	// [工作台] 等待上游 资产列表
 	'task/upper_assets'    	=>      ['admin/Workbenches/wait_upper_assets',['method' => 'POST|GET']],
-	//	[工作台] 等待上游 上一个环节任务列表
+	// [工作台] 等待上游 上一个环节任务列表
 	'task/upper_shots'    	=>      ['admin/Workbenches/wait_upper_shots',['method' => 'POST|GET']],
-	//	[工作台] 完成列表
+	// [工作台] 完成列表
 	'task/finish_task'    	=>      ['admin/Workbenches/finish_list',['method' => 'GET']],
-	//	[工作台] 获取制作人列表
+	// [工作台] 获取制作人列表
 	'task/get_user'					=>			['admin/Workbenches/get_user_list',['method'=>'GET']],
-	//	[工作台] 删除制作人
+	// [工作台] 删除制作人
 	'task/user_del'					=>			['admin/Workbenches/delete_userid',['method'=>'POST']],
 
 

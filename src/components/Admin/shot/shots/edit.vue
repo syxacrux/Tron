@@ -8,7 +8,7 @@
               <el-form-item label="项目名称:" prop="project_id">
                 <el-select v-model="form.project_id" placeholder="请选择项目" @change="getFields">
                   <el-option v-for="item in projectList" :label="item.project_name" :value="item.id"
-                             :key="item.id"></el-option>
+                             :key="item.project_name"></el-option>
                 </el-select>
               </el-form-item>
             </div>
@@ -18,7 +18,7 @@
               <el-form-item label="场号:" prop="field_id">
                 <el-select v-model="form.field_id" placeholder="请选择场号" :class="{ 'w-130': addShow }">
                   <el-option v-for="item in fieldList" :label="item.name" :value="item.id"
-                             :key="item.id"></el-option>
+                             :key="item.name"></el-option>
                 </el-select>
                 <el-button type="text" size="small" @click="isAddField = true" v-if="addShow">添加</el-button>
               </el-form-item>
@@ -284,8 +284,8 @@
           </el-col>
           <el-col :span="8">
             <div class="grid-content">
-              <el-form-item label="变速信息:" prop="charge_speed_info">
-                <el-input type="textarea" :rows="3" placeholder="请输入变速信息" v-model="form.charge_speed_info"
+              <el-form-item label="变速信息:" prop="change_speed_info">
+                <el-input type="textarea" :rows="3" placeholder="请输入变速信息" v-model="form.change_speed_info"
                           class="h-40 w-200"></el-input>
               </el-form-item>
             </div>
@@ -427,7 +427,7 @@
           difficulty: '1',    //镜头难度
           handle_frame: '',    //手柄帧
           material_frame_length: '',    //素材帧长
-          charge_speed_info: '',    //变速信息
+          change_speed_info: '',    //变速信息
           material_number: '',    //素材号
           second_company: '',    //二级公司
           make_demand: ''    //制作要求
@@ -459,7 +459,8 @@
         addFieldRules: {
           project_id: [{required: true, message: '请选择项目'}],
           name: [{required: true, message: '请输入场号/集号'}]
-        }
+        },
+        shotDetail: {}
       }
     },
     methods: {
@@ -641,8 +642,6 @@
           _g.toastMsg('warning', '请输入计划起止时间')
           return
         }
-
-
 //        必填项
         this.form.shot_image = this.form.shot_image.slice(this.form.shot_image.indexOf('uploads'))
         this.form.project_id = parseInt(this.form.project_id)
@@ -674,13 +673,14 @@
           11: this.lightOfStudio,
           12: this.synchOfStudio
         }
-
+        console.log(this.form)
         this.$refs.form.validate((pass) => {
           if (pass) {
             this.isLoading = !this.isLoading
             this.apiPut('admin/shots/', this.id, this.form).then((res) => {
               this.handelResponse(res, (data) => {
                 _g.toastMsg('success', '编辑成功')
+                this.$emit('updataShotDetail', this.id)
 //                _g.clearVuex('setUsers')
                 setTimeout(() => {
                   this.dialogFormVisible = false
@@ -705,6 +705,7 @@
       },
 //      获取所有场号、集号
       getFields() {
+        this.form.field_id = ''
         const data = {
           params: {
             project_id: this.form.project_id
@@ -727,6 +728,7 @@
     props: ['message'],
     watch: {
       message: function(data, o) {
+        this.shotDetail = data
         this.id = data.id
         this.form.project_id = data.project_id
         this.getFields()
@@ -734,7 +736,7 @@
         this.form.shot_number = data.shot_number
         this.form.shot_byname = data.shot_byname
         this.form.shot_name = data.shot_name
-        this.form.shot_image = this.image = window.baseUrl + '' + data.shot_image
+        this.form.shot_image = this.image = window.baseUrl + '/' + data.shot_image
         this.plan_time = [new Date(data.plan_start_timestamp * 1000), new Date(data.plan_end_timestamp * 1000)]
         this.form.time = data.time.toString()
         this.form.ambient = data.ambient.toString()
@@ -752,7 +754,6 @@
         this.form.shot_explain = data.shot_explain
         this.form.change_speed_info = data.change_speed_info
         this.form.make_demand = data.make_demand
-
       }
     },
     computed: {

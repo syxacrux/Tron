@@ -296,8 +296,8 @@
           </el-col>
           <el-col :span="8">
             <div class="grid-content">
-              <el-form-item label="变速信息:" prop="charge_speed_info">
-                <el-input type="textarea" :rows="3" placeholder="请输入变速信息" v-model="form.charge_speed_info"
+              <el-form-item label="变速信息:" prop="change_speed_info">
+                <el-input type="textarea" :rows="3" placeholder="请输入变速信息" v-model="form.change_speed_info"
                           class="h-40 w-200"></el-input>
               </el-form-item>
             </div>
@@ -565,6 +565,7 @@
                 this.isAddField = false
                 this.getFields()
               }, 1500)
+              this.isLoading = !this.isLoading
             }, () => {
               this.isLoading = !this.isLoading
             })
@@ -645,19 +646,30 @@
         }
 
         console.log(this.form)
+
         this.$refs.form.validate((pass) => {
           if (pass) {
-            this.isLoading = !this.isLoading
-            this.apiPost('admin/shots', this.form).then((res) => {
+            const data = {
+              params: {
+                field_id: this.form.field_id
+              }
+            }
+            this.apiGet('shot/check_num', data).then((res) => {
               this.handelResponse(res, (data) => {
-                _g.toastMsg('success', '添加成功')
-//                _g.clearVuex('setUsers')
-                setTimeout(() => {
-                  this.goback()
-                }, 1500)
-              }, () => {
                 this.isLoading = !this.isLoading
+                this.apiPost('admin/shots', this.form).then((res) => {
+                  this.handelResponse(res, (data) => {
+                    _g.toastMsg('success', '添加成功')
+                    setTimeout(() => {
+                      this.goback()
+                    }, 1500)
+                  }, () => {
+                    this.isLoading = !this.isLoading
+                  })
+                })
               })
+            }).catch((err) => {
+              _g.toastMsg('error', err.error)
             })
           }
         })
@@ -680,12 +692,13 @@
       },
 //      获取所有场号、集号
       getFields() {
+        this.form.field_id = ''
         const data = {
           params: {
             project_id: this.form.project_id
           }
         }
-        this.apiGet('admin/get_fields/', data).then((res) => {
+        this.apiGet('admin/get_fields', data).then((res) => {
           this.handelResponse(res, (data) => {
             this.fieldList = data
           })
