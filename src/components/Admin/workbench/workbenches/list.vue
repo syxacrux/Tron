@@ -10,7 +10,7 @@
     <div class="m-b-20 ovf-hd">
       <div class="fl w-600">
         <template>
-          <el-select v-model="projectValue" placeholder="请选择项目" >
+          <el-select v-model="projectValue" placeholder="请选择项目" @change="projectChange">
             <el-option
               v-for="item in screeningProject"
               :key="item.id"
@@ -18,12 +18,12 @@
               :value="item.id">
             </el-option>
           </el-select>
-          <el-select v-model="siteValue"  style="margin-left: 10px;" placeholder="请选择场号">
+          <el-select v-model="siteValue"  style="margin-left: 10px;" placeholder="请选择场号" @change="siteChange">
             <el-option
               v-for="item in screeningSite"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
+              :key="item.id"
+              :label="item.name"
+              :value="item.id">
             </el-option>
           </el-select>
           <el-button icon="el-icon-search" circle @click="screenProjectValue"></el-button>
@@ -468,6 +468,7 @@
         activeName: 'task',//默认任务页面显示
         address: window.baseUrl + '/',
         // frequencyState:true,
+        tabVale:1,
         screeningProject:[],//项目下拉列表数据
         projectValue:'',//项目下拉框选中的值
         screeningSite:[],//场号下拉列表数据
@@ -556,6 +557,7 @@
       handleClick(tab, event) {
         // console.log(tab, event);
         // console.log(tab)
+        this.tabVale = parseInt(tab.index)+1
         this.publicRequest(tab.label,parseInt(tab.index)+1,this.projectValue,this.siteValue)
       },
       //tab切换、搜索时 请求调用
@@ -568,6 +570,15 @@
             this.getAllWorkbenches('task/upper_shots',1,value,10,projectValue,siteValue)//镜头
           break;
           case '完成':
+            this.getAllWorkbenches('task/finish_task',1,value,10,projectValue,siteValue)//完成页面传参数
+          break;
+          case 'task':
+            this.getAllWorkbenches('admin/workbenches',1,value,40,projectValue,siteValue)//任务页面传参数
+          break;
+          case 'waiting':
+            this.getAllWorkbenches('task/upper_shots',1,value,10,projectValue,siteValue)//镜头
+          break;
+          case 'complete':
             this.getAllWorkbenches('task/finish_task',1,value,10,projectValue,siteValue)//完成页面传参数
           break;
         }
@@ -638,11 +649,11 @@
         const data = {
           params: {
             keywords: {
+              project_id:projectValue,
+              field_id: siteValue,
             },
             page: page,
             limit: limit,
-            project_id:projectValue,
-            field_id: siteValue,
             // shot_id:
           }
         }
@@ -682,6 +693,28 @@
           })
         })
       },
+      //请求项目下的场号、和对应的任务列表
+      projectChange(){
+        const data = {
+          params: {
+            project_id: this.projectValue
+          }
+        }
+        this.apiGet('admin/get_fields', data).then((res) => {//请求项目下的场号
+          this.handelResponse(res, (data) => {
+            this.screeningSite = data
+          })
+        })
+        //对应的任务列表
+        this.publicRequest(this.activeName,this.tabVale,this.projectValue,this.siteValue)//工作台的
+        this.getAllWorkbenches('task/index_list',1,11,10,this.projectValue,this.siteValue)//工作台列表
+      },
+      //场号对应的所有状态列表
+      siteChange(){
+        this.publicRequest(this.activeName,this.tabVale,this.projectValue,this.siteValue)//工作台的
+        this.getAllWorkbenches('task/index_list',1,11,10,this.projectValue,this.siteValue)//工作台列表
+      },
+
  //      点击任务显示任务详情
       taskDetail(id) {
         //        判断任务详情传入值是否为数字
