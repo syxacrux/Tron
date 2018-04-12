@@ -6,6 +6,7 @@
 // +----------------------------------------------------------------------
 
 namespace app\admin\controller;
+use redis\RedisPackage;
 use app\admin\model\Access;
 use app\common\controller\BaseCommon;
 
@@ -13,6 +14,8 @@ class Studios extends BaseCommon{
 
     public function index(){
         $studio_model = model('Studio');
+//				$redis = new RedisPackage();
+//				$result = $redis::get('zjs');
         $uid = $this->uid;
         $group_id = Access::where('user_id',$uid)->value('group_id'); //所属角色
         $param = $this->param;

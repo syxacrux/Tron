@@ -12,17 +12,13 @@
       <div class="pos-abs">
         <el-row :gutter="10" class="m-b-5">
           <el-col :span="5">
-            <el-select v-model="search.project_id" placeholder="请选择项目">
-              <el-option label="动物" value="1"></el-option>
-              <el-option label="动物" value="1"></el-option>
-              <el-option label="动物" value="1"></el-option>
+            <el-select v-model="search.project_id" placeholder="请选择项目" @change="getFields">
+              <el-option v-for="item in projectList" :label="item.project_name" :value="item.id" :key="item.id"></el-option>
             </el-select>
           </el-col>
           <el-col :span="5">
             <el-select v-model="search.field_id" placeholder="请选择场号">
-              <el-option label="羊肉" value="1"></el-option>
-              <el-option label="羊肉" value="1"></el-option>
-              <el-option label="羊肉" value="1"></el-option>
+              <el-option v-for="item in fieldList" :label="item.name" :value="item.id" :key="item.id"></el-option>
             </el-select>
           </el-col>
           <el-col :span="5">
@@ -606,7 +602,8 @@
           field_id: '',
           shot_id: ''
         },
-        projectList: []
+        projectList: [],
+        fieldList: []
       }
     },
     methods: {
@@ -826,6 +823,19 @@
           })
         })
       },
+//      获取所有场号、集号
+      getFields() {
+        const data = {
+          params: {
+            project_id: this.search.project_id
+          }
+        }
+        this.apiGet('admin/get_fields', data).then((res) => {
+          this.handelResponse(res, (data) => {
+            this.fieldList = data
+          })
+        })
+      },
       /*
       * 初始化镜头看板内容
       * params: {
@@ -859,6 +869,7 @@
       this.isList = this.$route.query.list
       this.init(this.activeName)
       this.getShotList(1)
+      this.getProjects()
     },
     components: {
       editShots,
