@@ -649,7 +649,7 @@
             keywords: {
               project_id:projectValue,
               field_id: siteValue,
-              shot_id:shotValue
+              shot_number:shotValue
             },
             page: page,
             limit: limit,
