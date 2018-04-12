@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="nav_menu">
     <el-menu ref="menu" mode="vertical" class="el-menu-vertical-demo" 
       router 
       background-color="#324057"
@@ -55,3 +55,8 @@ export default {
   }
 }
 </script>
+<style>
+  .nav_menu .el-menu {
+    border-right: none;
+  }
+</style>
