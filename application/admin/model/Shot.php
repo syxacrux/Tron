@@ -52,6 +52,7 @@ class Shot extends Common
 
 	/**
 	 * 根据镜头状态与是否暂停状态获取列表数据
+	 * @param $keywords
 	 * @param $page
 	 * @param $limit
 	 * @param string $status
