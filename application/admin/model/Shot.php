@@ -63,9 +63,18 @@ class Shot extends Common
 	 * @throws \think\exception\DbException
 	 * @author zjs 2018/3/28
 	 */
-	public function getList_byStatus($page, $limit, $status, $is_assets, $is_pause)
+	public function getList_byStatus($keywords,$page, $limit, $status, $is_assets, $is_pause)
 	{
 		$where = [];
+		if(!empty($keywords['project_id'])){
+			$where['project_id'] = $keywords['project_id'];
+		}
+		if(!empty($keywords['field_id'])){
+			$where['field_id'] = $keywords['field_id'];
+		}
+		if(!empty($keywords['shot_id'])){
+			$where['id'] = $keywords['shot_id'];
+		}
 		$where['status'] = $status;
 		$where['is_assets'] = $is_assets;
 		$where['is_pause'] = $is_pause;

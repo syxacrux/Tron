@@ -30,7 +30,7 @@ class Shots extends BaseCommon
 		$uid = $this->uid;
 		$group_id = Access::where('user_id', $uid)->value('group_id'); //所属角色
 		$param = $this->param;
-		$keywords = !empty($param['keywords']) ? $param['keywords'] : '';
+		$keywords = !empty($param['keywords']) ? json_decode($param['keywords']) : '';
 		$page = !empty($param['page']) ? $param['page'] : '';
 		$limit = !empty($param['limit']) ? $param['limit'] : '';
 		$data = $shot_model->getList($keywords, $page, $limit, $uid, $group_id);
@@ -42,9 +42,10 @@ class Shots extends BaseCommon
 	{
 		$shot_model = model('Shot');
 		$param = $this->param;
+		$keywords = !empty($param['keywords']) ? json_decode($param['keywords']) : '';
 		$page = !empty($param['page']) ? $param['page'] : '';
 		$limit = !empty($param['limit']) ? $param['limit'] : '';
-		$data = $shot_model->getList_byStatus($page, $limit, 5, 2, 1);
+		$data = $shot_model->getList_byStatus($keywords,$page, $limit, 5, 2, 1);
 		return resultArray(['data' => $data]);
 	}
 
