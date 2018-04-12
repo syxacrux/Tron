@@ -30,12 +30,14 @@
             <el-option
               v-for="item in screeningShot"
               :key="item.id"
-              :label="item.name"
+              :label="item.shot_number"
               :value="item.id">
             </el-option>
           </el-select>
-          <el-input class="w-150" style="margin-left: 10px;" v-model="search.shot_number" placeholder="请输入镜头号"></el-input>
-          <el-button icon="el-icon-search" circle @click="searchPublic"></el-button>
+          <el-input class="w-200" style="margin-left: 10px;" v-model.trim="search.shot_number" placeholder="请输入场号镜头号">
+            <el-button slot="append" icon="el-icon-search" circle @click="searchPublic"></el-button>
+          </el-input>
+          
         </template>
       </div>
       <div class="tx-r">
@@ -718,18 +720,34 @@
             }
             this.apiGet('admin/get_shot_num', datas).then((res) => {//请求项目下的场号
               this.handelResponse(res, (data) => {
+                this.screeningShot = data
               })
             })
           break
         }
         //对应的任务列表
-        this.searchPublic()
+        this.publicRequest(this.activeName,this.tabVale)//工作台的
+        this.getAllWorkbenches('task/index_list',1,11,10)//工作台列表
       },
       //点击搜索按钮
       searchPublic(){
         //对应的任务列表
-        this.publicRequest(this.activeName,this.tabVale)//工作台的
-        this.getAllWorkbenches('task/index_list',1,11,10)//工作台列表
+        if(this.search.shot_number.length === 6){
+          this.search.project_id = ''
+          this.search.field_id = ''
+          this.search.shot_id = ''
+          this.publicRequest(this.activeName,this.tabVale)//工作台的
+          this.getAllWorkbenches('task/index_list',1,11,10)//工作台列表
+        }
+        if(!this.search.field_id && this.search.shot_number.length === 3) {
+          _g.toastMsg('warning', '请选择所属项目及场号')
+          return
+        } else {
+          this.search.shot_id = ''
+          this.publicRequest(this.activeName,this.tabVale)//工作台的
+          this.getAllWorkbenches('task/index_list',1,11,10)//工作台列表
+        }
+        
       },
  //      点击任务显示任务详情
       taskDetail(id) {
