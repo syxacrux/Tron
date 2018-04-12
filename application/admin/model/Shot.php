@@ -52,6 +52,7 @@ class Shot extends Common
 
 	/**
 	 * 根据镜头状态与是否暂停状态获取列表数据
+	 * @param $keywords
 	 * @param $page
 	 * @param $limit
 	 * @param string $status
@@ -63,9 +64,30 @@ class Shot extends Common
 	 * @throws \think\exception\DbException
 	 * @author zjs 2018/3/28
 	 */
-	public function getList_byStatus($page, $limit, $status, $is_assets, $is_pause)
+	public function getList_byStatus($keywords,$page, $limit, $status, $is_assets, $is_pause)
 	{
 		$where = [];
+		if(!empty($keywords['project_id'])){
+			$where['project_id'] = $keywords['project_id'];
+		}
+		if(!empty($keywords['field_id'])){
+			$where['field_id'] = $keywords['field_id'];
+		}
+		if(!empty($keywords['shot_id'])){
+			$where['id'] = $keywords['shot_id'];
+		}
+		if(!empty($keywords['shot_number'])){	//手动输入镜头编号
+			$shot_number_len = strlen($keywords['shot_number']);
+			//后期可对3 镜头号长度进行配置
+			if($shot_number_len == 3){
+				$where['shot_number'] = $keywords['shot_number'];
+			}
+			//后期可对场号长度进行配置  场号+镜头号  暂定为6
+			if($shot_number_len == 6){
+				$shot_number = substr($keywords['shot_number'],3,3);
+				$where['shot_number'] = $shot_number;
+			}
+		}
 		$where['status'] = $status;
 		$where['is_assets'] = $is_assets;
 		$where['is_pause'] = $is_pause;
