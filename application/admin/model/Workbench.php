@@ -279,25 +279,33 @@ class Workbench extends Common
 	{
 		$where = [];
 		//加入条件查询
-		if (!empty($keywords['project_id'])) {
+		if (!empty($keywords['project_id']) && empty($keywords['shot_number'])) {
 			$where['project_id'] = $keywords['project_id'];
 		}
-		if (!empty($keywords['field_id'])) {
+		if (!empty($keywords['field_id']) && empty($keywords['shot_number'])) {
 			$where['field_id'] = $keywords['field_id'];
 		}
-		if(!empty($keywords['shot_id'])){
+		if(!empty($keywords['shot_id']) && empty($keywords['shot_number'])){
 			$where['shot_id'] = $keywords['shot_id'];
 		}
 		if(!empty($keywords['shot_number'])){
-			$shot_id = Shot::where('shot_number',substr($keywords['shot_number'],3,3))->value('id');
+			$shot_number_len = strlen($keywords['shot_number']);
+			if($shot_number_len == 3){
+				$shot_number = substr($keywords['shot_number'],1,3);
+			}
+			if($shot_number_len == 6){
+				$shot_number = substr($keywords['shot_number'],3,3);
+			}
+			$shot_id = Shot::where('shot_number',$shot_number)->value('id');
 			if(!$shot_id){
 				$data['list'] = [];
 				$data['dataCount'] = 0;
 				return $data;
 			}
-			$shot_number_len = strlen($keywords['shot_number']);
+
 			//后期可对3 镜头号长度进行配置
 			if($shot_number_len == 3){
+				$where['field_id'] = $keywords['field_id'];
 				$where['shot_id'] = $shot_id;
 			}
 			//后期可对场号长度进行配置  场号+镜头号  暂定为6
