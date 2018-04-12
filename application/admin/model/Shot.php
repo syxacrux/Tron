@@ -78,10 +78,6 @@ class Shot extends Common
 		}
 		if(!empty($keywords['shot_number'])){	//手动输入镜头编号
 			$shot_number_len = strlen($keywords['shot_number']);
-			//后期可对3 镜头号长度进行配置
-			if($shot_number_len == 3){
-				$where['shot_number'] = $keywords['shot_number'];
-			}
 			//后期可对场号长度进行配置  场号+镜头号  暂定为6
 			if($shot_number_len == 6){
 				$shot_number = substr($keywords['shot_number'],3,3);
