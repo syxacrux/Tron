@@ -24,10 +24,16 @@
             </el-select>
           </el-col>
           <el-col :span="5">
-            <el-select v-model="search.shot_id" placeholder="请选择镜头号">
+            <el-select v-model="search.shot_id" placeholder="请选择镜头号" @change="init(activeName)">
               <el-option label="全部镜头" value=""></el-option>
               <el-option v-for="(item, index) in shotList" :label="item.shot_number" :value="item.shot_number" :key="index"></el-option>
             </el-select>
+          </el-col>
+          <el-col :span="5">
+            <el-input v-model.trim="search.shot_number" placeholder="请输入场号镜头号"></el-input>
+          </el-col>
+          <el-col :span="1">
+            <el-button icon="el-icon-search" circle @click="search"></el-button>
           </el-col>
         </el-row>
       </div>
@@ -607,6 +613,9 @@
       }
     },
     methods: {
+      search() {
+
+      },
 //      点击编辑镜头执行方法
       editShot() {
         this.$refs.editShots.open()
@@ -623,9 +632,7 @@
             this.editShotDetail = data
           })
         })
-        if (this.isShotDetailShow) {
-
-        } else {
+        if (!this.isShotDetailShow) {
           this.isShotDetailShow = !this.isShotDetailShow
         }
       },
@@ -773,6 +780,7 @@
       * }
       * */
       getShots(shot_status, page) {
+        console.log(this.search)
         const data = {
           params: {
             page: page,
