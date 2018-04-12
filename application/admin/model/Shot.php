@@ -67,17 +67,21 @@ class Shot extends Common
 	public function getList_byStatus($keywords,$page, $limit, $status, $is_assets, $is_pause)
 	{
 		$where = [];
-		if(!empty($keywords['project_id'])){
+		if(!empty($keywords['project_id']) && empty($keywords['shot_number'])){
 			$where['project_id'] = $keywords['project_id'];
 		}
-		if(!empty($keywords['field_id'])){
+		if(!empty($keywords['field_id']) && empty($keywords['shot_number'])){
 			$where['field_id'] = $keywords['field_id'];
 		}
-		if(!empty($keywords['shot_id'])){
+		if(!empty($keywords['shot_id']) && empty($keywords['shot_number'])){
 			$where['id'] = $keywords['shot_id'];
 		}
 		if(!empty($keywords['shot_number'])){	//手动输入镜头编号
 			$shot_number_len = strlen($keywords['shot_number']);
+			//后期可对3 镜头号长度进行配置
+			if($shot_number_len == 3){	//前端  对三位进行判断 必填场号
+				$where['shot_number'] = $keywords['shot_number'];
+			}
 			//后期可对场号长度进行配置  场号+镜头号  暂定为6
 			if($shot_number_len == 6){
 				$shot_number = substr($keywords['shot_number'],3,3);
@@ -452,7 +456,7 @@ class Shot extends Common
 	public function get_shot_number($param){
 		$data = [];
 		if(!empty($param['field_id'])){
-			$data = $this->field('id','shot_number')->where('field_id',$param['field_id'])->select();
+			$data = $this->where('field_id',$param['field_id'])->select();
 		}
 		return $data;
 	}
