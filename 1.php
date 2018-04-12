@@ -19,4 +19,4 @@
 //	file_put_contents('aa.txt',var_export($value.'\r',true),FILE_APPEND);
 //}
 $a = '001123';
-echo substr($a,3);
+echo substr($a,3,3);
