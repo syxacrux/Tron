@@ -213,8 +213,21 @@ class Shots extends BaseCommon
 		return resultArray(['data'=>$data]);
 	}
 
+	//筛选 - 获取镜头号
+	public function get_number(){
+		$shot_model = model('Shot');
+		$param = $this->param;
+		$data = $shot_model->get_shot_number($param);
+		return resultArray(['data'=>$data]);
+	}
 
-
+	//接口 - 检测所属项目、所属场号下的镜头编号是否重复
+	public function check_shot_number(){
+		$shot_model = model('Shot');
+		$param = $this->param;
+		$data = $shot_model->check_shot_num($param);
+		return resultArray(['data'=>$data]);
+	}
 
 
 }

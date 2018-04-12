@@ -131,6 +131,12 @@ class Workbench extends Common
 		if (!empty($keywords['field_id'])) {
 			$where['field_id'] = $keywords['field_id'];
 		}
+		if(!empty($keywords['shot_id'])){
+			$where['shot_id'] = $keywords['shot_id'];
+		}
+		if(!empty($keywords['shot_number'])){
+
+		}
 		$dataCount = $this->where($where)->count('id'); //全部数量
 		// 若有分页
 		if ($page && $limit) {

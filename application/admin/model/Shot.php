@@ -420,4 +420,33 @@ class Shot extends Common
 			$this->error = '添加失败';
 		}
 	}
+
+	//根据项目ID获取所属场的数据
+	public function get_field_data($param){
+		$data = [];
+		if(!empty($param['project_id'])){
+			$data = Db::name('field')->where('project_id', $param['project_id'])->select();
+		}
+		return $data;
+	}
+
+	//根据项目ID及场号ID 获取镜头ID 及镜头编号
+	public function get_shot_number($param){
+		$data = [];
+		if(!empty($param['field_id'])){
+			$data = $this->field('id','shot_number')->where('field_id',$param['field_id'])->select();
+		}
+		return $data;
+	}
+
+	//校验所属项目、所属场号下的镜头编号是否重复
+	public function check_shot_num($param){
+		$check_result = $this->where('field_id',$param['field'])->value('id');
+		if(!empty($check_result)){
+			$this->error = '镜头编号已重复';
+			return false;
+		}else{
+			return true;
+		}
+	}
 }

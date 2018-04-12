@@ -84,20 +84,6 @@ class Base extends Common
 		return resultArray(['data' => $data]);
 	}
 
-	/**
-	 * 根据项目ID获取场/集数据
-	 * @author zjs 2018/3/21
-	 */
-	public function getField_ByPid()
-	{
-		$param = $this->param;
-		$data = Db::name('field')->where('project_id', $param['project_id'])->select();
-		if (!$data) {
-			return ['code' => 200, 'data' => []];
-		}
-		return ['code' => 200, 'data' => $data];
-	}
-
 
 	// miss 路由：处理没有匹配到的路由规则
 	public function miss()

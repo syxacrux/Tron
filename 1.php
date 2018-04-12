@@ -7,9 +7,9 @@
  */
 
 
-$redis = new redis();
-$redis->connect('127.0.0.1', 6379);
-$redis->set('zjs',"webfsd");
+//$redis = new redis();
+//$redis->connect('127.0.0.1', 6379);
+//$redis->set('zjs',"webfsd");
 //$result = $redis->get('site');
 //var_dump($result);
 
@@ -18,3 +18,5 @@ $redis->set('zjs',"webfsd");
 //foreach($a as $key=>$value){
 //	file_put_contents('aa.txt',var_export($value.'\r',true),FILE_APPEND);
 //}
+$a = '001123';
+echo substr($a,3);
