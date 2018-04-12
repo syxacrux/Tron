@@ -13,9 +13,9 @@
           <el-select v-model="projectValue" placeholder="请选择项目" >
             <el-option
               v-for="item in screeningProject"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
+              :key="item.id"
+              :label="item.project_name"
+              :value="item.id">
             </el-option>
           </el-select>
           <el-select v-model="siteValue"  style="margin-left: 10px;" placeholder="请选择场号">
@@ -26,7 +26,7 @@
               :value="item.value">
             </el-option>
           </el-select>
-          <el-button type="primary" icon="el-icon-search" @click="screenProjectValue">搜索</el-button>
+          <el-button icon="el-icon-search" circle @click="screenProjectValue"></el-button>
         </template>
       </div>
       <div class="tx-r">
@@ -468,22 +468,7 @@
         activeName: 'task',//默认任务页面显示
         address: window.baseUrl + '/',
         // frequencyState:true,
-        screeningProject:[{
-          value: '选项1',
-          label: '黄金糕'
-        }, {
-          value: '选项2',
-          label: '双皮奶'
-        }, {
-          value: '选项3',
-          label: '蚵仔煎'
-        }, {
-          value: '选项4',
-          label: '龙须面'
-        }, {
-          value: '选项5',
-          label: '北京烤鸭'
-        }],//项目下拉列表数据
+        screeningProject:[],//项目下拉列表数据
         projectValue:'',//项目下拉框选中的值
         screeningSite:[],//场号下拉列表数据
         siteValue:'',//场号下拉框选中的值
@@ -571,33 +556,23 @@
       handleClick(tab, event) {
         // console.log(tab, event);
         // console.log(tab)
-        this.publicRequest(tab.label,parseInt(tab.index)+1)
-        // switch (tab.label){
-        //   case '任务':
-        //     this.getAllWorkbenches('admin/workbenches',1,parseInt(tab.index)+1,40)//任务页面传参数
-        //   break;
-        //   case '完成':
-        //     this.getAllWorkbenches('task/finish_task',1,parseInt(tab.index)+1,10)//完成页面传参数
-        //   break;
-        //   case '等待上游':
-        //     this.getAllWorkbenches('task/upper_shots',1,parseInt(tab.index)+1,10)//镜头
-        // }
+        this.publicRequest(tab.label,parseInt(tab.index)+1,this.projectValue,this.siteValue)
       },
       //tab切换、搜索时 请求调用
-      publicRequest(type,value){
+      publicRequest(type,value,projectValue,siteValue){
         switch (type){
           case '任务':
-            this.getAllWorkbenches('admin/workbenches',1,value,40)//任务页面传参数
+            this.getAllWorkbenches('admin/workbenches',1,value,40,projectValue,siteValue)//任务页面传参数
           break;
           case '等待上游':
-            this.getAllWorkbenches('task/upper_shots',1,value,10)//镜头
+            this.getAllWorkbenches('task/upper_shots',1,value,10,projectValue,siteValue)//镜头
           break;
           case '完成':
-            this.getAllWorkbenches('task/finish_task',1,value,10)//完成页面传参数
+            this.getAllWorkbenches('task/finish_task',1,value,10,projectValue,siteValue)//完成页面传参数
           break;
         }
       },
-      //项目筛选
+      //筛选
       screenProjectValue(){
       //  console.log(this.activeName)
       //   this.publicRequest(this.activeName)
@@ -605,7 +580,7 @@
       //工作台列表
       workList(){
         this.isTaskLIst = false
-        this.getAllWorkbenches('task/index_list',1,11,10)
+        this.getAllWorkbenches('task/index_list',1,11,10,this.projectValue,this.siteValue)
       },
       //      时间抽转换为时间格式
       j2time(time) {
@@ -652,8 +627,12 @@
       *   params: {
       *     state:请求地址
       *     status:tab切换传入的值
+      *     project_id:选择项目的id
+      *     field_id:选择场号的id
+      *     shot_id:镜头的id
       *   }
       * */
+      
       getAllWorkbenches(state,page,status,limit,projectValue,siteValue) {
         this.loading = true
         const data = {
@@ -663,7 +642,8 @@
             page: page,
             limit: limit,
             project_id:projectValue,
-            field_id: siteValue
+            field_id: siteValue,
+            // shot_id:
           }
         }
         this.apiGet(state,data).then((res) => {
@@ -693,6 +673,15 @@
           })
         })
       },
+      //请求所有项目
+      getsprojects(){
+        // this.apiGet('admin/projects')
+        this.apiGet('admin/projects').then((res) => {
+          this.handelResponse(res, (data) => {
+            this.screeningProject = data.list
+          })
+        })
+      },
  //      点击任务显示任务详情
       taskDetail(id) {
         //        判断任务详情传入值是否为数字
@@ -714,6 +703,7 @@
 //      初始化项目列表内容
       init() {
        this.getAllWorkbenches('admin/workbenches',1,1,40,this.projectValue,this.siteValue)
+       this.getsprojects()
       }
     },
     created() {
