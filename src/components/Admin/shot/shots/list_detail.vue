@@ -26,7 +26,7 @@
           <el-col :span="5">
             <el-select v-model="search.shot_id" placeholder="请选择镜头号">
               <el-option label="全部镜头" value=""></el-option>
-              <el-option v-for="item in shotList" :label="item.name" :value="item.id" :key="item.id"></el-option>
+              <el-option v-for="(item, index) in shotList" :label="item.shot_number" :value="item.shot_number" :key="index"></el-option>
             </el-select>
           </el-col>
         </el-row>
@@ -580,7 +580,7 @@
         isShotDetailShow: false,    //是否显示镜头详情
         activeName: 'shotInDevelopment', //镜头tab当前选中值
         isList: false,    // 是否显示镜头列表
-        address: window.baseUrl + '',
+        address: window.baseUrl + '/',
         inProductionDataCount: 0,  //制作中总数量
         inProductionList: [],  //制作中列表
         feedbackDataCount: 0,  //反馈中总数量
@@ -844,9 +844,9 @@
             field_id: this.search.field_id
           }
         }
-        this.apiGet('admin/get_shots', data).then((res) => {
+        this.apiGet('admin/get_shot_num', data).then((res) => {
           this.handelResponse(res, (data) => {
-            this.fieldList = data
+            this.shotList = data
           })
         })
       },

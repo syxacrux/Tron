@@ -565,6 +565,7 @@
                 this.isAddField = false
                 this.getFields()
               }, 1500)
+              this.isLoading = !this.isLoading
             }, () => {
               this.isLoading = !this.isLoading
             })
@@ -645,19 +646,30 @@
         }
 
         console.log(this.form)
+
         this.$refs.form.validate((pass) => {
           if (pass) {
-            this.isLoading = !this.isLoading
-            this.apiPost('admin/shots', this.form).then((res) => {
+            const data = {
+              params: {
+                field_id: this.form.field_id
+              }
+            }
+            this.apiGet('shot/check_num', data).then((res) => {
               this.handelResponse(res, (data) => {
-                _g.toastMsg('success', '添加成功')
-//                _g.clearVuex('setUsers')
-                setTimeout(() => {
-                  this.goback()
-                }, 1500)
-              }, () => {
                 this.isLoading = !this.isLoading
+                this.apiPost('admin/shots', this.form).then((res) => {
+                  this.handelResponse(res, (data) => {
+                    _g.toastMsg('success', '添加成功')
+                    setTimeout(() => {
+                      this.goback()
+                    }, 1500)
+                  }, () => {
+                    this.isLoading = !this.isLoading
+                  })
+                })
               })
+            }).catch((err) => {
+              _g.toastMsg('error', err.error)
             })
           }
         })
@@ -685,7 +697,7 @@
             project_id: this.form.project_id
           }
         }
-        this.apiGet('admin/get_fields/', data).then((res) => {
+        this.apiGet('admin/get_fields', data).then((res) => {
           this.handelResponse(res, (data) => {
             this.fieldList = data
           })
