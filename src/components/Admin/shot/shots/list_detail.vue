@@ -771,7 +771,6 @@
       * }
       * */
       getShots(shot_status, page) {
-        console.log(this.search)
         const data = {
           params: {
             page: page,
@@ -826,6 +825,7 @@
       },
 //      获取所有场号、集号
       getFields() {
+        this.init(this.activeName)
         const data = {
           params: {
             project_id: this.search.project_id
