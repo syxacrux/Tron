@@ -549,7 +549,7 @@
                 <p class="m-0">镜头备注：<span>{{ editShotDetail.shot_explain }}</span></p>
               </el-col>
               <el-col :span="12">
-                <p class="m-0">变速信息：<span>{{ editShotDetail.charge_speed_info }}</span></p>
+                <p class="m-0">变速信息：<span>{{ editShotDetail.change_speed_info }}</span></p>
               </el-col>
             </el-row>
             <el-row :gutter="20" class="m-b-5">
@@ -561,7 +561,7 @@
         </div>
       </transition>
     </div>
-    <editShots :message="editShotDetail" ref="editShots"></editShots>
+    <editShots :message="editShotDetail" @updataShotDetail="shotDetail" ref="editShots"></editShots>
   </div>
 </template>
 <script>
@@ -593,6 +593,7 @@
         finishList: [],  //镜头完成列表
         listDataCount: 0,  //镜头表格列表总数量
         tableData: [], //镜头表格列表
+        page: 1,
         limit: 10,
         editShotDetail: {},
         search: {
@@ -689,6 +690,7 @@
             this.handelResponse(res, (data) => {
               _g.toastMsg('success', '删除成功')
               this.init(this.activeName)
+              this.getShotList(this.page)
               this.isShotDetailShow = false
             })
           })
@@ -809,6 +811,7 @@
       },
 //      初始化镜头列表
       getShotList(page) {
+        this.page = page
         const data = {
           params: {
 //            keywords: this.keywords,

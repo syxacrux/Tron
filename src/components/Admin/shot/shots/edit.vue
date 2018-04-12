@@ -284,8 +284,8 @@
           </el-col>
           <el-col :span="8">
             <div class="grid-content">
-              <el-form-item label="变速信息:" prop="charge_speed_info">
-                <el-input type="textarea" :rows="3" placeholder="请输入变速信息" v-model="form.charge_speed_info"
+              <el-form-item label="变速信息:" prop="change_speed_info">
+                <el-input type="textarea" :rows="3" placeholder="请输入变速信息" v-model="form.change_speed_info"
                           class="h-40 w-200"></el-input>
               </el-form-item>
             </div>
@@ -427,7 +427,7 @@
           difficulty: '1',    //镜头难度
           handle_frame: '',    //手柄帧
           material_frame_length: '',    //素材帧长
-          charge_speed_info: '',    //变速信息
+          change_speed_info: '',    //变速信息
           material_number: '',    //素材号
           second_company: '',    //二级公司
           make_demand: ''    //制作要求
@@ -459,7 +459,8 @@
         addFieldRules: {
           project_id: [{required: true, message: '请选择项目'}],
           name: [{required: true, message: '请输入场号/集号'}]
-        }
+        },
+        shotDetail: {}
       }
     },
     methods: {
@@ -672,12 +673,14 @@
           11: this.lightOfStudio,
           12: this.synchOfStudio
         }
+        console.log(this.form)
         this.$refs.form.validate((pass) => {
           if (pass) {
             this.isLoading = !this.isLoading
             this.apiPut('admin/shots/', this.id, this.form).then((res) => {
               this.handelResponse(res, (data) => {
                 _g.toastMsg('success', '编辑成功')
+                this.$emit('updataShotDetail', this.id)
 //                _g.clearVuex('setUsers')
                 setTimeout(() => {
                   this.dialogFormVisible = false
@@ -702,6 +705,7 @@
       },
 //      获取所有场号、集号
       getFields() {
+        this.form.field_id = ''
         const data = {
           params: {
             project_id: this.form.project_id
@@ -724,6 +728,7 @@
     props: ['message'],
     watch: {
       message: function(data, o) {
+        this.shotDetail = data
         this.id = data.id
         this.form.project_id = data.project_id
         this.getFields()
@@ -749,7 +754,6 @@
         this.form.shot_explain = data.shot_explain
         this.form.change_speed_info = data.change_speed_info
         this.form.make_demand = data.make_demand
-
       }
     },
     computed: {

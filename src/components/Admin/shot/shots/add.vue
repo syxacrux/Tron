@@ -296,8 +296,8 @@
           </el-col>
           <el-col :span="8">
             <div class="grid-content">
-              <el-form-item label="变速信息:" prop="charge_speed_info">
-                <el-input type="textarea" :rows="3" placeholder="请输入变速信息" v-model="form.charge_speed_info"
+              <el-form-item label="变速信息:" prop="change_speed_info">
+                <el-input type="textarea" :rows="3" placeholder="请输入变速信息" v-model="form.change_speed_info"
                           class="h-40 w-200"></el-input>
               </el-form-item>
             </div>
@@ -692,6 +692,7 @@
       },
 //      获取所有场号、集号
       getFields() {
+        this.form.field_id = ''
         const data = {
           params: {
             project_id: this.form.project_id
