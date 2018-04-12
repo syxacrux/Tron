@@ -80,7 +80,8 @@
           name: ''
         },
         multipleSelection: [],
-        limit: 10
+        limit: 10,
+        name: ''
       }
     },
     methods: {
@@ -115,10 +116,11 @@
       },
       getAllUsers(page) {
         this.loading = true
-        console.log(this.keywords)
         const data = {
           params: {
-            keywords: this.keywords,
+//            keywords: {
+////              name: this.name
+//            },
             page: page,
             limit: this.limit
           }
