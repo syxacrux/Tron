@@ -18,19 +18,13 @@ class Shot extends Common
 	protected $tache_byname_arr = [3 => '美术部', 4 => '模型部', 5 => '贴图部', 6 => '绑定部', 7 => '跟踪部', 8 => '动画部', 9 => '数字绘景部', 10 => '特效部', 11 => '灯光部', 12 => '合成部'];
 
 	/**
-	 * 获取列表
-	 * @param $keyword
+	 * 镜头首页概括
+	 * @param $keywords
 	 * @param $page
 	 * @param $limit
-	 * @param $uid
-	 * @param $group_id int 所属角色
 	 * @return mixed
-	 * @throws \think\db\exception\DataNotFoundException
-	 * @throws \think\db\exception\ModelNotFoundException
-	 * @throws \think\exception\DbException
-	 * @author zjs 2018/3/16
 	 */
-	public function getList($keyword, $page, $limit)
+	public function getList($keywords, $page, $limit)
 	{
 		$where = [];
 		$dataCount = $this->where($where)->count('id');

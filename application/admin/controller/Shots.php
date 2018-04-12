@@ -28,7 +28,7 @@ class Shots extends BaseCommon
 	{
 		$shot_model = model('Shot');
 		$uid = $this->uid;
-		$group_id = Access::where('user_id',$uid)->value('group_id'); //所属角色
+		$group_id = Access::where('user_id', $uid)->value('group_id'); //所属角色
 		$param = $this->param;
 		$keywords = !empty($param['keywords']) ? $param['keywords'] : '';
 		$page = !empty($param['page']) ? $param['page'] : '';
@@ -109,7 +109,7 @@ class Shots extends BaseCommon
 	{
 		$shot_model = model('Shot');
 		$uid = $this->uid;
-		$group_id = Access::where('user_id',$uid)->value('group_id'); //所属角色
+		$group_id = Access::where('user_id', $uid)->value('group_id'); //所属角色
 		$param = $this->param;
 		$data = $shot_model->addData($param, $uid, $group_id);
 		if (!$data) {
@@ -197,11 +197,24 @@ class Shots extends BaseCommon
 	}
 
 	//添加场号
-	public function save_field(){
+	public function save_field()
+	{
 		$shot_model = model('Shot');
 		$param = $this->param;
 		$data = $shot_model->field_add($param);
+		return resultArray(['data' => $data]);
+	}
+
+	//筛选 - 获取场号
+	public function get_field(){
+		$shot_model = model('Shot');
+		$param = $this->param;
+		$data = $shot_model->get_field_data($param);
 		return resultArray(['data'=>$data]);
 	}
+
+
+
+
 
 }
