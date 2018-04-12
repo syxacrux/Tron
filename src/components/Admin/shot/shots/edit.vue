@@ -8,7 +8,7 @@
               <el-form-item label="项目名称:" prop="project_id">
                 <el-select v-model="form.project_id" placeholder="请选择项目" @change="getFields">
                   <el-option v-for="item in projectList" :label="item.project_name" :value="item.id"
-                             :key="item.id"></el-option>
+                             :key="item.project_name"></el-option>
                 </el-select>
               </el-form-item>
             </div>
@@ -18,7 +18,7 @@
               <el-form-item label="场号:" prop="field_id">
                 <el-select v-model="form.field_id" placeholder="请选择场号" :class="{ 'w-130': addShow }">
                   <el-option v-for="item in fieldList" :label="item.name" :value="item.id"
-                             :key="item.id"></el-option>
+                             :key="item.name"></el-option>
                 </el-select>
                 <el-button type="text" size="small" @click="isAddField = true" v-if="addShow">添加</el-button>
               </el-form-item>
@@ -641,8 +641,6 @@
           _g.toastMsg('warning', '请输入计划起止时间')
           return
         }
-
-
 //        必填项
         this.form.shot_image = this.form.shot_image.slice(this.form.shot_image.indexOf('uploads'))
         this.form.project_id = parseInt(this.form.project_id)
@@ -674,7 +672,6 @@
           11: this.lightOfStudio,
           12: this.synchOfStudio
         }
-
         this.$refs.form.validate((pass) => {
           if (pass) {
             this.isLoading = !this.isLoading
@@ -734,7 +731,7 @@
         this.form.shot_number = data.shot_number
         this.form.shot_byname = data.shot_byname
         this.form.shot_name = data.shot_name
-        this.form.shot_image = this.image = window.baseUrl + '' + data.shot_image
+        this.form.shot_image = this.image = window.baseUrl + '/' + data.shot_image
         this.plan_time = [new Date(data.plan_start_timestamp * 1000), new Date(data.plan_end_timestamp * 1000)]
         this.form.time = data.time.toString()
         this.form.ambient = data.ambient.toString()
