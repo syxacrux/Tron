@@ -8,9 +8,9 @@
       </el-breadcrumb>
     </div>
     <div class="m-b-20 ovf-hd">
-      <div class="fl w-600">
+      <div class="fl w-700">
         <template>
-          <el-select v-model="projectValue" placeholder="请选择项目" @change="projectChange">
+          <el-select v-model="projectValue" placeholder="请选择项目" @change="screenChange(1)">
             <el-option
               v-for="item in screeningProject"
               :key="item.id"
@@ -18,7 +18,7 @@
               :value="item.id">
             </el-option>
           </el-select>
-          <el-select v-model="siteValue"  style="margin-left: 10px;" placeholder="请选择场号" @change="siteChange">
+          <el-select v-model="siteValue"  style="margin-left: 10px;" placeholder="请选择场号" @change="screenChange(2)">
             <el-option
               v-for="item in screeningSite"
               :key="item.id"
@@ -26,6 +26,7 @@
               :value="item.id">
             </el-option>
           </el-select>
+          <el-input class="w-200" style="margin-left: 10px;" v-model="shotValue" placeholder="请输入镜头号"></el-input>
           <el-button icon="el-icon-search" circle @click="screenProjectValue"></el-button>
         </template>
       </div>
@@ -473,6 +474,8 @@
         projectValue:'',//项目下拉框选中的值
         screeningSite:[],//场号下拉列表数据
         siteValue:'',//场号下拉框选中的值
+        // screeningShot:[],
+        shotValue:'',
         stages: ['制作中', '反馈中',  '等待制作', '提交发布'],
         blocksDataCount:0,//任务的数量
         blocks: [],//任务页面列表
@@ -548,7 +551,7 @@
 
           }, () => {
             this.isLoading = !this.isLoading
-            getAllWorkbenches('admin/workbenches',this.currentPage,1)
+            getAllWorkbenches('admin/workbenches',this.currentPage,1,40,this.projectValue,this.siteValue,this.shotValue)
           })
         })
 
@@ -558,40 +561,35 @@
         // console.log(tab, event);
         // console.log(tab)
         this.tabVale = parseInt(tab.index)+1
-        this.publicRequest(tab.label,parseInt(tab.index)+1,this.projectValue,this.siteValue)
+        this.publicRequest(tab.label,parseInt(tab.index)+1,this.projectValue,this.siteValue,this.shotValue)
       },
       //tab切换、搜索时 请求调用
-      publicRequest(type,value,projectValue,siteValue){
+      publicRequest(type,value,projectValue,siteValue,shotValue){
         switch (type){
           case '任务':
-            this.getAllWorkbenches('admin/workbenches',1,value,40,projectValue,siteValue)//任务页面传参数
+            this.getAllWorkbenches('admin/workbenches',1,value,40,projectValue,siteValue,shotValue)//任务页面传参数
           break;
           case '等待上游':
-            this.getAllWorkbenches('task/upper_shots',1,value,10,projectValue,siteValue)//镜头
+            this.getAllWorkbenches('task/upper_shots',1,value,10,projectValue,siteValue,shotValue)//镜头
           break;
           case '完成':
-            this.getAllWorkbenches('task/finish_task',1,value,10,projectValue,siteValue)//完成页面传参数
+            this.getAllWorkbenches('task/finish_task',1,value,10,projectValue,siteValue,shotValue)//完成页面传参数
           break;
           case 'task':
-            this.getAllWorkbenches('admin/workbenches',1,value,40,projectValue,siteValue)//任务页面传参数
+            this.getAllWorkbenches('admin/workbenches',1,value,40,projectValue,siteValue,shotValue)//任务页面传参数
           break;
           case 'waiting':
-            this.getAllWorkbenches('task/upper_shots',1,value,10,projectValue,siteValue)//镜头
+            this.getAllWorkbenches('task/upper_shots',1,value,10,projectValue,siteValue,shotValue)//镜头
           break;
           case 'complete':
-            this.getAllWorkbenches('task/finish_task',1,value,10,projectValue,siteValue)//完成页面传参数
+            this.getAllWorkbenches('task/finish_task',1,value,10,projectValue,siteValue,shotValue)//完成页面传参数
           break;
         }
-      },
-      //筛选
-      screenProjectValue(){
-      //  console.log(this.activeName)
-      //   this.publicRequest(this.activeName)
       },
       //工作台列表
       workList(){
         this.isTaskLIst = false
-        this.getAllWorkbenches('task/index_list',1,11,10,this.projectValue,this.siteValue)
+        this.getAllWorkbenches('task/index_list',1,11,10,this.projectValue,this.siteValue,this.shotValue)
       },
       //      时间抽转换为时间格式
       j2time(time) {
@@ -614,12 +612,12 @@
       },
        // 任务切换页码
       taskCurrentChange(page) {
-        this.getAllWorkbenches('admin/workbenches',page,1,40)
+        this.getAllWorkbenches('admin/workbenches',page,1,40,this.projectValue,this.siteValue,this.shotValue)
       },
       //等待上游镜头切换页码
       upstreamShotCurrentChange(page){
         // this.getAllWorkbenches(page)
-        this.getAllWorkbenches('task/upper_shots',page,2,10)
+        this.getAllWorkbenches('task/upper_shots',page,2,10,this.projectValue,this.siteValue,this.shotValue)
       },
       //等待上游资产切换页码
       upstreamTaskCurrentChange(page){
@@ -627,11 +625,11 @@
       },
       //完成切换页码
       completeCurrentChange(page){
-        this.getAllWorkbenches('task/finish_task',page,3,10)
+        this.getAllWorkbenches('task/finish_task',page,3,10,this.projectValue,this.siteValue,this.shotValue)
       },
       //工作台列表切换页码
       tableListCurrentChange(page){
-        this.getAllWorkbenches('task/index_list',page,11,10)
+        this.getAllWorkbenches('task/index_list',page,11,10,this.projectValue,this.siteValue,this.shotValue)
       },
       /*
       * 获取项目列表
@@ -644,13 +642,14 @@
       *   }
       * */
       
-      getAllWorkbenches(state,page,status,limit,projectValue,siteValue) {
+      getAllWorkbenches(state,page,status,limit,projectValue,siteValue,shotValue) {
         this.loading = true
         const data = {
           params: {
             keywords: {
               project_id:projectValue,
               field_id: siteValue,
+              shot_number:shotValue
             },
             page: page,
             limit: limit,
@@ -693,28 +692,47 @@
           })
         })
       },
-      //请求项目下的场号、和对应的任务列表
-      projectChange(){
-        const data = {
-          params: {
-            project_id: this.projectValue
+      //请求项目下的场号、镜头和对应的任务列表
+      screenChange(svuel){
+        switch (svuel){
+          case 1://请求场号
+          this.siteValue = ''
+          this.shotValue = ''
+          const data = {
+            params: {
+              project_id: this.projectValue
+            }
           }
-        }
-        this.apiGet('admin/get_fields', data).then((res) => {//请求项目下的场号
-          this.handelResponse(res, (data) => {
-            this.screeningSite = data
+          this.apiGet('admin/get_fields', data).then((res) => {//请求项目下的场号
+            this.handelResponse(res, (data) => {
+              this.screeningSite = data
+              
+            })
           })
-        })
+          break
+          case 2://请求镜头号
+            this.shotValue = ''
+            const datas = {
+              params: {
+                field_id: this.siteValue
+              }
+            }
+            this.apiGet('admin/get_shot_num', datas).then((res) => {//请求项目下的场号
+              this.handelResponse(res, (data) => {
+              })
+            })
+          break
+        }
         //对应的任务列表
-        this.publicRequest(this.activeName,this.tabVale,this.projectValue,this.siteValue)//工作台的
-        this.getAllWorkbenches('task/index_list',1,11,10,this.projectValue,this.siteValue)//工作台列表
+        this.publicRequest(this.activeName,this.tabVale,this.projectValue,this.siteValue,this.shotValue)//工作台的
+        this.getAllWorkbenches('task/index_list',1,11,10,this.projectValue,this.siteValue,this.shotValue)//工作台列表
       },
-      //场号对应的所有状态列表
-      siteChange(){
-        this.publicRequest(this.activeName,this.tabVale,this.projectValue,this.siteValue)//工作台的
-        this.getAllWorkbenches('task/index_list',1,11,10,this.projectValue,this.siteValue)//工作台列表
+      //搜索按钮
+      screenProjectValue(){
+        //对应的任务列表
+        this.publicRequest(this.activeName,this.tabVale,this.projectValue,this.siteValue,this.shotValue)//工作台的
+        this.getAllWorkbenches('task/index_list',1,11,10,this.projectValue,this.siteValue,this.shotValue)//工作台列表
       },
-
  //      点击任务显示任务详情
       taskDetail(id) {
         //        判断任务详情传入值是否为数字
@@ -735,7 +753,7 @@
       },
 //      初始化项目列表内容
       init() {
-       this.getAllWorkbenches('admin/workbenches',1,1,40,this.projectValue,this.siteValue)
+       this.getAllWorkbenches('admin/workbenches',1,1,40,this.projectValue,this.siteValue,this.shotValue)
        this.getsprojects()
       }
     },
