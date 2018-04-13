@@ -17,7 +17,7 @@ class Workbenches extends BaseCommon
 	{
 		$workbench_model = model('Workbench');
 		$uid = $this->uid;
-		$group_id = Access::where('user_id',$uid)->value('group_id');
+		$group_id = Access::where('user_id', $uid)->value('group_id');
 		$param = $this->param;
 		$keywords = !empty($param['keywords']) ? json_decode($param['keywords'], true) : '';
 		$page = !empty($param['page']) ? $param['page'] : '';
@@ -31,7 +31,7 @@ class Workbenches extends BaseCommon
 	{
 		$workbench_model = model('Workbench');
 		$uid = $this->uid;
-		$group_id = Access::where('user_id',$uid)->value('group_id');
+		$group_id = Access::where('user_id', $uid)->value('group_id');
 		$param = $this->param;
 		$keywords = !empty($param['keywords']) ? json_decode($param['keywords'], true) : '';
 		$page = !empty($param['page']) ? $param['page'] : '';
@@ -45,7 +45,7 @@ class Workbenches extends BaseCommon
 	{
 		$workbench_model = model('Workbench');
 		$uid = $this->uid;
-		$group_id = Access::where('user_id',$uid)->value('group_id');
+		$group_id = Access::where('user_id', $uid)->value('group_id');
 		$param = $this->param;
 		$keywords = !empty($param['keywords']) ? json_decode($param['keywords'], true) : '';
 		$page = !empty($param['page']) ? $param['page'] : '';
@@ -72,12 +72,12 @@ class Workbenches extends BaseCommon
 	{
 		$workbench_model = model('Workbench');
 		$uid = $this->uid;
-		$group_id = Access::where('user_id',$uid)->value('group_id');
+		$group_id = Access::where('user_id', $uid)->value('group_id');
 		$param = $this->param;
 		$keywords = !empty($param['keywords']) ? json_decode($param['keywords'], true) : '';
 		$page = !empty($param['page']) ? $param['page'] : '';
 		$limit = !empty($param['limit']) ? $param['limit'] : '';
-		$data = $workbench_model->getFinishTask($keywords, $page, $limit, $uid,$group_id);
+		$data = $workbench_model->getFinishTask($keywords, $page, $limit, $uid, $group_id);
 		return resultArray(['data' => $data]);
 	}
 
@@ -128,7 +128,7 @@ class Workbenches extends BaseCommon
 		$workbench_model = model('Workbench');
 		$param = $this->param;
 		$uid = $this->uid;
-		$group_id = Access::where('user_id',$uid)->value('group_id');
+		$group_id = Access::where('user_id', $uid)->value('group_id');
 		$task_id = !empty($param['id']) ? $param['id'] : '';
 		$data = $workbench_model->change_task_status($task_id, $param, $uid, $group_id);
 		if (!$data) {
