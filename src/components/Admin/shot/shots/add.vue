@@ -66,7 +66,7 @@
           <el-col :span="8">
             <div class="grid-content">
               <el-form-item label="镜头编号:" prop="shot_number">
-                <el-input v-model.trim="form.shot_number" class="h-40 w-200"></el-input>
+                <el-input v-model.trim="form.shot_number" class="h-40 w-200" @blur="shotNumberBlur"></el-input>
               </el-form-item>
             </div>
           </el-col>
@@ -313,7 +313,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-form-item>
-            <el-button type="primary" @click="add('form')" :loading="isLoading">提交</el-button>
+            <el-button type="primary" @click="add" :loading="isLoading">提交</el-button>
             <el-button @click="goback()">返回</el-button>
           </el-form-item>
         </el-row>
@@ -436,6 +436,7 @@
   import fomrMixin from '@/assets/js/form_com'
   import http from '../../../../assets/js/http'
   import _g from '@/assets/js/global'
+  import axios from 'axios'
 
   export default {
     data() {
@@ -594,6 +595,21 @@
         this.lightOfStudio = this.isLight ? this.lightOfStudio : []
         this.synchOfStudio = this.isSynch ? this.synchOfStudio : []
       },
+      shotNumberBlur() {
+        console.log(event)
+        const data = {
+          params: {
+            field_id: parseInt(this.form.field_id),
+            shot_number: this.form.shot_number
+          }
+        }
+        axios.get('shot/check_num', data).then((res) => {
+          console.log(res.data.code, 'suc')
+          if (res.data.code === 400) {
+            _g.toastMsg('error', res.data.error)
+          }
+        })
+      },
 //      添加镜头
       add(form) {
         if (
@@ -649,28 +665,15 @@
 
         this.$refs.form.validate((pass) => {
           if (pass) {
-            const data = {
-              params: {
-                field_id: this.form.field_id,
-                shot_number: this.form.shot_number
-              }
-            }
-            this.apiGet('shot/check_num', data).then((res) => {
+            this.apiPost('admin/shots', this.form).then((res) => {
               this.handelResponse(res, (data) => {
+                _g.toastMsg('success', '添加成功')
+                setTimeout(() => {
+                  this.goback()
+                }, 1500)
+              }, () => {
                 this.isLoading = !this.isLoading
-                this.apiPost('admin/shots', this.form).then((res) => {
-                  this.handelResponse(res, (data) => {
-                    _g.toastMsg('success', '添加成功')
-                    setTimeout(() => {
-                      this.goback()
-                    }, 1500)
-                  }, () => {
-                    this.isLoading = !this.isLoading
-                  })
-                })
               })
-            }).catch((err) => {
-              _g.toastMsg('error', err.error)
             })
           }
         })
