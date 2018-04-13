@@ -118,7 +118,7 @@ class Shots extends BaseCommon
 		$uid = $this->uid;
 		$group_id = Access::where('user_id', $uid)->value('group_id'); //所属角色
 		$param = $this->param;
-		$data = $shot_model->addData($param, $uid, $group_id);
+		$data = $shot_model->addData($param,$group_id);
 		if (!$data) {
 			return resultArray(['error' => $shot_model->getError()]);
 		}
