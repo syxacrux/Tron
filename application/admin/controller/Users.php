@@ -20,6 +20,7 @@ class Users extends BaseCommon{
         return resultArray(['data' => $data]);
     }
 
+    //详情
     public function read(){
         $userModel = model('User');
         $param = $this->param;
@@ -30,6 +31,7 @@ class Users extends BaseCommon{
         return resultArray(['data' => $data]);
     }
 
+    //新增
     public function save(){
         $userModel = new User();
         $param = $this->param;
@@ -40,6 +42,7 @@ class Users extends BaseCommon{
         return resultArray(['data' => '添加成功']);
     }
 
+    //更新
     public function update()
     {
         $userModel = model('User');
