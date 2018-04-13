@@ -595,8 +595,8 @@
         this.lightOfStudio = this.isLight ? this.lightOfStudio : []
         this.synchOfStudio = this.isSynch ? this.synchOfStudio : []
       },
+//      镜头编号失去焦点校验镜头编号
       shotNumberBlur() {
-        console.log(event)
         const data = {
           params: {
             field_id: parseInt(this.form.field_id),
@@ -660,8 +660,6 @@
           11: this.lightOfStudio,
           12: this.synchOfStudio
         }
-
-        console.log(this.form)
 
         this.$refs.form.validate((pass) => {
           if (pass) {
