@@ -463,7 +463,8 @@ class Shot extends Common
 
 	//校验所属项目、所属场号下的镜头编号是否重复
 	public function check_shot_num($param){
-		$check_result = $this->where('field_id',$param['field'])->value('id');
+
+		$check_result = $this->where(['field_id'=>$param['field'],'shot_number'=>$param['shot_number']])->value('id');
 		if(!empty($check_result)){
 			$this->error = '镜头编号已重复';
 			return false;
