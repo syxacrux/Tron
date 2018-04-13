@@ -651,7 +651,8 @@
           if (pass) {
             const data = {
               params: {
-                field_id: this.form.field_id
+                field_id: this.form.field_id,
+                shot_number: this.form.shot_number
               }
             }
             this.apiGet('shot/check_num', data).then((res) => {
