@@ -200,7 +200,7 @@ class Shot extends Common
 					}
 				}
 				//更新所属镜头 所属项目的任务数量
-				$task_count['task_count'] = Workbench::where(['shot_id'=>$shot_id,'project_id'=>$param['project_id']])->count('id');
+				$task_count['task_count'] = Workbench::where('project_id',$param['project_id'])->count('id');
 				Db::name('admin_project')->where('id',$param['project_id'])->update($task_count);
 				$this->commit();
 				return true;
