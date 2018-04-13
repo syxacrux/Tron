@@ -684,6 +684,18 @@
 //                _g.clearVuex('setUsers')
                 setTimeout(() => {
                   this.dialogFormVisible = false
+                  this.isArt = this.isModel = this.isMap = this.isBind = this.isTrack = this.isAni = this.isPaint = this.isSpec = this.isLight = this.isSynch = false
+                  this.studiosListArt = this.studiosListModel = this.studiosListMap = this.studiosListBind = this.studiosListTrack = this.studiosListAnimate = this.studiosListPaint = this.studiosListSpecial = this.studiosListLight = this.studiosListSynch =[]
+                  this.artOfStudio = []
+                  this.modelOfStudio = []
+                  this.mapOfStudio = []
+                  this.bindOfStudio = []
+                  this.trackOfStudio = []
+                  this.animateOfStudio = []
+                  this.paintOfStudio = []
+                  this.specialOfStudio = []
+                  this.lightOfStudio = []
+                  this.synchOfStudio = []
                   this.isLoading = !this.isLoading
                 }, 1500)
               }, () => {
