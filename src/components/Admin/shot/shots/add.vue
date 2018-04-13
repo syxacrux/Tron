@@ -66,7 +66,7 @@
           <el-col :span="8">
             <div class="grid-content">
               <el-form-item label="镜头编号:" prop="shot_number">
-                <el-input v-model.trim="form.shot_number" class="h-40 w-200" @blur="shotNumberBlur"></el-input>
+                <el-input v-model.trim="form.shot_number" class="h-40 w-200"></el-input>
               </el-form-item>
             </div>
           </el-col>
@@ -440,6 +440,30 @@
 
   export default {
     data() {
+      let shotNumber = (rule, value, callback) => {
+        console.log(this.form.field_id)
+        console.log(value)
+        const data = {
+          params: {
+            field_id: parseInt(this.form.field_id),
+            shot_number: value
+          }
+        }
+        if(value == ''){
+          callback(new Error('请输入镜头编号'));
+        }else{
+          axios.get('shot/check_num', data).then((res) => {
+            console.log(res.data.code, 'suc')
+            if (res.data.code === 400) {
+              callback(new Error(res.data.error));
+            }else{
+              callback()
+            }
+          })
+        }
+//        /^[0-9]+$/
+
+      };
       return {
         isArt: false,
         isModel: false,
@@ -515,9 +539,9 @@
           project_id: [{required: true, message: '请选择项目'}],
           field_id: [{required: true, message: '请选择场号'}],
           shot_image: [{required: true, message: '请插入镜头缩略图'}],
-          shot_number: [{required: true, message: '请输入镜头编号'}, , {min: 3, max: 6, message: '长度在3到6个字符'}, {
+          shot_number: [{required: true, message: '请输入镜头编号'}, {min: 3, max: 6, message: '长度在3到6个字符'}, {
             pattern: /^[0-9]+$/,
-            message: '镜头编号必须为数字'
+            validator: shotNumber
           }],
           shot_byname: [
             {required: true, message: '请输入镜头简称'}, {pattern: /^[a-zA-Z]+$/, message: '镜头简称必须为字母'}
@@ -595,21 +619,6 @@
         this.lightOfStudio = this.isLight ? this.lightOfStudio : []
         this.synchOfStudio = this.isSynch ? this.synchOfStudio : []
       },
-//      镜头编号失去焦点校验镜头编号
-      shotNumberBlur() {
-        const data = {
-          params: {
-            field_id: parseInt(this.form.field_id),
-            shot_number: this.form.shot_number
-          }
-        }
-        axios.get('shot/check_num', data).then((res) => {
-          console.log(res.data.code, 'suc')
-          if (res.data.code === 400) {
-            _g.toastMsg('error', res.data.error)
-          }
-        })
-      },
 //      添加镜头
       add(form) {
         if (
@@ -629,7 +638,6 @@
           _g.toastMsg('warning', '请输入计划起止时间')
           return
         }
-
 //        必填项
         this.form.project_id = parseInt(this.form.project_id)
         this.form.field_id = parseInt(this.form.field_id)
@@ -640,7 +648,6 @@
         this.form.plan_end_timestamp = _g.j2time(this.plan_time[1])
         this.form.priority_level = this.form.priority_level ? parseInt(this.form.priority_level) : 1
         this.form.difficulty = this.form.difficulty ? parseInt(this.form.difficulty) : 1
-
 //        选填项
 //        this.form.asset_ids = this.form.asset_ids.join('')
         this.form.frame_range = this.frame_range1 && this.frame_range2 ? this.frame_range1 + ',' + this.frame_range2 : ''
