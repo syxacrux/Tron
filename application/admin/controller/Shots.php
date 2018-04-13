@@ -17,10 +17,12 @@ class Shots extends BaseCommon
 	{
 		$shot_model = model('Shot');
 		$param = $this->param;
-		$keywords = !empty($param['keywords']) ? $param['keywords'] : '';
+		$uid = $this->uid;
+		$group_id = Access::where('user_id', $uid)->value('group_id'); //所属角色
+		$keywords = !empty($param['keywords']) ? json_decode($param['keywords'],true) : '';
 		$page = !empty($param['page']) ? $param['page'] : '';
 		$limit = !empty($param['limit']) ? $param['limit'] : '';
-		$data = $shot_model->getList($keywords, $page, $limit);
+		$data = $shot_model->getList($keywords, $page, $limit,$uid,$group_id);
 		return resultArray(['data' => $data]);
 	}
 
@@ -116,7 +118,7 @@ class Shots extends BaseCommon
 		$uid = $this->uid;
 		$group_id = Access::where('user_id', $uid)->value('group_id'); //所属角色
 		$param = $this->param;
-		$data = $shot_model->addData($param, $uid, $group_id);
+		$data = $shot_model->addData($param,$group_id);
 		if (!$data) {
 			return resultArray(['error' => $shot_model->getError()]);
 		}
