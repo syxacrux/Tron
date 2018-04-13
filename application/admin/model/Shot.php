@@ -140,6 +140,7 @@ class Shot extends Common
 	//添加镜头及任务
 	public function addData($param, $uid, $group_id)
 	{
+		$project_obj = Project::get($param['project_id']);
 		//开启事务
 		$this->startTrans();
 		try {
@@ -156,13 +157,18 @@ class Shot extends Common
 			}
 			//保存镜头表
 			$result = $this->allowField(true)->save($param);
+			$shot_id = $this->id;
 			//获取自增ID的镜头对象
 			$curr_shot_obj = $this->get($this->id);
 			if (false === $result) {
 				$this->error = $this->getError();
 				return false;
 			} else {
-				$project_byname = Project::get($param['project_id'])->project_byname;
+				//镜头表新增成功 更新所属项目表镜头数量 lens_count +1
+				$lens_count['lens_count'] = $this->where('project_id',$param['project_id'])->count('id');
+				Db::name('admin_project')->where('id',$param['project_id'])->update($lens_count);
+
+				$project_byname = $project_obj->project_byname;
 				$field_name = Db::name('field')->where('id', $param['field_id'])->value('name');
 				//执行redis添加镜头所属目录 python
 				$str = "'Shot' '{$project_byname}' '{$field_name}' '{$param['shot_name']}'";
@@ -174,7 +180,7 @@ class Shot extends Common
 						$task_data['user_id'] = 0;   //所属用户ID
 						$task_data['project_id'] = $curr_shot_obj->project_id;   //所属项目ID
 						$task_data['field_id'] = $curr_shot_obj->field_id;   //场号ID
-						$task_data['shot_id'] = $this->id;  //镜头ID
+						$task_data['shot_id'] = $shot_id;  //镜头ID
 						$task_data['tache_id'] = $key;  //环节ID
 						$task_data['tache_sort'] = Tache::get($key)->sort;  //环节排序
 						$task_data['studio_id'] = $v;   //工作室ID
@@ -193,6 +199,9 @@ class Shot extends Common
 						$task_model->data($task_data)->save();
 					}
 				}
+				//更新所属镜头 所属项目的任务数量
+				$task_count['task_count'] = Workbench::where(['shot_id'=>$shot_id,'project_id'=>$param['project_id']])->count('id');
+				Db::name('admin_project')->where('id',$param['project_id'])->update($task_count);
 				$this->commit();
 				return true;
 			}
@@ -258,9 +267,15 @@ class Shot extends Common
 						$task_model->data($task_data, true)->isUpdate(false)->save();
 					}
 				}
+				//更新所属项目的任务数量
+				$task_count['task_count'] = Workbench::where(['shot_id'=>$id,'project_id'=>$shot_obj->project_id])->count('id');
+				Db::name('admin_project')->where('id',$shot_obj->project_id)->update($task_count);
 				$this->commit();
 				return true;
 			} else {  //更新本镜头数据
+				//更新所属项目的任务数量
+				$task_count['task_count'] = Workbench::where(['shot_id'=>$id,'project_id'=>$shot_obj->project_id])->count('id');
+				Db::name('admin_project')->where('id',$shot_obj->project_id)->update($task_count);
 				$shot_model->allowField(true)->save($param, [$this->getPk() => $id]);
 				$this->commit();
 				return true;
