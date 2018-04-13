@@ -9,36 +9,45 @@
     </div>
     <div class="m-b-20 ovf-hd">
       <div class="fl w-700">
-        <template>
-          <el-select class="w-150" v-model="search.project_id" placeholder="请选择项目" @change="screenChange(1)">
-            <el-option
-              v-for="item in screeningProject"
-              :key="item.id"
-              :label="item.project_name"
-              :value="item.id">
-            </el-option>
-          </el-select>
-          <el-select class="w-150" v-model="search.field_id"  style="margin-left: 10px;" placeholder="请选择场号" @change="screenChange(2)">
-            <el-option
-              v-for="item in screeningSite"
-              :key="item.id"
-              :label="item.name"
-              :value="item.id">
-            </el-option>
-          </el-select>
-          <el-select class="w-150" v-model="search.shot_id"  style="margin-left: 10px;" placeholder="请选择镜头号" @change="screenChange()">
-            <el-option
-              v-for="item in screeningShot"
-              :key="item.id"
-              :label="item.shot_number"
-              :value="item.id">
-            </el-option>
-          </el-select>
-          <el-input class="w-200" style="margin-left: 10px;" v-model.trim="search.shot_number" placeholder="请输入场号镜头号">
-            <el-button slot="append" icon="el-icon-search" circle @click="searchPublic"></el-button>
-          </el-input>
-          
-        </template>
+        <!-- <template> -->
+        <el-row :gutter="10" class="m-b-5">
+          <el-col :span="5">
+            <el-select v-model="search.project_id" placeholder="请选择项目" @change="screenChange(1)">
+              <el-option
+                v-for="item in screeningProject"
+                :key="item.id"
+                :label="item.project_name"
+                :value="item.id">
+              </el-option>
+            </el-select>
+          </el-col>
+          <el-col :span="5">
+            <el-select v-model="search.field_id"  style="margin-left: 10px;" placeholder="请选择场号" @change="screenChange(2)">
+              <el-option
+                v-for="item in screeningSite"
+                :key="item.id"
+                :label="item.name"
+                :value="item.id">
+              </el-option>
+            </el-select>
+          </el-col>
+          <el-col :span="5">
+            <el-select v-model="search.shot_id"  style="margin-left: 10px;" placeholder="请选择镜头号" @change="screenChange()">
+              <el-option
+                v-for="item in screeningShot"
+                :key="item.id"
+                :label="item.shot_number"
+                :value="item.id">
+              </el-option>
+            </el-select>
+          </el-col>
+          <el-col :span="6">
+            <el-input class="w-200" style="margin-left: 10px;" v-model.trim="search.shot_number" placeholder="请输入场号镜头号">
+              <el-button slot="append" icon="el-icon-search" circle @click="searchPublic"></el-button>
+            </el-input>
+          </el-col>
+        </el-row> 
+        <!-- </template> -->
       </div>
       <div class="tx-r">
         <el-tooltip v-if="kanbanShow" effect="dark" content="工作台进度" placement="bottom-start">
