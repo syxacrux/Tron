@@ -626,7 +626,7 @@
         this.form.difficulty = this.form.difficulty ? parseInt(this.form.difficulty) : 1
 
 //        选填项
-        this.form.asset_ids = this.form.asset_ids.join('')
+//        this.form.asset_ids = this.form.asset_ids.join('')
         this.form.frame_range = this.frame_range1 && this.frame_range2 ? this.frame_range1 + ',' + this.frame_range2 : ''
         this.form.handle_frame = this.handle_frame1 && this.handle_frame2 ? this.handle_frame1 + ',' + this.handle_frame2 : ''
         this.form.clip_frame_length = this.form.clip_frame_length ? parseInt(this.form.clip_frame_length) : 0
