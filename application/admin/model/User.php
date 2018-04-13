@@ -438,7 +438,7 @@ class User extends Common
 
 	/**
 	 * 根据多个ID获取值内容
-	 * @param $ids
+	 * @param $ids  string
 	 * @param $value
 	 * @param $tag
 	 * @return string
