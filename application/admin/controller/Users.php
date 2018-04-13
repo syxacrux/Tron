@@ -7,9 +7,9 @@
 
 namespace app\admin\controller;
 use app\admin\model\User;
-use app\common\controller\ApiCommon;
+use app\common\controller\BaseCommon;
 
-class Users extends ApiCommon{
+class Users extends BaseCommon{
     public function index(){
         $userModel = model('User');
         $param = $this->param;
@@ -20,6 +20,7 @@ class Users extends ApiCommon{
         return resultArray(['data' => $data]);
     }
 
+    //详情
     public function read(){
         $userModel = model('User');
         $param = $this->param;
@@ -30,6 +31,7 @@ class Users extends ApiCommon{
         return resultArray(['data' => $data]);
     }
 
+    //新增
     public function save(){
         $userModel = new User();
         $param = $this->param;
@@ -40,6 +42,7 @@ class Users extends ApiCommon{
         return resultArray(['data' => '添加成功']);
     }
 
+    //更新
     public function update()
     {
         $userModel = model('User');
