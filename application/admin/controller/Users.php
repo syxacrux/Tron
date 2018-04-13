@@ -7,9 +7,9 @@
 
 namespace app\admin\controller;
 use app\admin\model\User;
-use app\common\controller\ApiCommon;
+use app\common\controller\BaseCommon;
 
-class Users extends ApiCommon{
+class Users extends BaseCommon{
     public function index(){
         $userModel = model('User');
         $param = $this->param;
