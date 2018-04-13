@@ -313,7 +313,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-form-item>
-            <el-button type="primary" @click="add('form')" :loading="isLoading">提交</el-button>
+            <el-button type="primary" @click="add" :loading="isLoading">提交</el-button>
             <el-button @click="goback()">返回</el-button>
           </el-form-item>
         </el-row>
@@ -436,9 +436,34 @@
   import fomrMixin from '@/assets/js/form_com'
   import http from '../../../../assets/js/http'
   import _g from '@/assets/js/global'
+  import axios from 'axios'
 
   export default {
     data() {
+      let shotNumber = (rule, value, callback) => {
+        console.log(this.form.field_id)
+        console.log(value)
+        const data = {
+          params: {
+            field_id: parseInt(this.form.field_id),
+            shot_number: value
+          }
+        }
+        if(value == ''){
+          callback(new Error('请输入镜头编号'));
+        }else{
+          axios.get('shot/check_num', data).then((res) => {
+            console.log(res.data.code, 'suc')
+            if (res.data.code === 400) {
+              callback(new Error(res.data.error));
+            }else{
+              callback()
+            }
+          })
+        }
+//        /^[0-9]+$/
+
+      };
       return {
         isArt: false,
         isModel: false,
@@ -514,9 +539,9 @@
           project_id: [{required: true, message: '请选择项目'}],
           field_id: [{required: true, message: '请选择场号'}],
           shot_image: [{required: true, message: '请插入镜头缩略图'}],
-          shot_number: [{required: true, message: '请输入镜头编号'}, , {min: 3, max: 6, message: '长度在3到6个字符'}, {
+          shot_number: [{required: true, message: '请输入镜头编号'}, {min: 3, max: 6, message: '长度在3到6个字符'}, {
             pattern: /^[0-9]+$/,
-            message: '镜头编号必须为数字'
+            validator: shotNumber
           }],
           shot_byname: [
             {required: true, message: '请输入镜头简称'}, {pattern: /^[a-zA-Z]+$/, message: '镜头简称必须为字母'}
@@ -613,7 +638,6 @@
           _g.toastMsg('warning', '请输入计划起止时间')
           return
         }
-
 //        必填项
         this.form.project_id = parseInt(this.form.project_id)
         this.form.field_id = parseInt(this.form.field_id)
@@ -624,9 +648,8 @@
         this.form.plan_end_timestamp = _g.j2time(this.plan_time[1])
         this.form.priority_level = this.form.priority_level ? parseInt(this.form.priority_level) : 1
         this.form.difficulty = this.form.difficulty ? parseInt(this.form.difficulty) : 1
-
 //        选填项
-        this.form.asset_ids = this.form.asset_ids.join('')
+//        this.form.asset_ids = this.form.asset_ids.join('')
         this.form.frame_range = this.frame_range1 && this.frame_range2 ? this.frame_range1 + ',' + this.frame_range2 : ''
         this.form.handle_frame = this.handle_frame1 && this.handle_frame2 ? this.handle_frame1 + ',' + this.handle_frame2 : ''
         this.form.clip_frame_length = this.form.clip_frame_length ? parseInt(this.form.clip_frame_length) : 0
@@ -645,32 +668,17 @@
           12: this.synchOfStudio
         }
 
-        console.log(this.form)
-
         this.$refs.form.validate((pass) => {
           if (pass) {
-            const data = {
-              params: {
-                field_id: this.form.field_id,
-                shot_number: this.form.shot_number
-              }
-            }
-            this.apiGet('shot/check_num', data).then((res) => {
+            this.apiPost('admin/shots', this.form).then((res) => {
               this.handelResponse(res, (data) => {
+                _g.toastMsg('success', '添加成功')
+                setTimeout(() => {
+                  this.goback()
+                }, 1500)
+              }, () => {
                 this.isLoading = !this.isLoading
-                this.apiPost('admin/shots', this.form).then((res) => {
-                  this.handelResponse(res, (data) => {
-                    _g.toastMsg('success', '添加成功')
-                    setTimeout(() => {
-                      this.goback()
-                    }, 1500)
-                  }, () => {
-                    this.isLoading = !this.isLoading
-                  })
-                })
               })
-            }).catch((err) => {
-              _g.toastMsg('error', err.error)
             })
           }
         })

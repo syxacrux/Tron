@@ -231,6 +231,9 @@ class Shots extends BaseCommon
 		$shot_model = model('Shot');
 		$param = $this->param;
 		$data = $shot_model->check_shot_num($param);
+		if(!$data){
+		    return resultArray(['error'=>'镜头编号已重复']);
+        }
 		return resultArray(['data'=>$data]);
 	}
 
