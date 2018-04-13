@@ -13,27 +13,26 @@
         <el-row :gutter="10" class="m-b-5">
           <el-col :span="5">
             <el-select v-model="search.project_id" placeholder="请选择项目" @change="getFields">
-              <el-option label="全部项目" value=""></el-option>
+              <el-option label="请选择项目" value=""></el-option>
               <el-option v-for="item in projectList" :label="item.project_name" :value="item.id" :key="item.id"></el-option>
             </el-select>
           </el-col>
           <el-col :span="5">
             <el-select v-model="search.field_id" placeholder="请选择场号" @change="getShotsNum">
-              <el-option label="全部场号" value=""></el-option>
+              <el-option label="请选择场号" value=""></el-option>
               <el-option v-for="item in fieldList" :label="item.name" :value="item.id" :key="item.id"></el-option>
             </el-select>
           </el-col>
           <el-col :span="5">
             <el-select v-model="search.shot_id" placeholder="请选择镜头号" @change="init(activeName)">
-              <el-option label="全部镜头" value=""></el-option>
-              <el-option v-for="(item, index) in shotList" :label="item.shot_number" :value="item.shot_number" :key="index"></el-option>
+              <el-option label="请选择镜头号" value=""></el-option>
+              <el-option v-for="(item, index) in shotList" :label="item.shot_number" :value="item.id" :key="index"></el-option>
             </el-select>
           </el-col>
-          <el-col :span="5">
-            <el-input v-model.trim="search.shot_number" placeholder="请输入场号镜头号"></el-input>
-          </el-col>
-          <el-col :span="1">
-            <el-button icon="el-icon-search" circle @click="search"></el-button>
+          <el-col :span="6">
+            <el-input placeholder="请输入场号镜头号" v-model.trim="search.shot_number">
+              <el-button slot="append" icon="el-icon-search" @click="searchShot"></el-button>
+            </el-input>
           </el-col>
         </el-row>
       </div>
@@ -605,7 +604,8 @@
         search: {
           project_id: '',
           field_id: '',
-          shot_id: ''
+          shot_id: '',
+          shot_number: ''
         },
         projectList: [],
         fieldList: [],
@@ -613,8 +613,20 @@
       }
     },
     methods: {
-      search() {
-
+      searchShot() {
+        if(this.search.shot_number.length === 6) {
+          this.search.project_id = ''
+          this.search.field_id = ''
+          this.search.shot_id = ''
+          this.init(this.activeName)
+        }
+        if(!this.search.field_id && this.search.shot_number.length === 3) {
+          _g.toastMsg('warning', '请选择所属项目及场号')
+          return
+        } else {
+          this.search.shot_id = ''
+          this.init(this.activeName)
+        }
       },
 //      点击编辑镜头执行方法
       editShot() {
@@ -850,6 +862,7 @@
       },
 //      获取所有场号集号下的镜头号
       getShotsNum() {
+        this.init(this.activeName)
         const data = {
           params: {
             field_id: this.search.field_id

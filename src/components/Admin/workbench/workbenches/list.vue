@@ -10,7 +10,7 @@
     <div class="m-b-20 ovf-hd">
       <div class="fl w-700">
         <template>
-          <el-select v-model="projectValue" placeholder="请选择项目" @change="screenChange(1)">
+          <el-select class="w-150" v-model="search.project_id" placeholder="请选择项目" @change="screenChange(1)">
             <el-option
               v-for="item in screeningProject"
               :key="item.id"
@@ -18,7 +18,7 @@
               :value="item.id">
             </el-option>
           </el-select>
-          <el-select v-model="siteValue"  style="margin-left: 10px;" placeholder="请选择场号" @change="screenChange(2)">
+          <el-select class="w-150" v-model="search.field_id"  style="margin-left: 10px;" placeholder="请选择场号" @change="screenChange(2)">
             <el-option
               v-for="item in screeningSite"
               :key="item.id"
@@ -26,8 +26,18 @@
               :value="item.id">
             </el-option>
           </el-select>
-          <el-input class="w-200" style="margin-left: 10px;" v-model="shotValue" placeholder="请输入镜头号"></el-input>
-          <el-button icon="el-icon-search" circle @click="screenProjectValue"></el-button>
+          <el-select class="w-150" v-model="search.shot_id"  style="margin-left: 10px;" placeholder="请选择镜头号" @change="screenChange()">
+            <el-option
+              v-for="item in screeningShot"
+              :key="item.id"
+              :label="item.shot_number"
+              :value="item.id">
+            </el-option>
+          </el-select>
+          <el-input class="w-200" style="margin-left: 10px;" v-model.trim="search.shot_number" placeholder="请输入场号镜头号">
+            <el-button slot="append" icon="el-icon-search" circle @click="searchPublic"></el-button>
+          </el-input>
+          
         </template>
       </div>
       <div class="tx-r">
@@ -99,7 +109,7 @@
                       </p>
                     </div>
                     <div class="text-Lens-link m-t-10">
-                      <el-tag type="warn">动画: 60%</el-tag>
+                      <el-tag type="warn">资产</el-tag>
                       <el-tag type="danger" v-if="block.task_finish_degree.finish_degree < 100">{{block.task_finish_degree.tache_byname}}:{{block.task_finish_degree.finish_degree}}%</el-tag>
                       <el-tag type="success" v-else>{{block.task_finish_degree.tache_byname}}:{{block.task_finish_degree.finish_degree}}%</el-tag>
                     </div>
@@ -471,11 +481,15 @@
         // frequencyState:true,
         tabVale:1,
         screeningProject:[],//项目下拉列表数据
-        projectValue:'',//项目下拉框选中的值
         screeningSite:[],//场号下拉列表数据
-        siteValue:'',//场号下拉框选中的值
-        // screeningShot:[],
-        shotValue:'',
+        screeningShot:[],
+        search:{
+          project_id:'',//项目下拉框选中的值
+          field_id:'',//场号下拉框选中的值
+          shot_id:'',//镜头选中的值
+          shot_number:''//输入狂的值
+
+        },
         stages: ['制作中', '反馈中',  '等待制作', '提交发布'],
         blocksDataCount:0,//任务的数量
         blocks: [],//任务页面列表
@@ -516,7 +530,7 @@
           // catch error
         })
       },
-            //      工作台详情删除制作人
+      //工作台详情删除制作人
       deletetLink(tache_name, items) {
         // console.log(item)
         this.$confirm('确认删除该制作人?', '提示', {
@@ -551,45 +565,35 @@
 
           }, () => {
             this.isLoading = !this.isLoading
-            getAllWorkbenches('admin/workbenches',this.currentPage,1,40,this.projectValue,this.siteValue,this.shotValue)
+            getAllWorkbenches('admin/workbenches',this.currentPage,1,40)
           })
         })
-
       },
       //tab切换
       handleClick(tab, event) {
         // console.log(tab, event);
         // console.log(tab)
         this.tabVale = parseInt(tab.index)+1
-        this.publicRequest(tab.label,parseInt(tab.index)+1,this.projectValue,this.siteValue,this.shotValue)
+        this.publicRequest(tab.name,parseInt(tab.index)+1)
       },
       //tab切换、搜索时 请求调用
-      publicRequest(type,value,projectValue,siteValue,shotValue){
+      publicRequest(type,value){
         switch (type){
-          case '任务':
-            this.getAllWorkbenches('admin/workbenches',1,value,40,projectValue,siteValue,shotValue)//任务页面传参数
-          break;
-          case '等待上游':
-            this.getAllWorkbenches('task/upper_shots',1,value,10,projectValue,siteValue,shotValue)//镜头
-          break;
-          case '完成':
-            this.getAllWorkbenches('task/finish_task',1,value,10,projectValue,siteValue,shotValue)//完成页面传参数
-          break;
           case 'task':
-            this.getAllWorkbenches('admin/workbenches',1,value,40,projectValue,siteValue,shotValue)//任务页面传参数
+            this.getAllWorkbenches('admin/workbenches',1,value,40)//任务页面传参数
           break;
           case 'waiting':
-            this.getAllWorkbenches('task/upper_shots',1,value,10,projectValue,siteValue,shotValue)//镜头
+            this.getAllWorkbenches('task/upper_shots',1,value,10)//镜头
           break;
           case 'complete':
-            this.getAllWorkbenches('task/finish_task',1,value,10,projectValue,siteValue,shotValue)//完成页面传参数
+            this.getAllWorkbenches('task/finish_task',1,value,10)//完成页面传参数
           break;
         }
       },
       //工作台列表
       workList(){
         this.isTaskLIst = false
-        this.getAllWorkbenches('task/index_list',1,11,10,this.projectValue,this.siteValue,this.shotValue)
+        this.getAllWorkbenches('task/index_list',1,11,10)
       },
       //      时间抽转换为时间格式
       j2time(time) {
@@ -612,12 +616,12 @@
       },
        // 任务切换页码
       taskCurrentChange(page) {
-        this.getAllWorkbenches('admin/workbenches',page,1,40,this.projectValue,this.siteValue,this.shotValue)
+        this.getAllWorkbenches('admin/workbenches',page,1,40)
       },
       //等待上游镜头切换页码
       upstreamShotCurrentChange(page){
         // this.getAllWorkbenches(page)
-        this.getAllWorkbenches('task/upper_shots',page,2,10,this.projectValue,this.siteValue,this.shotValue)
+        this.getAllWorkbenches('task/upper_shots',page,2,10)
       },
       //等待上游资产切换页码
       upstreamTaskCurrentChange(page){
@@ -625,35 +629,32 @@
       },
       //完成切换页码
       completeCurrentChange(page){
-        this.getAllWorkbenches('task/finish_task',page,3,10,this.projectValue,this.siteValue,this.shotValue)
+        this.getAllWorkbenches('task/finish_task',page,3,10)
       },
       //工作台列表切换页码
       tableListCurrentChange(page){
-        this.getAllWorkbenches('task/index_list',page,11,10,this.projectValue,this.siteValue,this.shotValue)
+        this.getAllWorkbenches('task/index_list',page,11,10)
       },
       /*
       * 获取项目列表
       *   params: {
       *     state:请求地址
       *     status:tab切换传入的值
-      *     project_id:选择项目的id
-      *     field_id:选择场号的id
-      *     shot_id:镜头的id
+      *     this.search{
+      *      选择项目的id
+      *      选择场号的id
+      *      镜头号
+      *     }
       *   }
       * */
       
-      getAllWorkbenches(state,page,status,limit,projectValue,siteValue,shotValue) {
+      getAllWorkbenches(state,page,status,limit) {
         this.loading = true
         const data = {
           params: {
-            keywords: {
-              project_id:projectValue,
-              field_id: siteValue,
-              shot_number:shotValue
-            },
+            keywords:this.search,
             page: page,
             limit: limit,
-            // shot_id:
           }
         }
         this.apiGet(state,data).then((res) => {
@@ -696,11 +697,11 @@
       screenChange(svuel){
         switch (svuel){
           case 1://请求场号
-          this.siteValue = ''
-          this.shotValue = ''
+          this.search.field_id = ''
+          this.search.shot_id = ''
           const data = {
             params: {
-              project_id: this.projectValue
+              project_id: this.search.project_id
             }
           }
           this.apiGet('admin/get_fields', data).then((res) => {//请求项目下的场号
@@ -711,27 +712,42 @@
           })
           break
           case 2://请求镜头号
-            this.shotValue = ''
+            this.search.shot_id = ''
             const datas = {
               params: {
-                field_id: this.siteValue
+                field_id: this.search.field_id
               }
             }
             this.apiGet('admin/get_shot_num', datas).then((res) => {//请求项目下的场号
               this.handelResponse(res, (data) => {
+                this.screeningShot = data
               })
             })
           break
         }
         //对应的任务列表
-        this.publicRequest(this.activeName,this.tabVale,this.projectValue,this.siteValue,this.shotValue)//工作台的
-        this.getAllWorkbenches('task/index_list',1,11,10,this.projectValue,this.siteValue,this.shotValue)//工作台列表
+        this.publicRequest(this.activeName,this.tabVale)//工作台的
+        this.getAllWorkbenches('task/index_list',1,11,10)//工作台列表
       },
-      //搜索按钮
-      screenProjectValue(){
+      //点击搜索按钮
+      searchPublic(){
         //对应的任务列表
-        this.publicRequest(this.activeName,this.tabVale,this.projectValue,this.siteValue,this.shotValue)//工作台的
-        this.getAllWorkbenches('task/index_list',1,11,10,this.projectValue,this.siteValue,this.shotValue)//工作台列表
+        if(this.search.shot_number.length === 6){
+          this.search.project_id = ''
+          this.search.field_id = ''
+          this.search.shot_id = ''
+          this.publicRequest(this.activeName,this.tabVale)//工作台的
+          this.getAllWorkbenches('task/index_list',1,11,10)//工作台列表
+        }
+        if(!this.search.field_id && this.search.shot_number.length === 3) {
+          _g.toastMsg('warning', '请选择所属项目及场号')
+          return
+        } else {
+          this.search.shot_id = ''
+          this.publicRequest(this.activeName,this.tabVale)//工作台的
+          this.getAllWorkbenches('task/index_list',1,11,10)//工作台列表
+        }
+        
       },
  //      点击任务显示任务详情
       taskDetail(id) {
@@ -753,7 +769,7 @@
       },
 //      初始化项目列表内容
       init() {
-       this.getAllWorkbenches('admin/workbenches',1,1,40,this.projectValue,this.siteValue,this.shotValue)
+       this.getAllWorkbenches('admin/workbenches',1,1,40)
        this.getsprojects()
       }
     },
