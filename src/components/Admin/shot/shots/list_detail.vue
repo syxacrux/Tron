@@ -24,7 +24,7 @@
             </el-select>
           </el-col>
           <el-col :span="5">
-            <el-select v-model="search.shot_id" placeholder="请选择镜头号" @change="init(activeName)">
+            <el-select v-model="search.shot_id" placeholder="请选择镜头号" @change="getAllShotsList">
               <el-option label="请选择镜头号" value=""></el-option>
               <el-option v-for="(item, index) in shotList" :label="item.shot_number" :value="item.id" :key="index"></el-option>
             </el-select>
@@ -618,14 +618,14 @@
           this.search.project_id = ''
           this.search.field_id = ''
           this.search.shot_id = ''
-          this.init(this.activeName)
+          this.getAllShotsList()
         }
         if(!this.search.field_id && this.search.shot_number.length === 3) {
           _g.toastMsg('warning', '请选择所属项目及场号')
           return
         } else {
           this.search.shot_id = ''
-          this.init(this.activeName)
+          this.getAllShotsList()
         }
       },
 //      点击编辑镜头执行方法
@@ -792,7 +792,6 @@
       * }
       * */
       getShots(shot_status, page) {
-        console.log(this.search)
         const data = {
           params: {
             page: page,
@@ -834,7 +833,7 @@
         this.page = page
         const data = {
           params: {
-//            keywords: this.keywords,
+            keywords: this.search,
             page: page,
             limit: this.limit
           }
@@ -848,7 +847,7 @@
       },
 //      获取所有场号、集号
       getFields() {
-        this.init(this.activeName)
+        this.getAllShotsList()
         const data = {
           params: {
             project_id: this.search.project_id
@@ -862,7 +861,7 @@
       },
 //      获取所有场号集号下的镜头号
       getShotsNum() {
-        this.init(this.activeName)
+        this.getAllShotsList()
         const data = {
           params: {
             field_id: this.search.field_id
@@ -873,6 +872,10 @@
             this.shotList = data
           })
         })
+      },
+      getAllShotsList() {
+        this.init(this.activeName)
+        this.getShotList(1)
       },
       /*
       * 初始化镜头看板内容
@@ -905,8 +908,7 @@
     created() {
       this.activeName = this.$route.query.type
       this.isList = this.$route.query.list
-      this.init(this.activeName)
-      this.getShotList(1)
+      this.getAllShotsList()
       this.getProjects()
     },
     components: {
