@@ -466,7 +466,7 @@
         </div>
       </transition>
     </div>
-    <editWorkbenches ref="editWorkbenches" :message="finishList"></editWorkbenches>
+    <editWorkbenches ref="editWorkbenches" @updataTaskdetail="dataTaskdetail" :message="finishList"></editWorkbenches>
   </div>
 </template>
 
@@ -521,7 +521,7 @@
       },
       //      删除任务
       deleteTask(id) {
-        this.$confirm('确认删除该镜头?', '提示', {
+        this.$confirm('确认删除该任务?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
@@ -556,7 +556,8 @@
             _g.closeGlobalLoading()
             this.handelResponse(res, (data) => {
               _g.toastMsg('success', '删除成功')
-              this.taskDetail(this.id)
+              // this.taskDetail(this.id)
+              this.dataTaskdetail()
             })
           })
         }).catch(() => {
@@ -735,8 +736,7 @@
           break
         }
         //对应的任务列表
-        this.publicRequest(this.activeName,this.tabVale)//工作台的
-        this.getAllWorkbenches('task/index_list',1,11,10)//工作台列表
+        this.screeningPublic()
       },
       //点击搜索按钮
       searchPublic(){
@@ -745,18 +745,20 @@
           this.search.project_id = ''
           this.search.field_id = ''
           this.search.shot_id = ''
-          this.publicRequest(this.activeName,this.tabVale)//工作台的
-          this.getAllWorkbenches('task/index_list',1,11,10)//工作台列表
+          this.screeningPublic()
         }
         if(!this.search.field_id && this.search.shot_number.length === 3) {
           _g.toastMsg('warning', '请选择所属项目及场号')
           return
         } else {
           this.search.shot_id = ''
-          this.publicRequest(this.activeName,this.tabVale)//工作台的
-          this.getAllWorkbenches('task/index_list',1,11,10)//工作台列表
+          this.screeningPublic()
         }
-        
+      },
+      //筛选时请求工作台的、工作台列表的数据
+      screeningPublic(){
+        this.publicRequest(this.activeName,this.tabVale)//工作台的
+        this.getAllWorkbenches('task/index_list',1,11,10)//工作台列表
       },
  //      点击任务显示任务详情
       taskDetail(id) {
@@ -770,11 +772,17 @@
             this.finishList = data
           })
         })
+        // this.screeningPublic()
         if (this.isTaskDetailShow) {
 
         } else {
           this.isTaskDetailShow = !this.isTaskDetailShow
         }
+      },
+      //编辑页面调用
+      dataTaskdetail(){
+        this.screeningPublic()
+        this.taskDetail(this.id)
       },
 //      初始化项目列表内容
       init() {
