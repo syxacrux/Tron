@@ -199,6 +199,7 @@ export default {
           this.apiPut('admin/workbenches/', this.id, this.form ).then((res) => {
             this.handelResponse(res, (data) => {
             _g.toastMsg('success', '编辑成功')
+            this.$emit('updataTaskdetail', this.id)
             setTimeout(() => {
               // this.goback()
                this.dialogFormVisible = false
@@ -216,6 +217,7 @@ export default {
   props: ['message'],
   watch: {
     message: function(data, o) {
+        this.field_id = []
         this.apiGet(`task/get_user?task_id=${data.id}`).then((res) => {
           this.handelResponse(res, (data) => {
             this.options = data.list
