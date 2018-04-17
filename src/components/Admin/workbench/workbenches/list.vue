@@ -742,7 +742,7 @@
       searchPublic(){
         //对应的任务列表
         if(this.search.shot_number.length === 6){
-          this.search.project_id = ''
+          // this.search.project_id = ''
           this.search.field_id = ''
           this.search.shot_id = ''
           this.screeningPublic()
