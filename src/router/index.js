@@ -52,6 +52,8 @@ import shotsList from '@/components/Admin/shot/shots/list.vue'
 import shotsAdd from '@/components/Admin/shot/shots/add.vue'
 import shotsEdit from '@/components/Admin/shot/shots/edit.vue'
 import shotsListDetail from '@/components/Admin/shot/shots/list_detail.vue'
+// 库管理-参考库管理
+import referencesList from '@/components/Admin/library/references/list.vue'
 
 Vue.use(VueRouter)
 
@@ -304,6 +306,19 @@ const routes = [
         component: shotsListDetail,
         name: 'shotsListDetail',
         meta: { hideLeft: false, module: 'Admin', menu: 'shots' }
+      }
+    ]
+  },
+  // 库管理-参考库管理
+  {
+    path: '/admin',
+    component: Home,
+    children: [
+      {
+        path: 'references/list',
+        component: referencesList,
+        name: 'referencesList',
+        meta: { hideLeft: false, module: 'Admin', menu: 'references' }
       }
     ]
   }
