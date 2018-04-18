@@ -8,16 +8,17 @@
 return [
 	// 定义资源路由
 	'__rest__'=>[
-			'admin/upload'         =>'admin/upload',
-			'admin/rules'		   =>'admin/rules',
-			'admin/groups'		   =>'admin/groups',
-			'admin/users'		   =>'admin/users',
-			'admin/menus'		   =>'admin/menus',
-			'admin/studios'        =>'admin/studios',
-			'admin/taches'         =>'admin/taches',
-			'admin/projects'       =>'admin/projects',
-			'admin/shots'          =>'admin/shots',
-			'admin/workbenches'    =>'admin/workbenches',
+			'admin/upload'        =>		'admin/upload',
+			'admin/rules'		   		=>		'admin/rules',
+			'admin/groups'		   	=>		'admin/groups',
+			'admin/users'		   		=>		'admin/users',
+			'admin/menus'		   		=>		'admin/menus',
+			'admin/studios'       =>		'admin/studios',
+			'admin/taches'        =>		'admin/taches',
+			'admin/projects'      =>		'admin/projects',
+			'admin/shots'         =>		'admin/shots',
+			'admin/workbenches'   =>		'admin/workbenches',
+			'admin/assets'				=>		'admin/assets',
 	],
 	// [获取信息]
 	'admin/infos/index'     =>      ['admin/infos/index',['method' => 'POST']],
@@ -26,7 +27,7 @@ return [
 	// [基础]登录
 	'admin/base/login'      =>      ['admin/base/login', ['method' => 'POST|GET']],
 	// [基础] 记住登录
-	'admin/base/relogin'	=>      ['admin/base/relogin', ['method' => 'POST']],
+	'admin/base/relogin'		=>      ['admin/base/relogin', ['method' => 'POST']],
 	// [基础] 修改密码
 	'admin/base/setInfo'    =>      ['admin/base/setInfo', ['method' => 'POST']],
 	// [基础] 退出登录
@@ -94,20 +95,41 @@ return [
 	// [镜头] 删除工作室
 	'shot/studio_del'				=>			['admin/shots/delete_studio',['method'=>'POST']],
 	// [工作台] 标准列表
-	'task/index_list'				=>			['admin/Workbenches/index_list',['method' => 'GET']],
+	'task/index_list'				=>			['admin/workbenches/index_list',['method' => 'GET']],
 	// [工作台] 改变状态
-	'task/change_status'    =>      ['admin/Workbenches/change_status',['method' => 'POST']],
+	'task/change_status'    =>      ['admin/workbenches/change_status',['method' => 'POST']],
 	// [工作台] 等待上游 资产列表
-	'task/upper_assets'    	=>      ['admin/Workbenches/wait_upper_assets',['method' => 'POST|GET']],
+	'task/upper_assets'    	=>      ['admin/workbenches/wait_upper_assets',['method' => 'POST|GET']],
 	// [工作台] 等待上游 上一个环节任务列表
-	'task/upper_shots'    	=>      ['admin/Workbenches/wait_upper_shots',['method' => 'POST|GET']],
+	'task/upper_shots'    	=>      ['admin/workbenches/wait_upper_shots',['method' => 'POST|GET']],
 	// [工作台] 完成列表
-	'task/finish_task'    	=>      ['admin/Workbenches/finish_list',['method' => 'GET']],
+	'task/finish_task'    	=>      ['admin/workbenches/finish_list',['method' => 'GET']],
 	// [工作台] 获取制作人列表
-	'task/get_user'					=>			['admin/Workbenches/get_user_list',['method'=>'GET']],
+	'task/get_user'					=>			['admin/workbenches/get_user_list',['method'=>'GET']],
 	// [工作台] 删除制作人
-	'task/user_del'					=>			['admin/Workbenches/delete_userid',['method'=>'POST']],
-
+	'task/user_del'					=>			['admin/workbenches/delete_userid',['method'=>'POST']],
+	// [资产库] 获取镜头号
+	'asset/get_shot_num'		=>			['admin/assets/get_number',['method' => 'GET']],
+	// [资产库] 校验镜头编号是否重复
+	'asset/check_num'				=>			['admin/assets/check_shot_number',['method' => 'GET']],
+	// [资产库] 制作中列表数据
+	'asset/in_production'   =>      ['admin/assets/in_production_data',['method'=>'GET']],
+	// [资产库] 反馈中列表数据
+	'asset/feedback'        =>      ['admin/assets/feedback_data',['method'=>'GET']],
+	// [资产库] 等待资产
+	'asset/waiting_assets'  =>      ['admin/assets/waiting_assets_data',['method'=>'GET']],
+	// [资产库] 资产暂停
+	'asset/pause'           =>      ['admin/assets/pause_data',['method'=>'GET']],
+	// [资产库] 资产完成
+	'asset/finish'          =>      ['admin/assets/finish_data',['method'=>'GET']],
+	// [资产库] 获取工作室列表
+	'asset/get_studio'      =>      ['admin/assets/get_studio_list',['method'=>'GET']],
+	// [资产库] 添加资产分类
+	'asset/save_field'      =>      ['admin/assets/save_field',['method' => 'POST']],
+	// [资产库] 删除环节
+	'asset/tache_del'				=>			['admin/assets/delete_tache',['method'=>'POST']],
+	// [资产库] 删除工作室
+	'asset/studio_del'			=>			['admin/assets/delete_studio',['method'=>'POST']],
 
 
 
