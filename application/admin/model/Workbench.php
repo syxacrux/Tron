@@ -461,13 +461,11 @@ class Workbench extends Common
 				} else {
 					$this->save($task_data, [$this->getPk() => $task_id]);
 					//同时更新所属镜头ID 将状态改为制作中
-					if($shot_status == 1){	//所属镜头状态 为等待制作时 任务改为制作中时 同时更新镜头表状态
+					if ($shot_status == 1) {  //所属镜头状态 为等待制作时 任务改为制作中时 同时更新镜头表状态
 						$shot = Shot::get($shot_id);
 						$shot->status = 5;
 						$shot->save();
 					}
-
-
 				}
 			}
 			//记录状态更新记录
