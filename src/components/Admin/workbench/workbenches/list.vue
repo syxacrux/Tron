@@ -690,7 +690,6 @@
                 this.completeDataCount=data.dataCount
                 break;
               case 11://工作台列表
-                console.log(data)
                 this.tableList=data.list
                 this.tableListDataCount=data.dataCount
                 break;
