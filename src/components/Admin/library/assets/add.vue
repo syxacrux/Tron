@@ -3,13 +3,13 @@
     <div class="m-b-20">
       <el-breadcrumb separator="/">
         <el-breadcrumb-item :to="{ path: '/admin' }">首页</el-breadcrumb-item>
-        <el-breadcrumb-item :to="{ path: '/admin/shots/list' }">资产管理</el-breadcrumb-item>
-        <el-breadcrumb-item :to="{ path: '/admin/shots/list' }">资产汇总</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ path: '/admin/assets/list' }">资产管理</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ path: '/admin/assets/list' }">资产汇总</el-breadcrumb-item>
         <el-breadcrumb-item>添加资产</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
     <div class="m-r-30 m-b-20 m-t-30 tx-r">
-      <el-button type="primary" size="small" plain v-if="importAddShow" @click="isImportShot = true">批量导入</el-button>
+      <el-button type="primary" size="small" plain v-if="importAddShow" @click="isImportAssets = true">批量导入</el-button>
       <el-button type="text" size="mini" class="fz-12 m-0">点击获取模板</el-button>
     </div>
     <div class="m-l-50 m-t-30 w-1000">
@@ -238,8 +238,11 @@
                        :key="item.id"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="资产：" prop="name">
+        <el-form-item label="资产类型：" prop="name">
           <el-input v-model.trim="fieldForm.name" class="w-200"></el-input>
+        </el-form-item>
+        <el-form-item label="资产类型备注：" prop="explain">
+          <el-input v-model.trim="fieldForm.explain" class="w-200"></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -247,7 +250,7 @@
         <el-button type="primary" @click="addField(fieldForm)">确 定</el-button>
       </span>
     </el-dialog>
-    <el-dialog title="批量导入资产" :visible.sync="isImportShot" width="30%" center>
+    <el-dialog title="批量导入资产" :visible.sync="isImportAssets" width="30%" center>
       <el-form :model="importForm" :rules="importShotRules" label-width="130px">
         <el-form-item label="项目名称：" prop="project_id">
           <el-select v-model="importForm.project_id" placeholder="请选择项目" class="w-200">
@@ -258,7 +261,7 @@
         <!--<el-form-item label="场号/集号：" prop="name">-->
           <!--<el-input v-model.trim="importForm.name" class="w-200"></el-input>-->
         <!--</el-form-item>-->
-        <el-form-item label="资产文件：" prop="shot_file">
+        <el-form-item label="资产文件：" prop="assets_file">
           <el-upload class="upload_shotFile" ref="upload"
                      action="https://jsonplaceholder.typicode.com/posts/"
                      :on-preview="handlePreview"
@@ -271,7 +274,7 @@
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="isImportShot = false">取 消</el-button>
+        <el-button @click="isImportAssets = false">取 消</el-button>
         <el-button type="primary" @click="importShot(importForm)">确 认</el-button>
       </span>
     </el-dialog>
@@ -351,30 +354,6 @@
 
   export default {
     data() {
-      let shotNumber = (rule, value, callback) => {
-        console.log(this.form.field_id)
-        console.log(value)
-        const data = {
-          params: {
-            field_id: parseInt(this.form.field_id),
-            shot_number: value
-          }
-        }
-        if(value == ''){
-          callback(new Error('请输入镜头编号'));
-        }else{
-          axios.get('shot/check_num', data).then((res) => {
-            console.log(res.data.code, 'suc')
-            if (res.data.code === 400) {
-              callback(new Error(res.data.error));
-            }else{
-              callback()
-            }
-          })
-        }
-//        /^[0-9]+$/
-
-      };
       return {
         isArt: false,
         isModel: false,
@@ -397,7 +376,7 @@
         lightOfStudio: [],
         synchOfStudio: [],
         isAddField: false,
-        isImportShot: false,
+        isImportAssets: false,
         isLoading: false,
         uploadImageUrl: window.HOST + '/admin/upload_image',
         projectList: [],
@@ -405,13 +384,15 @@
         fieldList: [],
         importForm: {
           project_id: '',  //所属项目id
-          shot_file: ''    //导入镜头文件
+          assets_file: ''    //导入资产文件
 //          name: ''    //场号/集号
         },
         fileList: [],
         fieldForm: {
           project_id: '',  //所属项目id
-          name: ''    //场号/集号
+          name: '',   //场号/集号
+          explain:'',//资产类型备注
+          type:2
         },
         form: {
           project_id: '',    //所属项目id
@@ -449,11 +430,12 @@
         },
         addFieldRules: {
           project_id: [{required: true, message: '请选择项目'}],
-          name: [{required: true, message: '请输入资产'}]
+          name: [{required: true, message: '请输入资产'},{pattern: /^[a-zA-Z]+$/, message: '资产类型必须为字母'}],
+          explain: [{required: true, message: '请输入资产类型备注'}]
         },
         importShotRules: {
           project_id: [{required: true, message: '请选择项目'}],
-          shot_file: [{required: true, message: '请输入资产'}]
+          assets_file: [{required: true, message: '请输入资产'}]
 //          name: [{required: true, message: '请输入场号/集号'}]
         }
       }
@@ -514,7 +496,7 @@
         this.lightOfStudio = this.isLight ? this.lightOfStudio : []
         this.synchOfStudio = this.isSynch ? this.synchOfStudio : []
       },
-//      添加镜头
+//      添加资产
       add(form) {
         if (
           this.artOfStudio.length === 0 && this.modelOfStudio.length === 0 && this.mapOfStudio.length === 0 &&
@@ -565,7 +547,7 @@
 
         this.$refs.form.validate((pass) => {
           if (pass) {
-            this.apiPost('admin/shots', this.form).then((res) => {
+            this.apiPost('admin/assets', this.form).then((res) => {
               this.handelResponse(res, (data) => {
                 _g.toastMsg('success', '添加成功')
                 setTimeout(() => {
@@ -615,13 +597,13 @@
     },
     mixins: [http, fomrMixin],
     computed: {
-//      添加场号按钮
+//      添加资产按钮
       addShow() {
-        return _g.getHasRule('shots-save_filed')
+        return _g.getHasRule('assets-save_filed')
       },
-//      批量导入镜头按钮
+//      批量导入资产按钮
       importAddShow() {
-        return _g.getHasRule('shot_import')
+        return _g.getHasRule('assets_import')
       }
     }
   }
