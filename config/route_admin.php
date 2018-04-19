@@ -118,7 +118,7 @@ return [
 	'asset/in_production'   =>      ['admin/assets/in_production_data',['method'=>'GET']],
 	// [资产库] 反馈中列表数据
 	'asset/feedback'        =>      ['admin/assets/feedback_data',['method'=>'GET']],
-	// [资产库] 等待资产
+	// [资产库] 等待制作
 	'asset/waiting_assets'  =>      ['admin/assets/waiting_assets_data',['method'=>'GET']],
 	// [资产库] 资产暂停
 	'asset/pause'           =>      ['admin/assets/pause_data',['method'=>'GET']],
@@ -126,8 +126,6 @@ return [
 	'asset/finish'          =>      ['admin/assets/finish_data',['method'=>'GET']],
 	// [资产库] 获取工作室列表
 	'asset/get_studio'      =>      ['admin/assets/get_studio_list',['method'=>'GET']],
-	// [资产库] 添加资产分类
-	'asset/save_field'      =>      ['admin/assets/save_field',['method' => 'POST']],
 	// [资产库] 删除环节
 	'asset/tache_del'				=>			['admin/assets/delete_tache',['method'=>'POST']],
 	// [资产库] 删除工作室
