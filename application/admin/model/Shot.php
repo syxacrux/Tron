@@ -41,11 +41,11 @@ class Shot extends Common
 				$where['shot_number'] = $shot_number;
 			}
 		}
-		$in_production_count = $this->where($where)->where('status',5)->count('id');
-		$feedback_count = $this->where($where)->where('status',15)->count('id');
-		$pause_count = $this->where($where)->where('is_pause',2)->count('id');
-		$waiting_assets_count = $this->where($where)->where('is_assets',1)->count('id');
-		$finish_count = $this->where($where)->where('status','in',[25,30])->count('id');
+		$in_production_count = $this->where($where)->where('status',5)->count('id');	//制作中
+		$feedback_count = $this->where($where)->where('status',15)->count('id');	//反馈中
+		$pause_count = $this->where($where)->where('is_pause',2)->count('id');	//暂停
+		$waiting_assets_count = $this->where($where)->where('is_assets',1)->count('id');	//等待资产
+		$finish_count = $this->where($where)->where('status','in',[25,30])->count('id');	//客户通过 和 完成
 		$data['in_production_count'] = $in_production_count;
 		$data['feedback_count'] = $feedback_count;
 		$data['pause_count'] = $pause_count;

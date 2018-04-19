@@ -49,10 +49,10 @@ class Workbench extends Common
 			$where = [];
 		}
 		//加入条件查询
-		if (!empty($keyword['project_id'])) {
+		if (!empty($keywords['project_id'])) {
 			$where['project_id'] = $keywords['project_id'];
 		}
-		if (!empty($keyword['field_id'])) {
+		if (!empty($keywords['field_id'])) {
 			$where['field_id'] = $keywords['field_id'];
 		}
 		$dataCount = $this->where($where)->count('id'); //全部数量

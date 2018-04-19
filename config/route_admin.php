@@ -70,6 +70,8 @@ return [
 	'admin/roles/enables'   =>      ['admin/roles/enables', ['method' => 'POST']],
 	// [项目] 获取登陆者是否属于当前项目 应用于编辑操作的权限
 	'admin/check_auth'      =>      ['admin/projects/editProject_ByAuth', ['method'=> 'POST']],
+	// [业务类型] 添加场号
+	'admin/save_field'      =>      ['admin/fields/save_field',['method' => 'POST']],
 	// [镜头] 概况
 	'shot/survey'						=>			['admin/shots/survey',['method' => 'GET']],
 	// [镜头] 获取场/集列表
@@ -78,20 +80,18 @@ return [
 	'admin/get_shot_num'		=>			['admin/shots/get_number',['method' => 'GET']],
 	// [镜头] 校验镜头编号是否重复
 	'shot/check_num'				=>			['admin/shots/check_shot_number',['method' => 'GET']],
-	// [镜头] 镜头制作中列表数据
+	// [镜头] 制作中列表
 	'shot/in_production'    =>      ['admin/shots/in_production_data',['method'=>'GET']],
-	// [镜头] 镜头反馈中列表数据
+	// [镜头] 反馈中列表
 	'shot/feedback'         =>      ['admin/shots/feedback_data',['method'=>'GET']],
-	// [镜头] 镜头等待资产
+	// [镜头] 等待资产列表
 	'shot/waiting_assets'   =>      ['admin/shots/waiting_assets_data',['method'=>'GET']],
-	// [镜头] 镜头暂停
+	// [镜头] 暂停列表
 	'shot/pause'            =>      ['admin/shots/pause_data',['method'=>'GET']],
-	// [镜头] 镜头完成
+	// [镜头] 完成列表
 	'shot/finish'           =>      ['admin/shots/finish_data',['method'=>'GET']],
 	// [镜头] 获取工作室列表
 	'shot/get_studio'       =>      ['admin/shots/get_studio_list',['method'=>'GET']],
-	// [镜头] 添加场号
-	'admin/save_field'      =>      ['admin/shots/save_field',['method' => 'POST']],
 	// [镜头] 删除环节
 	'shot/tache_del'				=>			['admin/shots/delete_tache',['method'=>'POST']],
 	// [镜头] 删除工作室
