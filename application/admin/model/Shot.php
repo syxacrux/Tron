@@ -17,6 +17,43 @@ class Shot extends Common
 	//根据环节ID获取镜头页面进度条所用别名
 	protected $tache_byname_arr = [3 => '美术部', 4 => '模型部', 5 => '贴图部', 6 => '绑定部', 7 => '跟踪部', 8 => '动画部', 9 => '数字绘景部', 10 => '特效部', 11 => '灯光部', 12 => '合成部'];
 
+	//镜头概况
+	public function survey_list(){
+		$where = [];
+		if(!empty($keywords['project_id']) && empty($keywords['shot_number'])){
+			$where['project_id'] = $keywords['project_id'];
+		}
+		if(!empty($keywords['field_id']) && empty($keywords['shot_number'])){
+			$where['field_id'] = $keywords['field_id'];
+		}
+		if(!empty($keywords['shot_id']) && empty($keywords['shot_number'])){
+			$where['id'] = $keywords['shot_id'];
+		}
+		if(!empty($keywords['shot_number'])){	//手动输入镜头编号
+			$shot_number_len = strlen($keywords['shot_number']);
+			//后期可对3 镜头号长度进行配置
+			if($shot_number_len == 3){	//前端  对三位进行判断 必填场号
+				$where['shot_number'] = $keywords['shot_number'];
+			}
+			//后期可对场号长度进行配置  场号+镜头号  暂定为6
+			if($shot_number_len == 6){
+				$shot_number = substr($keywords['shot_number'],3,3);
+				$where['shot_number'] = $shot_number;
+			}
+		}
+		$in_production_count = $this->where($where)->where('status',5)->count('id');
+		$feedback_count = $this->where($where)->where('status',15)->count('id');
+		$pause_count = $this->where($where)->where('is_pause',2)->count('id');
+		$waiting_assets_count = $this->where($where)->where('is_assets',1)->count('id');
+		$finish_count = $this->where($where)->where('status','in',[25,30])->count('id');
+		$data['in_production_count'] = $in_production_count;
+		$data['feedback_count'] = $feedback_count;
+		$data['pause_count'] = $pause_count;
+		$data['waiting_assets_count'] = $waiting_assets_count;
+		$data['finish_count'] = $finish_count;
+		return $data;
+	}
+
 	/**
 	 * 镜头首页概括
 	 * @param $keywords
@@ -455,7 +492,7 @@ class Shot extends Common
 
 	//添加场号
 	public function field_add($param){
-		$type = $param['type'] = 1;	//镜头类型
+		$type = $param['type'] = 1;
 		$project_id = $param['project_id'];
 		$name = trimall($param['name']);
 		$project_obj = Project::get($project_id);
@@ -506,7 +543,7 @@ class Shot extends Common
 			$this->error = '镜头编号已重复';
 			return false;
 		}else{
-		    return true;
-        }
+			return true;
+		}
 	}
 }

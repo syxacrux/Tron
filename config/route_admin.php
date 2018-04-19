@@ -70,6 +70,8 @@ return [
 	'admin/roles/enables'   =>      ['admin/roles/enables', ['method' => 'POST']],
 	// [项目] 获取登陆者是否属于当前项目 应用于编辑操作的权限
 	'admin/check_auth'      =>      ['admin/projects/editProject_ByAuth', ['method'=> 'POST']],
+	// [镜头] 概况
+	'shot/survey'						=>			['admin/shots/survey',['method' => 'GET']],
 	// [镜头] 获取场/集列表
 	'admin/get_fields'      =>      ['admin/shots/get_field',['method' => 'GET']],
 	// [镜头] 获取镜头号
