@@ -239,7 +239,7 @@
   </div>
 </template>
 <style>
-  .avatar-uploader .el-upload {
+  .assets_edit .avatar-uploader .el-upload {
     border: 1px dashed #d9d9d9;
     border-radius: 6px;
     cursor: pointer;
@@ -247,11 +247,11 @@
     overflow: hidden;
   }
 
-  .avatar-uploader .el-upload:hover {
+  .assets_edit .avatar-uploader .el-upload:hover {
     border-color: #409EFF;
   }
 
-  .el-upload {
+  .assets_edit .el-upload {
     width: 300px;
   }
 
@@ -259,7 +259,7 @@
     display: none;
   }
 
-  .avatar-uploader-icon {
+  .assets_edit .avatar-uploader-icon {
     font-size: 28px;
     color: #8c939d;
     width: 178px;
@@ -268,7 +268,7 @@
     text-align: center;
   }
 
-  .avatar {
+  .assets_edit .avatar {
     display: block;
     width: 100% !important;
     height: 100% !important;
@@ -560,8 +560,6 @@
         this.form.handle_frame = this.handle_frame1 && this.handle_frame2 ? this.handle_frame1 + ',' + this.handle_frame2 : ''
         this.form.priority_level = this.form.priority_level ? parseInt(this.form.priority_level) : 1
         this.form.difficulty = this.form.difficulty ? parseInt(this.form.difficulty) : 1
-        this.form.clip_frame_length = this.form.clip_frame_length ? parseInt(this.form.clip_frame_length) : 0
-        this.form.material_frame_length = this.form.material_frame_length ? parseInt(this.form.material_frame_length) : ''
 
         this.form.tache = {
           3: this.artOfStudio,
@@ -661,8 +659,6 @@
         this.frame_range2 = data.frame_range.split(',')[1]
         this.form.material_number = data.material_number
         this.form.asset_ids = data.asset_ids
-        this.form.clip_frame_length = data.clip_frame_length
-        this.form.material_frame_length = data.material_frame_length
         this.form.second_company = data.second_company
         this.form.assets_explain = data.assets_explain
         this.form.change_speed_info = data.change_speed_info

@@ -576,7 +576,7 @@
           })
         })
       },
-//      获取所有场号、集号
+//      获取所有资产类型
       getFields() {
         this.form.field_id = ''
         const data = {
