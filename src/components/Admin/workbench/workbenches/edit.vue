@@ -1,5 +1,5 @@
 <template>
-  <el-dialog class="workbenches-edit" title="任务编辑" :visible.sync="dialogFormVisible" width="75%">
+  <el-dialog class="workbenches-edit" title="任务编辑" :visible.sync="dialogFormVisible" width="60%">
     <el-form ref="form" :model="form" :rules="rules" label-width="130px" class="shot_add">
       <el-row :gutter="20">
         <el-col :span="8">
