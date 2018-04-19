@@ -11,6 +11,7 @@ class Field extends Common{
 	public function save_field_data($param){
 		$project_id = $param['project_id'];
 		$name = trimall($param['name']);
+		$param['explain'] = !empty($param['explain']) ? trimall($param['explain']) : '';
 		$project_obj = Project::get($project_id);
 		if(!$project_obj){
 			$this->error = '暂无数据';

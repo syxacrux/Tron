@@ -159,7 +159,7 @@ class Shot extends Common
 		$list = $list->select();
 		foreach ($list as $key => $value) {
 			$list[$key]['project_name'] = Project::get($value['project_id'])->project_byname;
-			$list[$key]['shot_number'] = Db::name('field')->where('id', $value['field_id'])->value('name') . $value['shot_number'];
+			$list[$key]['shot_number'] = Field::get($value['field_id'])->name . $value['shot_number'];
 			$list[$key]['priority_level'] = $this->priority_level_arr[$value['priority_level']];    //镜头优先级
 			$list[$key]['difficulty'] = $this->difficulty_arr[$value['difficulty']];    //镜头难度
 			$list[$key]['time'] = $this->time_arr[$value['time']];  //时刻
@@ -206,7 +206,7 @@ class Shot extends Common
 				Db::name('admin_project')->where('id',$param['project_id'])->update($lens_count);
 
 				$project_byname = $project_obj->project_byname;
-				$field_name = Db::name('field')->where('id', $param['field_id'])->value('name');
+				$field_name = Field::get($param['field_id'])->name;
 				//执行redis添加镜头所属目录 python
 				$str = "'Shot' '{$project_byname}' '{$field_name}' '{$param['shot_name']}'";
 				//exec_python($str);
@@ -274,7 +274,7 @@ class Shot extends Common
 				//更新当前镜头行记录
 				$shot_model->allowField(true)->save($param, [$this->getPk() => $id]);
 				$project_byname = Project::get($param['project_id'])->project_byname;
-				$field_name = Db::name('field')->where('id', $param['field_id'])->value('name');
+				$field_name = Field::get($param['field_id'])->name;
 				//执行redis添加镜头所属目录 python
 				$str = "'Shot' '{$project_byname}' '{$field_name}' '{$param['shot_name']}'";
 				//exec_python($str);
@@ -329,7 +329,7 @@ class Shot extends Common
 	{
 		$data = $this->get($id);
 		$data->project_name = Project::get($data->project_id)->project_name;
-		$data->field_name = Db::name('field')->where('id', $data->field_id)->value('name');
+		$data->field_name = Field::get($data->field_id)->name;
 		$data->time_name = $this->time_arr[$data->time];
 		$data->ambient_name = $this->ambient_arr[$data->ambient];
 		$data->difficulty_name = $this->difficulty_arr[$data->difficulty];
@@ -490,39 +490,11 @@ class Shot extends Common
 		}
 	}
 
-	//添加场号
-	public function field_add($param){
-		$type = $param['type'] = 1;
-		$project_id = $param['project_id'];
-		$name = trimall($param['name']);
-		$project_obj = Project::get($project_id);
-		if(!$project_obj){
-			$this->error = '暂无数据';
-			return false;
-		}
-		try{
-			$where = [];
-			$where['project_id'] = $project_id;
-			$where['name'] = $name;
-			$where['type'] = $type;
-			$check_name = Db::name('field')->where($where)->find();
-			if(!empty($check_name) || !is_null($check_name)){
-				$this->error = '所属项目下场号重复';
-				return false;
-			}else{
-				Db::name('field')->insert($param);
-				return true;
-			}
-		}catch(\Exception $e){
-			$this->error = '添加失败';
-		}
-	}
-
 	//根据项目ID获取所属场的数据
 	public function get_field_data($param){
 		$data = [];
 		if(!empty($param['project_id'])){
-			$data = Db::name('field')->where('project_id', $param['project_id'])->select();
+			$data = Field::where('project_id', $param['project_id'])->select();
 		}
 		return $data;
 	}

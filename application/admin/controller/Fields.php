@@ -17,6 +17,9 @@ class Fields extends BaseCommon{
 		$field_model = model('Field');
 		$param = $this->param;
 		$data = $field_model->save_field_data($param);
+		if(!$data){
+			return resultArray(['error'=>$field_model->getError()]);
+		}
 		return resultArray(['data'=>$data]);
 	}
 
