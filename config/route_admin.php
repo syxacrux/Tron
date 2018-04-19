@@ -72,10 +72,10 @@ return [
 	'admin/check_auth'      =>      ['admin/projects/editProject_ByAuth', ['method'=> 'POST']],
 	// [业务类型] 添加场号
 	'admin/save_field'      =>      ['admin/fields/save_field',['method' => 'POST']],
+	// [业务类型] 获取场/集/资产类型列表
+	'admin/get_fields'      =>      ['admin/fields/get_field',['method' => 'GET']],
 	// [镜头] 概况
 	'shot/survey'						=>			['admin/shots/survey',['method' => 'GET']],
-	// [镜头] 获取场/集列表
-	'admin/get_fields'      =>      ['admin/shots/get_field',['method' => 'GET']],
 	// [镜头] 获取镜头号
 	'admin/get_shot_num'		=>			['admin/shots/get_number',['method' => 'GET']],
 	// [镜头] 校验镜头编号是否重复
@@ -110,10 +110,10 @@ return [
 	'task/get_user'					=>			['admin/workbenches/get_user_list',['method'=>'GET']],
 	// [工作台] 删除制作人
 	'task/user_del'					=>			['admin/workbenches/delete_userid',['method'=>'POST']],
-	// [资产库] 获取镜头号
-	'asset/get_shot_num'		=>			['admin/assets/get_number',['method' => 'GET']],
+	// [资产库] 获取资产中文名称
+	'asset/get_asset_name'	=>			['admin/assets/get_asset_name',['method' => 'GET']],
 	// [资产库] 校验镜头编号是否重复
-	'asset/check_num'				=>			['admin/assets/check_shot_number',['method' => 'GET']],
+	'asset/check_byname'		=>			['admin/assets/check_asset_byname',['method' => 'GET']],
 	// [资产库] 制作中列表数据
 	'asset/in_production'   =>      ['admin/assets/in_production_data',['method'=>'GET']],
 	// [资产库] 反馈中列表数据

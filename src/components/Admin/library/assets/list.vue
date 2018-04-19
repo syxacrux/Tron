@@ -1,5 +1,5 @@
 <template>
-  <div class="shot_list_detail">
+  <div class="asset_list">
     <div class="m-b-20">
       <el-breadcrumb separator="/">
         <el-breadcrumb-item :to="{ path: '/admin' }">首页</el-breadcrumb-item>
@@ -28,7 +28,7 @@
             </el-select>
           </el-col>
           <el-col :span="5">
-            <el-select v-model="search.shot_id" placeholder="请选择镜头号" @change="getAllShotsList">
+            <el-select v-model="search.shot_id" placeholder="请选择镜头号" @change="getAllAssetsList">
               <el-option label="请选择镜头号" value=""></el-option>
               <el-option v-for="(item, index) in shotList" :label="item.shot_number" :value="item.id" :key="index"></el-option>
             </el-select>
@@ -53,7 +53,7 @@
     <div class="m-b-20 ovf-hd">
       <div v-if="isList">
         <el-table ref="multipleTable" :data="tableData" tooltip-effect="dark"
-                  @selection-change="handleSelectionChange" @row-click="shotDetail">
+                  @selection-change="handleSelectionChange" @row-click="assetDetail">
           <el-table-column type="selection" width="55"></el-table-column>
           <el-table-column prop="shot_image" label="缩略图">
             <template slot-scope="scope">
@@ -95,12 +95,12 @@
       </div>
       <el-tabs v-if="!isList" v-model="activeName" @tab-click="tabClick" class="fl">
         <el-tab-pane label="资产制作中" name="assetsInDevelopment">
-          <div class="shot_card ovf-hd">
+          <div class="asset_card ovf-hd">
             <el-col v-if="inDevelopmentShow" :span="12">
               <div class="grid-content">
                 <h2 class="m-0">制作中</h2>
                 <ul class="p-l-0 m-0">
-                  <li v-for="item in inProductionList" :key="item.id" @click="shotDetail(item.id)">
+                  <li v-for="item in inProductionList" :key="item.id" @click="assetDetail(item.id)">
                     <el-card>
                       <div>
                         <div class="text-Lens pos-rel">
@@ -108,10 +108,10 @@
                             {{item.project_name}}：<span>{{item.shot_number}}</span>
                           </p>
                           <p class="text-Lens-rank pos-abs">
-                            <el-tooltip class="pointer" effect="dark" content="镜头难度" placement="bottom-start">
+                            <el-tooltip class="pointer" effect="dark" content="资产难度" placement="bottom-start">
                               <el-tag type="warning">{{item.difficulty}}</el-tag>
                             </el-tooltip>
-                            <el-tooltip v-if="item.priority_level" class="pointer" effect="dark" content="镜头优先级"
+                            <el-tooltip v-if="item.priority_level" class="pointer" effect="dark" content="资产优先级"
                                         placement="bottom-start">
                               <el-tag type="danger">{{item.priority_level}}</el-tag>
                             </el-tooltip>
@@ -127,13 +127,13 @@
                           </p>
                           <p class="text-Lens-time fr tx-r">
                             <span>
-                              <el-tooltip class="m-r-5 pointer" effect="dark" content="镜头剩余天数" placement="bottom-start">
-                                <span>{{ shotRemainDay(item.plan_end_timestamp) }}天</span>
+                              <el-tooltip class="m-r-5 pointer" effect="dark" content="资产剩余天数" placement="bottom-start">
+                                <span>{{ assetRemainDay(item.plan_end_timestamp) }}天</span>
                               </el-tooltip>
-                              <el-tooltip class="m-r-5 pointer" effect="dark" content="镜头建立时间" placement="bottom-start">
-                                <span>{{ shotCreateTime(item.create_timestamp) }}天</span>
+                              <el-tooltip class="m-r-5 pointer" effect="dark" content="资产建立时间" placement="bottom-start">
+                                <span>{{ assetCreateTime(item.create_timestamp) }}天</span>
                               </el-tooltip>
-                              <el-tooltip class="m-r-5 pointer" effect="dark" content="镜头制作中时间"
+                              <el-tooltip class="m-r-5 pointer" effect="dark" content="资产制作中时间"
                                           placement="bottom-start">
                                 <span>{{ Math.ceil(item.surplus_days) }}天</span>
                               </el-tooltip>
@@ -173,7 +173,7 @@
               <div class="grid-content bg-purple-light">
                 <h2 class="m-0">反馈中</h2>
                 <ul class="p-l-0 m-0">
-                  <li v-for="item in feedbackList" :key="item.id" @click="shotDetail(item.id)">
+                  <li v-for="item in feedbackList" :key="item.id" @click="assetDetail(item.id)">
                     <el-card class="">
                       <div class="">
                         <div class="text-Lens pos-rel">
@@ -181,10 +181,10 @@
                             {{item.project_name}}：<span>{{item.shot_number}}</span>
                           </p>
                           <p class="text-Lens-rank pos-abs">
-                            <el-tooltip class="pointer" effect="dark" content="镜头难度" placement="bottom-start">
+                            <el-tooltip class="pointer" effect="dark" content="资产难度" placement="bottom-start">
                               <el-tag type="warning">{{item.difficulty}}</el-tag>
                             </el-tooltip>
-                            <el-tooltip v-if="item.priority_level" class="pointer" effect="dark" content="镜头优先级"
+                            <el-tooltip v-if="item.priority_level" class="pointer" effect="dark" content="资产优先级"
                                         placement="bottom-start">
                               <el-tag type="danger">{{item.priority_level}}</el-tag>
                             </el-tooltip>
@@ -200,13 +200,13 @@
                           </p>
                           <p class="text-Lens-time fr tx-r">
                             <span>
-                              <el-tooltip class="m-r-5 pointer" effect="dark" content="镜头剩余天数" placement="bottom-start">
-                                <span>{{ shotRemainDay(item.plan_end_timestamp) }}天</span>
+                              <el-tooltip class="m-r-5 pointer" effect="dark" content="资产剩余天数" placement="bottom-start">
+                                <span>{{ assetRemainDay(item.plan_end_timestamp) }}天</span>
                               </el-tooltip>
-                              <el-tooltip class="m-r-5 pointer" effect="dark" content="镜头建立时间" placement="bottom-start">
-                                <span>{{ shotCreateTime(item.create_timestamp) }}天</span>
+                              <el-tooltip class="m-r-5 pointer" effect="dark" content="资产建立时间" placement="bottom-start">
+                                <span>{{ assetCreateTime(item.create_timestamp) }}天</span>
                               </el-tooltip>
-                              <el-tooltip class="m-r-5 pointer" effect="dark" content="镜头制作中时间"
+                              <el-tooltip class="m-r-5 pointer" effect="dark" content="资产制作中时间"
                                           placement="bottom-start">
                                 <span>0天</span>
                               </el-tooltip>
@@ -245,10 +245,10 @@
           </div>
         </el-tab-pane>
         <el-tab-pane label="资产未制作" name="assetsNotDevelopment">
-          <div class="shot_card ovf-hd">
+          <div class="asset_card ovf-hd">
             <div class="grid-content">
               <!--<h2 class="m-0">等待资产</h2>-->
-              <el-col :span="12" v-for="item in waitingList" :key="item.id" @click="shotDetail(item.id)">
+              <el-col :span="12" v-for="item in waitingList" :key="item.id" @click="assetDetail(item.id)">
                 <div class="grid-content bg-purple p-b-5">
                   <el-card class="">
                     <div class="">
@@ -257,10 +257,10 @@
                           {{item.project_name}}：<span>{{item.shot_number}}</span>
                         </p>
                         <p class="text-Lens-rank pos-abs">
-                          <el-tooltip class="pointer" effect="dark" content="镜头难度" placement="bottom-start">
+                          <el-tooltip class="pointer" effect="dark" content="资产难度" placement="bottom-start">
                             <el-tag type="warning">{{item.difficulty}}</el-tag>
                           </el-tooltip>
-                          <el-tooltip v-if="item.priority_level" class="pointer" effect="dark" content="镜头优先级"
+                          <el-tooltip v-if="item.priority_level" class="pointer" effect="dark" content="资产优先级"
                                       placement="bottom-start">
                             <el-tag type="danger">{{item.priority_level}}</el-tag>
                           </el-tooltip>
@@ -276,13 +276,13 @@
                         </p>
                         <p class="text-Lens-time fr tx-r">
                           <span>
-                            <el-tooltip class="m-r-5 pointer" effect="dark" content="镜头剩余天数" placement="bottom-start">
-                              <span>{{ shotRemainDay(item.plan_end_timestamp) }}天</span>
+                            <el-tooltip class="m-r-5 pointer" effect="dark" content="资产剩余天数" placement="bottom-start">
+                              <span>{{ assetRemainDay(item.plan_end_timestamp) }}天</span>
                             </el-tooltip>
-                            <el-tooltip class="m-r-5 pointer" effect="dark" content="镜头建立时间" placement="bottom-start">
-                              <span>{{ shotCreateTime(item.create_timestamp) }}天</span>
+                            <el-tooltip class="m-r-5 pointer" effect="dark" content="资产建立时间" placement="bottom-start">
+                              <span>{{ assetCreateTime(item.create_timestamp) }}天</span>
                             </el-tooltip>
-                            <el-tooltip class="m-r-5 pointer" effect="dark" content="镜头制作中时间" placement="bottom-start">
+                            <el-tooltip class="m-r-5 pointer" effect="dark" content="资产制作中时间" placement="bottom-start">
                               <span>0天</span>
                             </el-tooltip>
                           </span>
@@ -319,7 +319,7 @@
           </div>
         </el-tab-pane>
         <el-tab-pane v-if="suspendShow" label="资产暂停" name="assetsSuspend">
-          <el-col :span="12" v-for="item in pauseList" :key="item.id" @click="shotDetail(item.id)">
+          <el-col :span="12" v-for="item in pauseList" :key="item.id" @click="assetDetail(item.id)">
             <div class="grid-content p-b-5">
               <el-card>
                 <div class="text-Lens pos-rel">
@@ -327,10 +327,10 @@
                     {{item.project_name}}：<span>{{item.shot_number}}</span>
                   </p>
                   <p class="text-Lens-rank pos-abs">
-                    <el-tooltip class="pointer" effect="dark" content="镜头难度" placement="bottom-start">
+                    <el-tooltip class="pointer" effect="dark" content="资产难度" placement="bottom-start">
                       <el-tag type="warning">{{item.difficulty}}</el-tag>
                     </el-tooltip>
-                    <el-tooltip v-if="item.priority_level" class="pointer" effect="dark" content="镜头优先级"
+                    <el-tooltip v-if="item.priority_level" class="pointer" effect="dark" content="资产优先级"
                                 placement="bottom-start">
                       <el-tag type="danger">{{item.priority_level}}</el-tag>
                     </el-tooltip>
@@ -346,13 +346,13 @@
                   </p>
                   <p class="text-Lens-time fr tx-r">
                       <span>
-                        <el-tooltip class="m-r-5 pointer" effect="dark" content="镜头剩余天数" placement="bottom-start">
-                          <span>{{ shotRemainDay(item.plan_end_timestamp) }}天</span>
+                        <el-tooltip class="m-r-5 pointer" effect="dark" content="资产剩余天数" placement="bottom-start">
+                          <span>{{ assetRemainDay(item.plan_end_timestamp) }}天</span>
                         </el-tooltip>
-                        <el-tooltip class="m-r-5 pointer" effect="dark" content="镜头建立时间" placement="bottom-start">
-                          <span>{{ shotCreateTime(item.create_timestamp) }}天</span>
+                        <el-tooltip class="m-r-5 pointer" effect="dark" content="资产建立时间" placement="bottom-start">
+                          <span>{{ assetCreateTime(item.create_timestamp) }}天</span>
                         </el-tooltip>
-                        <el-tooltip class="m-r-5 pointer" effect="dark" content="镜头制作中时间" placement="bottom-start">
+                        <el-tooltip class="m-r-5 pointer" effect="dark" content="资产制作中时间" placement="bottom-start">
                           <span>0天</span>
                         </el-tooltip>
                       </span>
@@ -385,7 +385,7 @@
           </div>
         </el-tab-pane>
         <el-tab-pane v-if="finishShow" label="资产完成" name="assetsFinish">
-          <el-col :span="12" v-for="item in finishList" :key="item.id" @click="shotDetail(item.id)">
+          <el-col :span="12" v-for="item in finishList" :key="item.id" @click="assetDetail(item.id)">
             <div class="grid-content p-b-5">
               <el-card>
                 <div class="text-Lens pos-rel">
@@ -393,10 +393,10 @@
                     {{item.project_name}}：<span>{{item.shot_number}}</span>
                   </p>
                   <p class="text-Lens-rank pos-abs">
-                    <el-tooltip class="pointer" effect="dark" content="镜头难度" placement="bottom-start">
+                    <el-tooltip class="pointer" effect="dark" content="资产难度" placement="bottom-start">
                       <el-tag type="warning">{{item.difficulty}}</el-tag>
                     </el-tooltip>
-                    <el-tooltip v-if="item.priority_level" class="pointer" effect="dark" content="镜头优先级"
+                    <el-tooltip v-if="item.priority_level" class="pointer" effect="dark" content="资产优先级"
                                 placement="bottom-start">
                       <el-tag type="danger">{{item.priority_level}}</el-tag>
                     </el-tooltip>
@@ -412,13 +412,13 @@
                   </p>
                   <p class="text-Lens-time fr tx-r">
                       <span>
-                        <el-tooltip class="m-r-5 pointer" effect="dark" content="镜头剩余天数" placement="bottom-start">
-                          <span>{{ shotRemainDay(item.plan_end_timestamp) }}天</span>
+                        <el-tooltip class="m-r-5 pointer" effect="dark" content="资产剩余天数" placement="bottom-start">
+                          <span>{{ assetRemainDay(item.plan_end_timestamp) }}天</span>
                         </el-tooltip>
-                        <el-tooltip class="m-r-5 pointer" effect="dark" content="镜头建立时间" placement="bottom-start">
-                          <span>{{ shotCreateTime(item.create_timestamp) }}天</span>
+                        <el-tooltip class="m-r-5 pointer" effect="dark" content="资产建立时间" placement="bottom-start">
+                          <span>{{ assetCreateTime(item.create_timestamp) }}天</span>
                         </el-tooltip>
-                        <el-tooltip class="m-r-5 pointer" effect="dark" content="镜头制作中时间" placement="bottom-start">
+                        <el-tooltip class="m-r-5 pointer" effect="dark" content="资产制作中时间" placement="bottom-start">
                           <span>0天</span>
                         </el-tooltip>
                       </span>
@@ -452,33 +452,30 @@
         </el-tab-pane>
       </el-tabs>
       <transition name="el-zoom-in-top">
-        <div v-show="isShotDetailShow" class="shot_detail fr">
+        <div v-show="isShotDetailShow" class="asset_detail fr">
           <el-card>
             <div slot="header" class="clearfix">
-              <span>镜头详情</span>
-              <i v-if="editShow" class="el-icon-edit m-l-5 fz-14 c-light-gray pointer" @click="editShot"></i>
-              <i v-if="deleteShow" class="el-icon-delete m-l-5 fz-14 c-light-gray pointer" @click="deleteShot"></i>
+              <span>资产详情</span>
+              <i v-if="editShow" class="el-icon-edit m-l-5 fz-14 c-light-gray pointer" @click="editAsset"></i>
+              <i v-if="deleteShow" class="el-icon-delete m-l-5 fz-14 c-light-gray pointer" @click="deleteAsset"></i>
               <i class="el-icon-close fr pointer" @click="isShotDetailShow = !isShotDetailShow"></i>
             </div>
             <el-row :gutter="20" class="m-b-5">
               <el-col :span="12">
-                <p class="m-0">镜头缩略图：<img :src="address + editShotDetail.shot_image" alt="" class="vtcal-mid h-40"></p>
+                <p class="m-0">资产缩略图：<img :src="address + editShotDetail.shot_image" alt="" class="vtcal-mid h-40"></p>
               </el-col>
             </el-row>
             <el-row :gutter="20" class="m-b-5">
               <el-col :span="12">
-                <p class="m-0">镜头简称：<span>{{ editShotDetail.shot_byname }}</span></p>
+                <p class="m-0">资产简称：<span>{{ editShotDetail.shot_byname }}</span></p>
               </el-col>
               <el-col :span="12">
-                <p class="m-0">所属项目：<span>{{ editShotDetail.project_name }}</span></p>
+                <p class="m-0">资产项目：<span>{{ editShotDetail.project_name }}</span></p>
               </el-col>
             </el-row>
             <el-row :gutter="20" class="m-b-5">
               <el-col :span="12">
-                <p class="m-0">镜头编号：<span>{{ editShotDetail.shot_number }}</span></p>
-              </el-col>
-              <el-col :span="12">
-                <p class="m-0">镜头名称：<span>{{ editShotDetail.shot_name }}</span></p>
+                <p class="m-0">资产名称：<span>{{ editShotDetail.shot_name }}</span></p>
               </el-col>
             </el-row>
             <el-row :gutter="20" class="m-b-5">
@@ -493,26 +490,15 @@
             </el-row>
             <el-row :gutter="20" class="m-b-5">
               <el-col :span="12">
-                <p class="m-0">资产：<span>没写</span></p>
-              </el-col>
-              <el-col :span="12">
                 <p class="m-0">场号/集号：<span>{{ editShotDetail.field_name }}</span></p>
               </el-col>
             </el-row>
             <el-row :gutter="20" class="m-b-5">
               <el-col :span="12">
-                <p class="m-0">镜头优先级：<span>{{ editShotDetail.priority_level_name }}</span></p>
+                <p class="m-0">资产优先级：<span>{{ editShotDetail.priority_level_name }}</span></p>
               </el-col>
               <el-col :span="12">
-                <p class="m-0">镜头难度：<span>{{ editShotDetail.difficulty_name }}</span></p>
-              </el-col>
-            </el-row>
-            <el-row :gutter="20" class="m-b-5">
-              <el-col :span="12">
-                <p class="m-0">时刻：<span>{{ editShotDetail.time_name }}</span></p>
-              </el-col>
-              <el-col :span="12">
-                <p class="m-0">环境：<span>{{ editShotDetail.ambient_name }}</span></p>
+                <p class="m-0">资产难度：<span>{{ editShotDetail.difficulty_name }}</span></p>
               </el-col>
             </el-row>
             <el-row :gutter="20" class="m-b-5">
@@ -531,34 +517,12 @@
             </el-row>
             <el-row :gutter="20" class="m-b-5">
               <el-col :span="12">
-                <p class="m-0">帧长范围：<span>{{ editShotDetail.frame_range }}</span></p>
-              </el-col>
-              <el-col :span="12">
-                <p class="m-0">手柄帧：<span>{{ editShotDetail.handle_frame }}</span></p>
-              </el-col>
-            </el-row>
-            <el-row :gutter="20" class="m-b-5">
-              <el-col :span="12">
-                <p class="m-0">剪辑帧长：<span>{{ editShotDetail.clip_frame_length }}</span></p>
-              </el-col>
-              <el-col :span="12">
-                <p class="m-0">素材帧长：<span>{{ editShotDetail.material_frame_length }}</span></p>
-              </el-col>
-            </el-row>
-            <el-row :gutter="20" class="m-b-5">
-              <el-col :span="12">
-                <p class="m-0">素材号：<span>{{ editShotDetail.material_number }}</span></p>
-              </el-col>
-              <el-col :span="12">
                 <p class="m-0">二级公司：<span>{{ editShotDetail.second_company }}</span></p>
               </el-col>
             </el-row>
             <el-row :gutter="20" class="m-b-5">
               <el-col :span="12">
-                <p class="m-0">镜头备注：<span>{{ editShotDetail.shot_explain }}</span></p>
-              </el-col>
-              <el-col :span="12">
-                <p class="m-0">变速信息：<span>{{ editShotDetail.change_speed_info }}</span></p>
+                <p class="m-0">资产备注：<span>{{ editShotDetail.shot_explain }}</span></p>
               </el-col>
             </el-row>
             <el-row :gutter="20" class="m-b-5">
@@ -574,7 +538,7 @@
 </template>
 <script>
   import btnGroup from '../../../Common/btn-group.vue'
-//  import editShots from '../shots/edit.vue'
+  //  import editAssets from '../assets/edit.vue'
   import http from '../../../../assets/js/http'
   import _g from '@/assets/js/global'
 
@@ -621,28 +585,28 @@
           this.search.project_id = ''
           this.search.field_id = ''
           this.search.shot_id = ''
-          this.getAllShotsList()
+          this.getAllAssetsList()
         }
         if(!this.search.field_id && this.search.shot_number.length === 3) {
           _g.toastMsg('warning', '请选择所属项目及场号')
           return
         } else {
           this.search.shot_id = ''
-          this.getAllShotsList()
+          this.getAllAssetsList()
         }
       },
-//      点击编辑镜头执行方法
-      editShot() {
+//      点击编辑资产执行方法
+      editAsset() {
         this.$refs.editShots.open()
       },
-//      点击镜头显示镜头详情
-      shotDetail(id) {
-//        判断镜头详情传入值是否为数字
+//      点击资产显示资产详情
+      assetDetail(id) {
+//        判断资产详情传入值是否为数字
         if(!/^[0-9]*$/.test(id)){
           id = id.id
         }
         this.id = id
-        this.apiGet('admin/shots/' + id).then((res) => {
+        this.apiGet('admin/assets/' + id).then((res) => {
           this.handelResponse(res, (data) => {
             this.editShotDetail = data
           })
@@ -651,7 +615,7 @@
           this.isShotDetailShow = !this.isShotDetailShow
         }
       },
-//      镜头详情删除环节
+//      资产详情删除环节
       deleteTache(tache_name) {
         this.$confirm('确认删除该环节?', '提示', {
           confirmButtonText: '确定',
@@ -663,20 +627,19 @@
             id: this.id,
             tache_name: tache_name
           }
-          this.apiPost('shot/tache_del', data).then((res) => {
+          this.apiPost('asset/tache_del', data).then((res) => {
             _g.closeGlobalLoading()
             this.handelResponse(res, (data) => {
               _g.toastMsg('success', '删除成功')
-              this.shotDetail(this.id)
+              this.assetDetail(this.id)
             })
           })
         }).catch(() => {
           // catch error
         })
       },
-//      镜头详情删除环节所属工作室
+//      资产详情删除环节所属工作室
       deleteTacheStudio(tache_name, item) {
-        console.log(item)
         this.$confirm('确认删除该环节所属工作室?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
@@ -688,31 +651,31 @@
             tache_name: tache_name,
             studio_id: item.id
           }
-          this.apiPost('shot/studio_del', data).then((res) => {
+          this.apiPost('asset/studio_del', data).then((res) => {
             _g.closeGlobalLoading()
             this.handelResponse(res, (data) => {
               _g.toastMsg('success', '删除成功')
-              this.shotDetail(this.id)
+              this.assetDetail(this.id)
             })
           })
         }).catch(() => {
           // catch error
         })
       },
-//      删除镜头
-      deleteShot(id) {
-        this.$confirm('确认删除该镜头?', '提示', {
+//      删除资产
+      deleteAsset(id) {
+        this.$confirm('确认删除该资产?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
           _g.openGlobalLoading()
-          this.apiDelete('admin/shots/', this.id).then((res) => {
+          this.apiDelete('admin/assets/', this.id).then((res) => {
             _g.closeGlobalLoading()
             this.handelResponse(res, (data) => {
               _g.toastMsg('success', '删除成功')
               this.init(this.activeName)
-              this.getShotList(this.page)
+              this.getAssetList(this.page)
               this.isShotDetailShow = false
             })
           })
@@ -722,29 +685,29 @@
       },
 //      制作中切换分页
       inProductionCurrentChange(page) {
-        this.getShots('in_production', page)
+        this.getAssets('in_production', page)
       },
 //      反馈中切换分页
       feedbackCurrentChange(page) {
-        this.getShots('feedback', page)
+        this.getAssets('feedback', page)
       },
 //      等待资产中切换分页
       waitingCurrentChange(page) {
-        this.getShots('waiting', page)
+        this.getAssets('waiting', page)
       },
-//      镜头暂停切换分页
+//      资产暂停切换分页
       pauseCurrentChange(page) {
-        this.getShots('pause', page)
+        this.getAssets('pause', page)
       },
-//      镜头完成切换分页
+//      资产完成切换分页
       finishCurrentChange(page) {
-        this.getShots('finish', page)
+        this.getAssets('finish', page)
       },
       listCurrentChange(page) {
-        this.getShotList(page)
+        this.getAssetList(page)
       },
       /*
-      * 镜头列表批量点击checkbox
+      * 资产列表批量点击checkbox
       * params: {
       *   val: 当前已选中的checkbox群的value
       * }
@@ -772,12 +735,12 @@
         let seconds = time.getSeconds() < 10 ? '0' + time.getSeconds() : time.getSeconds()
         return year + '-' + month + '-' + date + ' ' + hour + ':' + min + ':' + seconds
       },
-//      镜头剩余天数 = 预计结束时间戳 - 当前时间戳
-      shotRemainDay(end_time) {
+//      资产剩余天数 = 预计结束时间戳 - 当前时间戳
+      assetRemainDay(end_time) {
         return Math.ceil((end_time - new Date() / 1000) / 86400)
       },
-//      镜头建立时间 = 当前时间戳 - 镜头创建时间戳
-      shotCreateTime(create_time) {
+//      资产建立时间 = 当前时间戳 - 资产创建时间戳
+      assetCreateTime(create_time) {
         return Math.ceil((new Date() / 1000 - create_time) / 86400)
       },
 //      获取所有项目
@@ -789,12 +752,12 @@
         })
       },
       /*
-      * 获取某个状态的镜头看板内容
+      * 获取某个状态的资产看板内容
       * params: {
-      *   shot_status: 区分请求接口的地址（in_production、feedback、waiting、pause、finish）
+      *   asset_status: 区分请求接口的地址（in_production、feedback、waiting、pause、finish）
       * }
       * */
-      getAssets(shot_status, page) {
+      getAssets(asset_status, page) {
         const data = {
           params: {
             page: page,
@@ -802,11 +765,11 @@
             keywords: this.search
           }
         }
-        let url = `asset/${shot_status}`
+        let url = `asset/${asset_status}`
         this.loading = true
         this.apiGet(url, data).then((res) => {
           this.handelResponse(res, (data) => {
-            switch (shot_status) {
+            switch (asset_status) {
               case 'in_production':
                 this.inProductionDataCount = data.dataCount
                 this.inProductionList = data.list
@@ -831,7 +794,7 @@
           })
         })
       },
-//      初始化镜头列表
+//      初始化资产列表
       getAssetList(page) {
         this.page = page
         const data = {
@@ -841,7 +804,7 @@
             limit: this.limit
           }
         }
-        this.apiGet('admin/shots', data).then((res) => {
+        this.apiGet('admin/assets', data).then((res) => {
           this.handelResponse(res, (data) => {
             this.tableData = data.list
             this.listDataCount = data.dataCount
@@ -862,7 +825,7 @@
           })
         })
       },
-//      获取所有场号集号下的镜头号
+//      获取所有场号集号下的资产号
       getShotsNum() {
         this.getAllAssetsList()
         const data = {
@@ -917,64 +880,64 @@
     },
     mixins: [http],
     computed: {
-//      编辑镜头按钮
+//      编辑资产按钮
       editShow() {
-        return _g.getHasRule('shots-update')
+        return _g.getHasRule('assets-update')
       },
-//      删除镜头按钮
+//      删除资产按钮
       deleteShow() {
-        return _g.getHasRule('shots-delete')
+        return _g.getHasRule('assets-delete')
       },
-//      删除镜头所属环节按钮
+//      删除资产所属环节按钮
       deleteShowTache() {
-        return _g.getHasRule('shots-delete_tache')
+        return _g.getHasRule('assets-delete_tache')
       },
-//      删除镜头环节所属工作室按钮
+//      删除资产环节所属工作室按钮
       deleteShowTacheStudio() {
-        return _g.getHasRule('shots-delete_studio')
+        return _g.getHasRule('assets-delete_studio')
       },
 //      制作中按钮
       inDevelopmentShow() {
-        return _g.getHasRule('shots-in_production_data')
+        return _g.getHasRule('assets-in_production_data')
       },
 //      反馈中按钮
       feedbackShow() {
-        return _g.getHasRule('shots-feedback_data')
+        return _g.getHasRule('assets-feedback_data')
       },
-//      镜头暂停按钮
+//      资产暂停按钮
       suspendShow() {
-        return _g.getHasRule('shots-pause_data')
+        return _g.getHasRule('assets-pause_data')
       },
-//      镜头完成按钮
+//      资产完成按钮
       finishShow() {
-        return _g.getHasRule('shots-finish_data')
+        return _g.getHasRule('assets-finish_data')
       }
     }
   }
 </script>
 <style>
-  .shot_list_detail .item {
+  .asset_list .item {
     margin-right: 20px;
   }
 
-  .shot_list_detail .el-card__body {
+  .asset_list .el-card__body {
     padding: 15px;
   }
 
-  .shot_list_detail .el-table {
+  .asset_list .el-table {
     width: 95%;
   }
 
-  .shot_list_detail .el-tabs {
+  .asset_list .el-tabs {
     width: 95%;
   }
 
-  .shot_list_detail .el-tag {
+  .asset_list .el-tag {
     padding: 0 8px;
     margin-bottom: 2px;
   }
 
-  .shot_list_detail .shot_detail {
+  .asset_list .asset_detail {
     width: 25%;
     height: 75%;
     position: fixed;
@@ -984,22 +947,22 @@
     z-index: 2;
     overflow: scroll;
   }
-  .shot_list_detail .shot_detail p{
+  .asset_list .asset_detail p{
     font-size: .8rem;
     color: #666;
   }
-  .shot_list_detail .shot_detail p span{
+  .asset_list .asset_detail p span{
     color: #333;
   }
-  .shot_list_detail .shot_detail p span.tache_studio{
+  .asset_list .asset_detail p span.tache_studio{
     font-size: .75rem;
   }
-  .shot_list_detail .shot_detail .el-card__header{
+  .asset_list .asset_detail .el-card__header{
     padding: 10px 15px;
     font-size: 14px;
   }
 
-  .shot_list_detail .shot_card h2 {
+  .asset_list .asset_card h2 {
     font-size: .8rem;
     height: 35px;
     line-height: 35px;
@@ -1011,7 +974,7 @@
     border-top-right-radius: 5px;
   }
 
-  .shot_list_detail .text-Lens:after {
+  .asset_list .text-Lens:after {
     content: '';
     height: 0;
     line-height: 0;
@@ -1020,38 +983,38 @@
     clear: both;
   }
 
-  .shot_list_detail .text-Lens p {
+  .asset_list .text-Lens p {
     margin: 0;
     display: inline-block;
     font-weight: 500;
   }
 
-  .shot_list_detail .text-Lens .text-Lens-rank {
+  .asset_list .text-Lens .text-Lens-rank {
     top: 0;
     right: 0;
   }
 
-  .shot_list_detail .text-Lens-assets {
+  .asset_list .text-Lens-assets {
     max-width: 70%;
     float: left;
   }
 
-  .shot_list_detail .text-Lens-assets .el-tag {
+  .asset_list .text-Lens-assets .el-tag {
     margin-bottom: 5px;
   }
 
-  .shot_list_detail .text-Lens-time {
+  .asset_list .text-Lens-time {
     width: 30%;
   }
 
-  .shot_list_detail .text-Lens-time span {
+  .asset_list .text-Lens-time span {
     display: inline-block;
     height: 30px;
     line-height: 30px;
     font-weight: normal;
   }
 
-  .shot_list_detail .text-Lens-time .item {
+  .asset_list .text-Lens-time .item {
     margin-right: 0;
     padding: 12px 4px;
     margin-left: 0;
@@ -1062,7 +1025,7 @@
     font-size: 14px;
   }
 
-  .shot_list_detail .text-Lens-link {
+  .asset_list .text-Lens-link {
     text-align: right;
   }
 </style>

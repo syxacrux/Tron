@@ -12,6 +12,7 @@ use app\common\controller\BaseCommon;
 
 class Shots extends BaseCommon
 {
+	//概况
 	public function survey(){
 		$shot_model = model('Shot');
 		$param = $this->param;
@@ -20,6 +21,7 @@ class Shots extends BaseCommon
 		return resultArray(['data'=>$data]);
 	}
 
+	//标准列表
 	public function index()
 	{
 		$shot_model = model('Shot');
@@ -75,7 +77,7 @@ class Shots extends BaseCommon
 		$keywords = !empty($param['keywords']) ? json_decode($param['keywords'],true) : '';
 		$page = !empty($param['page']) ? $param['page'] : '';
 		$limit = !empty($param['limit']) ? $param['limit'] : '';
-		$data = $shot_model->getList_byStatus($keywords,$page, $limit, 5, 2, 2);
+		$data = $shot_model->getList_byStatus($keywords,$page, $limit, '', 2, 2);
 		return resultArray(['data' => $data]);
 	}
 
@@ -204,13 +206,6 @@ class Shots extends BaseCommon
 		return resultArray(['data' => $data]);
 	}
 
-	//筛选 - 获取场号
-	public function get_field(){
-		$shot_model = model('Shot');
-		$param = $this->param;
-		$data = $shot_model->get_field_data($param);
-		return resultArray(['data'=>$data]);
-	}
 
 	//筛选 - 获取镜头号
 	public function get_number(){
