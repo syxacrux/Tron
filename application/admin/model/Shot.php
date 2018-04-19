@@ -455,6 +455,7 @@ class Shot extends Common
 
 	//添加场号
 	public function field_add($param){
+		$type = $param['type'] = 1;	//镜头类型
 		$project_id = $param['project_id'];
 		$name = trimall($param['name']);
 		$project_obj = Project::get($project_id);
@@ -466,6 +467,7 @@ class Shot extends Common
 			$where = [];
 			$where['project_id'] = $project_id;
 			$where['name'] = $name;
+			$where['type'] = $type;
 			$check_name = Db::name('field')->where($where)->find();
 			if(!empty($check_name) || !is_null($check_name)){
 				$this->error = '所属项目下场号重复';

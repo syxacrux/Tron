@@ -52,6 +52,10 @@ import shotsList from '@/components/Admin/shot/shots/list.vue'
 import shotsAdd from '@/components/Admin/shot/shots/add.vue'
 import shotsEdit from '@/components/Admin/shot/shots/edit.vue'
 import shotsListDetail from '@/components/Admin/shot/shots/list_detail.vue'
+// 资产库管理 - 资产
+import assetsList from '@/components/Admin/library/assets/list.vue'
+import assetsAdd from '@/components/Admin/library/assets/add.vue'
+import assetsListDetail from '@/components/Admin/library/assets/list_detail.vue'
 // 库管理-参考库管理
 import referencesList from '@/components/Admin/library/references/list.vue'
 
@@ -307,6 +311,37 @@ const routes = [
         name: 'shotsListDetail',
         meta: { hideLeft: false, module: 'Admin', menu: 'shots' }
       }
+    ]
+  },
+  // 库管理-资产库
+  {
+    path: '/admin',
+    component: Home,
+    children: [
+      {
+        path: 'assets/list',
+        component: assetsList,
+        name: 'assetsList',
+        meta: { hideLeft: false, module: 'Admin', menu: 'assets' }
+      },
+      {
+        path: 'assets/add',
+        component: assetsAdd,
+        name: 'assetsAdd',
+        meta: { hideLeft: false, module: 'Admin', menu: 'assets' }
+      },
+      // {
+      //   path: 'assets/edit/:id',
+      //   component: assetsEdit,
+      //   name: 'assetsEdit',
+      //   meta: { hideLeft: false, module: 'Admin', menu: 'assets' }
+      // },
+      {
+        path: 'assets/list_detail',
+        component: assetsListDetail,
+        name: 'assetsListDetail',
+        meta: { hideLeft: false, module: 'Admin', menu: 'assets' }
+    }
     ]
   },
   // 库管理-参考库管理

@@ -438,6 +438,9 @@ class Workbench extends Common
 		try {
 			//获取所属任务当前状态值
 			$curr_task_status = $this->get($task_id)->task_status;
+			//查询所属镜头的状态值
+			$shot_id = $this->get($task_id)->shot_id;
+			$shot_status = Shot::get($shot_id)->status;
 			//判断角色权限
 			if ($group_id == 7) {  //制作人
 				if (($curr_task_status == 1) && ($task_data['task_status'] == 5)) {  //等待制作改变状态为制作中，可进行更新，其他行为，均没有权限操作
@@ -457,6 +460,12 @@ class Workbench extends Common
 					}
 				} else {
 					$this->save($task_data, [$this->getPk() => $task_id]);
+					//同时更新所属镜头ID 将状态改为制作中
+					if ($shot_status == 1) {  //所属镜头状态 为等待制作时 任务改为制作中时 同时更新镜头表状态
+						$shot = Shot::get($shot_id);
+						$shot->status = 5;
+						$shot->save();
+					}
 				}
 			}
 			//记录状态更新记录
