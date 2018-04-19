@@ -464,6 +464,7 @@ class Workbench extends Common
 					if ($shot_status == 1) {  //所属镜头状态 为等待制作时 任务改为制作中时 同时更新镜头表状态
 						$shot = Shot::get($shot_id);
 						$shot->status = 5;
+						$shot->actual_start_timestamp = time();
 						$shot->save();
 					}
 				}

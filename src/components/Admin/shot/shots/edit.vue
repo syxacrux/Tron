@@ -721,7 +721,8 @@
         this.form.field_id = ''
         const data = {
           params: {
-            project_id: this.form.project_id
+            project_id: this.form.project_id,
+            type: 1
           }
         }
         this.apiGet('admin/get_fields', data).then((res) => {

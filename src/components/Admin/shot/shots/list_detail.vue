@@ -850,7 +850,8 @@
         this.getAllShotsList()
         const data = {
           params: {
-            project_id: this.search.project_id
+            project_id: this.search.project_id,
+            type: 1
           }
         }
         this.apiGet('admin/get_fields', data).then((res) => {
