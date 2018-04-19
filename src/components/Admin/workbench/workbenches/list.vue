@@ -586,6 +586,7 @@
         this.tabVale = parseInt(tab.index)+1
         this.publicRequest(tab.name,parseInt(tab.index)+1)
       },
+
       //tab切换、搜索时 请求调用
       publicRequest(type,value){
         switch (type){
