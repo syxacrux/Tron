@@ -58,7 +58,7 @@
           <el-col :span="8">
             <div class="grid-content">
               <el-form-item label="资产难度:" prop="difficulty">
-                <el-select v-model="form.difficulty" placeholder="请资产镜头难度" class="h-40 w-200">
+                <el-select v-model="form.difficulty" placeholder="请选择资产难度" class="h-40 w-200">
                   <el-option label="D" value="1"></el-option>
                   <el-option label="C" value="2"></el-option>
                   <el-option label="B" value="3"></el-option>
@@ -82,7 +82,7 @@
           <el-col :span="8">
             <div class="grid-content">
               <el-form-item label="资产优先级:" prop="priority_level">
-                <el-select v-model="form.priority_level" placeholder="请选择镜头优先级" class="h-40 w-200">
+                <el-select v-model="form.priority_level" placeholder="请选择资产优先级" class="h-40 w-200">
                   <el-option label="D" value="1"></el-option>
                   <el-option label="C" value="2"></el-option>
                   <el-option label="B" value="3"></el-option>
@@ -337,7 +337,7 @@
           material_number: '',    //素材号
           second_company: '',    //二级公司
           make_demand: '',    //制作要求
-          status: 1    //镜头状态
+          status: 1    //资产状态
         },
         id: '',
         image: '',
@@ -354,8 +354,8 @@
             {required: true, message: '请输入资产简称'}, {pattern: /^[a-zA-Z]+$/, message: '资产简称必须为字母'}
           ],
           asset_name: [{required: true, message: '请输入资产名称'}, {pattern: /^[\u4E00-\u9FA5]+$/, message: '资产名称必须为汉字'}],
-          difficulty: [{required: true, message: '请选择镜头难度'}],
-          priority_level: [{required: true, message: '请选择镜头优先级'}]
+          difficulty: [{required: true, message: '请选择资产难度'}],
+          priority_level: [{required: true, message: '请选择资产优先级'}]
         },
         addFieldRules: {
           project_id: [{required: true, message: '请选择项目'}],
@@ -534,7 +534,7 @@
           this.synchOfStudio = []
         }
       },
-//      编辑镜头
+//      编辑资产
       edit(form) {
         if (!this.form.assets_image) {
           _g.toastMsg('warning', '请插入资产缩略图')
@@ -617,7 +617,7 @@
           })
         })
       },
-//      获取所有场号、集号
+//      获取所有资产类型
       getFields() {
         this.form.field_id = ''
         const data = {
