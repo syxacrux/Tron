@@ -111,9 +111,9 @@ return [
 	// [工作台] 删除制作人
 	'task/user_del'					=>			['admin/workbenches/delete_userid',['method'=>'POST']],
 	// [资产库] 获取资产中文名称
-	'asset/get_asset_name'		=>			['admin/assets/get_asset_name',['method' => 'GET']],
+	'asset/get_asset_name'	=>			['admin/assets/get_asset_name',['method' => 'GET']],
 	// [资产库] 校验镜头编号是否重复
-	'asset/check_byname'				=>			['admin/assets/check_asset_byname',['method' => 'GET']],
+	'asset/check_byname'		=>			['admin/assets/check_asset_byname',['method' => 'GET']],
 	// [资产库] 制作中列表数据
 	'asset/in_production'   =>      ['admin/assets/in_production_data',['method'=>'GET']],
 	// [资产库] 反馈中列表数据
