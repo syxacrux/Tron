@@ -1,18 +1,6 @@
 <template>
-  <div>
-    <div class="m-b-20">
-      <el-breadcrumb separator="/">
-        <el-breadcrumb-item :to="{ path: '/admin' }">首页</el-breadcrumb-item>
-        <el-breadcrumb-item :to="{ path: '/admin/shots/list' }">镜头管理</el-breadcrumb-item>
-        <el-breadcrumb-item :to="{ path: '/admin/shots/list' }">镜头汇总</el-breadcrumb-item>
-        <el-breadcrumb-item>添加镜头</el-breadcrumb-item>
-      </el-breadcrumb>
-    </div>
-    <div class="m-r-30 m-b-20 m-t-30 tx-r">
-      <el-button type="primary" size="small" plain v-if="importAddShow" @click="isImportShot = true">批量导入</el-button>
-      <el-button type="text" size="mini" class="fz-12 m-0">点击获取模板</el-button>
-    </div>
-    <div class="m-l-50 m-t-30 w-1000">
+  <div class="shot_edit">
+    <el-dialog title="编辑镜头" :visible.sync="dialogFormVisible" width="75%" top="6vh">
       <el-form ref="form" :model="form" :rules="rules" label-width="130px" class="shot_add">
         <el-row :gutter="20">
           <el-col :span="8">
@@ -20,7 +8,7 @@
               <el-form-item label="项目名称:" prop="project_id">
                 <el-select v-model="form.project_id" placeholder="请选择项目" @change="getFields">
                   <el-option v-for="item in projectList" :label="item.project_name" :value="item.id"
-                             :key="item.id"></el-option>
+                             :key="item.project_name"></el-option>
                 </el-select>
               </el-form-item>
             </div>
@@ -30,7 +18,7 @@
               <el-form-item label="场号:" prop="field_id">
                 <el-select v-model="form.field_id" placeholder="请选择场号" :class="{ 'w-130': addShow }">
                   <el-option v-for="item in fieldList" :label="item.name" :value="item.id"
-                             :key="item.id"></el-option>
+                             :key="item.name"></el-option>
                 </el-select>
                 <el-button type="text" size="small" @click="isAddField = true" v-if="addShow">添加</el-button>
               </el-form-item>
@@ -146,12 +134,12 @@
         <el-row :gutter="20">
           <el-col :span="24">
             <div class="grid-content">
-              <el-form-item label="环节:" prop="hahah" class="is-required">
+              <el-form-item label="环节:" prop="">
                 <el-col :span="12" class="h-45">
                   <el-checkbox v-model="isArt" @change="changeTache">美术部</el-checkbox>
                   <el-select v-if="isArt" v-model="artOfStudio" multiple collapse-tags style="margin-left: 20px;"
                              placeholder="请选择">
-                    <el-option v-for="item1 in studiosList" :key="item1.id" :label="item1.name" :value="item1.id">
+                    <el-option v-for="item1 in studiosListArt" :key="item1.id" :label="item1.name" :value="item1.id" :disabled="item1.art_disabled">
                     </el-option>
                   </el-select>
                 </el-col>
@@ -159,7 +147,7 @@
                   <el-checkbox v-model="isModel" @change="changeTache">模型部</el-checkbox>
                   <el-select v-if="isModel" v-model="modelOfStudio" multiple collapse-tags style="margin-left: 20px;"
                              placeholder="请选择">
-                    <el-option v-for="item1 in studiosList" :key="item1.id" :label="item1.name" :value="item1.id">
+                    <el-option v-for="item1 in studiosListModel" :key="item1.id" :label="item1.name" :value="item1.id">
                     </el-option>
                   </el-select>
                 </el-col>
@@ -167,7 +155,7 @@
                   <el-checkbox v-model="isMap" @change="changeTache">贴图部</el-checkbox>
                   <el-select v-if="isMap" v-model="mapOfStudio" multiple collapse-tags style="margin-left: 20px;"
                              placeholder="请选择">
-                    <el-option v-for="item1 in studiosList" :key="item1.id" :label="item1.name" :value="item1.id">
+                    <el-option v-for="item1 in studiosListMap" :key="item1.id" :label="item1.name" :value="item1.id">
                     </el-option>
                   </el-select>
                 </el-col>
@@ -175,7 +163,7 @@
                   <el-checkbox v-model="isBind" @change="changeTache">绑定部</el-checkbox>
                   <el-select v-if="isBind" v-model="bindOfStudio" multiple collapse-tags style="margin-left: 20px;"
                              placeholder="请选择">
-                    <el-option v-for="item1 in studiosList" :key="item1.id" :label="item1.name" :value="item1.id">
+                    <el-option v-for="item1 in studiosListBind" :key="item1.id" :label="item1.name" :value="item1.id">
                     </el-option>
                   </el-select>
                 </el-col>
@@ -183,7 +171,7 @@
                   <el-checkbox v-model="isTrack" @change="changeTache">跟踪部</el-checkbox>
                   <el-select v-if="isTrack" v-model="trackOfStudio" multiple collapse-tags style="margin-left: 20px;"
                              placeholder="请选择">
-                    <el-option v-for="item1 in studiosList" :key="item1.id" :label="item1.name" :value="item1.id">
+                    <el-option v-for="item1 in studiosListTrack" :key="item1.id" :label="item1.name" :value="item1.id">
                     </el-option>
                   </el-select>
                 </el-col>
@@ -191,7 +179,7 @@
                   <el-checkbox v-model="isAni" @change="changeTache">动画部</el-checkbox>
                   <el-select v-if="isAni" v-model="animateOfStudio" multiple collapse-tags style="margin-left: 20px;"
                              placeholder="请选择">
-                    <el-option v-for="item1 in studiosList" :key="item1.id" :label="item1.name" :value="item1.id">
+                    <el-option v-for="item1 in studiosListAnimate" :key="item1.id" :label="item1.name" :value="item1.id">
                     </el-option>
                   </el-select>
                 </el-col>
@@ -199,7 +187,7 @@
                   <el-checkbox v-model="isPaint" @change="changeTache">数字绘景部</el-checkbox>
                   <el-select v-if="isPaint" v-model="paintOfStudio" multiple collapse-tags style="margin-left: 20px;"
                              placeholder="请选择">
-                    <el-option v-for="item1 in studiosList" :key="item1.id" :label="item1.name" :value="item1.id">
+                    <el-option v-for="item1 in studiosListPaint" :key="item1.id" :label="item1.name" :value="item1.id">
                     </el-option>
                   </el-select>
                 </el-col>
@@ -207,7 +195,7 @@
                   <el-checkbox v-model="isSpec" @change="changeTache">特效部</el-checkbox>
                   <el-select v-if="isSpec" v-model="specialOfStudio" multiple collapse-tags style="margin-left: 20px;"
                              placeholder="请选择">
-                    <el-option v-for="item1 in studiosList" :key="item1.id" :label="item1.name" :value="item1.id">
+                    <el-option v-for="item1 in studiosListSpecial" :key="item1.id" :label="item1.name" :value="item1.id">
                     </el-option>
                   </el-select>
                 </el-col>
@@ -215,7 +203,7 @@
                   <el-checkbox v-model="isLight" @change="changeTache">灯光部</el-checkbox>
                   <el-select v-if="isLight" v-model="lightOfStudio" multiple collapse-tags style="margin-left: 20px;"
                              placeholder="请选择">
-                    <el-option v-for="item1 in studiosList" :key="item1.id" :label="item1.name" :value="item1.id">
+                    <el-option v-for="item1 in studiosListLight" :key="item1.id" :label="item1.name" :value="item1.id">
                     </el-option>
                   </el-select>
                 </el-col>
@@ -223,7 +211,7 @@
                   <el-checkbox v-model="isSynch" @change="changeTache">合成部</el-checkbox>
                   <el-select v-if="isSynch" v-model="synchOfStudio" multiple collapse-tags style="margin-left: 20px;"
                              placeholder="请选择">
-                    <el-option v-for="item1 in studiosList" :key="item1.id" :label="item1.name" :value="item1.id">
+                    <el-option v-for="item1 in studiosListSynch" :key="item1.id" :label="item1.name" :value="item1.id">
                     </el-option>
                   </el-select>
                 </el-col>
@@ -311,14 +299,12 @@
             </div>
           </el-col>
         </el-row>
-        <el-row :gutter="20">
-          <el-form-item>
-            <el-button type="primary" @click="add" :loading="isLoading">提交</el-button>
-            <el-button @click="goback()">返回</el-button>
-          </el-form-item>
-        </el-row>
       </el-form>
-    </div>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="edit('form')" :loading="isLoading">确 定</el-button>
+      </div>
+    </el-dialog>
     <el-dialog title="添加场号/集号" :visible.sync="isAddField" width="30%" center>
       <el-form :model="fieldForm" :rules="addFieldRules" label-width="130px">
         <el-form-item label="项目名称：" prop="project_id">
@@ -336,41 +322,9 @@
         <el-button type="primary" @click="addField(fieldForm)">确 定</el-button>
       </span>
     </el-dialog>
-    <el-dialog title="批量导入镜头" :visible.sync="isImportShot" width="30%" center>
-      <el-form :model="importForm" :rules="importShotRules" label-width="130px">
-        <el-form-item label="项目名称：" prop="project_id">
-          <el-select v-model="importForm.project_id" placeholder="请选择项目" class="w-200">
-            <el-option v-for="item in projectList" :label="item.project_name" :value="item.id"
-                       :key="item.id"></el-option>
-          </el-select>
-        </el-form-item>
-        <!--<el-form-item label="场号/集号：" prop="name">-->
-          <!--<el-input v-model.trim="importForm.name" class="w-200"></el-input>-->
-        <!--</el-form-item>-->
-        <el-form-item label="镜头文件：" prop="shot_file">
-          <el-upload class="upload_shotFile" ref="upload"
-                     action="https://jsonplaceholder.typicode.com/posts/"
-                     :on-preview="handlePreview"
-                     :file-list="fileList"
-                     :limit="1"
-                     :auto-upload="false">
-            <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
-            <div slot="tip" class="el-upload__tip">只能上传一个xls/xlsx格式文件</div>
-          </el-upload>
-        </el-form-item>
-      </el-form>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="isImportShot = false">取 消</el-button>
-        <el-button type="primary" @click="importShot(importForm)">确 认</el-button>
-      </span>
-    </el-dialog>
   </div>
 </template>
-<style type="text/css">
-  .form-checkbox:first-child {
-    margin-left: 15px;
-  }
-
+<style>
   .avatar-uploader .el-upload {
     border: 1px dashed #d9d9d9;
     border-radius: 6px;
@@ -387,8 +341,8 @@
     width: 300px;
   }
 
-  .upload_shotFile .el-upload{
-    text-align: left;
+  .shot_edit .el-tag__close{
+    display: none;
   }
 
   .avatar-uploader-icon {
@@ -401,67 +355,16 @@
   }
 
   .avatar {
-    /*width: 178px;*/
-    /*height: 178px;*/
     display: block;
     width: 100% !important;
     height: 100% !important;
   }
-
-  .shot_add .el-form-item {
-    display: inline-block;
-  }
-
-  .el-transfer-panel {
-    width: 150px;
-  }
-
-  .el-transfer__buttons {
-    padding: 0 15px;
-  }
-
-  .el-textarea__inner {
-    resize: none;
-  }
-
-  .form_studio_id {
-    width: 350px;
-  }
-
-  .block {
-    /* margin-top: 20px; */
-  }
 </style>
 <script>
-  import fomrMixin from '@/assets/js/form_com'
   import http from '../../../../assets/js/http'
   import _g from '@/assets/js/global'
-  import axios from 'axios'
-
   export default {
     data() {
-      let shotNumber = (rule, value, callback) => {
-        console.log(this.form.field_id)
-        console.log(value)
-        const data = {
-          params: {
-            field_id: parseInt(this.form.field_id),
-            shot_number: value
-          }
-        }
-        if(value == ''){
-          callback(new Error('请输入镜头编号'));
-        }else{
-          axios.get('shot/check_num', data).then((res) => {
-            console.log(res.data.code, 'suc')
-            if (res.data.code === 400) {
-              callback(new Error(res.data.error));
-            }else{
-              callback()
-            }
-          })
-        }
-      };
       return {
         isArt: false,
         isModel: false,
@@ -484,22 +387,24 @@
         lightOfStudio: [],
         synchOfStudio: [],
         isAddField: false,
-        isImportShot: false,
         isLoading: false,
+        dialogFormVisible: false,
         uploadImageUrl: window.HOST + '/admin/upload_image',
         projectList: [],
-        studiosList: [],
+        studiosListArt: [],
+        studiosListModel: [],
+        studiosListMap: [],
+        studiosListBind: [],
+        studiosListTrack: [],
+        studiosListAnimate: [],
+        studiosListPaint: [],
+        studiosListSpecial: [],
+        studiosListLight: [],
+        studiosListSynch: [],
         fieldList: [],
-        importForm: {
-          project_id: '',  //所属项目id
-          shot_file: ''    //导入镜头文件
-//          name: ''    //场号/集号
-        },
-        fileList: [],
         fieldForm: {
-          project_id: '',  //所属项目id
-          name: '',    //场号/集号
-          type: 1 // 镜头为1，资产为2
+          project_id: '',
+          name: ''
         },
         form: {
           project_id: '',    //所属项目id
@@ -518,16 +423,16 @@
           shot_explain: '',    //镜头备注
           clip_frame_length: '',    //剪辑帧长
           frame_range: '',    //帧数范围
-          priority_level: "1",    //镜头优先级
-          difficulty: "1",    //镜头难度
+          priority_level: '1',    //镜头优先级
+          difficulty: '1',    //镜头难度
           handle_frame: '',    //手柄帧
           material_frame_length: '',    //素材帧长
-          charge_speed_info: '',    //变速信息
+          change_speed_info: '',    //变速信息
           material_number: '',    //素材号
           second_company: '',    //二级公司
-          make_demand: '',    //制作要求
-          status: 1    //镜头状态
+          make_demand: ''    //制作要求
         },
+        id: '',
         image: '',
         plan_time: '',
         frame_range1: '',
@@ -538,9 +443,9 @@
           project_id: [{required: true, message: '请选择项目'}],
           field_id: [{required: true, message: '请选择场号'}],
           shot_image: [{required: true, message: '请插入镜头缩略图'}],
-          shot_number: [{required: true, message: '请输入镜头编号'}, {min: 3, max: 6, message: '长度在3到6个字符'}, {
+          shot_number: [{required: true, message: '请输入镜头编号'}, , {min: 3, max: 6, message: '长度在3到6个字符'}, {
             pattern: /^[0-9]+$/,
-            validator: shotNumber
+            message: '镜头编号必须为数字'
           }],
           shot_byname: [
             {required: true, message: '请输入镜头简称'}, {pattern: /^[a-zA-Z]+$/, message: '镜头简称必须为字母'}
@@ -555,14 +460,13 @@
           project_id: [{required: true, message: '请选择项目'}],
           name: [{required: true, message: '请输入场号/集号'}]
         },
-        importShotRules: {
-          project_id: [{required: true, message: '请选择项目'}],
-          shot_file: [{required: true, message: '请输入场号/集号'}]
-//          name: [{required: true, message: '请输入场号/集号'}]
-        }
+        shotDetail: {}
       }
     },
     methods: {
+      open() {
+        this.dialogFormVisible = true
+      },
       handleAvatarSuccess(res, file) {
         this.image = URL.createObjectURL(file.raw);
         this.form.shot_image = res.data;
@@ -578,7 +482,7 @@
         }
         return isLt2M;
       },
-//      添加场号/集号
+//      添加场号、集号
       addField(form) {
         if (this.fieldForm.project_id && this.fieldForm.name) {
           this.isLoading = !this.isLoading
@@ -589,46 +493,147 @@
                 this.isAddField = false
                 this.getFields()
               }, 1500)
-              this.isLoading = !this.isLoading
             }, () => {
               this.isLoading = !this.isLoading
             })
           })
         }
       },
-      handlePreview(file) {
-        console.log(file);
-      },
-//      批量导入镜头
-      importShot() {
-        console.log(this.$refs.upload.uploadFiles)
-
-//        this.$refs.upload.submit();
-      },
-//      改变环节选项中的任意复选框时执行方法
+//      改变环节选项任意复选框时执行方法
       changeTache() {
-        this.artOfStudio = this.isArt ? this.artOfStudio : []
-        this.modelOfStudio = this.isModel ? this.modelOfStudio : []
-        this.mapOfStudio = this.isMap ? this.mapOfStudio : []
-        this.bindOfStudio = this.isBind ? this.bindOfStudio : []
-        this.trackOfStudio = this.isTrack ? this.trackOfStudio : []
-        this.animateOfStudio = this.isAni ? this.animateOfStudio : []
-        this.paintOfStudio = this.isPaint ? this.paintOfStudio : []
-        this.specialOfStudio = this.isSpec ? this.specialOfStudio : []
-        this.lightOfStudio = this.isLight ? this.lightOfStudio : []
-        this.synchOfStudio = this.isSynch ? this.synchOfStudio : []
-      },
-//      添加镜头
-      add(form) {
-        if (
-          this.artOfStudio.length === 0 && this.modelOfStudio.length === 0 && this.mapOfStudio.length === 0 &&
-          this.bindOfStudio.length === 0 && this.trackOfStudio.length === 0 && this.animateOfStudio.length === 0 &&
-          this.paintOfStudio.length === 0 && this.specialOfStudio.length === 0 && this.lightOfStudio.length === 0 &&
-          this.synchOfStudio.length === 0
-        ) {
-          _g.toastMsg('warning', '请选择至少一个环节所属工作室')
-          return
+//        美术环节
+        if(this.isArt){
+          if(this.studiosListArt.length === 0){  //美术环节id为3
+            this.apiGet(`shot/get_studio?shot_id=${this.id}&tache_id=3`).then((res) => {
+              this.handelResponse(res, (data) => {
+                this.studiosListArt = data.list
+              })
+            })
+          }
+          this.artOfStudio = this.artOfStudio
+        }else{
+          this.artOfStudio = []
         }
+//        模型环节
+        if(this.isModel){
+          if(this.studiosListModel.length === 0){  //模型环节id为4
+            this.apiGet(`shot/get_studio?shot_id=${this.id}&tache_id=4`).then((res) => {
+              this.handelResponse(res, (data) => {
+                this.studiosListModel = data.list
+              })
+            })
+          }
+          this.modelOfStudio = this.modelOfStudio
+        }else{
+          this.modelOfStudio = []
+        }
+//        贴图环节
+        if(this.isMap){
+          if(this.studiosListMap.length === 0){  //贴图环节id为5
+            this.apiGet(`shot/get_studio?shot_id=${this.id}&tache_id=5`).then((res) => {
+              this.handelResponse(res, (data) => {
+                this.studiosListMap = data.list
+              })
+            })
+          }
+          this.mapOfStudio = this.mapOfStudio
+        }else{
+          this.mapOfStudio = []
+        }
+//        绑定环节
+        if(this.isBind){
+          if(this.studiosListBind.length === 0){  //绑定环节id为6
+            this.apiGet(`shot/get_studio?shot_id=${this.id}&tache_id=6`).then((res) => {
+              this.handelResponse(res, (data) => {
+                this.studiosListBind = data.list
+              })
+            })
+          }
+          this.bindOfStudio = this.bindOfStudio
+        }else{
+          this.bindOfStudio = []
+        }
+//        跟踪环节
+        if(this.isTrack){
+          if(this.studiosListTrack.length === 0){  //跟踪环节id为7
+            this.apiGet(`shot/get_studio?shot_id=${this.id}&tache_id=7`).then((res) => {
+              this.handelResponse(res, (data) => {
+                this.studiosListTrack = data.list
+              })
+            })
+          }
+          this.trackOfStudio = this.trackOfStudio
+        }else{
+          this.trackOfStudio = []
+        }
+//        动画环节
+        if(this.isAni){
+          if(this.studiosListAnimate.length === 0){  //动画环节id为8
+            this.apiGet(`shot/get_studio?shot_id=${this.id}&tache_id=8`).then((res) => {
+              this.handelResponse(res, (data) => {
+                this.studiosListAnimate = data.list
+              })
+            })
+          }
+          this.animateOfStudio = this.animateOfStudio
+        }else{
+          this.animateOfStudio = []
+        }
+//        数字绘景环节
+        if(this.isPaint){
+          if(this.studiosListPaint.length === 0){  //数字绘景环节id为9
+            this.apiGet(`shot/get_studio?shot_id=${this.id}&tache_id=9`).then((res) => {
+              this.handelResponse(res, (data) => {
+                this.studiosListPaint = data.list
+              })
+            })
+          }
+          this.paintOfStudio = this.paintOfStudio
+        }else{
+          this.paintOfStudio = []
+        }
+//        特效环节
+        if(this.isSpec){
+          if(this.studiosListSpecial.length === 0){  //特效环节id为10
+            this.apiGet(`shot/get_studio?shot_id=${this.id}&tache_id=10`).then((res) => {
+              this.handelResponse(res, (data) => {
+                this.studiosListSpecial = data.list
+              })
+            })
+          }
+          this.specialOfStudio = this.specialOfStudio
+        }else{
+          this.specialOfStudio = []
+        }
+//        灯光环节
+        if(this.isLight){
+          if(this.studiosListLight.length === 0){  //灯光环节id为11
+            this.apiGet(`shot/get_studio?shot_id=${this.id}&tache_id=11`).then((res) => {
+              this.handelResponse(res, (data) => {
+                this.studiosListLight = data.list
+              })
+            })
+          }
+          this.lightOfStudio = this.lightOfStudio
+        }else{
+          this.lightOfStudio = []
+        }
+//        合成环节
+        if(this.isSynch){
+          if(this.studiosListSynch.length === 0){  //灯光环节id为12
+            this.apiGet(`shot/get_studio?shot_id=${this.id}&tache_id=12`).then((res) => {
+              this.handelResponse(res, (data) => {
+                this.studiosListSynch = data.list
+              })
+            })
+          }
+          this.synchOfStudio = this.synchOfStudio
+        }else{
+          this.synchOfStudio = []
+        }
+      },
+//      编辑镜头
+      edit(form) {
         if (!this.form.shot_image) {
           _g.toastMsg('warning', '请插入镜头缩略图')
           return
@@ -638,6 +643,7 @@
           return
         }
 //        必填项
+        this.form.shot_image = this.form.shot_image.slice(this.form.shot_image.indexOf('uploads'))
         this.form.project_id = parseInt(this.form.project_id)
         this.form.field_id = parseInt(this.form.field_id)
         this.form.time = parseInt(this.form.time)
@@ -645,12 +651,13 @@
 //        this.form.is_parse = parseInt(this.form.is_parse)
         this.form.plan_start_timestamp = _g.j2time(this.plan_time[0])
         this.form.plan_end_timestamp = _g.j2time(this.plan_time[1])
-        this.form.priority_level = this.form.priority_level ? parseInt(this.form.priority_level) : 1
-        this.form.difficulty = this.form.difficulty ? parseInt(this.form.difficulty) : 1
 //        选填项
-//        this.form.asset_ids = this.form.asset_ids.join('')
+        this.form.asset_ids = this.form.asset_ids ? this.form.asset_ids.join('') : ''
+//        this.form.is_assets = this.form.is_assets ? parseInt(this.form.is_assets) : 2
         this.form.frame_range = this.frame_range1 && this.frame_range2 ? this.frame_range1 + ',' + this.frame_range2 : ''
         this.form.handle_frame = this.handle_frame1 && this.handle_frame2 ? this.handle_frame1 + ',' + this.handle_frame2 : ''
+        this.form.priority_level = this.form.priority_level ? parseInt(this.form.priority_level) : 1
+        this.form.difficulty = this.form.difficulty ? parseInt(this.form.difficulty) : 1
         this.form.clip_frame_length = this.form.clip_frame_length ? parseInt(this.form.clip_frame_length) : 0
         this.form.material_frame_length = this.form.material_frame_length ? parseInt(this.form.material_frame_length) : ''
 
@@ -666,14 +673,30 @@
           11: this.lightOfStudio,
           12: this.synchOfStudio
         }
-
+        console.log(this.form)
         this.$refs.form.validate((pass) => {
           if (pass) {
-            this.apiPost('admin/shots', this.form).then((res) => {
+            this.isLoading = !this.isLoading
+            this.apiPut('admin/shots/', this.id, this.form).then((res) => {
               this.handelResponse(res, (data) => {
-                _g.toastMsg('success', '添加成功')
+                _g.toastMsg('success', '编辑成功')
+                this.$emit('updataShotDetail', this.id)
+//                _g.clearVuex('setUsers')
                 setTimeout(() => {
-                  this.goback()
+                  this.dialogFormVisible = false
+                  this.isArt = this.isModel = this.isMap = this.isBind = this.isTrack = this.isAni = this.isPaint = this.isSpec = this.isLight = this.isSynch = false
+                  this.studiosListArt = this.studiosListModel = this.studiosListMap = this.studiosListBind = this.studiosListTrack = this.studiosListAnimate = this.studiosListPaint = this.studiosListSpecial = this.studiosListLight = this.studiosListSynch =[]
+                  this.artOfStudio = []
+                  this.modelOfStudio = []
+                  this.mapOfStudio = []
+                  this.bindOfStudio = []
+                  this.trackOfStudio = []
+                  this.animateOfStudio = []
+                  this.paintOfStudio = []
+                  this.specialOfStudio = []
+                  this.lightOfStudio = []
+                  this.synchOfStudio = []
+                  this.isLoading = !this.isLoading
                 }, 1500)
               }, () => {
                 this.isLoading = !this.isLoading
@@ -682,19 +705,13 @@
           }
         })
       },
-//			获取所有工作室
-      getAllStudios() {
-        this.apiGet('shot/get_studio').then((res) => {
-          this.handelResponse(res, (data) => {
-            this.studiosList = data.list
-          })
-        })
-      },
-//      获取所有项目
-      getProjects() {
-        this.apiGet('admin/projects').then((res) => {
-          this.handelResponse(res, (data) => {
-            this.projectList = data.list
+//      获取项目列表
+      getAllProjects() {
+        return new Promise((resolve, reject) => {
+          this.apiGet('admin/projects').then((res) => {
+            this.handelResponse(res, (data) => {
+              resolve(data.list)
+            })
           })
         })
       },
@@ -711,22 +728,51 @@
             this.fieldList = data
           })
         })
+      },
+      async getCompleteData() {
+        this.projectList = await this.getAllProjects()
       }
     },
     created() {
-      this.getProjects()
-      this.getAllStudios()
+      this.getCompleteData()
     },
-    mixins: [http, fomrMixin],
+    mixins: [http],
+    props: ['message'],
+    watch: {
+      message: function(data, o) {
+        this.shotDetail = data
+        this.id = data.id
+        this.form.project_id = data.project_id
+        this.getFields()
+        this.form.field_id = data.field_id
+        this.form.shot_number = data.shot_number
+        this.form.shot_byname = data.shot_byname
+        this.form.shot_name = data.shot_name
+        this.form.shot_image = this.image = window.baseUrl + '/' + data.shot_image
+        this.plan_time = [new Date(data.plan_start_timestamp * 1000), new Date(data.plan_end_timestamp * 1000)]
+        this.form.time = data.time.toString()
+        this.form.ambient = data.ambient.toString()
+        this.form.priority_level = data.priority_level.toString()
+        this.form.difficulty = data.difficulty.toString()
+        this.handle_frame1 = data.handle_frame.split(',')[0]
+        this.handle_frame2 = data.handle_frame.split(',')[1]
+        this.frame_range1 = data.frame_range.split(',')[0]
+        this.frame_range2 = data.frame_range.split(',')[1]
+        this.form.material_number = data.material_number
+        this.form.asset_ids = data.asset_ids
+        this.form.clip_frame_length = data.clip_frame_length
+        this.form.material_frame_length = data.material_frame_length
+        this.form.second_company = data.second_company
+        this.form.shot_explain = data.shot_explain
+        this.form.change_speed_info = data.change_speed_info
+        this.form.make_demand = data.make_demand
+      }
+    },
     computed: {
 //      添加场号按钮
       addShow() {
         return _g.getHasRule('shots-save_filed')
       },
-//      批量导入镜头按钮
-      importAddShow() {
-        return _g.getHasRule('shot_import')
-      }
     }
   }
 </script>

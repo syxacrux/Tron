@@ -404,7 +404,8 @@
         fieldList: [],
         fieldForm: {
           project_id: '',
-          name: ''
+          name: '',
+          type: 1 // 镜头为1，资产为2
         },
         form: {
           project_id: '',    //所属项目id
