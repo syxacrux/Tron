@@ -55,7 +55,7 @@ class Shot extends Common
 	}
 
 	/**
-	 * 镜头首页概括
+	 * 镜头列表
 	 * @param $keywords
 	 * @param $page
 	 * @param $limit
@@ -122,7 +122,7 @@ class Shot extends Common
 	 * @throws \think\exception\DbException
 	 * @author zjs 2018/3/28
 	 */
-	public function getList_byStatus($keywords,$page, $limit, $status, $is_assets, $is_pause)
+	public function getList_byStatus($keywords,$page, $limit, $status ='', $is_assets ='', $is_pause ='')
 	{
 		$where = [];
 		if(!empty($keywords['project_id']) && empty($keywords['shot_number'])){
@@ -146,7 +146,9 @@ class Shot extends Common
 				$where['shot_number'] = $shot_number;
 			}
 		}
-		$where['status'] = $status;
+		if(!empty($status)){
+			$where['status'] = $status;
+		}
 		$where['is_assets'] = $is_assets;
 		$where['is_pause'] = $is_pause;
 
@@ -488,15 +490,6 @@ class Shot extends Common
 			$this->error = '删除失败';
 			return false;
 		}
-	}
-
-	//根据项目ID获取所属场的数据
-	public function get_field_data($param){
-		$data = [];
-		if(!empty($param['project_id'])){
-			$data = Field::where('project_id', $param['project_id'])->select();
-		}
-		return $data;
 	}
 
 	//根据项目ID及场号ID 获取镜头ID 及镜头编号

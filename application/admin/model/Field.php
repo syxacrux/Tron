@@ -47,4 +47,15 @@ class Field extends Common{
 			$this->error = '添加失败';
 		}
 	}
+
+	//根据项目ID获取所属场|资产类型的数据
+	public function get_field_data($param){
+		$data = [];
+		if(!empty($param['project_id'])){
+			$where['project_id'] = $param['project_id'];
+			$where['type'] = $param['type'];
+			$data = $this->where($where)->select();
+		}
+		return $data;
+	}
 }

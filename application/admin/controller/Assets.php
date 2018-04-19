@@ -41,7 +41,7 @@ class Assets extends BaseCommon
 		$keywords = !empty($param['keywords']) ? json_decode($param['keywords'],true) : '';
 		$page = !empty($param['page']) ? $param['page'] : '';
 		$limit = !empty($param['limit']) ? $param['limit'] : '';
-		$data = $asset_model->getList_byStatus($keywords,$page, $limit, 5, 2, 1);
+		$data = $asset_model->getList_byStatus($keywords,$page, $limit, 5, 1);
 		return resultArray(['data' => $data]);
 	}
 
@@ -53,11 +53,11 @@ class Assets extends BaseCommon
 		$keywords = !empty($param['keywords']) ? json_decode($param['keywords'],true) : '';
 		$page = !empty($param['page']) ? $param['page'] : '';
 		$limit = !empty($param['limit']) ? $param['limit'] : '';
-		$data = $asset_model->getList_byStatus($keywords,$page, $limit, 15, 2, 1);
+		$data = $asset_model->getList_byStatus($keywords,$page, $limit, 15,1);
 		return resultArray(['data' => $data]);
 	}
 
-	//接口 - 镜头看板 - 等待资产
+	//接口 - 镜头看板 - 等待制作
 	public function waiting_assets_data()
 	{
 		$asset_model = model('asset');
@@ -65,7 +65,7 @@ class Assets extends BaseCommon
 		$keywords = !empty($param['keywords']) ? json_decode($param['keywords'],true) : '';
 		$page = !empty($param['page']) ? $param['page'] : '';
 		$limit = !empty($param['limit']) ? $param['limit'] : '';
-		$data = $asset_model->getList_byStatus($keywords,$page, $limit, 1, 1, 1);
+		$data = $asset_model->getList_byStatus($keywords,$page, $limit, 1,1);
 		return resultArray(['data' => $data]);
 	}
 
@@ -77,7 +77,7 @@ class Assets extends BaseCommon
 		$keywords = !empty($param['keywords']) ? json_decode($param['keywords'],true) : '';
 		$page = !empty($param['page']) ? $param['page'] : '';
 		$limit = !empty($param['limit']) ? $param['limit'] : '';
-		$data = $asset_model->getList_byStatus($keywords,$page, $limit, 5, 2, 2);
+		$data = $asset_model->getList_byStatus($keywords,$page, $limit, '', 2);
 		return resultArray(['data' => $data]);
 	}
 
@@ -89,7 +89,7 @@ class Assets extends BaseCommon
 		$keywords = !empty($param['keywords']) ? json_decode($param['keywords'],true) : '';
 		$page = !empty($param['page']) ? $param['page'] : '';
 		$limit = !empty($param['limit']) ? $param['limit'] : '';
-		$data = $asset_model->getList_byStatus($keywords,$page, $limit, 25, 1, 1);
+		$data = $asset_model->getList_byStatus($keywords,$page, $limit, 25,1);
 		return resultArray(['data' => $data]);
 	}
 
@@ -143,6 +143,7 @@ class Assets extends BaseCommon
 		return resultArray(['data' => '删除成功']);
 	}
 
+	//批量删除 暂未涉及
 	public function deletes()
 	{
 		$asset_model = model('asset');
@@ -159,7 +160,7 @@ class Assets extends BaseCommon
 	{
 		$asset_model = model('asset');
 		$param = $this->param;
-		$data = $asset_model->getStudio_byShot($param);
+		$data = $asset_model->getStudio_byAsset($param);
 		return resultArray(['data' => $data]);
 	}
 
@@ -170,7 +171,7 @@ class Assets extends BaseCommon
 		$param = $this->param;
 		$shot_id = !empty($param['id']) ? $param['id'] : '';
 		$tache_name = !empty($param['tache_name']) ? $param['tache_name'] : '';
-		$data = $asset_model->TacheDel_ByShotId($shot_id, $tache_name);
+		$data = $asset_model->TacheDel_ByAssetId($shot_id, $tache_name);
 		return resultArray(['data' => $data]);
 	}
 
@@ -182,42 +183,25 @@ class Assets extends BaseCommon
 		$shot_id = !empty($param['id']) ? $param['id'] : '';
 		$studio_id = !empty($param['studio_id']) ? $param['studio_id'] : '';
 		$tache_name = !empty($param['tache_name']) ? $param['tache_name'] : '';
-		$data = $asset_model->StudioDel_ByShotId($shot_id, $tache_name, $studio_id);
+		$data = $asset_model->StudioDel_ByAssetId($shot_id, $tache_name, $studio_id);
 		return resultArray(['data' => $data]);
 	}
 
-	//添加场号
-	public function save_field()
-	{
+	//筛选 - 获取资产的中文名称
+	public function get_asset_name(){
 		$asset_model = model('asset');
 		$param = $this->param;
-		$data = $asset_model->field_add($param);
-		return resultArray(['data' => $data]);
-	}
-
-	//筛选 - 获取场号
-	public function get_field(){
-		$asset_model = model('asset');
-		$param = $this->param;
-		$data = $asset_model->get_field_data($param);
-		return resultArray(['data'=>$data]);
-	}
-
-	//筛选 - 获取镜头号
-	public function get_number(){
-		$asset_model = model('asset');
-		$param = $this->param;
-		$data = $asset_model->get_shot_number($param);
+		$data = $asset_model->get_asset_name($param);
 		return resultArray(['data'=>$data]);
 	}
 
 	//接口 - 检测所属项目、所属场号下的镜头编号是否重复
-	public function check_shot_number(){
+	public function check_asset_byname(){
 		$asset_model = model('asset');
 		$param = $this->param;
-		$data = $asset_model->check_shot_num($param);
+		$data = $asset_model->check_asset_byname($param);
 		if(!$data){
-			return resultArray(['error'=>'镜头编号已重复']);
+			return resultArray(['error'=>$asset_model->getError()]);
 		}
 		return resultArray(['data'=>$data]);
 	}

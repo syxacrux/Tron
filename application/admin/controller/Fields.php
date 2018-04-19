@@ -23,4 +23,11 @@ class Fields extends BaseCommon{
 		return resultArray(['data'=>$data]);
 	}
 
+	//筛选 - 获取场号
+	public function get_field(){
+		$field_model = model('Field');
+		$param = $this->param;
+		$data = $field_model->get_field_data($param);
+		return resultArray(['data'=>$data]);
+	}
 }
