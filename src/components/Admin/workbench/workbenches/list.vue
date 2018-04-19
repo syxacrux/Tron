@@ -360,7 +360,7 @@
         </el-tab-pane>
       </el-tabs>
       <div v-if="!isTaskLIst">
-        <el-table :data="tableList" stripe @row-click="taskDetail">
+        <el-table ref="multipleTable" :data="tableList" tooltip-effect="dark" @selection-change="handleSelectionChange" @row-click="taskDetail">
           <el-table-column type="selection" width="50"></el-table-column>
           <el-table-column prop="project_name" label="项目"></el-table-column>
           <el-table-column prop="field_number" label="场号"></el-table-column>
@@ -579,6 +579,9 @@
           })
         })
       },
+      handleSelectionChange(val) {
+        this.multipleSelection = val;
+      },
       //tab切换
       handleClick(tab, event) {
         // console.log(tab, event);
@@ -586,6 +589,7 @@
         this.tabVale = parseInt(tab.index)+1
         this.publicRequest(tab.name,parseInt(tab.index)+1)
       },
+
       //tab切换、搜索时 请求调用
       publicRequest(type,value){
         switch (type){
