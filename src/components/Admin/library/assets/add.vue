@@ -555,7 +555,7 @@
         this.form.clip_frame_length = this.form.clip_frame_length ? parseInt(this.form.clip_frame_length) : 0
         this.form.material_frame_length = this.form.material_frame_length ? parseInt(this.form.material_frame_length) : ''
 
-        this.form.tache = {
+        this.form.tache_info = {
           3: this.artOfStudio,
           4: this.modelOfStudio,
           5: this.mapOfStudio,
