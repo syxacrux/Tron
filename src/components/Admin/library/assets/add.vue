@@ -224,7 +224,7 @@
           <el-col :span="8">
             <div class="grid-content">
               <el-form-item label="制作要求:" prop="make_demand">
-                <el-input type="textarea" :rows="3" placeholder="请输入制作要求" v-model="form.asset_explain"
+                <el-input type="textarea" :rows="3" placeholder="请输入制作要求" v-model="form.make_demand"
                           class="h-40 w-200"></el-input>
               </el-form-item>
             </div>

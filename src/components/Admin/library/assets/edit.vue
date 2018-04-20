@@ -17,14 +17,14 @@
             <div class="grid-content">
               <el-form-item label="资产类型:" prop="field_id">
                 <el-select v-model="form.field_id" placeholder="请选择资产类型" :class="{ 'w-130': addShow }">
-                  <el-option v-for="item in fieldList" :label="item.name" :value="item.id"
+                  <el-option v-for="item in fieldList" :label="item.explain" :value="item.id"
                              :key="item.id"></el-option>
                 </el-select>
                 <el-button type="text" size="small" @click="isAddField = true" v-if="addShow">添加</el-button>
               </el-form-item>
             </div>
           </el-col>
-        </el-row>>
+        </el-row>
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item class="is-required" label="资产缩略图:" prop="image">
@@ -100,7 +100,7 @@
                   <el-checkbox v-model="isArt" @change="changeTache">美术部</el-checkbox>
                   <el-select v-if="isArt" v-model="artOfStudio" multiple collapse-tags style="margin-left: 20px;"
                              placeholder="请选择">
-                    <el-option v-for="item1 in studiosList" :key="item1.id" :label="item1.name" :value="item1.id">
+                    <el-option v-for="item1 in studiosListArt" :key="item1.id" :label="item1.name" :value="item1.id">
                     </el-option>
                   </el-select>
                 </el-col>
@@ -108,7 +108,7 @@
                   <el-checkbox v-model="isModel" @change="changeTache">模型部</el-checkbox>
                   <el-select v-if="isModel" v-model="modelOfStudio" multiple collapse-tags style="margin-left: 20px;"
                              placeholder="请选择">
-                    <el-option v-for="item1 in studiosList" :key="item1.id" :label="item1.name" :value="item1.id">
+                    <el-option v-for="item1 in studiosListModel" :key="item1.id" :label="item1.name" :value="item1.id">
                     </el-option>
                   </el-select>
                 </el-col>
@@ -116,7 +116,7 @@
                   <el-checkbox v-model="isMap" @change="changeTache">贴图部</el-checkbox>
                   <el-select v-if="isMap" v-model="mapOfStudio" multiple collapse-tags style="margin-left: 20px;"
                              placeholder="请选择">
-                    <el-option v-for="item1 in studiosList" :key="item1.id" :label="item1.name" :value="item1.id">
+                    <el-option v-for="item1 in studiosListMap" :key="item1.id" :label="item1.name" :value="item1.id">
                     </el-option>
                   </el-select>
                 </el-col>
@@ -124,7 +124,7 @@
                   <el-checkbox v-model="isBind" @change="changeTache">绑定部</el-checkbox>
                   <el-select v-if="isBind" v-model="bindOfStudio" multiple collapse-tags style="margin-left: 20px;"
                              placeholder="请选择">
-                    <el-option v-for="item1 in studiosList" :key="item1.id" :label="item1.name" :value="item1.id">
+                    <el-option v-for="item1 in studiosListBind" :key="item1.id" :label="item1.name" :value="item1.id">
                     </el-option>
                   </el-select>
                 </el-col>
@@ -132,7 +132,7 @@
                   <el-checkbox v-model="isTrack" @change="changeTache">跟踪部</el-checkbox>
                   <el-select v-if="isTrack" v-model="trackOfStudio" multiple collapse-tags style="margin-left: 20px;"
                              placeholder="请选择">
-                    <el-option v-for="item1 in studiosList" :key="item1.id" :label="item1.name" :value="item1.id">
+                    <el-option v-for="item1 in studiosListTrack" :key="item1.id" :label="item1.name" :value="item1.id">
                     </el-option>
                   </el-select>
                 </el-col>
@@ -140,7 +140,7 @@
                   <el-checkbox v-model="isAni" @change="changeTache">动画部</el-checkbox>
                   <el-select v-if="isAni" v-model="animateOfStudio" multiple collapse-tags style="margin-left: 20px;"
                              placeholder="请选择">
-                    <el-option v-for="item1 in studiosList" :key="item1.id" :label="item1.name" :value="item1.id">
+                    <el-option v-for="item1 in studiosListAnimate" :key="item1.id" :label="item1.name" :value="item1.id">
                     </el-option>
                   </el-select>
                 </el-col>
@@ -148,7 +148,7 @@
                   <el-checkbox v-model="isPaint" @change="changeTache">数字绘景部</el-checkbox>
                   <el-select v-if="isPaint" v-model="paintOfStudio" multiple collapse-tags style="margin-left: 20px;"
                              placeholder="请选择">
-                    <el-option v-for="item1 in studiosList" :key="item1.id" :label="item1.name" :value="item1.id">
+                    <el-option v-for="item1 in studiosListPaint" :key="item1.id" :label="item1.name" :value="item1.id">
                     </el-option>
                   </el-select>
                 </el-col>
@@ -156,7 +156,7 @@
                   <el-checkbox v-model="isSpec" @change="changeTache">特效部</el-checkbox>
                   <el-select v-if="isSpec" v-model="specialOfStudio" multiple collapse-tags style="margin-left: 20px;"
                              placeholder="请选择">
-                    <el-option v-for="item1 in studiosList" :key="item1.id" :label="item1.name" :value="item1.id">
+                    <el-option v-for="item1 in studiosListSpecial" :key="item1.id" :label="item1.name" :value="item1.id">
                     </el-option>
                   </el-select>
                 </el-col>
@@ -164,7 +164,7 @@
                   <el-checkbox v-model="isLight" @change="changeTache">灯光部</el-checkbox>
                   <el-select v-if="isLight" v-model="lightOfStudio" multiple collapse-tags style="margin-left: 20px;"
                              placeholder="请选择">
-                    <el-option v-for="item1 in studiosList" :key="item1.id" :label="item1.name" :value="item1.id">
+                    <el-option v-for="item1 in studiosListLight" :key="item1.id" :label="item1.name" :value="item1.id">
                     </el-option>
                   </el-select>
                 </el-col>
@@ -172,7 +172,7 @@
                   <el-checkbox v-model="isSynch" @change="changeTache">合成部</el-checkbox>
                   <el-select v-if="isSynch" v-model="synchOfStudio" multiple collapse-tags style="margin-left: 20px;"
                              placeholder="请选择">
-                    <el-option v-for="item1 in studiosList" :key="item1.id" :label="item1.name" :value="item1.id">
+                    <el-option v-for="item1 in studiosListSynch" :key="item1.id" :label="item1.name" :value="item1.id">
                     </el-option>
                   </el-select>
                 </el-col>
@@ -410,7 +410,7 @@
 //        美术环节
         if(this.isArt){
           if(this.studiosListArt.length === 0){  //美术环节id为3
-            this.apiGet(`assets/get_studio?assets_id=${this.id}&tache_id=3`).then((res) => {
+            this.apiGet(`asset/get_studio?assets_id=${this.id}&tache_id=3`).then((res) => {
               this.handelResponse(res, (data) => {
                 this.studiosListArt = data.list
               })
@@ -619,7 +619,8 @@
         this.form.field_id = ''
         const data = {
           params: {
-            project_id: this.form.project_id
+            project_id: this.form.project_id,
+            type:2
           }
         }
         this.apiGet('admin/get_fields', data).then((res) => {
@@ -644,8 +645,8 @@
         this.form.project_id = data.project_id
         this.getFields()
         this.form.field_id = data.field_id
-        this.form.assets_byname = data.assets_byname
-        this.form.assets_name = data.assets_name
+        this.form.asset_byname = data.asset_byname
+        this.form.asset_name = data.asset_name
         this.form.asset_image = this.image = window.baseUrl + '/' + data.asset_image
         this.plan_time = [new Date(data.plan_start_timestamp * 1000), new Date(data.plan_end_timestamp * 1000)]
         this.form.priority_level = data.priority_level.toString()
@@ -654,7 +655,7 @@
         this.form.material_number = data.material_number
         this.form.asset_ids = data.asset_ids
         this.form.second_company = data.second_company
-        this.form.assets_explain = data.assets_explain
+        this.form.asset_explain = data.asset_explain
         this.form.asset_explain = data.asset_explain
         this.form.make_demand = data.make_demand
       }
