@@ -22,8 +22,8 @@
             </el-select>
           </el-col>
           <el-col :span="5">
-            <el-select v-model="search.field_id" placeholder="请选择场号" @change="getShotsNum">
-              <el-option label="请选择场号" value=""></el-option>
+            <el-select v-model="search.field_id" placeholder="请选择资产类型" @change="getShotsNum">
+              <el-option label="请选择资产类型" value=""></el-option>
               <el-option v-for="item in fieldList" :label="item.name" :value="item.id" :key="item.id"></el-option>
             </el-select>
           </el-col>
@@ -452,60 +452,60 @@
         </el-tab-pane>
       </el-tabs>
       <transition name="el-zoom-in-top">
-        <div v-show="isShotDetailShow" class="asset_detail fr">
+        <div v-show="isAssetDetailShow" class="asset_detail fr">
           <el-card>
             <div slot="header" class="clearfix">
               <span>资产详情</span>
               <i v-if="editShow" class="el-icon-edit m-l-5 fz-14 c-light-gray pointer" @click="editAsset"></i>
               <i v-if="deleteShow" class="el-icon-delete m-l-5 fz-14 c-light-gray pointer" @click="deleteAsset"></i>
-              <i class="el-icon-close fr pointer" @click="isShotDetailShow = !isShotDetailShow"></i>
+              <i class="el-icon-close fr pointer" @click="isAssetDetailShow = !isAssetDetailShow"></i>
             </div>
             <el-row :gutter="20" class="m-b-5">
               <el-col :span="12">
-                <p class="m-0">资产缩略图：<img :src="address + editShotDetail.shot_image" alt="" class="vtcal-mid h-40"></p>
+                <p class="m-0">资产缩略图：<img :src="address + editAssetDetail.asset_image" alt="" class="vtcal-mid h-40"></p>
               </el-col>
             </el-row>
             <el-row :gutter="20" class="m-b-5">
               <el-col :span="12">
-                <p class="m-0">资产简称：<span>{{ editShotDetail.shot_byname }}</span></p>
+                <p class="m-0">资产简称：<span>{{ editAssetDetail.asset_byname }}</span></p>
               </el-col>
               <el-col :span="12">
-                <p class="m-0">资产项目：<span>{{ editShotDetail.project_name }}</span></p>
+                <p class="m-0">资产所属项目：<span>{{ editAssetDetail.project_name }}</span></p>
               </el-col>
             </el-row>
             <el-row :gutter="20" class="m-b-5">
               <el-col :span="12">
-                <p class="m-0">资产名称：<span>{{ editShotDetail.shot_name }}</span></p>
-              </el-col>
-            </el-row>
-            <el-row :gutter="20" class="m-b-5">
-              <el-col :span="24">
-                <p class="m-0">计划开始时间：<span>{{ j2time(editShotDetail.plan_start_timestamp) }}</span></p>
+                <p class="m-0">资产名称：<span>{{ editAssetDetail.asset_name }}</span></p>
               </el-col>
             </el-row>
             <el-row :gutter="20" class="m-b-5">
               <el-col :span="24">
-                <p class="m-0">计划结束时间：<span>{{ j2time(editShotDetail.plan_end_timestamp) }}</span></p>
+                <p class="m-0">计划开始时间：<span>{{ j2time(editAssetDetail.plan_start_timestamp) }}</span></p>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20" class="m-b-5">
+              <el-col :span="24">
+                <p class="m-0">计划结束时间：<span>{{ j2time(editAssetDetail.plan_end_timestamp) }}</span></p>
               </el-col>
             </el-row>
             <el-row :gutter="20" class="m-b-5">
               <el-col :span="12">
-                <p class="m-0">场号/集号：<span>{{ editShotDetail.field_name }}</span></p>
+                <p class="m-0">场号/集号：<span>{{ editAssetDetail.field_name }}</span></p>
               </el-col>
             </el-row>
             <el-row :gutter="20" class="m-b-5">
               <el-col :span="12">
-                <p class="m-0">资产优先级：<span>{{ editShotDetail.priority_level_name }}</span></p>
+                <p class="m-0">资产优先级：<span>{{ editAssetDetail.priority_level_name }}</span></p>
               </el-col>
               <el-col :span="12">
-                <p class="m-0">资产难度：<span>{{ editShotDetail.difficulty_name }}</span></p>
+                <p class="m-0">资产难度：<span>{{ editAssetDetail.difficulty_name }}</span></p>
               </el-col>
             </el-row>
             <el-row :gutter="20" class="m-b-5">
               <el-col :span="24">
                 <p class="m-0">
                   环节所属工作室：
-                  <span class="tache_studio dp-b" v-for="(item, index) in editShotDetail.tache_info" :key="index">
+                  <span class="tache_studio dp-b" v-for="(item, index) in editAssetDetail.tache_info" :key="index">
                     <i class="el-icon-close m-l-5 c-light-gray pointer" v-if="deleteShowTache" @click="deleteTache(index)" ></i>
                     <span>{{ index }}：</span>
                     <el-tag size="mini" v-for="studio in item" :closable="deleteShowTacheStudio" type="info" @close="deleteTacheStudio(index, studio)" :key="studio.id">
@@ -517,28 +517,29 @@
             </el-row>
             <el-row :gutter="20" class="m-b-5">
               <el-col :span="12">
-                <p class="m-0">二级公司：<span>{{ editShotDetail.second_company }}</span></p>
+                <p class="m-0">二级公司：<span>{{ editAssetDetail.second_company }}</span></p>
               </el-col>
             </el-row>
             <el-row :gutter="20" class="m-b-5">
               <el-col :span="12">
-                <p class="m-0">资产备注：<span>{{ editShotDetail.shot_explain }}</span></p>
+                <p class="m-0">资产备注：<span>{{ editAssetDetail.asset_explain }}</span></p>
               </el-col>
             </el-row>
             <el-row :gutter="20" class="m-b-5">
               <el-col :span="24">
-                <p class="m-0">制作要求：<span>{{ editShotDetail.make_demand }}</span></p>
+                <p class="m-0">制作要求：<span>{{ editAssetDetail.make_demand }}</span></p>
               </el-col>
             </el-row>
           </el-card>
         </div>
       </transition>
     </div>
+    <editAssets :message="editAssetDetail" @updataAssetDetail="assetDetail" ref="editAssets"></editAssets>
   </div>
 </template>
 <script>
   import btnGroup from '../../../Common/btn-group.vue'
-  //  import editAssets from '../assets/edit.vue'
+  import editAssets from '../assets/edit.vue'
   import http from '../../../../assets/js/http'
   import _g from '@/assets/js/global'
 
@@ -549,7 +550,7 @@
         currentPage: 1,
 //        listLimit: ,
         listCurrentPage: 1,
-        isShotDetailShow: false,    //是否显示资产详情
+        isAssetDetailShow: false,    //是否显示资产详情
         activeName: 'assetsInDevelopment', //资产tab当前选中值
         isList: false,    // 是否显示资产列表
         address: window.baseUrl + '/',
@@ -567,7 +568,7 @@
         tableData: [], //资产表格列表
         page: 1,
         limit: 10,
-        editShotDetail: {},
+        editAssetDetail: {},
         search: {
           project_id: '',
           field_id: '',
@@ -597,7 +598,7 @@
       },
 //      点击编辑资产执行方法
       editAsset() {
-        this.$refs.editShots.open()
+        this.$refs.editAssets.open()
       },
 //      点击资产显示资产详情
       assetDetail(id) {
@@ -608,11 +609,11 @@
         this.id = id
         this.apiGet('admin/assets/' + id).then((res) => {
           this.handelResponse(res, (data) => {
-            this.editShotDetail = data
+            this.editAssetDetail = data
           })
         })
-        if (!this.isShotDetailShow) {
-          this.isShotDetailShow = !this.isShotDetailShow
+        if (!this.isAssetDetailShow) {
+          this.isAssetDetailShow = !this.isAssetDetailShow
         }
       },
 //      资产详情删除环节
@@ -676,7 +677,7 @@
               _g.toastMsg('success', '删除成功')
               this.init(this.activeName)
               this.getAssetList(this.page)
-              this.isShotDetailShow = false
+              this.isAssetDetailShow = false
             })
           })
         }).catch(() => {
@@ -876,6 +877,7 @@
       this.getProjects()
     },
     components: {
+      editAssets,
       btnGroup
     },
     mixins: [http],
