@@ -156,7 +156,7 @@
               </div>
             </el-col>
             <el-col v-if="feedbackShow" :span="12">
-              <div class="grid-content bg-purple-light">
+              <div class="grid-content">
                 <h2 class="m-0">反馈中</h2>
                 <ul class="p-l-0 m-0">
                   <li v-for="item in feedbackList" :key="item.id" @click="assetDetail(item.id)">

@@ -166,7 +166,7 @@
               </div>
             </el-col>
             <el-col v-if="feedbackShow" :span="12">
-              <div class="grid-content bg-purple-light">
+              <div class="grid-content">
                 <h2 class="m-0">反馈中</h2>
                 <ul class="p-l-0 m-0">
                   <li v-for="item in feedbackList" :key="item.id" @click="shotDetail(item.id)">
@@ -242,11 +242,11 @@
         </el-tab-pane>
         <el-tab-pane label="镜头未制作" name="shotsNotDevelopment">
           <div class="shot_card ovf-hd">
-            <div class="grid-content bg-purple">
+            <div class="grid-content">
               <h2 class="m-0">等待资产</h2>
               <div class="ovf-hd">
                 <el-col :span="12" v-for="item in waitingList" :key="item.id" @click="shotDetail(item.id)">
-                  <div class="grid-content bg-purple p-b-5">
+                  <div class="grid-content p-b-5">
                     <el-card class="">
                       <div class="">
                         <div class="text-Lens pos-rel">
