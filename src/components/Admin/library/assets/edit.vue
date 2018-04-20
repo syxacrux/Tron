@@ -580,7 +580,7 @@
             this.apiPut('admin/assets/', this.id, this.form).then((res) => {
               this.handelResponse(res, (data) => {
                 _g.toastMsg('success', '编辑成功')
-                this.$emit('updataShotDetail', this.id)
+                this.$emit('updataAssetDetail', this.id)
 //                _g.clearVuex('setUsers')
                 setTimeout(() => {
                   this.dialogFormVisible = false

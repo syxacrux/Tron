@@ -262,7 +262,7 @@
           <!--<el-input v-model.trim="importForm.name" class="w-200"></el-input>-->
         <!--</el-form-item>-->
         <el-form-item label="资产文件：" prop="assets_file">
-          <el-upload class="upload_shotFile" ref="upload"
+          <el-upload class="upload_assetsFile" ref="upload"
                      action="https://jsonplaceholder.typicode.com/posts/"
                      :on-preview="handlePreview"
                      :file-list="fileList"
@@ -301,7 +301,7 @@
     width: 300px;
   }
 
-  .assets_add .upload_shotFile .el-upload{
+  .assets_add .upload_assetsFile .el-upload{
     text-align: left;
   }
 
@@ -354,7 +354,7 @@
 
   export default {
     data() {
-      let shotNumber = (rule, value, callback) => {
+      let assetsNumber = (rule, value, callback) => {
         console.log(this.form.field_id)
         console.log(value)
         const data = {
@@ -445,7 +445,7 @@
           asset_byname: [
             {required: true, message: '请输入资产简称'}, {pattern: /^[a-zA-Z]+$/, message: '资产简称必须为字母'},{
             pattern: /^[a-zA-Z]+$/,
-            validator: shotNumber
+            validator: assetsNumber
           }],
           asset_name: [{required: true, message: '请输入资产名称'}, {pattern: /^[\u4E00-\u9FA5]+$/, message: '资产名称必须为汉字'}],
           difficulty: [{required: true, message: '请选择资产难度'}],
@@ -585,7 +585,7 @@
       },
 //			获取所有工作室
       getAllStudios() {
-        this.apiGet('shot/get_studio').then((res) => {
+        this.apiGet('asset/get_studio').then((res) => {
           this.handelResponse(res, (data) => {
             this.studiosList = data.list
           })
