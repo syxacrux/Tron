@@ -24,6 +24,7 @@ class Assets extends BaseCommon
 	public function index()
 	{
 		$asset_model = model('asset');
+		$param = $this->param;
 		$uid = $this->uid;
 		$group_id = Access::where('user_id', $uid)->value('group_id'); //所属角色
 		$keywords = !empty($param['keywords']) ? json_decode($param['keywords'], true) : '';
@@ -37,6 +38,7 @@ class Assets extends BaseCommon
 	public function index_list()
 	{
 		$asset_model = model('asset');
+		$param = $this->param;
 		$uid = $this->uid;
 		$group_id = Access::where('user_id', $uid)->value('group_id'); //所属角色
 		$keywords = !empty($param['keywords']) ? json_decode($param['keywords'], true) : '';
