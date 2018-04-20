@@ -4,6 +4,7 @@ namespace app\admin\model;
 
 use think\Db;
 use app\common\model\Common;
+use app\common\model\Excel;
 
 class Shot extends Common
 {
@@ -510,5 +511,19 @@ class Shot extends Common
 		}else{
 			return true;
 		}
+	}
+
+	//获取模板
+	public function shot_template(){
+		$excel=new Excel();
+		$table_name="mk_material_list_edit";
+		$field=["id"=>"序号","guid"=>"项目代码","name"=>"项目名称"];
+		$map=["status"=>1];
+		$map2=["status"=>-1];
+
+		$excel->setExcelName("下载装修项目")
+			->createSheet("装修项目",$table_name,$field,$map)
+			->createSheet("已删除装修项目",$table_name,$field,$map2)
+			->downloadExcel();
 	}
 }

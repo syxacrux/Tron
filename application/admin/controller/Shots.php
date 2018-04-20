@@ -226,5 +226,12 @@ class Shots extends BaseCommon
 		return resultArray(['data'=>$data]);
 	}
 
+	//获取模版
+	public function template(){
+		$shot_model = model('Shot');
+		$param = $this->param;
+		$data = $shot_model->shot_template($param);
+		return resultArray(['data'=>$data]);
+	}
 
 }
