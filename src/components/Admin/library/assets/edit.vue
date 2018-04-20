@@ -183,13 +183,6 @@
         <el-row :gutter="20">
           <el-col :span="8">
             <div class="grid-content">
-              <el-form-item label="素材号:" prop="material_number">
-                <el-input v-model.trim="form.material_number" class="h-40 w-200"></el-input>
-              </el-form-item>
-            </div>
-          </el-col>
-          <el-col :span="8">
-            <div class="grid-content">
               <el-form-item label="二级公司:" prop="second_company">
                 <!--<el-select v-model="form.second_company" multiple collapse-tags placeholder="请选择二级公司"-->
                 <!--class="h-40 w-200">-->
@@ -342,7 +335,7 @@
           asset_explain: '',    //资产备注
           priority_level: "1",    //资产优先级
           difficulty: "1",    //资产难度
-          material_number: '',    //素材号
+          // material_number: '',    //素材号
           second_company: '',    //二级公司
           make_demand: '',    //制作要求
           status: 1    //资产状态
@@ -651,12 +644,11 @@
         this.plan_time = [new Date(data.plan_start_timestamp * 1000), new Date(data.plan_end_timestamp * 1000)]
         this.form.priority_level = data.priority_level.toString()
         this.form.difficulty = data.difficulty.toString()
-       
-        this.form.material_number = data.material_number
+        // this.form.material_number = data.material_number
         this.form.asset_ids = data.asset_ids
         this.form.second_company = data.second_company
         this.form.asset_explain = data.asset_explain
-        this.form.asset_explain = data.asset_explain
+        // this.form.asset_explain = data.asset_explain
         this.form.make_demand = data.make_demand
       }
     },
