@@ -812,34 +812,34 @@
           })
         })
       },
-//      获取所有场号、集号
-      getFields() {
-        this.getAllAssetsList()
-        const data = {
-          params: {
-            project_id: this.search.project_id
-          }
-        }
-        this.apiGet('admin/get_fields', data).then((res) => {
-          this.handelResponse(res, (data) => {
-            this.fieldList = data
-          })
-        })
-      },
-//      获取所有场号集号下的资产号
-      getShotsNum() {
-        this.getAllAssetsList()
-        const data = {
-          params: {
-            field_id: this.search.field_id
-          }
-        }
-        this.apiGet('admin/get_shot_num', data).then((res) => {
-          this.handelResponse(res, (data) => {
-            this.shotList = data
-          })
-        })
-      },
+////      获取所有场号、集号
+//      getFields() {
+//        this.getAllAssetsList()
+//        const data = {
+//          params: {
+//            project_id: this.search.project_id
+//          }
+//        }
+//        this.apiGet('admin/get_fields', data).then((res) => {
+//          this.handelResponse(res, (data) => {
+//            this.fieldList = data
+//          })
+//        })
+//      },
+////      获取所有场号集号下的资产号
+//      getShotsNum() {
+//        this.getAllAssetsList()
+//        const data = {
+//          params: {
+//            field_id: this.search.field_id
+//          }
+//        }
+//        this.apiGet('admin/get_shot_num', data).then((res) => {
+//          this.handelResponse(res, (data) => {
+//            this.shotList = data
+//          })
+//        })
+//      },
       getAllAssetsList() {
         this.init(this.activeName)
         this.getAssetList(1)
@@ -857,7 +857,7 @@
             this.getAssets('feedback', 1)
             break;
           case 'assetsNotDevelopment':
-            this.getAssets('waiting', 1)
+            this.getAssets('waiting_assets', 1)
             break;
           case 'assetsSuspend':
             this.getAssets('pause', 1)
