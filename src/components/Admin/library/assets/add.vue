@@ -354,6 +354,28 @@
 
   export default {
     data() {
+      let shotNumber = (rule, value, callback) => {
+        console.log(this.form.field_id)
+        console.log(value)
+        const data = {
+          params: {
+            field_id: parseInt(this.form.field_id),
+            shot_number: value
+          }
+        }
+        if(value == ''){
+          callback(new Error('请输入资产简称'));
+        }else{
+          axios.get('asset/check_byname', data).then((res) => {
+            console.log(res.data.code, 'suc')
+            if (res.data.code === 400) {
+              callback(new Error(res.data.error));
+            }else{
+              callback()
+            }
+          })
+        }
+      };
       return {
         isArt: false,
         isModel: false,
@@ -422,8 +444,10 @@
           field_id: [{required: true, message: '请选择场号'}],
           assets_image: [{required: true, message: '请插入资产缩略图'}],
           asset_byname: [
-            {required: true, message: '请输入资产简称'}, {pattern: /^[a-zA-Z]+$/, message: '资产简称必须为字母'}
-          ],
+            {required: true, message: '请输入资产简称'}, {pattern: /^[a-zA-Z]+$/, message: '资产简称必须为字母'},{
+            pattern: /^[a-zA-Z]+$/,
+            validator: shotNumber
+          }],
           asset_name: [{required: true, message: '请输入资产名称'}, {pattern: /^[\u4E00-\u9FA5]+$/, message: '资产名称必须为汉字'}],
           difficulty: [{required: true, message: '请选择镜头难度'}],
           priority_level: [{required: true, message: '请选择镜头优先级'}]
