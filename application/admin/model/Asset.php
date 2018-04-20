@@ -95,8 +95,8 @@ class Asset extends Common{
 		if(!empty($keywords['field_id']) && empty($keywords['asset_content'])){
 			$where['field_id'] = $keywords['field_id'];
 		}
-		if(!empty($keywords['shot_id']) && empty($keywords['asset_content'])){
-			$where['id'] = $keywords['shot_id'];
+		if(!empty($keywords['asset_id']) && empty($keywords['asset_content'])){
+			$where['id'] = $keywords['asset_id'];
 		}
 		if(!empty($keywords['asset_content'])){	//手动输入资产名称或资产简称
 			$where['asset_byname|asset_name'] = $keywords['asset_content'];
@@ -320,9 +320,9 @@ class Asset extends Common{
 	//根据资产ID获取所属环节下的工作室
 	public function get_studio_byTache($asset_id)
 	{
-		$tache_ids_arr = array_unique(Workbench::where('shot_id', $asset_id)->column('tache_id'));
+		$tache_ids_arr = array_unique(Workbench::where('asset_id', $asset_id)->column('tache_id'));
 		foreach ($tache_ids_arr as $key => $value) {
-			$data[$this->tache_byname_arr[$value]] = $this->get_studio_name(Workbench::where(['shot_id' => $asset_id, 'tache_id' => $value])->column('studio_id'));
+			$data[$this->tache_byname_arr[$value]] = $this->get_studio_name(Workbench::where(['asset_id' => $asset_id, 'tache_id' => $value])->column('studio_id'));
 		}
 		return $data;
 	}
@@ -343,7 +343,7 @@ class Asset extends Common{
 		$tache_data = array_unique(Workbench::where(['pid'=>0,'asset_id'=>$asset_id])->column('tache_id'));  //获取所属资产的环节
 		foreach ($tache_data as $key => $value) {
 			//根据当前资产ID与环节ID查询是否有其任务
-			$curr_task_data = Workbench::where(['shot_id' => $asset_id, 'tache_id' => $value])->find();
+			$curr_task_data = Workbench::where(['asset_id' => $asset_id, 'tache_id' => $value])->find();
 			$finish_degree[$key]['tache_id'] = $value;
 			$finish_degree[$key]['tache_byname'] = $this->tache_byname_arr[$value];
 			$finish_degree[$key]['finish_degree'] = !empty($curr_task_data) ? $this->get_finish_degree_by_task($asset_id, $value) : 0;
@@ -356,15 +356,15 @@ class Asset extends Common{
 	public function get_finish_degree_by_task($asset_id, $tache_id)
 	{
 		//获取当前环节下有几个工作室ID
-		$studio_ids_arr = Workbench::where(['shot_id' => $asset_id, 'tache_id' => $tache_id])->column('studio_id');
+		$studio_ids_arr = Workbench::where(['asset_id' => $asset_id, 'tache_id' => $tache_id])->column('studio_id');
 		//多工作室
 		if (count($studio_ids_arr) > 1) {
 			foreach ($studio_ids_arr as $key => $value) {
-				$studio_degree[] = $this->task_status_arr[Workbench::where(['pid' => 0, 'shot_id' => $asset_id, 'studio_id' => $value])->value('task_status')];
+				$studio_degree[] = $this->task_status_arr[Workbench::where(['pid' => 0, 'asset_id' => $asset_id, 'studio_id' => $value])->value('task_status')];
 			}
 			$curr_tache_degree = (array_sum($studio_degree) == 0) ? 0 : intval(array_sum($studio_degree) / count($studio_ids_arr));
 		} else {//一个工作室 他的状态即是当前环节的进度
-			$curr_tache_degree = $this->task_status_arr[Workbench::where(['pid' => 0, 'shot_id' => $asset_id, 'studio_id' => $studio_ids_arr[0]])->value('task_status')];    //获取这个任务的状态转化的进度值
+			$curr_tache_degree = $this->task_status_arr[Workbench::where(['pid' => 0, 'asset_id' => $asset_id, 'studio_id' => $studio_ids_arr[0]])->value('task_status')];    //获取这个任务的状态转化的进度值
 		}
 		return $curr_tache_degree;
 	}
