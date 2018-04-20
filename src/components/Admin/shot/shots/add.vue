@@ -10,7 +10,7 @@
     </div>
     <div class="m-r-30 m-b-20 m-t-30 tx-r">
       <el-button type="primary" size="small" plain v-if="importAddShow" @click="isImportShot = true">批量导入</el-button>
-      <el-button type="text" size="mini" class="fz-12 m-0">点击获取模板</el-button>
+      <el-button type="text" size="mini" class="fz-12 m-0" @click="getShotTemplate">点击获取模板</el-button>
     </div>
     <div class="m-l-50 m-t-30 w-1000">
       <el-form ref="form" :model="form" :rules="rules" label-width="130px" class="shot_add">
@@ -604,6 +604,14 @@
         console.log(this.$refs.upload.uploadFiles)
 
 //        this.$refs.upload.submit();
+      },
+//      获取镜头模板
+      getShotTemplate() {
+        this.apiPost('shot/template').then((res) => {
+          this.handelResponse(res, (data) => {
+
+          })
+        })
       },
 //      改变环节选项中的任意复选框时执行方法
       changeTache() {

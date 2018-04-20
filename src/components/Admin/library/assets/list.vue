@@ -16,28 +16,30 @@
       <div class="pos-abs">
         <el-row :gutter="10" class="m-b-5">
           <el-col :span="5">
-            <el-select v-model="search.project_id" placeholder="请选择项目" @change="getFields">
+            <el-select v-model="search.project_id" placeholder="请选择项目" @change="getAssetType">
               <el-option label="请选择项目" value=""></el-option>
               <el-option v-for="item in projectList" :label="item.project_name" :value="item.id"
                          :key="item.id"></el-option>
             </el-select>
           </el-col>
           <el-col :span="5">
-            <el-select v-model="search.field_id" placeholder="请选择资产类型" @change="getShotsNum">
+            <el-select v-model="search.field_id" placeholder="请选择资产类型" @change="getAllAssetsList">
               <el-option label="请选择资产类型" value=""></el-option>
-              <el-option v-for="item in fieldList" :label="item.name" :value="item.id" :key="item.id"></el-option>
+              <el-option v-for="item in fieldList" :label="item.explain" :value="item.id" :key="item.id"></el-option>
             </el-select>
           </el-col>
           <el-col :span="5">
-            <el-select v-model="search.shot_id" placeholder="请选择镜头号" @change="getAllAssetsList">
-              <el-option label="请选择镜头号" value=""></el-option>
-              <el-option v-for="(item, index) in shotList" :label="item.shot_number" :value="item.id"
-                         :key="index"></el-option>
+            <el-select v-model="search.priority_level" placeholder="请选择资产优先级" @change="getAllAssetsList">
+              <el-option label="请选择资产优先级" value=""></el-option>
+              <el-option label="D" value="1"></el-option>
+              <el-option label="C" value="2"></el-option>
+              <el-option label="B" value="3"></el-option>
+              <el-option label="A" value="4"></el-option>
             </el-select>
           </el-col>
           <el-col :span="6">
-            <el-input placeholder="请输入场号镜头号" v-model.trim="search.shot_number">
-              <el-button slot="append" icon="el-icon-search" @click="searchShot"></el-button>
+            <el-input placeholder="请输入资产名称或简称" v-model.trim="search.asset_name">
+              <el-button slot="append" icon="el-icon-search" @click="searchAsset"></el-button>
             </el-input>
           </el-col>
         </el-row>
@@ -57,30 +59,26 @@
         <el-table ref="multipleTable" :data="tableData" tooltip-effect="dark"
                   @selection-change="handleSelectionChange" @row-click="assetDetail">
           <el-table-column type="selection" width="55"></el-table-column>
-          <el-table-column prop="shot_image" label="缩略图">
+          <el-table-column label="缩略图">
             <template slot-scope="scope">
-              <!--<img :src="address + 'uploads/Projects/images/20180315/0ac2a237e3803fed26471175554c180a.jpg'" alt="" class="dp-b h-60">-->
-              <img :src="address + scope.row.shot_image" alt="" class="dp-b h-60">
+              <img :src="address + scope.row.asset_image" alt="" class="dp-b h-60">
             </template>
           </el-table-column>
-          <el-table-column prop="field_number" label="场号"></el-table-column>
-          <el-table-column prop="shot_number" label="镜头号"></el-table-column>
-          <el-table-column prop="difficulty" label="难度"></el-table-column>
+          <el-table-column prop="project_name" label="所属项目"></el-table-column>
+          <el-table-column prop="asset_name" label="资产名称"></el-table-column>
           <el-table-column prop="priority_level" label="优先级"></el-table-column>
+          <el-table-column prop="difficulty" label="难度"></el-table-column>
           <el-table-column prop="tache" label="进度" width="150">
             <template slot-scope="scope">
               <el-tag v-for="value in scope.row.tache_info"
                       v-if="value.finish_degree!==''?true:false" :key="value.id"
                       :type="value.finish_degree<100?'warning':'success'">
-                {{ value.tache_byname }}:{{ value.finish_degree }}%
+                {{ value.tache_byname }}:{{ value.finish_degree?value.finish_degree: '0' }}%
               </el-tag>
             </template>
           </el-table-column>
           <el-table-column prop="plan_start_time" label="计划开始"></el-table-column>
           <el-table-column prop="plan_end_time" label="计划结束"></el-table-column>
-          <el-table-column prop="actual_start_timestamp" label="实际开始"></el-table-column>
-          <el-table-column prop="actual_end_timestamp" label="实际结束"></el-table-column>
-          <!--<el-table-column prop="make_demand" label="备注"></el-table-column>-->
         </el-table>
         <div class="pos-rel p-t-20">
           <!--<btnGroup :selectedData="multipleSelection" :type="'studios'"></btnGroup>-->
@@ -474,6 +472,9 @@
               <el-col :span="12">
                 <p class="m-0">资产名称：<span>{{ editAssetDetail.asset_name }}</span></p>
               </el-col>
+              <el-col :span="12">
+                <p class="m-0">资产类型：<span>{{ editAssetDetail.type_name }}</span></p>
+              </el-col>
             </el-row>
             <el-row :gutter="20" class="m-b-5">
               <el-col :span="24">
@@ -483,11 +484,6 @@
             <el-row :gutter="20" class="m-b-5">
               <el-col :span="24">
                 <p class="m-0">计划结束时间：<span>{{ j2time(editAssetDetail.plan_end_timestamp) }}</span></p>
-              </el-col>
-            </el-row>
-            <el-row :gutter="20" class="m-b-5">
-              <el-col :span="12">
-                <p class="m-0">场号/集号：<span>{{ editAssetDetail.field_name }}</span></p>
               </el-col>
             </el-row>
             <el-row :gutter="20" class="m-b-5">
@@ -570,16 +566,15 @@
         search: {
           project_id: '',
           field_id: '',
-          shot_id: '',
-          shot_number: ''
+          priority_level: '',
+          asset_name: ''
         },
         projectList: [],
-        fieldList: [],
-        shotList: []
+        fieldList: []
       }
     },
     methods: {
-      searchShot () {
+      searchAsset () {
         if (this.search.shot_number.length === 6) {
           this.search.project_id = ''
           this.search.field_id = ''
@@ -798,31 +793,18 @@
           })
         })
       },
-      //      获取所有场号、集号
-      getFields () {
+      //      获取所有资产类型
+      getAssetType () {
         this.getAllAssetsList()
         const data = {
           params: {
-            project_id: this.search.project_id
+            project_id: this.search.project_id,
+            type: 2
           }
         }
         this.apiGet('admin/get_fields', data).then((res) => {
           this.handelResponse(res, (data) => {
             this.fieldList = data
-          })
-        })
-      },
-      //      获取所有场号集号下的资产号
-      getShotsNum () {
-        this.getAllAssetsList()
-        const data = {
-          params: {
-            field_id: this.search.field_id
-          }
-        }
-        this.apiGet('admin/get_shot_num', data).then((res) => {
-          this.handelResponse(res, (data) => {
-            this.shotList = data
           })
         })
       },
