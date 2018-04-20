@@ -209,6 +209,14 @@
               </el-form-item>
             </div>
           </el-col>
+          <el-col :span="8">
+            <div class="grid-content">
+              <el-form-item label="制作要求:" prop="asset_explain">
+                <el-input type="textarea" :rows="3" placeholder="请输入制作要求" v-model="form.make_demand"
+                          class="h-40 w-200"></el-input>
+              </el-form-item>
+            </div>
+          </el-col>
         </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -342,10 +350,6 @@
         id: '',
         image: '',
         plan_time: '',
-        frame_range1: '',
-        frame_range2: '',
-        handle_frame1: '',
-        handle_frame2: '',
         rules: {
           project_id: [{required: true, message: '请选择项目'}],
           field_id: [{required: true, message: '请选择场号'}],
@@ -548,16 +552,11 @@
         this.form.asset_image = this.form.asset_image.slice(this.form.asset_image.indexOf('uploads'))
         this.form.project_id = parseInt(this.form.project_id)
         this.form.field_id = parseInt(this.form.field_id)
-        this.form.time = parseInt(this.form.time)
-        this.form.ambient = parseInt(this.form.ambient)
 //        this.form.is_parse = parseInt(this.form.is_parse)
         this.form.plan_start_timestamp = _g.j2time(this.plan_time[0])
         this.form.plan_end_timestamp = _g.j2time(this.plan_time[1])
 //        选填项
         this.form.asset_ids = this.form.asset_ids ? this.form.asset_ids.join('') : ''
-//        this.form.is_assets = this.form.is_assets ? parseInt(this.form.is_assets) : 2
-        this.form.frame_range = this.frame_range1 && this.frame_range2 ? this.frame_range1 + ',' + this.frame_range2 : ''
-        this.form.handle_frame = this.handle_frame1 && this.handle_frame2 ? this.handle_frame1 + ',' + this.handle_frame2 : ''
         this.form.priority_level = this.form.priority_level ? parseInt(this.form.priority_level) : 1
         this.form.difficulty = this.form.difficulty ? parseInt(this.form.difficulty) : 1
 
@@ -649,19 +648,14 @@
         this.form.assets_name = data.assets_name
         this.form.asset_image = this.image = window.baseUrl + '/' + data.asset_image
         this.plan_time = [new Date(data.plan_start_timestamp * 1000), new Date(data.plan_end_timestamp * 1000)]
-        this.form.time = data.time.toString()
-        this.form.ambient = data.ambient.toString()
         this.form.priority_level = data.priority_level.toString()
         this.form.difficulty = data.difficulty.toString()
-        this.handle_frame1 = data.handle_frame.split(',')[0]
-        this.handle_frame2 = data.handle_frame.split(',')[1]
-        this.frame_range1 = data.frame_range.split(',')[0]
-        this.frame_range2 = data.frame_range.split(',')[1]
+       
         this.form.material_number = data.material_number
         this.form.asset_ids = data.asset_ids
         this.form.second_company = data.second_company
         this.form.assets_explain = data.assets_explain
-        this.form.change_speed_info = data.change_speed_info
+        this.form.asset_explain = data.asset_explain
         this.form.make_demand = data.make_demand
       }
     },
