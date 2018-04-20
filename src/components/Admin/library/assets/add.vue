@@ -29,7 +29,7 @@
             <div class="grid-content">
               <el-form-item label="资产类型:" prop="field_id">
                 <el-select v-model="form.field_id" placeholder="请选择资产类型" :class="{ 'w-130': addShow }">
-                  <el-option v-for="item in fieldList" :label="item.name" :value="item.id"
+                  <el-option v-for="item in fieldList" :label="item.explain" :value="item.id"
                              :key="item.id"></el-option>
                 </el-select>
                 <el-button type="text" size="small" @click="isAddField = true" v-if="addShow">添加</el-button>
@@ -458,7 +458,7 @@
       },
 //      添加资产类型
       addField(form) {
-        if (this.fieldForm.project_id && this.fieldForm.name) {
+        if (this.fieldForm.project_id && this.fieldForm.name && this.fieldForm.explain) {
           this.isLoading = !this.isLoading
           this.apiPost('admin/save_field', this.fieldForm).then((res) => {
             this.handelResponse(res, (data) => {
@@ -581,7 +581,8 @@
         this.form.field_id = ''
         const data = {
           params: {
-            project_id: this.form.project_id
+            project_id: this.form.project_id,
+            type:2
           }
         }
         this.apiGet('admin/get_fields', data).then((res) => {
