@@ -561,7 +561,7 @@
         this.form.priority_level = this.form.priority_level ? parseInt(this.form.priority_level) : 1
         this.form.difficulty = this.form.difficulty ? parseInt(this.form.difficulty) : 1
 
-        this.form.tache = {
+        this.form.tache_info = {
           3: this.artOfStudio,
           4: this.modelOfStudio,
           5: this.mapOfStudio,
@@ -580,7 +580,7 @@
             this.apiPut('admin/assets/', this.id, this.form).then((res) => {
               this.handelResponse(res, (data) => {
                 _g.toastMsg('success', '编辑成功')
-                this.$emit('updataShotDetail', this.id)
+                this.$emit('updataAssetDetail', this.id)
 //                _g.clearVuex('setUsers')
                 setTimeout(() => {
                   this.dialogFormVisible = false

@@ -8,10 +8,10 @@
       </el-breadcrumb>
     </div>
     <div class="m-b-20 ovf-hd">
-      <div class="fl w-700">
+      <div class="fl w-1500">
         <!-- <template> -->
         <el-row :gutter="10" class="m-b-5">
-          <el-col :span="5">
+          <el-col :span="4">
             <el-select v-model="search.project_id" placeholder="请选择项目" @change="screenChange(1)">
               <el-option
                 v-for="item in screeningProject"
@@ -21,8 +21,14 @@
               </el-option>
             </el-select>
           </el-col>
+          <el-col :span="4">
+            <el-select v-model="search.type"  style="margin-left: 10px;" placeholder="请选择类型" @change="screenChange(2)">
+              <el-option label="镜头" value="1"></el-option>
+              <el-option label="资产" value="2"></el-option>
+            </el-select>
+          </el-col>
           <el-col :span="5">
-            <el-select v-model="search.field_id"  style="margin-left: 10px;" placeholder="请选择场号" @change="screenChange(2)">
+            <el-select v-model="search.field_id"  style="margin-left: 10px;" placeholder="请选择场号或资产类型" @change="screenChange(3)">
               <el-option
                 v-for="item in screeningSite"
                 :key="item.id"
@@ -32,7 +38,7 @@
             </el-select>
           </el-col>
           <el-col :span="5">
-            <el-select v-model="search.shot_id"  style="margin-left: 10px;" placeholder="请选择镜头号" @change="screenChange()">
+            <el-select v-model="search.shot_id"  style="margin-left: 10px;" placeholder="请选择镜头号或资产简称" @change="screenChange()">
               <el-option
                 v-for="item in screeningShot"
                 :key="item.id"
@@ -41,7 +47,7 @@
               </el-option>
             </el-select>
           </el-col>
-          <el-col :span="6">
+          <el-col :span="5">
             <el-input class="w-200" style="margin-left: 10px;" v-model.trim="search.shot_number" placeholder="请输入场号镜头号">
               <el-button slot="append" icon="el-icon-search" circle @click="searchPublic"></el-button>
             </el-input>
@@ -490,14 +496,15 @@
         // frequencyState:true,
         tabVale:1,
         screeningProject:[],//项目下拉列表数据
+        // screeningType:[],//类型
         screeningSite:[],//场号下拉列表数据
         screeningShot:[],
         search:{
           project_id:'',//项目下拉框选中的值
+          type:'',//类型
           field_id:'',//场号下拉框选中的值
           shot_id:'',//镜头选中的值
           shot_number:''//输入狂的值
-
         },
         stages: ['制作中', '反馈中',  '等待制作', '提交发布'],
         blocksDataCount:0,//任务的数量
@@ -720,12 +727,27 @@
           }
           this.apiGet('admin/get_fields', data).then((res) => {//请求项目下的场号
             this.handelResponse(res, (data) => {
-              this.screeningSite = data
+              // this.screeningSite = data
+            })
+          })
+          break
+          case 2://请求类型
+          this.search.field_id = ''
+          this.search.shot_id = ''
+          const datatype = {
+            params: {
+              project_id: this.search.project_id,
+              type: this.search.type
+            }
+          }
+          this.apiGet('admin/get_fields', datatype).then((res) => {//请求项目下的场号
+            this.handelResponse(res, (data) => {
+             this.screeningSite = data
               
             })
           })
           break
-          case 2://请求镜头号
+          case 3://请求镜头号
             this.search.shot_id = ''
             const datas = {
               params: {

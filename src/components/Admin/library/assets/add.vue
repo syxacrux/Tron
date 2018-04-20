@@ -1,5 +1,5 @@
 <template>
-  <div class="assets"> 
+  <div class="assets_add"> 
     <div class="m-b-20">
       <el-breadcrumb separator="/">
         <el-breadcrumb-item :to="{ path: '/admin' }">首页</el-breadcrumb-item>
@@ -28,11 +28,11 @@
           <el-col :span="8">
             <div class="grid-content">
               <el-form-item label="资产类型:" prop="field_id">
-                <el-select v-model="form.field_id" placeholder="请选择资产类型" :class="{ 'w-130': addShow }">
+                <el-select v-model="form.field_id" placeholder="请选择资产类型" :class="{ 'w-130': add_assetsShow }">
                   <el-option v-for="item in fieldList" :label="item.explain" :value="item.id"
                              :key="item.id"></el-option>
                 </el-select>
-                <el-button type="text" size="small" @click="isAddField = true" v-if="addShow">添加</el-button>
+                <el-button type="text" size="small" @click="isAddField = true" v-if="add_assetsShow">添加</el-button>
               </el-form-item>
             </div>
           </el-col>
@@ -70,7 +70,7 @@
           <el-col :span="8">
             <div class="grid-content">
               <el-form-item label="资产难度:" prop="difficulty">
-                <el-select v-model="form.difficulty" placeholder="请资产镜头难度" class="h-40 w-200">
+                <el-select v-model="form.difficulty" placeholder="请资产资产难度" class="h-40 w-200">
                   <el-option label="D" value="1"></el-option>
                   <el-option label="C" value="2"></el-option>
                   <el-option label="B" value="3"></el-option>
@@ -94,7 +94,7 @@
           <el-col :span="8">
             <div class="grid-content">
               <el-form-item label="资产优先级:" prop="priority_level">
-                <el-select v-model="form.priority_level" placeholder="请选择镜头优先级" class="h-40 w-200">
+                <el-select v-model="form.priority_level" placeholder="请选择资产优先级" class="h-40 w-200">
                   <el-option label="D" value="1"></el-option>
                   <el-option label="C" value="2"></el-option>
                   <el-option label="B" value="3"></el-option>
@@ -224,7 +224,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-form-item>
-            <el-button type="primary" @click="add" :loading="isLoading">提交</el-button>
+            <el-button type="primary" @click="add_assets" :loading="isLoading">提交</el-button>
             <el-button @click="goback()">返回</el-button>
           </el-form-item>
         </el-row>
@@ -262,7 +262,7 @@
           <!--<el-input v-model.trim="importForm.name" class="w-200"></el-input>-->
         <!--</el-form-item>-->
         <el-form-item label="资产文件：" prop="assets_file">
-          <el-upload class="upload_shotFile" ref="upload"
+          <el-upload class="upload_assetsFile" ref="upload"
                      action="https://jsonplaceholder.typicode.com/posts/"
                      :on-preview="handlePreview"
                      :file-list="fileList"
@@ -281,11 +281,11 @@
   </div>
 </template>
 <style type="text/css">
-  .assets .form-checkbox:first-child {
+  .assets_add .form-checkbox:first-child {
     margin-left: 15px;
   }
 
-  .assets .avatar-uploader .el-upload {
+  .assets_add .avatar-uploader .el-upload {
     border: 1px dashed #d9d9d9;
     border-radius: 6px;
     cursor: pointer;
@@ -293,19 +293,19 @@
     overflow: hidden;
   }
 
-  .assets .avatar-uploader .el-upload:hover {
+  .assets_add .avatar-uploader .el-upload:hover {
     border-color: #409EFF;
   }
 
-  .assets .el-upload {
+  .assets_add .el-upload {
     width: 300px;
   }
 
-  .assets .upload_shotFile .el-upload{
+  .assets_add .upload_assetsFile .el-upload{
     text-align: left;
   }
 
-  .assets .avatar-uploader-icon {
+  .assets_add .avatar-uploader-icon {
     font-size: 28px;
     color: #8c939d;
     width: 178px;
@@ -314,7 +314,7 @@
     text-align: center;
   }
 
-  .assets .avatar {
+  .assets_add .avatar {
     /*width: 178px;*/
     /*height: 178px;*/
     display: block;
@@ -322,27 +322,27 @@
     height: 100% !important;
   }
 
-  .assets .assets_add .el-form-item {
+  .assets_add .assets_add_add .el-form-item {
     display: inline-block;
   }
 
-  .assets .el-transfer-panel {
+  .assets_add .el-transfer-panel {
     width: 150px;
   }
 
-  .assets .el-transfer__buttons {
+  .assets_add .el-transfer__buttons {
     padding: 0 15px;
   }
 
-  .assets .el-textarea__inner {
+  .assets_add .el-textarea__inner {
     resize: none;
   }
 
-  .assets .form_studio_id {
+  .assets_add .form_studio_id {
     width: 350px;
   }
 
-  .assets .block {
+  .assets_add .block {
     /* margin-top: 20px; */
   }
 </style>
@@ -354,13 +354,13 @@
 
   export default {
     data() {
-      let shotNumber = (rule, value, callback) => {
+      let assetsNumber = (rule, value, callback) => {
         console.log(this.form.field_id)
         console.log(value)
         const data = {
           params: {
             field_id: parseInt(this.form.field_id),
-            shot_number: value
+            asset_byname: value
           }
         }
         if(value == ''){
@@ -418,8 +418,7 @@
         },
         form: {
           project_id: '',    //所属项目id
-          field_id: '',     //场号id
-          asset_ids: '',    //资产id
+          field_id: '',     //类型id
           asset_image: '',    //资产缩略图地址
           asset_byname: '',    //资产简称
           asset_name: '',    //资产名称
@@ -431,7 +430,7 @@
           material_number: '',    //素材号
           second_company: '',    //二级公司
           make_demand: '',    //制作要求
-          status: 1    //镜头状态
+          status: 1    //资产状态
         },
         image: '',
         plan_time: '',
@@ -446,11 +445,11 @@
           asset_byname: [
             {required: true, message: '请输入资产简称'}, {pattern: /^[a-zA-Z]+$/, message: '资产简称必须为字母'},{
             pattern: /^[a-zA-Z]+$/,
-            validator: shotNumber
+            validator: assetsNumber
           }],
           asset_name: [{required: true, message: '请输入资产名称'}, {pattern: /^[\u4E00-\u9FA5]+$/, message: '资产名称必须为汉字'}],
-          difficulty: [{required: true, message: '请选择镜头难度'}],
-          priority_level: [{required: true, message: '请选择镜头优先级'}]
+          difficulty: [{required: true, message: '请选择资产难度'}],
+          priority_level: [{required: true, message: '请选择资产优先级'}]
         },
         addFieldRules: {
           project_id: [{required: true, message: '请选择项目'}],
@@ -501,7 +500,7 @@
       handlePreview(file) {
         console.log(file);
       },
-//      批量导入镜头
+//      批量导入资产
       importShot() {
         console.log(this.$refs.upload.uploadFiles)
 
@@ -521,7 +520,7 @@
         this.synchOfStudio = this.isSynch ? this.synchOfStudio : []
       },
 //      添加资产
-      add(form) {
+      add_assets(form) {
         if (
           this.artOfStudio.length === 0 && this.modelOfStudio.length === 0 && this.mapOfStudio.length === 0 &&
           this.bindOfStudio.length === 0 && this.trackOfStudio.length === 0 && this.animateOfStudio.length === 0 &&
@@ -550,13 +549,13 @@
         this.form.priority_level = this.form.priority_level ? parseInt(this.form.priority_level) : 1
         this.form.difficulty = this.form.difficulty ? parseInt(this.form.difficulty) : 1
 //        选填项
-//        this.form.asset_ids = this.form.asset_ids.join('')
+        // this.form.asset_ids = this.form.asset_ids.join('')
         this.form.frame_range = this.frame_range1 && this.frame_range2 ? this.frame_range1 + ',' + this.frame_range2 : ''
         this.form.handle_frame = this.handle_frame1 && this.handle_frame2 ? this.handle_frame1 + ',' + this.handle_frame2 : ''
         this.form.clip_frame_length = this.form.clip_frame_length ? parseInt(this.form.clip_frame_length) : 0
         this.form.material_frame_length = this.form.material_frame_length ? parseInt(this.form.material_frame_length) : ''
 
-        this.form.tache = {
+        this.form.tache_info = {
           3: this.artOfStudio,
           4: this.modelOfStudio,
           5: this.mapOfStudio,
@@ -586,7 +585,7 @@
       },
 //			获取所有工作室
       getAllStudios() {
-        this.apiGet('shot/get_studio').then((res) => {
+        this.apiGet('asset/get_studio').then((res) => {
           this.handelResponse(res, (data) => {
             this.studiosList = data.list
           })
@@ -623,7 +622,7 @@
     mixins: [http, fomrMixin],
     computed: {
 //      添加资产按钮
-      addShow() {
+      add_assetsShow() {
         return _g.getHasRule('assets-save_filed')
       },
 //      批量导入资产按钮
