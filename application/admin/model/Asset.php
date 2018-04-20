@@ -346,7 +346,7 @@ class Asset extends Common{
 			$curr_task_data = Workbench::where(['shot_id' => $asset_id, 'tache_id' => $value])->find();
 			$finish_degree[$key]['tache_id'] = $value;
 			$finish_degree[$key]['tache_byname'] = $this->tache_byname_arr[$value];
-			$finish_degree[$key]['finish_degree'] = !empty($curr_task_data) ? $this->get_finish_degree_by_task($asset_id, $value) : '';
+			$finish_degree[$key]['finish_degree'] = !empty($curr_task_data) ? $this->get_finish_degree_by_task($asset_id, $value) : 0;
 		}
 		//根据环节ID获取所属任务
 		return $finish_degree;
