@@ -597,6 +597,8 @@
         })
         if (!this.isAssetDetailShow) {
           this.isAssetDetailShow = !this.isAssetDetailShow
+        }else {
+          this.getAllAssetsList()
         }
       },
       //      资产详情删除环节
@@ -606,7 +608,8 @@
         }).then(() => {
           _g.openGlobalLoading()
           const data = {
-            id: this.id, tache_name: tache_name
+            id: this.id,
+            tache_name: tache_name
           }
           this.apiPost('asset/tache_del', data).then((res) => {
             _g.closeGlobalLoading()
