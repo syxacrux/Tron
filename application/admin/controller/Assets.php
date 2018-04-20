@@ -20,8 +20,21 @@ class Assets extends BaseCommon
 		return resultArray(['data'=>$data]);
 	}
 
-	//标准列表
+	//首页
 	public function index()
+	{
+		$asset_model = model('asset');
+		$uid = $this->uid;
+		$group_id = Access::where('user_id', $uid)->value('group_id'); //所属角色
+		$keywords = !empty($param['keywords']) ? json_decode($param['keywords'], true) : '';
+		$page = !empty($param['page']) ? $param['page'] : '';
+		$limit = !empty($param['limit']) ? $param['limit'] : '';
+		$data = $asset_model->getList($keywords, $page, $limit, $uid, $group_id);
+		return resultArray(['data' => $data]);
+	}
+
+	//标准列表
+	public function index_list()
 	{
 		$asset_model = model('asset');
 		$uid = $this->uid;

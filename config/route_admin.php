@@ -132,7 +132,8 @@ return [
 	'asset/tache_del'				=>			['admin/assets/delete_tache',['method'=>'POST']],
 	// [资产库] 删除工作室
 	'asset/studio_del'			=>			['admin/assets/delete_studio',['method'=>'POST']],
-
+	// [工作台] 标准列表
+	'asset/index_list'			=>			['admin/assets/index_list',['method' => 'GET']],
 
 
 

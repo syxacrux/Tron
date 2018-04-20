@@ -515,13 +515,35 @@ class Shot extends Common
 
 	//获取模板
 	public function shot_template(){
-		$excel=new Excel();
-		$table_name="mk_material_list_edit";
+		$excel = new Excel();
+		$arr = [];
+		$arr[0]['plate_number'] = "京AT2123";
+		$arr[0]['source'] = 1;
+		$arr[0]['vehicle_type'] = "汽油车/柴油车/电车";
+		$arr[0]['vehicle_brand'] = 1;
+		$arr[0]['engine_no'] = "2000010";
+		$arr[0]['status'] = "可使用/修理中/锁定";
+		$arr[0]['docking_station'] = 1;
+		$arr[0]['seat_num'] = "50";
+		$arr[0]['gps_source'] = "Wifun-TV";
+		$arr[0]['gps_access'] = "Wifun-TV";
+		$arr[0]['gps_upload_time'] = 1;
+//		Excel::create($fileName, function ($excel) use ($arr) {
+//			$excel->sheet('score', function ($sheet) use ($arr) {
+//				$sheet->prependRow(1, array('车牌号(必填)', '车辆所属公司(必填)', '车辆类型', '车辆品牌', '发动机号(必填)', '车辆状态(必填)', '停车场', '座位数(必填)', 'GPS数据来源(必填)', 'GPS数据接入源(必填)', 'GPS数据上传时间(必填,单位:秒)'));
+//				$sheet->setWidth(array('A' => 20, 'B' => 30, 'C' => 10, 'D' => 20, 'E' => 20, 'F' => 20, 'G' => 20, 'H' => 20, 'I' => 20, 'J' => 20, 'K' => 20));
+//				$num = count($arr);
+//				for ($i = 0; $i < $num; $i++) {
+//					$sheet->row($i + 2, $arr[$i]);
+//				}
+//			});
+//		})->store('xls');
+		$table_name="shot";
 		$field=["id"=>"序号","guid"=>"项目代码","name"=>"项目名称"];
 		$map=["status"=>1];
 		$map2=["status"=>-1];
 
-		$excel->setExcelName("下载装修项目")
+		$excel->setExcelName("镜头批量导入模板")
 			->createSheet("装修项目",$table_name,$field,$map)
 			->createSheet("已删除装修项目",$table_name,$field,$map2)
 			->downloadExcel();

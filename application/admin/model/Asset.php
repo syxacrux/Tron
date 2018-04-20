@@ -52,6 +52,9 @@ class Asset extends Common{
 		if(!empty($keywords['asset_id']) && empty($keywords['asset_content'])){
 			$where['id'] = $keywords['asset_id'];
 		}
+		if(!empty($keywords['priority_level']) && empty($keywords['asset_content'])){	//优先级
+			$where['priority_level'] = $keywords['priority_level'];
+		}
 		if(!empty($keywords['asset_content'])){	//手动输入资产名称或简称
 			$where['asset_byname|asset_name'] = trimall($keywords['asset_content']);
 		}
