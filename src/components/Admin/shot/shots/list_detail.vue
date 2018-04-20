@@ -646,6 +646,8 @@
         })
         if (!this.isShotDetailShow) {
           this.isShotDetailShow = !this.isShotDetailShow
+        } else {
+          this.getAllShotsList()
         }
       },
 //      镜头详情删除环节
