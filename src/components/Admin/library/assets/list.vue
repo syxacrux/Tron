@@ -38,7 +38,7 @@
             </el-select>
           </el-col>
           <el-col :span="6">
-            <el-input placeholder="请输入资产名称或简称" v-model.trim="search.asset_name">
+            <el-input placeholder="请输入资产名称或简称" v-model.trim="search.asset_content">
               <el-button slot="append" icon="el-icon-search" @click="searchAsset"></el-button>
             </el-input>
           </el-col>
@@ -249,53 +249,32 @@
             <el-col :span="12" v-for="item in waitingList" :key="item.id">
               <div class="grid-content p-b-5" @click="assetDetail(item.id)">
                 <el-card>
-                  <div class="text-Lens pos-rel">
-                    <p class="text-Lens-name h-28 ">
-                      {{item.project_name}}：<span>{{item.shot_number}}</span>
-                    </p>
-                    <p class="text-Lens-rank pos-abs">
-                      <el-tooltip class="pointer" effect="dark" content="资产难度" placement="bottom-start">
-                        <el-tag type="warning">{{item.difficulty}}</el-tag>
-                      </el-tooltip>
-                      <el-tooltip v-if="item.priority_level" class="pointer" effect="dark" content="资产优先级"
-                                  placement="bottom-start">
-                        <el-tag type="danger">{{item.priority_level}}</el-tag>
-                      </el-tooltip>
-                    </p>
-                  </div>
-                  <div class="text-Lens m-t-10">
-                    <p class="text-Lens-assets">
-                      <el-tag type="info">混天绫:道具</el-tag>
-                      <el-tag type="info">元宝:道具</el-tag>
-                      <el-tag type="info">混天绫:道具</el-tag>
-                      <el-tag type="info">元宝:道具</el-tag>
-                      <el-tag type="info">混天绫:道具</el-tag>
-                    </p>
-                    <p class="text-Lens-time fr tx-r">
-                      <span>
-                        <el-tooltip class="m-r-5 pointer" effect="dark" content="资产剩余天数" placement="bottom-start">
-                          <span>{{ assetRemainDay(item.plan_end_timestamp) }}天</span>
-                        </el-tooltip>
-                        <el-tooltip class="m-r-5 pointer" effect="dark" content="资产建立时间" placement="bottom-start">
-                          <span>{{ assetCreateTime(item.create_timestamp) }}天</span>
-                        </el-tooltip>
-                        <el-tooltip class="m-r-5 pointer" effect="dark" content="资产制作中时间" placement="bottom-start">
-                          <span>0天</span>
-                        </el-tooltip>
-                      </span>
-                      <span>
-                        <el-tooltip class="m-r-5 pointer" effect="dark" content="预计结束时间" placement="bottom-start">
-                          <span>{{ j2time(item.plan_end_timestamp) }}</span>
-                        </el-tooltip>
-                      </span>
-                    </p>
-                  </div>
-                  <div class="text-Lens-link m-t-10">
-                    <el-tag class="m-l-5" v-for="value in item.tache_info"
-                            :key="value.id" type="warning">
-                      {{ value.tache_byname }}
-                    </el-tag>
-                  </div>
+                  <p class="h-28">
+                    {{item.project_name}}
+                  </p>
+                  <el-tooltip class="pointer" effect="dark" content="资产难度" placement="bottom-start">
+                    <el-tag type="warning">{{item.difficulty}}</el-tag>
+                  </el-tooltip>
+                  <el-tooltip v-if="item.priority_level" class="pointer" effect="dark" content="资产优先级"
+                              placement="bottom-start">
+                    <el-tag type="danger">{{item.priority_level}}</el-tag>
+                  </el-tooltip>
+                  <el-tooltip class="m-r-5 pointer" effect="dark" content="资产剩余天数" placement="bottom-start">
+                    <span>{{ assetRemainDay(item.plan_end_timestamp) }}天</span>
+                  </el-tooltip>
+                  <el-tooltip class="m-r-5 pointer" effect="dark" content="资产建立时间" placement="bottom-start">
+                    <span>{{ assetCreateTime(item.create_timestamp) }}天</span>
+                  </el-tooltip>
+                  <el-tooltip class="m-r-5 pointer" effect="dark" content="资产制作中时间" placement="bottom-start">
+                    <span>0天</span>
+                  </el-tooltip>
+                  <el-tooltip class="m-r-5 pointer" effect="dark" content="预计结束时间" placement="bottom-start">
+                    <span>{{ j2time(item.plan_end_timestamp) }}</span>
+                  </el-tooltip>
+                  <el-tag class="m-l-5" v-for="value in item.tache_info"
+                          :key="value.id" type="warning">
+                    {{ value.tache_byname }}
+                  </el-tag>
                 </el-card>
               </div>
             </el-col>
@@ -303,7 +282,7 @@
           <div class="pos-rel p-t-20" v-if="waitingList.length">
             <div class="block tx-r">
               <el-pagination
-                  @current-change="pauseCurrentChange"
+                  @current-change="waitingCurrentChange"
                   :current-page.sync="currentPage"
                   :page-size="10"
                   layout="prev, pager, next, jumper"
@@ -545,7 +524,7 @@
         currentPage: 1, //        listLimit: ,
         listCurrentPage: 1,
         isAssetDetailShow: false,    //是否显示资产详情
-        activeName: 'assetsInDevelopment', //资产tab当前选中值
+        activeName: 'assetsNotDevelopment', //资产tab当前选中值
         isList: false,    // 是否显示资产列表
         address: window.baseUrl + '/',
         inProductionDataCount: 0,  //制作中总数量
@@ -567,7 +546,7 @@
           project_id: '',
           field_id: '',
           priority_level: '',
-          asset_name: ''
+          asset_content: ''
         },
         projectList: [],
         fieldList: []
@@ -786,7 +765,7 @@
             keywords: this.search, page: page, limit: this.limit
           }
         }
-        this.apiGet('admin/assets', data).then((res) => {
+        this.apiGet('asset/index_list', data).then((res) => {
           this.handelResponse(res, (data) => {
             this.tableData = data.list
             this.listDataCount = data.dataCount
