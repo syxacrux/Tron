@@ -561,7 +561,7 @@
         this.form.priority_level = this.form.priority_level ? parseInt(this.form.priority_level) : 1
         this.form.difficulty = this.form.difficulty ? parseInt(this.form.difficulty) : 1
 
-        this.form.tache_info = {
+        this.form.tache = {
           3: this.artOfStudio,
           4: this.modelOfStudio,
           5: this.mapOfStudio,
