@@ -46,7 +46,7 @@
                   :show-file-list="false"
                   :on-success="handleAvatarSuccess"
                   :before-upload="beforeAvatarUpload">
-                <img v-if="form.assets_image" :src="image" class="avatar">
+                <img v-if="form.asset_image" :src="image" class="avatar">
                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
               </el-upload>
             </el-form-item>
@@ -420,7 +420,7 @@
           project_id: '',    //所属项目id
           field_id: '',     //场号id
           asset_ids: '',    //资产id
-          assets_image: '',    //资产缩略图地址
+          asset_image: '',    //资产缩略图地址
           asset_byname: '',    //资产简称
           asset_name: '',    //资产名称
           plan_start_timestamp: '',    //计划开始时间
@@ -442,7 +442,7 @@
         rules: {
           project_id: [{required: true, message: '请选择项目'}],
           field_id: [{required: true, message: '请选择场号'}],
-          assets_image: [{required: true, message: '请插入资产缩略图'}],
+          asset_image: [{required: true, message: '请插入资产缩略图'}],
           asset_byname: [
             {required: true, message: '请输入资产简称'}, {pattern: /^[a-zA-Z]+$/, message: '资产简称必须为字母'},{
             pattern: /^[a-zA-Z]+$/,
@@ -467,7 +467,7 @@
     methods: {
       handleAvatarSuccess(res, file) {
         this.image = URL.createObjectURL(file.raw);
-        this.form.assets_image = res.data;
+        this.form.asset_image = res.data;
       },
       beforeAvatarUpload(file) {
         //  const isJPG = file.type === 'image/jpeg';
@@ -531,7 +531,7 @@
           _g.toastMsg('warning', '请选择至少一个环节所属工作室')
           return
         }
-        if (!this.form.assets_image) {
+        if (!this.form.asset_image) {
           _g.toastMsg('warning', '请插入资产缩略图')
           return
         }

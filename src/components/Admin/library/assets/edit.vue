@@ -419,7 +419,7 @@
 //        模型环节
         if(this.isModel){
           if(this.studiosListModel.length === 0){  //模型环节id为4
-            this.apiGet(`assets/get_studio?assets_id=${this.id}&tache_id=4`).then((res) => {
+            this.apiGet(`asset/get_studio?assets_id=${this.id}&tache_id=4`).then((res) => {
               this.handelResponse(res, (data) => {
                 this.studiosListModel = data.list
               })
@@ -432,7 +432,7 @@
 //        贴图环节
         if(this.isMap){
           if(this.studiosListMap.length === 0){  //贴图环节id为5
-            this.apiGet(`assets/get_studio?assets_id=${this.id}&tache_id=5`).then((res) => {
+            this.apiGet(`asset/get_studio?assets_id=${this.id}&tache_id=5`).then((res) => {
               this.handelResponse(res, (data) => {
                 this.studiosListMap = data.list
               })
@@ -445,7 +445,7 @@
 //        绑定环节
         if(this.isBind){
           if(this.studiosListBind.length === 0){  //绑定环节id为6
-            this.apiGet(`assets/get_studio?assets_id=${this.id}&tache_id=6`).then((res) => {
+            this.apiGet(`asset/get_studio?assets_id=${this.id}&tache_id=6`).then((res) => {
               this.handelResponse(res, (data) => {
                 this.studiosListBind = data.list
               })
@@ -458,7 +458,7 @@
 //        跟踪环节
         if(this.isTrack){
           if(this.studiosListTrack.length === 0){  //跟踪环节id为7
-            this.apiGet(`assets/get_studio?assets_id=${this.id}&tache_id=7`).then((res) => {
+            this.apiGet(`asset/get_studio?assets_id=${this.id}&tache_id=7`).then((res) => {
               this.handelResponse(res, (data) => {
                 this.studiosListTrack = data.list
               })
@@ -471,7 +471,7 @@
 //        动画环节
         if(this.isAni){
           if(this.studiosListAnimate.length === 0){  //动画环节id为8
-            this.apiGet(`assets/get_studio?assets_id=${this.id}&tache_id=8`).then((res) => {
+            this.apiGet(`asset/get_studio?assets_id=${this.id}&tache_id=8`).then((res) => {
               this.handelResponse(res, (data) => {
                 this.studiosListAnimate = data.list
               })
@@ -484,7 +484,7 @@
 //        数字绘景环节
         if(this.isPaint){
           if(this.studiosListPaint.length === 0){  //数字绘景环节id为9
-            this.apiGet(`assets/get_studio?assets_id=${this.id}&tache_id=9`).then((res) => {
+            this.apiGet(`asset/get_studio?assets_id=${this.id}&tache_id=9`).then((res) => {
               this.handelResponse(res, (data) => {
                 this.studiosListPaint = data.list
               })
@@ -497,7 +497,7 @@
 //        特效环节
         if(this.isSpec){
           if(this.studiosListSpecial.length === 0){  //特效环节id为10
-            this.apiGet(`assets/get_studio?assets_id=${this.id}&tache_id=10`).then((res) => {
+            this.apiGet(`asset/get_studio?assets_id=${this.id}&tache_id=10`).then((res) => {
               this.handelResponse(res, (data) => {
                 this.studiosListSpecial = data.list
               })
@@ -510,7 +510,7 @@
 //        灯光环节
         if(this.isLight){
           if(this.studiosListLight.length === 0){  //灯光环节id为11
-            this.apiGet(`assets/get_studio?assets_id=${this.id}&tache_id=11`).then((res) => {
+            this.apiGet(`asset/get_studio?assets_id=${this.id}&tache_id=11`).then((res) => {
               this.handelResponse(res, (data) => {
                 this.studiosListLight = data.list
               })
@@ -523,7 +523,7 @@
 //        合成环节
         if(this.isSynch){
           if(this.studiosListSynch.length === 0){  //灯光环节id为12
-            this.apiGet(`assets/get_studio?assets_id=${this.id}&tache_id=12`).then((res) => {
+            this.apiGet(`asset/get_studio?assets_id=${this.id}&tache_id=12`).then((res) => {
               this.handelResponse(res, (data) => {
                 this.studiosListSynch = data.list
               })
