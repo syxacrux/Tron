@@ -101,15 +101,36 @@
                 <h2 class="m-0">制作中</h2>
                 <ul class="p-l-0 m-0">
                   <li v-for="item in inProductionList" :key="item.id" @click="assetDetail(item.id)">
-                    <el-card>
-                      <div>
-                        <div class="text-Lens pos-rel">
-                          <p class="text-Lens-name h-28 ">
-                            {{item.project_name}}：<span>{{item.shot_number}}</span>
-                          </p>
-                          <p class="text-Lens-rank pos-abs">
+                    <el-card class="ovf-hd">
+                      <el-col :span="7">
+                        <img :src="address + item.asset_image" alt="" class="w-100p h-140">
+                      </el-col>
+                      <el-col :span="17" class="p-l-20 pos-rel">
+                        <p>{{item.asset_name}}</p>
+                        <p>
+                          <span class="m-r-15">{{item.project_name}}</span><span class="m-r-15">{{ item.type_name }}</span>
+                        </p>
+                        <p>
+                          <el-tag class="m-r-5" v-for="value in item.tache_info"
+                                  :key="value.id" type="warning">
+                            {{ value.tache_byname }}
+                          </el-tag>
+                        </p>
+                        <div class="pos-abs r-0 t-0">
+                          <p class="m-b-0 m-t-10 tx-r">
+                            <el-tooltip class="m-r-5 pointer" effect="dark" content="资产制作中时间" placement="bottom-start">
+                              <span>0天</span>
+                            </el-tooltip>
+                            <el-tooltip class="m-r-5 pointer" effect="dark" content="资产剩余天数" placement="bottom-start">
+                              <span>{{ assetRemainDay(item.plan_end_timestamp) }}天</span>
+                            </el-tooltip>
                             <el-tooltip class="pointer" effect="dark" content="资产难度" placement="bottom-start">
                               <el-tag type="warning">{{item.difficulty}}</el-tag>
+                            </el-tooltip>
+                          </p>
+                          <p class="m-b-0 m-t-10 tx-r">
+                            <el-tooltip class="m-r-5 pointer" effect="dark" content="预计结束时间" placement="bottom-start">
+                              <span>{{ j2time(item.plan_end_timestamp) }}</span>
                             </el-tooltip>
                             <el-tooltip v-if="item.priority_level" class="pointer" effect="dark" content="资产优先级"
                                         placement="bottom-start">
@@ -117,42 +138,7 @@
                             </el-tooltip>
                           </p>
                         </div>
-                        <div class="text-Lens m-t-10">
-                          <p class="text-Lens-assets">
-                            <!--<el-tag type="info" v-for="(props, index) in item.prop" :key="item.id">{{props.name}}:{{props.lmane}}</el-tag>-->
-                            <el-tag type="info">元宝:道具</el-tag>
-                            <el-tag type="info">混天绫:道具</el-tag>
-                            <el-tag type="info">元宝:道具</el-tag>
-                            <el-tag type="info">混天绫:道具</el-tag>
-                          </p>
-                          <p class="text-Lens-time fr tx-r">
-                            <span>
-                              <el-tooltip class="m-r-5 pointer" effect="dark" content="资产剩余天数" placement="bottom-start">
-                                <span>{{ assetRemainDay(item.plan_end_timestamp) }}天</span>
-                              </el-tooltip>
-                              <el-tooltip class="m-r-5 pointer" effect="dark" content="资产建立时间" placement="bottom-start">
-                                <span>{{ assetCreateTime(item.create_timestamp) }}天</span>
-                              </el-tooltip>
-                              <el-tooltip class="m-r-5 pointer" effect="dark" content="资产制作中时间"
-                                          placement="bottom-start">
-                                <span>{{ Math.ceil(item.surplus_days) }}天</span>
-                              </el-tooltip>
-                            </span>
-                            <span>
-                              <el-tooltip class="m-r-5 pointer" effect="dark" content="预计结束时间" placement="bottom-start">
-                                <span>{{ j2time(item.plan_end_timestamp) }}</span>
-                              </el-tooltip>
-                            </span>
-                          </p>
-                        </div>
-                        <div class="text-Lens-link m-t-10">
-                          <el-tag class="m-l-5 m-b-5" v-for="value in item.tache_info"
-                                  v-if="value.finish_degree!==''?true:false" :key="value.id"
-                                  :type="value.finish_degree<100?'warning':'success'">
-                            {{ value.tache_byname }}：{{ value.finish_degree }}%
-                          </el-tag>
-                        </div>
-                      </div>
+                      </el-col>
                     </el-card>
                   </li>
                 </ul>
@@ -170,19 +156,40 @@
               </div>
             </el-col>
             <el-col v-if="feedbackShow" :span="12">
-              <div class="grid-content bg-purple-light">
+              <div class="grid-content">
                 <h2 class="m-0">反馈中</h2>
                 <ul class="p-l-0 m-0">
                   <li v-for="item in feedbackList" :key="item.id" @click="assetDetail(item.id)">
-                    <el-card class="">
-                      <div class="">
-                        <div class="text-Lens pos-rel">
-                          <p class="text-Lens-name h-28 ">
-                            {{item.project_name}}：<span>{{item.shot_number}}</span>
-                          </p>
-                          <p class="text-Lens-rank pos-abs">
+                    <el-card class="ovf-hd">
+                      <el-col :span="7">
+                        <img :src="address + item.asset_image" alt="" class="w-100p h-140">
+                      </el-col>
+                      <el-col :span="17" class="p-l-20 pos-rel">
+                        <p>{{item.asset_name}}</p>
+                        <p>
+                          <span class="m-r-15">{{item.project_name}}</span><span class="m-r-15">{{ item.type_name }}</span>
+                        </p>
+                        <p>
+                          <el-tag class="m-r-5" v-for="value in item.tache_info"
+                                  :key="value.id" type="warning">
+                            {{ value.tache_byname }}
+                          </el-tag>
+                        </p>
+                        <div class="pos-abs r-0 t-0">
+                          <p class="m-b-0 m-t-10 tx-r">
+                            <el-tooltip class="m-r-5 pointer" effect="dark" content="资产制作中时间" placement="bottom-start">
+                              <span>0天</span>
+                            </el-tooltip>
+                            <el-tooltip class="m-r-5 pointer" effect="dark" content="资产剩余天数" placement="bottom-start">
+                              <span>{{ assetRemainDay(item.plan_end_timestamp) }}天</span>
+                            </el-tooltip>
                             <el-tooltip class="pointer" effect="dark" content="资产难度" placement="bottom-start">
                               <el-tag type="warning">{{item.difficulty}}</el-tag>
+                            </el-tooltip>
+                          </p>
+                          <p class="m-b-0 m-t-10 tx-r">
+                            <el-tooltip class="m-r-5 pointer" effect="dark" content="预计结束时间" placement="bottom-start">
+                              <span>{{ j2time(item.plan_end_timestamp) }}</span>
                             </el-tooltip>
                             <el-tooltip v-if="item.priority_level" class="pointer" effect="dark" content="资产优先级"
                                         placement="bottom-start">
@@ -190,42 +197,7 @@
                             </el-tooltip>
                           </p>
                         </div>
-                        <div class="text-Lens m-t-10">
-                          <p class="text-Lens-assets">
-                            <el-tag type="info">混天绫:道具</el-tag>
-                            <el-tag type="info">元宝:道具</el-tag>
-                            <el-tag type="info">混天绫:道具</el-tag>
-                            <el-tag type="info">元宝:道具</el-tag>
-                            <el-tag type="info">混天绫:道具</el-tag>
-                          </p>
-                          <p class="text-Lens-time fr tx-r">
-                            <span>
-                              <el-tooltip class="m-r-5 pointer" effect="dark" content="资产剩余天数" placement="bottom-start">
-                                <span>{{ assetRemainDay(item.plan_end_timestamp) }}天</span>
-                              </el-tooltip>
-                              <el-tooltip class="m-r-5 pointer" effect="dark" content="资产建立时间" placement="bottom-start">
-                                <span>{{ assetCreateTime(item.create_timestamp) }}天</span>
-                              </el-tooltip>
-                              <el-tooltip class="m-r-5 pointer" effect="dark" content="资产制作中时间"
-                                          placement="bottom-start">
-                                <span>0天</span>
-                              </el-tooltip>
-                            </span>
-                            <span>
-                              <el-tooltip class="m-r-5 pointer" effect="dark" content="预计结束时间" placement="bottom-start">
-                                <span>{{ j2time(item.plan_end_timestamp) }}</span>
-                              </el-tooltip>
-                            </span>
-                          </p>
-                        </div>
-                        <div class="text-Lens-link m-t-10">
-                          <el-tag class="m-l-5" v-for="value in item.tache_info"
-                                  v-if="value.finish_degree !== ''?true:false" :key="value.id"
-                                  :type="value.finish_degree<100?'warning':'success'">
-                            {{ value.tache_byname }}：{{ value.finish_degree }}%
-                          </el-tag>
-                        </div>
-                      </div>
+                      </el-col>
                     </el-card>
                   </li>
                 </ul>
@@ -248,33 +220,44 @@
           <div class="ovf-hd">
             <el-col :span="12" v-for="item in waitingList" :key="item.id">
               <div class="grid-content p-b-5" @click="assetDetail(item.id)">
-                <el-card>
-                  <p class="h-28">
-                    {{item.project_name}}
-                  </p>
-                  <el-tooltip class="pointer" effect="dark" content="资产难度" placement="bottom-start">
-                    <el-tag type="warning">{{item.difficulty}}</el-tag>
-                  </el-tooltip>
-                  <el-tooltip v-if="item.priority_level" class="pointer" effect="dark" content="资产优先级"
-                              placement="bottom-start">
-                    <el-tag type="danger">{{item.priority_level}}</el-tag>
-                  </el-tooltip>
-                  <el-tooltip class="m-r-5 pointer" effect="dark" content="资产剩余天数" placement="bottom-start">
-                    <span>{{ assetRemainDay(item.plan_end_timestamp) }}天</span>
-                  </el-tooltip>
-                  <el-tooltip class="m-r-5 pointer" effect="dark" content="资产建立时间" placement="bottom-start">
-                    <span>{{ assetCreateTime(item.create_timestamp) }}天</span>
-                  </el-tooltip>
-                  <el-tooltip class="m-r-5 pointer" effect="dark" content="资产制作中时间" placement="bottom-start">
-                    <span>0天</span>
-                  </el-tooltip>
-                  <el-tooltip class="m-r-5 pointer" effect="dark" content="预计结束时间" placement="bottom-start">
-                    <span>{{ j2time(item.plan_end_timestamp) }}</span>
-                  </el-tooltip>
-                  <el-tag class="m-l-5" v-for="value in item.tache_info"
-                          :key="value.id" type="warning">
-                    {{ value.tache_byname }}
-                  </el-tag>
+                <el-card class="ovf-hd">
+                  <el-col :span="7">
+                    <img :src="address + item.asset_image" alt="" class="w-100p h-140">
+                  </el-col>
+                  <el-col :span="17" class="p-l-20 pos-rel">
+                    <p>{{item.asset_name}}</p>
+                    <p>
+                      <span class="m-r-15">{{item.project_name}}</span><span class="m-r-15">{{ item.type_name }}</span>
+                    </p>
+                    <p>
+                      <el-tag class="m-r-5" v-for="value in item.tache_info"
+                              :key="value.id" type="warning">
+                        {{ value.tache_byname }}
+                      </el-tag>
+                    </p>
+                    <div class="pos-abs r-0 t-0">
+                      <p class="m-b-0 m-t-10 tx-r">
+                        <el-tooltip class="m-r-5 pointer" effect="dark" content="资产制作中时间" placement="bottom-start">
+                          <span>0天</span>
+                        </el-tooltip>
+                        <el-tooltip class="m-r-5 pointer" effect="dark" content="资产剩余天数" placement="bottom-start">
+                          <span>{{ assetRemainDay(item.plan_end_timestamp) }}天</span>
+                        </el-tooltip>
+                        <el-tooltip class="pointer" effect="dark" content="资产难度" placement="bottom-start">
+                          <el-tag type="warning">{{item.difficulty}}</el-tag>
+                        </el-tooltip>
+                      </p>
+                      <p class="m-b-0 m-t-10 tx-r">
+                        <el-tooltip class="m-r-5 pointer" effect="dark" content="预计结束时间" placement="bottom-start">
+                          <span>{{ j2time(item.plan_end_timestamp) }}</span>
+                        </el-tooltip>
+                        <el-tooltip v-if="item.priority_level" class="pointer" effect="dark" content="资产优先级"
+                                    placement="bottom-start">
+                          <el-tag type="danger">{{item.priority_level}}</el-tag>
+                        </el-tooltip>
+                      </p>
+                    </div>
+                  </el-col>
                 </el-card>
               </div>
             </el-col>
@@ -292,59 +275,51 @@
           </div>
         </el-tab-pane>
         <el-tab-pane v-if="suspendShow" label="资产暂停" name="assetsSuspend">
-          <el-col :span="12" v-for="item in pauseList" :key="item.id" @click="assetDetail(item.id)">
-            <div class="grid-content p-b-5">
-              <el-card>
-                <div class="text-Lens pos-rel">
-                  <p class="text-Lens-name h-28 ">
-                    {{item.project_name}}：<span>{{item.shot_number}}</span>
-                  </p>
-                  <p class="text-Lens-rank pos-abs">
-                    <el-tooltip class="pointer" effect="dark" content="资产难度" placement="bottom-start">
-                      <el-tag type="warning">{{item.difficulty}}</el-tag>
-                    </el-tooltip>
-                    <el-tooltip v-if="item.priority_level" class="pointer" effect="dark" content="资产优先级"
-                                placement="bottom-start">
-                      <el-tag type="danger">{{item.priority_level}}</el-tag>
-                    </el-tooltip>
-                  </p>
-                </div>
-                <div class="text-Lens m-t-10">
-                  <p class="text-Lens-assets">
-                    <el-tag type="info">混天绫:道具</el-tag>
-                    <el-tag type="info">元宝:道具</el-tag>
-                    <el-tag type="info">混天绫:道具</el-tag>
-                    <el-tag type="info">元宝:道具</el-tag>
-                    <el-tag type="info">混天绫:道具</el-tag>
-                  </p>
-                  <p class="text-Lens-time fr tx-r">
-                      <span>
-                        <el-tooltip class="m-r-5 pointer" effect="dark" content="资产剩余天数" placement="bottom-start">
-                          <span>{{ assetRemainDay(item.plan_end_timestamp) }}天</span>
-                        </el-tooltip>
-                        <el-tooltip class="m-r-5 pointer" effect="dark" content="资产建立时间" placement="bottom-start">
-                          <span>{{ assetCreateTime(item.create_timestamp) }}天</span>
-                        </el-tooltip>
+          <div class="ovf-hd">
+            <el-col :span="12" v-for="item in pauseList" :key="item.id">
+              <div class="grid-content p-b-5" @click="assetDetail(item.id)">
+                <el-card class="ovf-hd">
+                  <el-col :span="7">
+                    <img :src="address + item.asset_image" alt="" class="w-100p h-140">
+                  </el-col>
+                  <el-col :span="17" class="p-l-20 pos-rel">
+                    <p>{{item.asset_name}}</p>
+                    <p>
+                      <span class="m-r-15">{{item.project_name}}</span><span class="m-r-15">{{ item.type_name }}</span>
+                    </p>
+                    <p>
+                      <el-tag class="m-r-5" v-for="value in item.tache_info"
+                              :key="value.id" type="warning">
+                        {{ value.tache_byname }}
+                      </el-tag>
+                    </p>
+                    <div class="pos-abs r-0 t-0">
+                      <p class="m-b-0 m-t-10 tx-r">
                         <el-tooltip class="m-r-5 pointer" effect="dark" content="资产制作中时间" placement="bottom-start">
                           <span>0天</span>
                         </el-tooltip>
-                      </span>
-                    <span>
+                        <el-tooltip class="m-r-5 pointer" effect="dark" content="资产剩余天数" placement="bottom-start">
+                          <span>{{ assetRemainDay(item.plan_end_timestamp) }}天</span>
+                        </el-tooltip>
+                        <el-tooltip class="pointer" effect="dark" content="资产难度" placement="bottom-start">
+                          <el-tag type="warning">{{item.difficulty}}</el-tag>
+                        </el-tooltip>
+                      </p>
+                      <p class="m-b-0 m-t-10 tx-r">
                         <el-tooltip class="m-r-5 pointer" effect="dark" content="预计结束时间" placement="bottom-start">
                           <span>{{ j2time(item.plan_end_timestamp) }}</span>
                         </el-tooltip>
-                      </span>
-                  </p>
-                </div>
-                <div class="text-Lens-link m-t-10">
-                  <el-tag class="m-l-5" v-for="value in item.tache_info" v-if="value.finish_degree !== ''?true:false"
-                          :key="value.id" :type="value.finish_degree<100?'warning':'success'">
-                    {{ value.tache_byname }}：{{ value.finish_degree }}%
-                  </el-tag>
-                </div>
-              </el-card>
-            </div>
-          </el-col>
+                        <el-tooltip v-if="item.priority_level" class="pointer" effect="dark" content="资产优先级"
+                                    placement="bottom-start">
+                          <el-tag type="danger">{{item.priority_level}}</el-tag>
+                        </el-tooltip>
+                      </p>
+                    </div>
+                  </el-col>
+                </el-card>
+              </div>
+            </el-col>
+          </div>
           <div class="pos-rel p-t-20" v-if="pauseList.length">
             <div class="block tx-r">
               <el-pagination
@@ -358,59 +333,51 @@
           </div>
         </el-tab-pane>
         <el-tab-pane v-if="finishShow" label="资产完成" name="assetsFinish">
-          <el-col :span="12" v-for="item in finishList" :key="item.id" @click="assetDetail(item.id)">
-            <div class="grid-content p-b-5">
-              <el-card>
-                <div class="text-Lens pos-rel">
-                  <p class="text-Lens-name h-28 ">
-                    {{item.project_name}}：<span>{{item.shot_number}}</span>
-                  </p>
-                  <p class="text-Lens-rank pos-abs">
-                    <el-tooltip class="pointer" effect="dark" content="资产难度" placement="bottom-start">
-                      <el-tag type="warning">{{item.difficulty}}</el-tag>
-                    </el-tooltip>
-                    <el-tooltip v-if="item.priority_level" class="pointer" effect="dark" content="资产优先级"
-                                placement="bottom-start">
-                      <el-tag type="danger">{{item.priority_level}}</el-tag>
-                    </el-tooltip>
-                  </p>
-                </div>
-                <div class="text-Lens m-t-10">
-                  <p class="text-Lens-assets">
-                    <el-tag type="info">混天绫:道具</el-tag>
-                    <el-tag type="info">元宝:道具</el-tag>
-                    <el-tag type="info">混天绫:道具</el-tag>
-                    <el-tag type="info">元宝:道具</el-tag>
-                    <el-tag type="info">混天绫:道具</el-tag>
-                  </p>
-                  <p class="text-Lens-time fr tx-r">
-                      <span>
-                        <el-tooltip class="m-r-5 pointer" effect="dark" content="资产剩余天数" placement="bottom-start">
-                          <span>{{ assetRemainDay(item.plan_end_timestamp) }}天</span>
-                        </el-tooltip>
-                        <el-tooltip class="m-r-5 pointer" effect="dark" content="资产建立时间" placement="bottom-start">
-                          <span>{{ assetCreateTime(item.create_timestamp) }}天</span>
-                        </el-tooltip>
+          <div class="ovf-hd">
+            <el-col :span="12" v-for="item in finishList" :key="item.id">
+              <div class="grid-content p-b-5" @click="assetDetail(item.id)">
+                <el-card class="ovf-hd">
+                  <el-col :span="7">
+                    <img :src="address + item.asset_image" alt="" class="w-100p h-140">
+                  </el-col>
+                  <el-col :span="17" class="p-l-20 pos-rel">
+                    <p>{{item.asset_name}}</p>
+                    <p>
+                      <span class="m-r-15">{{item.project_name}}</span><span class="m-r-15">{{ item.type_name }}</span>
+                    </p>
+                    <p>
+                      <el-tag class="m-r-5" v-for="value in item.tache_info"
+                              :key="value.id" type="warning">
+                        {{ value.tache_byname }}
+                      </el-tag>
+                    </p>
+                    <div class="pos-abs r-0 t-0">
+                      <p class="m-b-0 m-t-10 tx-r">
                         <el-tooltip class="m-r-5 pointer" effect="dark" content="资产制作中时间" placement="bottom-start">
                           <span>0天</span>
                         </el-tooltip>
-                      </span>
-                    <span>
+                        <el-tooltip class="m-r-5 pointer" effect="dark" content="资产剩余天数" placement="bottom-start">
+                          <span>{{ assetRemainDay(item.plan_end_timestamp) }}天</span>
+                        </el-tooltip>
+                        <el-tooltip class="pointer" effect="dark" content="资产难度" placement="bottom-start">
+                          <el-tag type="warning">{{item.difficulty}}</el-tag>
+                        </el-tooltip>
+                      </p>
+                      <p class="m-b-0 m-t-10 tx-r">
                         <el-tooltip class="m-r-5 pointer" effect="dark" content="预计结束时间" placement="bottom-start">
                           <span>{{ j2time(item.plan_end_timestamp) }}</span>
                         </el-tooltip>
-                      </span>
-                  </p>
-                </div>
-                <div class="text-Lens-link m-t-10">
-                  <el-tag class="m-l-5" v-for="value in item.tache_info" v-if="value.finish_degree !== ''?true:false"
-                          :key="value.id" :type="value.finish_degree<100?'warning':'success'">
-                    {{ value.tache_byname }}：{{ value.finish_degree }}%
-                  </el-tag>
-                </div>
-              </el-card>
-            </div>
-          </el-col>
+                        <el-tooltip v-if="item.priority_level" class="pointer" effect="dark" content="资产优先级"
+                                    placement="bottom-start">
+                          <el-tag type="danger">{{item.priority_level}}</el-tag>
+                        </el-tooltip>
+                      </p>
+                    </div>
+                  </el-col>
+                </el-card>
+              </div>
+            </el-col>
+          </div>
           <div class="pos-rel p-t-20" v-if="finishList.length">
             <div class="block tx-r">
               <el-pagination
@@ -586,6 +553,8 @@
         })
         if (!this.isAssetDetailShow) {
           this.isAssetDetailShow = !this.isAssetDetailShow
+        }else {
+          this.getAllAssetsList()
         }
       },
       //      资产详情删除环节
@@ -595,7 +564,8 @@
         }).then(() => {
           _g.openGlobalLoading()
           const data = {
-            id: this.id, tache_name: tache_name
+            id: this.id,
+            tache_name: tache_name
           }
           this.apiPost('asset/tache_del', data).then((res) => {
             _g.closeGlobalLoading()
@@ -871,6 +841,7 @@
 
   .asset_list .el-card__body {
     padding: 15px;
+    overflow: hidden;
   }
 
   .asset_list .el-table {
@@ -925,61 +896,6 @@
     padding-left: 10px;
     border-bottom-right-radius: 5px;
     border-top-right-radius: 5px;
-  }
-
-  .asset_list .text-Lens:after {
-    content: '';
-    height: 0;
-    line-height: 0;
-    display: block;
-    visibility: hidden;
-    clear: both;
-  }
-
-  .asset_list .text-Lens p {
-    margin: 0;
-    display: inline-block;
-    font-weight: 500;
-  }
-
-  .asset_list .text-Lens .text-Lens-rank {
-    top: 0;
-    right: 0;
-  }
-
-  .asset_list .text-Lens-assets {
-    max-width: 70%;
-    float: left;
-  }
-
-  .asset_list .text-Lens-assets .el-tag {
-    margin-bottom: 5px;
-  }
-
-  .asset_list .text-Lens-time {
-    width: 30%;
-  }
-
-  .asset_list .text-Lens-time span {
-    display: inline-block;
-    height: 30px;
-    line-height: 30px;
-    font-weight: normal;
-  }
-
-  .asset_list .text-Lens-time .item {
-    margin-right: 0;
-    padding: 12px 4px;
-    margin-left: 0;
-    border-radius: 0;
-    border: none;
-    border-right: 1px solid;
-    line-height: 0;
-    font-size: 14px;
-  }
-
-  .asset_list .text-Lens-link {
-    text-align: right;
   }
 </style>
 

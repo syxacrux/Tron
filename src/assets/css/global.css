@@ -24,6 +24,18 @@ a {
 .pos-abs {
     position: absolute;
 }
+.t-0{
+    top: 0;
+}
+.r-0{
+    right: 0;
+}
+.b-0{
+    bottom: 0;
+}
+.l-0{
+    left: 0;
+}
 .ovf-hd {
     overflow: hidden
 }
@@ -141,6 +153,9 @@ a {
 .h-100 {
     height: 100px !important;
 }
+.h-140 {
+    height: 140px !important;
+}
 .h-150 {
     height: 150px !important;
 }
@@ -222,6 +237,9 @@ a {
 }
 .m-r-30 {
     margin-right: 30px !important;
+}
+.m-b-0 {
+    margin-bottom: 0px !important;
 }
 .m-b-5 {
     margin-bottom: 5px !important;
