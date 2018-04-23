@@ -1,5 +1,5 @@
 <template>
-  <div class="project_list">
+  <div class="project">
     <div class="m-b-20">
       <el-breadcrumb separator="/">
         <el-breadcrumb-item :to="{ path: '/admin' }">首页</el-breadcrumb-item>
@@ -159,16 +159,16 @@
   }
 </script>
 <style>
-  .project_list .item {
+  .project .item {
     margin-right: 20px;
   }
 
-  .project_list .content p {
+  .project .content p {
     font-size: 13px;
     color: #333;
   }
 
-  .project_list .content p span {
+  .project .content p span {
     color: #666;
     display: inline-block;
     width: 48%;
@@ -177,28 +177,28 @@
     white-space: nowrap;
   }
 
-  .project_list .pos-abs {
+  .project .pos-abs {
     display: inline-block;
     right: 0;
   }
 
-  .project_list .bottom {
+  .project .bottom {
     margin-top: 13px;
     line-height: 12px;
   }
 
-  .project_list .button {
+  .project .button {
     padding: 0;
     float: right;
   }
 
-  .project_list .image {
+  .project .image {
     width: 100%;
     height: 300px;
     display: block;
   }
 
-  .project_list .project_list{
+  .project .project_list{
     margin-bottom: 30px;
     margin-right: 45px;
   }
