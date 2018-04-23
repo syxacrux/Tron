@@ -186,7 +186,7 @@ class Shot extends Common
 		$this->startTrans();
 		try {
 			//资产ID 多项 字符串 以逗号分割(现在没有不加资产)
-			//$param['asset_ids'] = implode(",",$param['asset_ids']);
+			$param['asset_ids'] = !empty($param['asset_ids']) ? implode(",",$param['asset_ids']) : '';
 			$param['shot_image'] = str_replace('\\', '/', $param['shot_image']);
 			$param['plan_start_timestamp'] = strtotime($param['plan_start_timestamp']);
 			$param['plan_end_timestamp'] = strtotime($param['plan_end_timestamp']);
