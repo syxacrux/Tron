@@ -411,7 +411,7 @@
         form: {
           project_id: '',    //所属项目id
           field_id: '',     //场号id
-          asset_ids: '',    //资产id
+          asset_ids: [],    //资产id
           shot_image: '',    //镜头缩略图地址
           shot_number: '',    //镜头编号
           shot_byname: '',    //镜头简称

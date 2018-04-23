@@ -217,62 +217,62 @@
           </div>
         </el-tab-pane>
         <el-tab-pane label="资产未制作" name="assetsNotDevelopment">
-          <div class="ovf-hd">
-            <el-col :span="12" v-for="item in waitingList" :key="item.id">
-              <div class="grid-content p-b-5" @click="assetDetail(item.id)">
-                <el-card class="ovf-hd">
-                  <el-col :span="7">
-                    <img :src="address + item.asset_image" alt="" class="w-100p h-140">
-                  </el-col>
-                  <el-col :span="17" class="p-l-20 pos-rel">
-                    <p>{{item.asset_name}}</p>
-                    <p>
-                      <span class="m-r-15">{{item.project_name}}</span><span class="m-r-15">{{ item.type_name }}</span>
-                    </p>
-                    <p>
-                      <el-tag class="m-r-5" v-for="value in item.tache_info"
-                              :key="value.id" type="warning">
-                        {{ value.tache_byname }}
-                      </el-tag>
-                    </p>
-                    <div class="pos-abs r-0 t-0">
-                      <p class="m-b-0 m-t-10 tx-r">
-                        <el-tooltip class="m-r-5 pointer" effect="dark" content="资产制作中时间" placement="bottom-start">
-                          <span>0天</span>
-                        </el-tooltip>
-                        <el-tooltip class="m-r-5 pointer" effect="dark" content="资产剩余天数" placement="bottom-start">
-                          <span>{{ assetRemainDay(item.plan_end_timestamp) }}天</span>
-                        </el-tooltip>
-                        <el-tooltip class="pointer" effect="dark" content="资产难度" placement="bottom-start">
-                          <el-tag type="warning">{{item.difficulty}}</el-tag>
-                        </el-tooltip>
+            <div class="ovf-hd">
+              <el-col :span="12" v-for="item in waitingList" :key="item.id">
+                <div class="grid-content p-b-5" @click="assetDetail(item.id)">
+                  <el-card class="ovf-hd">
+                    <el-col :span="7">
+                      <img :src="address + item.asset_image" alt="" class="w-100p h-140">
+                    </el-col>
+                    <el-col :span="17" class="p-l-20 pos-rel">
+                      <p>{{item.asset_name}}</p>
+                      <p>
+                        <span class="m-r-15">{{item.project_name}}</span><span class="m-r-15">{{ item.type_name }}</span>
                       </p>
-                      <p class="m-b-0 m-t-10 tx-r">
-                        <el-tooltip class="m-r-5 pointer" effect="dark" content="预计结束时间" placement="bottom-start">
-                          <span>{{ j2time(item.plan_end_timestamp) }}</span>
-                        </el-tooltip>
-                        <el-tooltip v-if="item.priority_level" class="pointer" effect="dark" content="资产优先级"
-                                    placement="bottom-start">
-                          <el-tag type="danger">{{item.priority_level}}</el-tag>
-                        </el-tooltip>
+                      <p>
+                        <el-tag class="m-r-5" v-for="value in item.tache_info"
+                                :key="value.id" type="warning">
+                          {{ value.tache_byname }}
+                        </el-tag>
                       </p>
-                    </div>
-                  </el-col>
-                </el-card>
-              </div>
-            </el-col>
-          </div>
-          <div class="pos-rel p-t-20" v-if="waitingList.length">
-            <div class="block tx-r">
-              <el-pagination
-                  @current-change="waitingCurrentChange"
-                  :current-page.sync="currentPage"
-                  :page-size="10"
-                  layout="prev, pager, next, jumper"
-                  :total="waitingDataCount">
-              </el-pagination>
+                      <div class="pos-abs r-0 t-0">
+                        <p class="m-b-0 m-t-10 tx-r">
+                          <el-tooltip class="m-r-5 pointer" effect="dark" content="资产制作中时间" placement="bottom-start">
+                            <span>0天</span>
+                          </el-tooltip>
+                          <el-tooltip class="m-r-5 pointer" effect="dark" content="资产剩余天数" placement="bottom-start">
+                            <span>{{ assetRemainDay(item.plan_end_timestamp) }}天</span>
+                          </el-tooltip>
+                          <el-tooltip class="pointer" effect="dark" content="资产难度" placement="bottom-start">
+                            <el-tag type="warning">{{item.difficulty}}</el-tag>
+                          </el-tooltip>
+                        </p>
+                        <p class="m-b-0 m-t-10 tx-r">
+                          <el-tooltip class="m-r-5 pointer" effect="dark" content="预计结束时间" placement="bottom-start">
+                            <span>{{ j2time(item.plan_end_timestamp) }}</span>
+                          </el-tooltip>
+                          <el-tooltip v-if="item.priority_level" class="pointer" effect="dark" content="资产优先级"
+                                      placement="bottom-start">
+                            <el-tag type="danger">{{item.priority_level}}</el-tag>
+                          </el-tooltip>
+                        </p>
+                      </div>
+                    </el-col>
+                  </el-card>
+                </div>
+              </el-col>
             </div>
-          </div>
+            <div class="pos-rel p-t-20" v-if="waitingList.length">
+              <div class="block tx-r">
+                <el-pagination
+                    @current-change="waitingCurrentChange"
+                    :current-page.sync="currentPage"
+                    :page-size="10"
+                    layout="prev, pager, next, jumper"
+                    :total="waitingDataCount">
+                </el-pagination>
+              </div>
+            </div>
         </el-tab-pane>
         <el-tab-pane v-if="suspendShow" label="资产暂停" name="assetsSuspend">
           <div class="ovf-hd">

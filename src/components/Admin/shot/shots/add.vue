@@ -629,15 +629,48 @@
       },
 //      添加镜头
       add(form) {
-        if (
-          this.artOfStudio.length === 0 && this.modelOfStudio.length === 0 && this.mapOfStudio.length === 0 &&
-          this.bindOfStudio.length === 0 && this.trackOfStudio.length === 0 && this.animateOfStudio.length === 0 &&
-          this.paintOfStudio.length === 0 && this.specialOfStudio.length === 0 && this.lightOfStudio.length === 0 &&
-          this.synchOfStudio.length === 0
-        ) {
-          _g.toastMsg('warning', '请选择至少一个环节所属工作室')
-          return
+//        if (
+//          this.artOfStudio.length === 0 && this.modelOfStudio.length === 0 && this.mapOfStudio.length === 0 &&
+//          this.bindOfStudio.length === 0 && this.trackOfStudio.length === 0 && this.animateOfStudio.length === 0 &&
+//          this.paintOfStudio.length === 0 && this.specialOfStudio.length === 0 && this.lightOfStudio.length === 0 &&
+//          this.synchOfStudio.length === 0
+//        ) {
+//          _g.toastMsg('warning', '请选择至少一个环节所属工作室')
+//          return
+//        }
+        let obj = {}
+        if(this.isArt) {
+          obj[3] = this.artOfStudio
         }
+        if(this.isModel) {
+          obj[4] = this.modelOfStudio
+        }
+        if(this.isMap) {
+          obj[5] = this.mapOfStudio
+        }
+        if(this.isBind) {
+          obj[6] = this.bindOfStudio
+        }
+        if(this.isTrack) {
+          obj[7] = this.trackOfStudio
+        }
+        if(this.isAni) {
+          obj[8] = this.animateOfStudio
+        }
+        if(this.isPaint) {
+          obj[9] = this.paintOfStudio
+        }
+        if(this.isSpec) {
+          obj[10] = this.specialOfStudio
+        }
+        if(this.isLight) {
+          obj[11] = this.lightOfStudio
+        }
+        if(this.isSynch) {
+          obj[12] = this.synchOfStudio
+        }
+        this.form.tache = obj
+        console.log(this.form.tache)
         if (!this.form.shot_image) {
           _g.toastMsg('warning', '请插入镜头缩略图')
           return
@@ -663,19 +696,6 @@
         this.form.handle_frame = this.handle_frame1 && this.handle_frame2 ? this.handle_frame1 + ',' + this.handle_frame2 : ''
         this.form.clip_frame_length = this.form.clip_frame_length ? parseInt(this.form.clip_frame_length) : 0
         this.form.material_frame_length = this.form.material_frame_length ? parseInt(this.form.material_frame_length) : ''
-
-        this.form.tache = {
-          3: this.artOfStudio,
-          4: this.modelOfStudio,
-          5: this.mapOfStudio,
-          6: this.bindOfStudio,
-          7: this.trackOfStudio,
-          8: this.animateOfStudio,
-          9: this.paintOfStudio,
-          10: this.specialOfStudio,
-          11: this.lightOfStudio,
-          12: this.synchOfStudio
-        }
 
         this.$refs.form.validate((pass) => {
           if (pass) {
