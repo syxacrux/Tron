@@ -329,6 +329,7 @@ class Excel{
         return $this;
     }
 
+
     /**
      * 魔术方法 有不存在的操作的时候执行
      * @access public
