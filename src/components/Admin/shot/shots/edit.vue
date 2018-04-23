@@ -768,9 +768,13 @@
         this.frame_range2 = data.frame_range.split(',')[1]
         this.form.material_number = data.material_number
         let asset_ids = data.asset_ids ? data.asset_ids : []
-        _(asset_ids).forEach((key) => {
-          this.form.asset_ids.push(parseInt(key))
-        })
+        if(asset_ids.length > 0){
+          _(asset_ids).forEach((key) => {
+            this.form.asset_ids.push(parseInt(key))
+          })
+        }else{
+          this.form.asset_ids = []
+        }
         this.form.clip_frame_length = data.clip_frame_length
         this.form.material_frame_length = data.material_frame_length
         this.form.second_company = data.second_company
