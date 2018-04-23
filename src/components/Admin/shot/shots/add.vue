@@ -610,7 +610,7 @@
       getShotTemplate() {
         this.apiPost('shot/template').then((res) => {
           this.handelResponse(res, (data) => {
-
+            window.location.href = window.baseUrl + res.data
           })
         })
       },
