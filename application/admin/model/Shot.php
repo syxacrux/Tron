@@ -516,25 +516,23 @@ class Shot extends Common
 
 	//获取模板
 	public function shot_template(){
-		$PHPExcel = new \PHPExcel();
-		$PHPSheet = $PHPExcel->getActiveSheet();
-		$PHPSheet->setTitle("demo"); //给当前活动sheet设置名称
-		$PHPSheet->setCellValue("A1","姓名")->setCellValue("B1","分数");//表格数据
-		$PHPSheet->setCellValue("A2","张三")->setCellValue("B2","2121");//表格数据
 		$file_name = '123.xls';
-		$objWriter = \PHPExcel_IOFactory::createWriter($PHPExcel, 'Excel2007');
-		header('Content-Disposition: attachment;filename=".$file_name."');
-		header("Pragma: public");
-		header("Expires: 0");
-		header("Cache-Control:must-revalidate, post-check=0, pre-check=0");
-		header("Content-Type:application/force-download");
-		header("Content-Type:application/vnd.ms-execl");
-		header("Content-Type:application/download");
-		header('Content-Type:application/octet-stream');
-		header("Content-Transfer-Encoding:binary");
 		$files = "uploads/Projects/excels/".$file_name;
-		$objWriter->save($files); //文件通过浏览器下载
-		return $files;
-		//exit;
+		if(is_file($files)){
+			return $files;
+		}else{
+			$PHPExcel = new \PHPExcel();
+			$PHPSheet = $PHPExcel->getActiveSheet();
+			$PHPSheet->setTitle("demo"); //给当前活动sheet设置名称
+			$PHPSheet->setCellValue("A1","姓名")->setCellValue("B1","分数");//表格数据
+			$PHPSheet->setCellValue("A2","张三")->setCellValue("B2","2121");//表格数据
+			$objWriter = \PHPExcel_IOFactory::createWriter($PHPExcel, 'Excel2007');
+			header('Content-Disposition: attachment;filename=".$file_name."');
+			header('Content-Type: application/vnd.ms-excel; charset=utf-8');
+			header("Content-Disposition: attachment;filename=$file_name");
+			header('Cache-Control: max-age=0');
+			$objWriter->save($files); //文件通过浏览器下载
+			return $files;
+		}
 	}
 }
