@@ -6,7 +6,7 @@
           <el-col :span="8">
             <div class="grid-content">
               <el-form-item label="项目名称:" prop="project_id">
-                <el-select v-model="form.project_id" placeholder="请选择项目" @change="getFields">
+                <el-select v-model="form.project_id" placeholder="请选择项目" @change="getFieldsAndAssets">
                   <el-option v-for="item in projectList" :label="item.project_name" :value="item.id"
                              :key="item.project_name"></el-option>
                 </el-select>
@@ -28,8 +28,8 @@
             <div class="grid-content">
               <el-form-item label="资产:" prop="asset_ids">
                 <el-select v-model="form.asset_ids" multiple collapse-tags placeholder="请选择资产" class="h-40 w-200">
-                  <el-option label="我是资产1" value="1"></el-option>
-                  <el-option label="我是资产2" value="2"></el-option>
+                  <el-option v-for="item in assetList" :label="item.asset_name" :value="item.id"
+                             :key="item.id"></el-option>
                 </el-select>
               </el-form-item>
             </div>
@@ -402,6 +402,7 @@
         studiosListLight: [],
         studiosListSynch: [],
         fieldList: [],
+        assetList: [],
         fieldForm: {
           project_id: '',
           name: '',
@@ -717,7 +718,7 @@
         })
       },
 //      获取所有场号、集号
-      getFields() {
+      getFieldsAndAssets() {
         this.form.field_id = ''
         const data = {
           params: {
@@ -728,6 +729,11 @@
         this.apiGet('admin/get_fields', data).then((res) => {
           this.handelResponse(res, (data) => {
             this.fieldList = data
+          })
+        })
+        this.apiGet('admin/assets', { params: { project_id: this.form.project_id } }).then((res) => {
+          this.handelResponse(res, (data) => {
+            this.assetList = data.list
           })
         })
       },
@@ -745,7 +751,7 @@
         this.shotDetail = data
         this.id = data.id
         this.form.project_id = data.project_id
-        this.getFields()
+        this.getFieldsAndAssets()
         this.form.field_id = data.field_id
         this.form.shot_number = data.shot_number
         this.form.shot_byname = data.shot_byname
@@ -761,7 +767,10 @@
         this.frame_range1 = data.frame_range.split(',')[0]
         this.frame_range2 = data.frame_range.split(',')[1]
         this.form.material_number = data.material_number
-        this.form.asset_ids = data.asset_ids
+        let asset_ids = data.asset_ids ? data.asset_ids : []
+        _(asset_ids).forEach((key) => {
+          this.form.asset_ids.push(parseInt(key))
+        })
         this.form.clip_frame_length = data.clip_frame_length
         this.form.material_frame_length = data.material_frame_length
         this.form.second_company = data.second_company

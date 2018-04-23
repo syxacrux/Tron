@@ -11,7 +11,6 @@
     <div class="m-r-30 m-b-20 m-t-30 tx-r">
       <el-button type="primary" size="small" plain v-if="importAddShow" @click="isImportShot = true">批量导入</el-button>
       <el-button type="text" size="mini" class="fz-12 m-0" @click="getShotTemplate">点击获取模板</el-button>
-      <a class="btn-link-large add-btn" href="shot/template">haha</a>
     </div>
     <div class="m-l-50 m-t-30 w-1000">
       <el-form ref="form" :model="form" :rules="rules" label-width="130px" class="shot_add">
@@ -19,7 +18,7 @@
           <el-col :span="8">
             <div class="grid-content">
               <el-form-item label="项目名称:" prop="project_id">
-                <el-select v-model="form.project_id" placeholder="请选择项目" @change="getFields">
+                <el-select v-model="form.project_id" placeholder="请选择项目" @change="getFieldsAndAssets">
                   <el-option v-for="item in projectList" :label="item.project_name" :value="item.id"
                              :key="item.id"></el-option>
                 </el-select>
@@ -41,8 +40,8 @@
             <div class="grid-content">
               <el-form-item label="资产:" prop="asset_ids">
                 <el-select v-model="form.asset_ids" multiple collapse-tags placeholder="请选择资产" class="h-40 w-200">
-                  <el-option label="我是资产1" value="1"></el-option>
-                  <el-option label="我是资产2" value="2"></el-option>
+                  <el-option v-for="item in assetList" :label="item.asset_name" :value="item.id"
+                             :key="item.id"></el-option>
                 </el-select>
               </el-form-item>
             </div>
@@ -491,6 +490,7 @@
         projectList: [],
         studiosList: [],
         fieldList: [],
+        assetList: [],
         importForm: {
           project_id: '',  //所属项目id
           shot_file: ''    //导入镜头文件
@@ -657,7 +657,8 @@
         this.form.priority_level = this.form.priority_level ? parseInt(this.form.priority_level) : 1
         this.form.difficulty = this.form.difficulty ? parseInt(this.form.difficulty) : 1
 //        选填项
-//        this.form.asset_ids = this.form.asset_ids.join('')
+        console.log(this.form.asset_ids, 123)
+        this.form.asset_ids = this.form.asset_ids ? this.form.asset_ids.join('') : ''
         this.form.frame_range = this.frame_range1 && this.frame_range2 ? this.frame_range1 + ',' + this.frame_range2 : ''
         this.form.handle_frame = this.handle_frame1 && this.handle_frame2 ? this.handle_frame1 + ',' + this.handle_frame2 : ''
         this.form.clip_frame_length = this.form.clip_frame_length ? parseInt(this.form.clip_frame_length) : 0
@@ -707,8 +708,8 @@
           })
         })
       },
-//      获取所有场号、集号
-      getFields() {
+//      获取所有场号、集号和资产
+      getFieldsAndAssets() {
         this.form.field_id = ''
         const data = {
           params: {
@@ -719,6 +720,11 @@
         this.apiGet('admin/get_fields', data).then((res) => {
           this.handelResponse(res, (data) => {
             this.fieldList = data
+          })
+        })
+        this.apiGet('admin/assets', { params: { project_id: this.form.project_id } }).then((res) => {
+          this.handelResponse(res, (data) => {
+            this.assetList = data.list
           })
         })
       }
