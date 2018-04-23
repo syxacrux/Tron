@@ -821,7 +821,7 @@
                 this.feedbackDataCount = data.dataCount
                 this.feedbackList = data.list
                 break;
-              case 'waiting':
+              case 'waiting_shot':
                 this.waitingDataCount = data.dataCount
                 this.waitingList = data.list
                 break;
@@ -900,7 +900,7 @@
             this.getShots('feedback', 1)
             break;
           case 'shotsNotDevelopment':
-            this.getShots('waiting', 1)
+            this.getShots('waiting_shot', 1)
             break;
           case 'shotsSuspend':
             this.getShots('pause', 1)
