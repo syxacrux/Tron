@@ -97,7 +97,7 @@ return [
 	// [镜头] 删除工作室
 	'shot/studio_del'				=>			['admin/shots/delete_studio',['method'=>'POST']],
 	// [镜头] 获取模版
-	'shot/template'					=>			['admin/shots/template',['method'=>'GET']],
+	'shot/template'					=>			['admin/shots/template',['method'=>'POST']],
 	// [工作台] 标准列表
 	'task/index_list'				=>			['admin/workbenches/index_list',['method' => 'GET']],
 	// [工作台] 改变状态

@@ -521,16 +521,20 @@ class Shot extends Common
 		$PHPSheet->setTitle("demo"); //给当前活动sheet设置名称
 		$PHPSheet->setCellValue("A1","姓名")->setCellValue("B1","分数");//表格数据
 		$PHPSheet->setCellValue("A2","张三")->setCellValue("B2","2121");//表格数据
+		$file_name = '123.xls';
 		$objWriter = \PHPExcel_IOFactory::createWriter($PHPExcel, 'Excel2007');
-		header("Cache-Control: public");
+		header('Content-Disposition: attachment;filename=".$file_name."');
 		header("Pragma: public");
-		header("Content-Type: application/force-download");
-		header("Content-Type: application/octet-stream");
+		header("Expires: 0");
+		header("Cache-Control:must-revalidate, post-check=0, pre-check=0");
+		header("Content-Type:application/force-download");
+		header("Content-Type:application/vnd.ms-execl");
 		header("Content-Type:application/download");
-		header("Content-type:application/vnd.ms-excel");
-		header('Content-Disposition: attachment;filename="123.xls"');
-		header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-		$objWriter->save('php://output'); //文件通过浏览器下载
-		exit;
+		header('Content-Type:application/octet-stream');
+		header("Content-Transfer-Encoding:binary");
+		$files = "uploads/Projects/excels/".$file_name;
+		$objWriter->save($files); //文件通过浏览器下载
+		return $files;
+		//exit;
 	}
 }
