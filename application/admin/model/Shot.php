@@ -530,7 +530,6 @@ class Shot extends Common
 		header("Content-type:application/vnd.ms-excel");
 		header('Content-Disposition: attachment;filename="123.xls"');
 		header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-
 		$objWriter->save('php://output'); //文件通过浏览器下载
 		exit;
 	}
