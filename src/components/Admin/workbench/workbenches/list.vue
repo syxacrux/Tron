@@ -369,8 +369,8 @@
         <el-table ref="multipleTable" :data="tableList" tooltip-effect="dark" @selection-change="handleSelectionChange" @row-click="taskDetail">
           <el-table-column type="selection" width="50"></el-table-column>
           <el-table-column prop="project_name" label="项目"></el-table-column>
-          <el-table-column prop="field_number" label="场号"></el-table-column>
-          <el-table-column prop="shot_number" label="镜头号"></el-table-column>
+          <el-table-column prop="field_number" label="场号/类型"></el-table-column>
+          <el-table-column prop="shot_number" label="镜头号/名称"></el-table-column>
           <el-table-column prop="difficulty" label="难度"></el-table-column>
           <el-table-column prop="task_priority_level" label="优先级"></el-table-column>
           <el-table-column prop="status_cn" label="进度"></el-table-column>
@@ -452,12 +452,12 @@
                 <p class="m-0">所属项目：<span>{{ finishList.project_name }}</span></p>
               </el-col>
                <el-col :span="12">
-                <p class="m-0">镜头名称：<span>{{ finishList.shot_name }}</span></p>
+                <p class="m-0">镜头名称/资产名称：<span>{{ finishList.shot_name }}</span></p>
               </el-col>
             </el-row>
             <el-row :gutter="20" class="m-b-5">
               <el-col :span="12">
-                <p class="m-0">镜头简称：<span>{{ finishList.shot_byname }}</span></p>
+                <p class="m-0">镜头简称/资产简称：<span>{{ finishList.shot_byname }}</span></p>
               </el-col>
               <el-col :span="12">
                 <p class="m-0">场号/集号：<span>{{ finishList.field_number }}</span></p>
@@ -978,7 +978,7 @@
     text-align: right;
   }
   .workbench_list .task_detail {
-    width: 25%;
+    width: 30%;
     position: fixed;
     right: 20px;
     top: 100px;

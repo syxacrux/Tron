@@ -351,8 +351,13 @@ class Asset extends Common
 	public function get_studio_name($studio_id_arr)
 	{
 		foreach ($studio_id_arr as $key => $value) {
-			$arr[$key]['id'] = $value;
-			$arr[$key]['name'] = Studio::get($value)->name;
+			if($value != 0){
+				$arr[$key]['id'] = $value;
+				$arr[$key]['name'] = Studio::get($value)->name;
+			}else{
+				$arr = [];
+			}
+
 		}
 		return $arr;
 	}
