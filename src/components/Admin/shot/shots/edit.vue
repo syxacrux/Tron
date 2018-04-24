@@ -636,15 +636,19 @@
       },
 //      编辑镜头
       edit(form) {
-        if (
-          this.artOfStudio.length === 0 && this.modelOfStudio.length === 0 && this.mapOfStudio.length === 0 &&
-          this.bindOfStudio.length === 0 && this.trackOfStudio.length === 0 && this.animateOfStudio.length === 0 &&
-          this.paintOfStudio.length === 0 && this.specialOfStudio.length === 0 && this.lightOfStudio.length === 0 &&
-          this.synchOfStudio.length === 0
-        ) {
-          _g.toastMsg('warning', '请选择至少一个环节所属工作室')
-          return
+        if(this.isArt || this.isModel || this.isMap || this.isBind || this.isTrack ||
+          this.isAni || this.isPaint || this.isSpec || this.isLight || this.isSynch) {
+          if (
+            this.artOfStudio.length === 0 && this.modelOfStudio.length === 0 && this.mapOfStudio.length === 0 &&
+            this.bindOfStudio.length === 0 && this.trackOfStudio.length === 0 && this.animateOfStudio.length === 0 &&
+            this.paintOfStudio.length === 0 && this.specialOfStudio.length === 0 && this.lightOfStudio.length === 0 &&
+            this.synchOfStudio.length === 0
+          ) {
+            _g.toastMsg('warning', '请选择至少一个环节所属工作室')
+            return
+          }
         }
+
         if (!this.form.shot_image) {
           _g.toastMsg('warning', '请插入镜头缩略图')
           return
@@ -696,7 +700,7 @@
         this.form.plan_start_timestamp = _g.j2time(this.plan_time[0])
         this.form.plan_end_timestamp = _g.j2time(this.plan_time[1])
 //        选填项
-        this.form.asset_ids = this.form.asset_ids ? this.form.asset_ids.join('') : ''
+        this.form.asset_ids = this.form.asset_ids ? this.form.asset_ids.join(',') : ''
 //        this.form.is_assets = this.form.is_assets ? parseInt(this.form.is_assets) : 2
         this.form.frame_range = this.frame_range1 && this.frame_range2 ? this.frame_range1 + ',' + this.frame_range2 : ''
         this.form.handle_frame = this.handle_frame1 && this.handle_frame2 ? this.handle_frame1 + ',' + this.handle_frame2 : ''
