@@ -326,7 +326,7 @@
         form: {
           project_id: '',    //所属项目id
           field_id: '',     //场号id
-          asset_ids: '',    //资产id
+          // asset_ids: '',    //资产id
           asset_image: '',    //资产缩略图地址
           asset_byname: '',    //资产简称
           asset_name: '',    //资产名称

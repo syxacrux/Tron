@@ -57,6 +57,8 @@ import assetsList from '@/components/Admin/library/assets/list.vue'
 import assetsAdd from '@/components/Admin/library/assets/add.vue'
 // 库管理-参考库管理
 import referencesList from '@/components/Admin/library/references/list.vue'
+//审批管理-dailies
+import approvalsList from '@/components/Admin/approval/approvals/list.vue'
 
 Vue.use(VueRouter)
 
@@ -341,6 +343,19 @@ const routes = [
         component: referencesList,
         name: 'referencesList',
         meta: { hideLeft: false, module: 'Admin', menu: 'references' }
+      }
+    ]
+  },
+  //审批管理-dailies
+  {
+    path: '/admin',
+    component: Home,
+    children: [
+      {
+        path: 'approvals/list',
+        component: approvalsList,
+        name: 'approvalsList',
+        meta: { hideLeft: false, module: 'Admin', menu: 'approvals' }
       }
     ]
   }
