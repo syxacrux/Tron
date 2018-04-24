@@ -670,7 +670,6 @@
           obj[12] = this.synchOfStudio
         }
         this.form.tache = obj
-        console.log(this.form.tache)
         if (!this.form.shot_image) {
           _g.toastMsg('warning', '请插入镜头缩略图')
           return
@@ -690,7 +689,6 @@
         this.form.priority_level = this.form.priority_level ? parseInt(this.form.priority_level) : 1
         this.form.difficulty = this.form.difficulty ? parseInt(this.form.difficulty) : 1
 //        选填项
-        console.log(this.form.asset_ids, 123)
         this.form.asset_ids = this.form.asset_ids ? this.form.asset_ids.join('') : ''
         this.form.frame_range = this.frame_range1 && this.frame_range2 ? this.frame_range1 + ',' + this.frame_range2 : ''
         this.form.handle_frame = this.handle_frame1 && this.handle_frame2 ? this.handle_frame1 + ',' + this.handle_frame2 : ''
