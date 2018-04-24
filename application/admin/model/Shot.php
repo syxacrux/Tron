@@ -297,11 +297,7 @@ class Shot extends Common
 			$param['create_time'] = time();
 			//检测所属镜头ID的资产是否包含未完成的任务
 			$is_assets = !empty($param['asset_ids']) ? $this->check_assets_status($param['asset_ids']) : 2;  // return 1/2
-			foreach ($param['tache'] as $key => $value) {
-				if (!empty($value)) {
-					$tache_data[$key] = $value;
-				}
-			}
+
 			$shot_model = new Shot();
 			//更新当前镜头行记录
 			$shot_model->allowField(true)->save($param, [$this->getPk() => $id]);
@@ -309,38 +305,47 @@ class Shot extends Common
 			$field_name = Field::get($param['field_id'])->name;
 			//执行redis添加镜头所属目录 python
 			$str = "'Shot' '{$project_byname}' '{$field_name}' '{$param['shot_name']}'";
-			//根据环节分配任务给各大工作室
-			foreach ($tache_data as $key => $val) {
-				foreach ($val as $k => $v) {
-					$task_data['group_id'] = 5;
-					$task_data['user_id'] = 0;
-					$task_data['project_id'] = $param['project_id'];   //所属项目ID
-					$task_data['field_id'] = $param['field_id'];   //场号ID
-					$task_data['shot_id'] = $id;  //镜头ID
-					$task_data['asset_id'] = 0;
-					$task_data['tache_id'] = $key;  //环节ID
-					$task_data['tache_sort'] = Tache::get($key)->sort;  //环节排序
-					$task_data['studio_id'] = $v;   //工作室ID
-					$task_data['task_type'] = 1;    //镜头类型
-					$task_data['task_image'] = $shot_obj->shot_image;
-					$task_data['task_byname'] = $shot_obj->shot_byname;//任务简称暂且为镜头的简称，任务模块中，可修改
-					$task_data['task_priority_level'] = $shot_obj->priority_level;   //任务优先级
-					$task_data['difficulty'] = $shot_obj->difficulty;    //任务难度
-					$task_data['plan_start_timestamp'] = $shot_obj->plan_start_timestamp;  //计划开始时间
-					$task_data['plan_end_timestamp'] = $shot_obj->plan_end_timestamp;    //计划结束时间
-					$task_data['task_status'] = 1;  //任务状态
-					$task_data['is_assets'] = $is_assets; //是否为等待资产 1是 2否
-					$task_data['pid'] = 0;  //工作室顶级任务ID都为0
-					$task_data['create_time'] = time();//创建时间
-					$task_model = new Workbench();
-					$task_model->data($task_data, true)->isUpdate(false)->save();
+			/* 修改基本信息 或者 为环节分配所属工作室的任务 */
+			if(!empty($param['tache'])){
+				foreach ($param['tache'] as $key => $value) {
+					if (!empty($value)) {
+						$tache_data[$key] = $value;
+					}
 				}
+				//根据环节分配任务给各大工作室
+				foreach ($tache_data as $key => $val) {
+					foreach ($val as $k => $v) {
+						$task_data['group_id'] = 5;
+						$task_data['user_id'] = 0;
+						$task_data['project_id'] = $param['project_id'];   //所属项目ID
+						$task_data['field_id'] = $param['field_id'];   //场号ID
+						$task_data['shot_id'] = $id;  //镜头ID
+						$task_data['asset_id'] = 0;
+						$task_data['tache_id'] = $key;  //环节ID
+						$task_data['tache_sort'] = Tache::get($key)->sort;  //环节排序
+						$task_data['studio_id'] = $v;   //工作室ID
+						$task_data['task_type'] = 1;    //镜头类型
+						$task_data['task_image'] = $shot_obj->shot_image;
+						$task_data['task_byname'] = $shot_obj->shot_byname;//任务简称暂且为镜头的简称，任务模块中，可修改
+						$task_data['task_priority_level'] = $shot_obj->priority_level;   //任务优先级
+						$task_data['difficulty'] = $shot_obj->difficulty;    //任务难度
+						$task_data['plan_start_timestamp'] = $shot_obj->plan_start_timestamp;  //计划开始时间
+						$task_data['plan_end_timestamp'] = $shot_obj->plan_end_timestamp;    //计划结束时间
+						$task_data['task_status'] = 1;  //任务状态
+						$task_data['is_assets'] = $is_assets; //是否为等待资产 1是 2否
+						$task_data['pid'] = 0;  //工作室顶级任务ID都为0
+						$task_data['create_time'] = time();//创建时间
+						$task_model = new Workbench();
+						$task_model->data($task_data, true)->isUpdate(false)->save();
+					}
+				}
+				$this->commit();
+				return true;
+			}else{	//更新镜头数据
+				$shot_model->allowField(true)->save($param, [$this->getPk() => $id]);
+				$this->commit();
+				return true;
 			}
-			//更新所属项目的任务数量
-//			$task_count['task_count'] = Workbench::where('project_id', $shot_obj->project_id)->where('pid','!=',0)->count('id');
-//			Db::name('admin_project')->where('id', $shot_obj->project_id)->update($task_count);
-			$this->commit();
-			return true;
 		} catch (\Exception $e) {
 			$this->rollback();
 			$this->error = '编辑失败';
