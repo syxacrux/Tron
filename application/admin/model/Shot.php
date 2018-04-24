@@ -425,7 +425,8 @@ class Shot extends Common
 	//根据工作室ID数组拼接成中文字符串
 	public function get_studio_name($studio_id_arr)
 	{
-		foreach ($studio_id_arr as $key => $value) {
+		$studio_ids_arr = array_unique($studio_id_arr);
+		foreach ($studio_ids_arr as $key => $value) {
 			if($value != 0){
 				$arr[$key]['id'] = $value;
 				$arr[$key]['name'] = Studio::get($value)->name;
