@@ -221,7 +221,6 @@ export default {
         this.apiGet(`task/get_user?task_id=${data.id}`).then((res) => {
           this.handelResponse(res, (data) => {
             this.options = data.list
-            console.log(data.list)
           })
         })
         this.id = data.id
