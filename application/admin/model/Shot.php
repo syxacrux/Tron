@@ -172,7 +172,8 @@ class Shot extends Common
 			$list[$key]['surplus_days'] = floatval(sprintf("%.2f", ($value['plan_end_timestamp'] - time()) / 86400));   //剩余天数
 			$list[$key]['create_timestamp'] = $value['create_time'];
 			$list[$key]['create_time'] = date("Y-m-d H:i:s", $value['create_time']);
-			$list[$key]['tache_info'] = $this->rate_of_progress($value['id']);
+			$list[$key]['tache_info'] = $this->rate_of_progress($value['id']);//各环节进度计算显示
+			$list[$key]['asset_info'] = !empty($value['asset_ids']) ? $this->get_assets_name($value['asset_ids']) : [];
 		}
 		$data['list'] = $list;
 		$data['dataCount'] = $dataCount;
@@ -264,9 +265,9 @@ class Shot extends Common
 						$task_model->data($task_data)->save();
 					}
 				}
-				//更新所属镜头 所属项目的任务数量
-				$task_count['task_count'] = Workbench::where('project_id', $param['project_id'])->count('id');
-				Db::name('admin_project')->where('id', $param['project_id'])->update($task_count);
+//				//更新所属镜头 所属项目的任务数量
+//				$task_count['task_count'] = Workbench::where('project_id', $param['project_id'])->where('pid','!=',0)->count('id');
+//				Db::name('admin_project')->where('id', $param['project_id'])->update($task_count);
 				$this->commit();
 				return true;
 			}
@@ -310,7 +311,7 @@ class Shot extends Common
 			//根据环节分配任务给各大工作室
 			foreach ($tache_data as $key => $val) {
 				foreach ($val as $k => $v) {
-					$task_data['group_id'] = 0;
+					$task_data['group_id'] = 5;
 					$task_data['user_id'] = 0;
 					$task_data['project_id'] = $param['project_id'];   //所属项目ID
 					$task_data['field_id'] = $param['field_id'];   //场号ID
@@ -334,8 +335,8 @@ class Shot extends Common
 				}
 			}
 			//更新所属项目的任务数量
-			$task_count['task_count'] = Workbench::where('project_id', $shot_obj->project_id)->count('id');
-			Db::name('admin_project')->where('id', $shot_obj->project_id)->update($task_count);
+//			$task_count['task_count'] = Workbench::where('project_id', $shot_obj->project_id)->where('pid','!=',0)->count('id');
+//			Db::name('admin_project')->where('id', $shot_obj->project_id)->update($task_count);
 			$this->commit();
 			return true;
 		} catch (\Exception $e) {
@@ -367,7 +368,6 @@ class Shot extends Common
 		$data = $this->get($id);
 		$data->project_name = Project::get($data->project_id)->project_name;
 		$data->field_name = Field::get($data->field_id)->name;
-		$data->asset_name = !empty($data->asset_ids) ? $this->get_assets_name($data->asset_ids)['asset_names'] : '';
 		$data->time_name = $this->time_arr[$data->time];
 		$data->ambient_name = $this->ambient_arr[$data->ambient];
 		$data->difficulty_name = $this->difficulty_arr[$data->difficulty];

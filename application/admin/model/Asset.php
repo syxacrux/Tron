@@ -1,37 +1,40 @@
 <?php
+
 namespace app\admin\model;
 
 use think\Db;
 use app\common\model\Common;
 
-class Asset extends Common{
+class Asset extends Common
+{
 	protected $name = 'asset';
 	protected $priority_level_arr = [1 => 'D', 2 => 'C', 3 => 'B', 4 => 'A'];   //镜头优先级
 	protected $difficulty_arr = [1 => 'D', 2 => 'C', 3 => 'B', 4 => 'A', 5 => 'S']; //镜头难度
 	protected $task_status_arr = [1 => 0, 5 => 20, 10 => 40, 15 => 60, 20 => 80, 25 => 100];    //用于任务状态计算进度百分比 status=>0%
-    //根据环节ID获取镜头页面进度条所用别名
-    protected $tache_byname_arr = [3 => '美术部', 4 => '模型部', 5 => '贴图部', 6 => '绑定部', 7 => '跟踪部', 8 => '动画部', 9 => '数字绘景部', 10 => '特效部', 11 => '灯光部', 12 => '合成部'];
+	//根据环节ID获取镜头页面进度条所用别名
+	protected $tache_byname_arr = [3 => '美术部', 4 => '模型部', 5 => '贴图部', 6 => '绑定部', 7 => '跟踪部', 8 => '动画部', 9 => '数字绘景部', 10 => '特效部', 11 => '灯光部', 12 => '合成部'];
 
 	//资产概括
-	public function survey_list($keywords){
+	public function survey_list($keywords)
+	{
 		$where = [];
-		if(!empty($keywords['project_id']) && empty($keywords['asset_name'])){
+		if (!empty($keywords['project_id']) && empty($keywords['asset_name'])) {
 			$where['project_id'] = $keywords['project_id'];
 		}
-		if(!empty($keywords['field_id']) && empty($keywords['asset_name'])){
+		if (!empty($keywords['field_id']) && empty($keywords['asset_name'])) {
 			$where['field_id'] = $keywords['field_id'];
 		}
-		if(!empty($keywords['asset_id']) && empty($keywords['asset_name'])){
+		if (!empty($keywords['asset_id']) && empty($keywords['asset_name'])) {
 			$where['id'] = $keywords['asset_id'];
 		}
-		if(!empty($keywords['asset_content'])){	//手动输入资产名称或简称
+		if (!empty($keywords['asset_content'])) {  //手动输入资产名称或简称
 			$where['asset_byname|asset_name'] = trimall($keywords['asset_content']);
 		}
-		$in_production_count = $this->where($where)->where('status',5)->count('id');	//制作中
-		$waiting_assets_count = $this->where($where)->where('status',1)->count('id');	//等待资产
-		$feedback_count = $this->where($where)->where('status',15)->count('id');	//反馈中
-		$pause_count = $this->where($where)->where('is_pause',2)->count('id');	//暂停
-		$finish_count = $this->where($where)->where('status','in',[25,30])->count('id');	//完成
+		$in_production_count = $this->where($where)->where('status', 5)->count('id');  //制作中
+		$waiting_assets_count = $this->where($where)->where('status', 1)->count('id');  //等待资产
+		$feedback_count = $this->where($where)->where('status', 15)->count('id');  //反馈中
+		$pause_count = $this->where($where)->where('is_pause', 2)->count('id');  //暂停
+		$finish_count = $this->where($where)->where('status', 'in', [25, 30])->count('id');  //完成
 		$data['in_production_count'] = $in_production_count;
 		$data['waiting_assets_count'] = $waiting_assets_count;
 		$data['feedback_count'] = $feedback_count;
@@ -41,21 +44,22 @@ class Asset extends Common{
 	}
 
 	//标准列表
-	public function getList($keywords, $page, $limit){
+	public function getList($keywords, $page, $limit)
+	{
 		$where = [];
-		if(!empty($keywords['project_id']) && empty($keywords['asset_content'])){
+		if (!empty($keywords['project_id']) && empty($keywords['asset_content'])) {
 			$where['project_id'] = $keywords['project_id'];
 		}
-		if(!empty($keywords['field_id']) && empty($keywords['asset_content'])){
+		if (!empty($keywords['field_id']) && empty($keywords['asset_content'])) {
 			$where['field_id'] = $keywords['field_id'];
 		}
-		if(!empty($keywords['asset_id']) && empty($keywords['asset_content'])){
+		if (!empty($keywords['asset_id']) && empty($keywords['asset_content'])) {
 			$where['id'] = $keywords['asset_id'];
 		}
-		if(!empty($keywords['priority_level']) && empty($keywords['asset_content'])){	//优先级
+		if (!empty($keywords['priority_level']) && empty($keywords['asset_content'])) {  //优先级
 			$where['priority_level'] = $keywords['priority_level'];
 		}
-		if(!empty($keywords['asset_content'])){	//手动输入资产名称或简称
+		if (!empty($keywords['asset_content'])) {  //手动输入资产名称或简称
 			$where['asset_byname|asset_name'] = trimall($keywords['asset_content']);
 		}
 		$dataCount = $this->where($where)->count('id');
@@ -68,8 +72,8 @@ class Asset extends Common{
 		for ($i = 0; $i < count($list); $i++) {
 			$list[$i]['project_name'] = Project::get($list[$i]['project_id'])->project_byname;
 			$list[$i]['type_name'] = Field::get($list[$i]['field_id'])->explain;
-			$list[$i]['difficulty'] = $this->difficulty_arr[$list[$i]['difficulty']];	//难度
-			$list[$i]['priority_level'] = $this->priority_level_arr[$list[$i]['priority_level']];	//优先级
+			$list[$i]['difficulty'] = $this->difficulty_arr[$list[$i]['difficulty']];  //难度
+			$list[$i]['priority_level'] = $this->priority_level_arr[$list[$i]['priority_level']];  //优先级
 			$list[$i]['tache_info'] = $this->rate_of_progress($list[$i]['id']);
 			$list[$i]['plan_start_time'] = date('Y-m-d H:i:s', $list[$i]['plan_start_timestamp']);
 			$list[$i]['plan_end_time'] = date('Y-m-d H:i:s', $list[$i]['plan_end_timestamp']);
@@ -86,25 +90,26 @@ class Asset extends Common{
 	 * @param $keywords
 	 * @param $page
 	 * @param $limit
-	 * @param $status	int 状态
-	 * @param $is_pause	int 是否暂停
+	 * @param $status  int 状态
+	 * @param $is_pause  int 是否暂停
 	 * @return mixed
 	 */
-	public function getList_byStatus($keywords,$page, $limit, $status = '', $is_pause = ''){
+	public function getList_byStatus($keywords, $page, $limit, $status = '', $is_pause = '')
+	{
 		$where = [];
-		if(!empty($keywords['project_id']) && empty($keywords['asset_content'])){
+		if (!empty($keywords['project_id']) && empty($keywords['asset_content'])) {
 			$where['project_id'] = $keywords['project_id'];
 		}
-		if(!empty($keywords['field_id']) && empty($keywords['asset_content'])){
+		if (!empty($keywords['field_id']) && empty($keywords['asset_content'])) {
 			$where['field_id'] = $keywords['field_id'];
 		}
-		if(!empty($keywords['asset_id']) && empty($keywords['asset_content'])){
+		if (!empty($keywords['asset_id']) && empty($keywords['asset_content'])) {
 			$where['id'] = $keywords['asset_id'];
 		}
-		if(!empty($keywords['asset_content'])){	//手动输入资产名称或资产简称
+		if (!empty($keywords['asset_content'])) {  //手动输入资产名称或资产简称
 			$where['asset_byname|asset_name'] = $keywords['asset_content'];
 		}
-		if(!empty($status)){
+		if (!empty($status)) {
 			$where['status'] = $status;
 		}
 		$where['is_pause'] = $is_pause;
@@ -132,7 +137,7 @@ class Asset extends Common{
 	}
 
 	//添加资产及任务
-	public function addData($param,$group_id)
+	public function addData($param, $group_id)
 	{
 		$project_obj = Project::get($param['project_id']);
 		//开启事务
@@ -143,20 +148,17 @@ class Asset extends Common{
 			$param['plan_end_timestamp'] = strtotime($param['plan_end_timestamp']);
 			$param['create_time'] = time();
 			foreach ($param['tache'] as $key => $value) {
-				if (!empty($value)) {
-					$tache_data[$key] = $value;
-				}
+				$tache_data[$key] = $value;
 			}
 			//保存资产表
 			$result = $this->allowField(true)->save($param);
-			$asset_id = $this->id;	//获取自增ID
+			$asset_id = $this->id;  //获取自增ID
 			//获取自增ID的当前对象
 			$curr_asset_obj = $this->get($this->id);
 			if (false === $result) {
 				$this->error = $this->getError();
 				return false;
 			} else {
-
 				$project_byname = $project_obj->project_byname;
 				$field_name = Field::get($param['field_id'])->name;
 				//执行redis添加镜头所属目录 python
@@ -164,16 +166,41 @@ class Asset extends Common{
 				//exec_python($str);
 				//根据环节分配任务给各大工作室
 				foreach ($tache_data as $key => $val) {
-					foreach ($val as $k => $v) {
+					//根据环节内的工作室是否为空创建任务
+					if (!empty($val)) {
+						foreach ($val as $k => $v) {
+							$task_data['group_id'] = $group_id;    //所属角色ID
+							$task_data['user_id'] = 0;   //所属用户ID
+							$task_data['project_id'] = $curr_asset_obj->project_id;  //所属项目ID
+							$task_data['field_id'] = $curr_asset_obj->field_id;      //资产类型ID
+							$task_data['asset_id'] = $asset_id;  //资产ID
+							$task_data['tache_id'] = $key;  //环节ID
+							$task_data['tache_sort'] = Tache::get($key)->sort;  //环节排序
+							$task_data['studio_id'] = $v;   //工作室ID
+							$task_data['task_type'] = 2;    //资产类型
+							$task_data['task_image'] = $curr_asset_obj->asset_image;
+							$task_data['task_byname'] = $curr_asset_obj->asset_byname;//任务简称暂且为资产的简称，任务模块中，可修改
+							$task_data['task_priority_level'] = $curr_asset_obj->priority_level;   //任务优先级
+							$task_data['difficulty'] = $curr_asset_obj->difficulty;    //任务难度
+							$task_data['plan_start_timestamp'] = $curr_asset_obj->plan_start_timestamp;  //计划开始时间
+							$task_data['plan_end_timestamp'] = $curr_asset_obj->plan_end_timestamp;    //计划结束时间
+							$task_data['task_status'] = 1;  //任务状态
+							$task_data['is_assets'] = 1; //是否为等待资产 1是 2否  资产任务被创建时 等待资产状态 可理解为等待制作
+							$task_data['pid'] = 0;  //工作室顶级任务ID都为0
+							$task_data['create_time'] = time();//创建时间
+							$task_model = new Workbench();
+							$task_model->data($task_data)->save();
+						}
+					} else {
 						$task_data['group_id'] = $group_id;    //所属角色ID
 						$task_data['user_id'] = 0;   //所属用户ID
-						$task_data['project_id'] = $curr_asset_obj->project_id;	//所属项目ID
-						$task_data['field_id'] = $curr_asset_obj->field_id;			//资产类型ID
+						$task_data['project_id'] = $curr_asset_obj->project_id;  //所属项目ID
+						$task_data['field_id'] = $curr_asset_obj->field_id;      //资产类型ID
 						$task_data['asset_id'] = $asset_id;  //资产ID
 						$task_data['tache_id'] = $key;  //环节ID
 						$task_data['tache_sort'] = Tache::get($key)->sort;  //环节排序
-						$task_data['studio_id'] = $v;   //工作室ID
-						$task_data['task_type'] = 1;    //镜头类型
+						$task_data['studio_id'] = 0;   //工作室ID
+						$task_data['task_type'] = 2;    //资产类型
 						$task_data['task_image'] = $curr_asset_obj->asset_image;
 						$task_data['task_byname'] = $curr_asset_obj->asset_byname;//任务简称暂且为资产的简称，任务模块中，可修改
 						$task_data['task_priority_level'] = $curr_asset_obj->priority_level;   //任务优先级
@@ -188,9 +215,6 @@ class Asset extends Common{
 						$task_model->data($task_data)->save();
 					}
 				}
-				//更新所属镜头 所属项目的任务数量
-				$task_count['task_count'] = Workbench::where('project_id',$param['project_id'])->count('id');
-				Db::name('admin_project')->where('id',$param['project_id'])->update($task_count);
 				$this->commit();
 				return true;
 			}
@@ -221,53 +245,46 @@ class Asset extends Common{
 				}
 			}
 			$asset_model = new Asset();
-			if (!empty($tache_data)) {  //环节不为空  执行更新本镜头数据及添加相应环节的任务
-				//更新当前镜头行记录
-				$asset_model->allowField(true)->save($param, [$this->getPk() => $id]);
-				$project_byname = Project::get($param['project_id'])->project_byname;
-				$field_name = Field::get($param['field_id'])->name;
-				//执行redis添加资产所属目录 python
-				$str = "'Asset' '{$project_byname}' '{$field_name}' '{$param['asset_byname']}'";
-				//exec_python($str);
-				//根据环节分配任务给各大工作室
-				foreach ($tache_data as $key => $val) {
-					foreach ($val as $k => $v) {
-						$task_data['group_id'] = 5;  //角色为工作室总监
-						$task_data['user_id'] = 0;
-						$task_data['project_id'] = $param['project_id'];   //所属项目ID
-						$task_data['field_id'] = $param['field_id'];   //场号ID
-						$task_data['asset_id'] = $id;  //资产ID
-						$task_data['tache_id'] = $key;  //环节ID
-						$task_data['tache_sort'] = Tache::get($key)->sort;  //环节排序
-						$task_data['studio_id'] = $v;   //工作室ID
-						$task_data['task_type'] = 2;    //资产类型
-						$task_data['task_image'] = $asset_obj->asset_image;
-						$task_data['task_byname'] = $asset_obj->asset_byname;//任务简称暂且为资产的简称，任务模块中，可修改
-						$task_data['task_priority_level'] = $asset_obj->priority_level;   //任务优先级
-						$task_data['difficulty'] = $asset_obj->difficulty;    //任务难度
-						$task_data['plan_start_timestamp'] = $asset_obj->plan_start_timestamp;  //计划开始时间
-						$task_data['plan_end_timestamp'] = $asset_obj->plan_end_timestamp;    //计划结束时间
-						$task_data['task_status'] = 1;  //任务状态
-						$task_data['is_assets'] = 1; //是否为等待资产 1是 2否
-						$task_data['pid'] = 0;  //工作室顶级任务ID都为0
-						$task_data['create_time'] = time();//创建时间
-						$task_model = new Workbench();
-						$task_model->data($task_data, true)->isUpdate(false)->save();
-					}
+			/**
+			 * begin 环节内工作室不为空
+			 * 执行新增操作
+			 */
+			$asset_model->allowField(true)->save($param, [$this->getPk() => $id]);//更新当前镜头行记录
+			$project_byname = Project::get($param['project_id'])->project_byname;
+			$field_name = Field::get($param['field_id'])->name;
+			//执行redis添加资产所属目录 python
+			$str = "'Asset' '{$project_byname}' '{$field_name}' '{$param['asset_byname']}'";
+			//根据环节分配任务给各大工作室 新增操作
+			foreach ($tache_data as $key => $val) {
+				foreach ($val as $k => $v) {
+					$task_data['group_id'] = 5;  //角色为工作室总监
+					$task_data['user_id'] = 0;
+					$task_data['project_id'] = $param['project_id'];   //所属项目ID
+					$task_data['field_id'] = $param['field_id'];   //资产类型ID
+					$task_data['asset_id'] = $id;  //资产ID
+					$task_data['tache_id'] = $key;  //环节ID
+					$task_data['tache_sort'] = Tache::get($key)->sort;  //环节排序
+					$task_data['studio_id'] = $v;   //工作室ID
+					$task_data['task_type'] = 2;    //资产类型
+					$task_data['task_image'] = $asset_obj->asset_image;
+					$task_data['task_byname'] = $asset_obj->asset_byname;//任务简称暂且为资产的简称，任务模块中，可修改
+					$task_data['task_priority_level'] = $asset_obj->priority_level;   //任务优先级
+					$task_data['difficulty'] = $asset_obj->difficulty;    //任务难度
+					$task_data['plan_start_timestamp'] = $asset_obj->plan_start_timestamp;  //计划开始时间
+					$task_data['plan_end_timestamp'] = $asset_obj->plan_end_timestamp;    //计划结束时间
+					$task_data['task_status'] = 1;  //任务状态
+					$task_data['is_assets'] = 1; //是否为等待资产 1是 2否
+					$task_data['pid'] = 0;  //工作室顶级任务ID都为0
+					$task_data['create_time'] = time();//创建时间
+					$task_model = new Workbench();
+					$task_model->data($task_data, true)->isUpdate(false)->save();
 				}
-				//更新所属项目的任务数量
-				$task_count['task_count'] = Workbench::where('project_id',$asset_obj->project_id)->count('id');
-				Db::name('admin_project')->where('id',$asset_obj->project_id)->update($task_count);
-				$this->commit();
-				return true;
-			} else {  //更新本镜头数据
-				//更新所属项目的任务数量
-				$task_count['task_count'] = Workbench::where('project_id',$asset_obj->project_id)->count('id');
-				Db::name('admin_project')->where('id',$asset_obj->project_id)->update($task_count);
-				$asset_model->allowField(true)->save($param, [$this->getPk() => $id]);
-				$this->commit();
-				return true;
 			}
+			$this->commit();
+			return true;
+			/**
+			 * end 环节内工作室不为空
+			 */
 		} catch (\Exception $e) {
 			$this->rollback();
 			$this->error = '编辑失败';
@@ -343,7 +360,7 @@ class Asset extends Common{
 	//获取当前资产各环节进度
 	public function rate_of_progress($asset_id)
 	{
-		$tache_data = array_unique(Workbench::where(['pid'=>0,'asset_id'=>$asset_id])->column('tache_id'));  //获取所属资产的环节
+		$tache_data = array_unique(Workbench::where(['pid' => 0, 'asset_id' => $asset_id])->column('tache_id'));  //获取所属资产的环节
 		foreach ($tache_data as $key => $value) {
 			//根据当前资产ID与环节ID查询是否有其任务
 			$curr_task_data = Workbench::where(['asset_id' => $asset_id, 'tache_id' => $value])->find();
@@ -440,21 +457,23 @@ class Asset extends Common{
 	}
 
 	//根据项目ID及类型ID 获取资产类型表的数据
-	public function get_asset_name($param){
+	public function get_asset_name($param)
+	{
 		$data = [];
-		if(!empty($param['field_id'])){
-			$data = $this->where('field_id',$param['field_id'])->select();
+		if (!empty($param['field_id'])) {
+			$data = $this->where('field_id', $param['field_id'])->select();
 		}
 		return $data;
 	}
 
 	//校验所属项目、所属类型下的资产名称是否重复
-	public function check_asset_byname($param){
-		$check_result = $this->where(['field_id'=>$param['field_id'],'asset_byname'=>$param['asset_byname']])->value('id');
-		if(!empty($check_result)){
+	public function check_asset_byname($param)
+	{
+		$check_result = $this->where(['field_id' => $param['field_id'], 'asset_byname' => $param['asset_byname']])->value('id');
+		if (!empty($check_result)) {
 			$this->error = '所属类型中资产名称已重复';
 			return false;
-		}else{
+		} else {
 			return true;
 		}
 	}

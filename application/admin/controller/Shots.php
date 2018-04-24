@@ -110,7 +110,11 @@ class Shots extends BaseCommon
 	{
 		$shot_model = model('Shot');
 		$uid = $this->uid;
-		$group_id = Access::where('user_id', $uid)->value('group_id'); //所属角色
+		if($uid == 1){	//超级管理员创建任务，则角色传0
+			$group_id = 0;
+		}else{
+			$group_id = Access::where('user_id', $uid)->value('group_id'); //所属角色
+		}
 		$param = $this->param;
 		$data = $shot_model->addData($param,$group_id);
 		if (!$data) {

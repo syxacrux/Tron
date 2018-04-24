@@ -126,10 +126,10 @@ class Workbench extends Common
 			if (!empty($project_ids_arr)) {
 				$project_ids = implode(",", $project_ids_arr);
 				$where['project_id'] = ['in', $project_ids];
+				$where['studio_id'] = 0;
 			} else {  //超级管理员 uid =1
 				$where = [];
 			}
-
 		} elseif ($group_id == 5 || $group_id == 6) {//工作室内角色 暂时为5 工作室总监，6组长
 			$where['studio_id'] = $user_obj->studio_id;
 		} elseif ($group_id == 7) {//工作室内角色  7制作人
