@@ -172,7 +172,8 @@ class Shot extends Common
 			$list[$key]['surplus_days'] = floatval(sprintf("%.2f", ($value['plan_end_timestamp'] - time()) / 86400));   //剩余天数
 			$list[$key]['create_timestamp'] = $value['create_time'];
 			$list[$key]['create_time'] = date("Y-m-d H:i:s", $value['create_time']);
-			$list[$key]['tache_info'] = $this->rate_of_progress($value['id']);
+			$list[$key]['tache_info'] = $this->rate_of_progress($value['id']);//各环节进度计算显示
+			$list[$key]['asset_info'] = !empty($value['asset_ids']) ? $this->get_assets_name($value['asset_ids']) : [];
 		}
 		$data['list'] = $list;
 		$data['dataCount'] = $dataCount;
@@ -367,7 +368,6 @@ class Shot extends Common
 		$data = $this->get($id);
 		$data->project_name = Project::get($data->project_id)->project_name;
 		$data->field_name = Field::get($data->field_id)->name;
-		$data->asset_name = !empty($data->asset_ids) ? $this->get_assets_name($data->asset_ids)['asset_names'] : '';
 		$data->time_name = $this->time_arr[$data->time];
 		$data->ambient_name = $this->ambient_arr[$data->ambient];
 		$data->difficulty_name = $this->difficulty_arr[$data->difficulty];
