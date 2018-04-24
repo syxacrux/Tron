@@ -173,6 +173,7 @@ class Asset extends Common
 							$task_data['user_id'] = 0;   //所属用户ID
 							$task_data['project_id'] = $curr_asset_obj->project_id;  //所属项目ID
 							$task_data['field_id'] = $curr_asset_obj->field_id;      //资产类型ID
+							$task_data['shot_id'] = 0;	//镜头ID 默认为0
 							$task_data['asset_id'] = $asset_id;  //资产ID
 							$task_data['tache_id'] = $key;  //环节ID
 							$task_data['tache_sort'] = Tache::get($key)->sort;  //环节排序
@@ -244,11 +245,11 @@ class Asset extends Common
 					$tache_data[$key] = $value;
 				}
 			}
-			$asset_model = new Asset();
 			/**
 			 * begin 环节内工作室不为空
 			 * 执行新增操作
 			 */
+			$asset_model = new Asset();
 			$asset_model->allowField(true)->save($param, [$this->getPk() => $id]);//更新当前镜头行记录
 			$project_byname = Project::get($param['project_id'])->project_byname;
 			$field_name = Field::get($param['field_id'])->name;
@@ -357,9 +358,9 @@ class Asset extends Common
 			}else{
 				$arr = [];
 			}
-
 		}
-		return $arr;
+		$data = array_values($arr);
+		return $data;
 	}
 
 	//获取当前资产各环节进度

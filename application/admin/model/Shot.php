@@ -247,6 +247,7 @@ class Shot extends Common
 						$task_data['project_id'] = $curr_shot_obj->project_id;   //所属项目ID
 						$task_data['field_id'] = $curr_shot_obj->field_id;   //场号ID
 						$task_data['shot_id'] = $shot_id;  //镜头ID
+						$task_data['asset_id'] = 0;	//资产ID默认为0
 						$task_data['tache_id'] = $key;  //环节ID
 						$task_data['tache_sort'] = Tache::get($key)->sort;  //环节排序
 						$task_data['studio_id'] = 0;   //工作室ID
@@ -316,6 +317,7 @@ class Shot extends Common
 					$task_data['project_id'] = $param['project_id'];   //所属项目ID
 					$task_data['field_id'] = $param['field_id'];   //场号ID
 					$task_data['shot_id'] = $id;  //镜头ID
+					$task_data['asset_id'] = 0;
 					$task_data['tache_id'] = $key;  //环节ID
 					$task_data['tache_sort'] = Tache::get($key)->sort;  //环节排序
 					$task_data['studio_id'] = $v;   //工作室ID
@@ -431,7 +433,8 @@ class Shot extends Common
 				$arr = [];
 			}
 		}
-		return $arr;
+		$data = array_values($arr);
+		return $data;
 	}
 
 	//根据资产ID string 获取名称
