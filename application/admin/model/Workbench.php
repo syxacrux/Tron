@@ -541,15 +541,15 @@ class Workbench extends Common
 			if (!empty($data['user_id'])) {
 				//根据制作人分配任务 默认为新增操作
 				foreach ($user_ids_arr as $key => $value) {
-					$task_data['group_id'] = $task_obj->group_id;
+					$task_data['group_id'] = Access::where('user_id',$value)->value('group_id');
 					$task_data['user_id'] = $value;
 					$task_data['project_id'] = $task_obj->project_id;
 					$task_data['field_id'] = $task_obj->field_id;
-					$task_data['shot_id'] = $task_obj->shot_id;
-					$task_data['assets_id'] = !empty($task_obj->assets_id) ? $task_obj->assets_id : 0;
+					$task_data['shot_id'] = !empty($task_obj->shot_id) ? $task_obj->shot_id : 0;
+					$task_data['asset_id'] = !empty($task_obj->asset_id) ? $task_obj->asset_id : 0;
 					$task_data['tache_id'] = $task_obj->tache_id;
 					$task_data['tache_sort'] = $task_obj->tache_sort;
-					$task_data['studio_id'] = $task_obj->studio_id;
+					$task_data['studio_id'] = User::get($value)->studio_id; //所属用户的工作室ID
 					$task_data['task_type'] = $task_obj->task_type;
 					$task_data['task_image'] = $data['task_image'];
 					$task_data['task_byname'] = !empty($data['task_byname']) ? $data['task_byname'] : '';
