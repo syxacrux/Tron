@@ -115,11 +115,9 @@
                         </div>
                         <div class="text-Lens m-t-10">
                           <p class="text-Lens-assets">
-                            <!--<el-tag type="info" v-for="(props, index) in item.prop" :key="item.id">{{props.name}}:{{props.lmane}}</el-tag>-->
-                            <el-tag type="info">元宝:道具</el-tag>
-                            <el-tag type="info">混天绫:道具</el-tag>
-                            <el-tag type="info">元宝:道具</el-tag>
-                            <el-tag type="info">混天绫:道具</el-tag>
+                            <el-tag type="info" v-if="item.asset_info.length" v-for="(asset, index) in item.asset_info" :key="asset.id">
+                              {{asset.name}}:{{asset.type}}
+                            </el-tag>
                           </p>
                           <p class="text-Lens-time fr tx-r">
                             <span>
@@ -188,11 +186,9 @@
                         </div>
                         <div class="text-Lens m-t-10">
                           <p class="text-Lens-assets">
-                            <el-tag type="info">混天绫:道具</el-tag>
-                            <el-tag type="info">元宝:道具</el-tag>
-                            <el-tag type="info">混天绫:道具</el-tag>
-                            <el-tag type="info">元宝:道具</el-tag>
-                            <el-tag type="info">混天绫:道具</el-tag>
+                            <el-tag type="info" v-if="item.asset_info.length" v-for="(asset, index) in item.asset_info" :key="asset.id">
+                              {{asset.name}}:{{asset.type}}
+                            </el-tag>
                           </p>
                           <p class="text-Lens-time fr tx-r">
                             <span>
@@ -265,11 +261,9 @@
                         </div>
                         <div class="text-Lens m-t-10">
                           <p class="text-Lens-assets">
-                            <el-tag type="info">混天绫:道具</el-tag>
-                            <el-tag type="info">元宝:道具</el-tag>
-                            <el-tag type="info">混天绫:道具</el-tag>
-                            <el-tag type="info">元宝:道具</el-tag>
-                            <el-tag type="info">混天绫:道具</el-tag>
+                            <el-tag type="info" v-if="item.asset_info.length" v-for="(asset, index) in item.asset_info" :key="asset.id">
+                              {{asset.name}}:{{asset.type}}
+                            </el-tag>
                           </p>
                           <p class="text-Lens-time fr tx-r">
                           <span>
@@ -337,11 +331,9 @@
                   </div>
                   <div class="text-Lens m-t-10">
                     <p class="text-Lens-assets">
-                      <el-tag type="info">混天绫:道具</el-tag>
-                      <el-tag type="info">元宝:道具</el-tag>
-                      <el-tag type="info">混天绫:道具</el-tag>
-                      <el-tag type="info">元宝:道具</el-tag>
-                      <el-tag type="info">混天绫:道具</el-tag>
+                      <el-tag type="info" v-if="item.asset_info.length" v-for="(asset, index) in item.asset_info" :key="asset.id">
+                        {{asset.name}}:{{asset.type}}
+                      </el-tag>
                     </p>
                     <p class="text-Lens-time fr tx-r">
                       <span>
@@ -405,11 +397,9 @@
                   </div>
                   <div class="text-Lens m-t-10">
                     <p class="text-Lens-assets">
-                      <el-tag type="info">混天绫:道具</el-tag>
-                      <el-tag type="info">元宝:道具</el-tag>
-                      <el-tag type="info">混天绫:道具</el-tag>
-                      <el-tag type="info">元宝:道具</el-tag>
-                      <el-tag type="info">混天绫:道具</el-tag>
+                      <el-tag type="info" v-if="item.asset_info.length" v-for="(asset, index) in item.asset_info" :key="asset.id">
+                        {{asset.name}}:{{asset.type}}
+                      </el-tag>
                     </p>
                     <p class="text-Lens-time fr tx-r">
                       <span>
@@ -467,6 +457,9 @@
               <el-col :span="12">
                 <p class="m-0">镜头缩略图：<img :src="address + editShotDetail.shot_image" alt="" class="vtcal-mid h-40"></p>
               </el-col>
+              <el-col :span="12">
+                <p class="m-0 vtcal-mid h-40">场号/集号：<span>{{ editShotDetail.field_name }}</span></p>
+              </el-col>
             </el-row>
             <el-row :gutter="20" class="m-b-5">
               <el-col :span="12">
@@ -495,11 +488,14 @@
               </el-col>
             </el-row>
             <el-row :gutter="20" class="m-b-5">
-              <el-col :span="12">
-                <p class="m-0">资产：<span>没写</span></p>
-              </el-col>
-              <el-col :span="12">
-                <p class="m-0">场号/集号：<span>{{ editShotDetail.field_name }}</span></p>
+              <el-col :span="24">
+                <p class="m-0">资产：
+                  <span>
+                    <el-tag size="mini" type="info" v-if="editShotDetail.asset_info.length" v-for="(asset, index) in editShotDetail.asset_info" :key="asset.id">
+                              {{ asset.name }}:{{ asset.type }}
+                            </el-tag>
+                  </span>
+                </p>
               </el-col>
             </el-row>
             <el-row :gutter="20" class="m-b-5">
@@ -587,7 +583,6 @@
       return {
         multipleSelection: [],
         currentPage: 1,
-//        listLimit: ,
         listCurrentPage: 1,
         isShotDetailShow: false,    //是否显示镜头详情
         activeName: 'shotInDevelopment', //镜头tab当前选中值

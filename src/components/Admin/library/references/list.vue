@@ -8,9 +8,9 @@
       </el-breadcrumb>
     </div>
     <div class="m-b-20 pos-rel">
-      <router-link class="btn-link-large add-btn fl" to="add">
-        <i class="el-icon-plus"></i>&nbsp;&nbsp;添加资料
-      </router-link>
+      <el-button type="primary" class="btn-link-large add-btn fl" @click="addReference">
+        <i class="el-icon-plus"></i>&nbsp;&nbsp;上传资料
+      </el-button>
       <div class="tx-r">
         <el-tooltip effect="dark" content="资产进度" placement="bottom-start">
           <el-button type="primary" plain size="mini" @click="isList = false"><i class="el-icon-menu"></i></el-button>
@@ -62,114 +62,104 @@
       </div>
       <el-tabs v-if="!isList" v-model="activeName" @tab-click="tabClick" class="fl">
         <el-tab-pane label="项目" name="project">
-          <div class="ovf-hd w-200 fl">
-            <el-input placeholder="输入关键字进行过滤" v-model="filterText"></el-input>
-            <el-tree
-                class="filter-tree"
-                :data="data2"
-                :props="defaultProps"
-                default-expand-all
-                :filter-node-method="filterNode"
-                ref="tree2">
-            </el-tree>
-          </div>
-          <div class="ovf-hd">
-            <el-col :span="4">
-            <!--<el-col :span="12" v-for="item in projectList" :key="item.id">-->
-              <div class="grid-content p-b-5">
-              <!--<div class="grid-content p-b-5" @click="referenceDetail(item.id)">-->
-                <el-card class="ovf-hd">
-                  1233523423423443
-                  1233523423423443
-                  1233523423423443
-                  1233523423423443
-                  1233523423423443
-                  1233523423423443
-                </el-card>
-              </div>
-            </el-col>
-            <el-col :span="4">
-            <!--<el-col :span="12" v-for="item in projectList" :key="item.id">-->
-              <div class="grid-content p-b-5">
-              <!--<div class="grid-content p-b-5" @click="referenceDetail(item.id)">-->
-                <el-card class="ovf-hd">
-                  1233523423423443
-                  1233523423423443
-                  1233523423423443
-                  1233523423423443
-                  1233523423423443
-                  1233523423423443
-                </el-card>
-              </div>
-            </el-col>
-            <el-col :span="4">
-            <!--<el-col :span="12" v-for="item in projectList" :key="item.id">-->
-              <div class="grid-content p-b-5">
-              <!--<div class="grid-content p-b-5" @click="referenceDetail(item.id)">-->
-                <el-card class="ovf-hd">
-                  1233523423423443
-                  1233523423423443
-                  1233523423423443
-                  1233523423423443
-                  1233523423423443
-                  1233523423423443
-                </el-card>
-              </div>
-            </el-col>
-            <el-col :span="4">
-            <!--<el-col :span="12" v-for="item in projectList" :key="item.id">-->
-              <div class="grid-content p-b-5">
-              <!--<div class="grid-content p-b-5" @click="referenceDetail(item.id)">-->
-                <el-card class="ovf-hd">
-                  1233523423423443
-                  1233523423423443
-                  1233523423423443
-                  1233523423423443
-                  1233523423423443
-                  1233523423423443
-                </el-card>
-              </div>
-            </el-col>
-            <el-col :span="4">
-            <!--<el-col :span="12" v-for="item in projectList" :key="item.id">-->
-              <div class="grid-content p-b-5">
-              <!--<div class="grid-content p-b-5" @click="referenceDetail(item.id)">-->
-                <el-card class="ovf-hd">
-                  1233523423423443
-                  1233523423423443
-                  1233523423423443
-                  1233523423423443
-                  1233523423423443
-                  1233523423423443
-                </el-card>
-              </div>
-            </el-col>
-            <el-col :span="4">
-            <!--<el-col :span="12" v-for="item in projectList" :key="item.id">-->
-              <div class="grid-content p-b-5">
-              <!--<div class="grid-content p-b-5" @click="referenceDetail(item.id)">-->
-                <el-card class="ovf-hd">
-                  1233523423423443
-                  1233523423423443
-                  1233523423423443
-                  1233523423423443
-                  1233523423423443
-                  1233523423423443
-                </el-card>
-              </div>
-            </el-col>
-          </div>
-          <div class="pos-rel p-t-20" v-if="projectList.length">
-            <div class="block tx-r">
-              <el-pagination
-                  @current-change="projectCurrentChange"
-                  :current-page.sync="currentPage"
-                  :page-size="10"
-                  layout="prev, pager, next, jumper"
-                  :total="projectDataCount">
-              </el-pagination>
+          <div class="m-b-20 pos-rel h-40">
+            <div class="pos-abs">
+              <el-row :gutter="10" class="m-b-5">
+                <el-col :span="5">
+                  <el-select v-model="search.project_id" placeholder="请选择项目" @change="getFields">
+                    <el-option label="请选择项目" value=""></el-option>
+                    <el-option v-for="item in projectList" :label="item.project_name" :value="item.id" :key="item.id"></el-option>
+                  </el-select>
+                </el-col>
+                <el-col :span="5">
+                  <el-select v-model="search.field_id" placeholder="请选择场号" @change="getShotsNum">
+                    <el-option label="请选择场号" value=""></el-option>
+                    <el-option v-for="item in fieldList" :label="item.name" :value="item.id" :key="item.id"></el-option>
+                  </el-select>
+                </el-col>
+                <el-col :span="5">
+                  <el-select v-model="search.shot_id" placeholder="请选择镜头号" @change="getReferences(activeName)">
+                    <el-option label="请选择镜头号" value=""></el-option>
+                    <el-option v-for="(item, index) in shotList" :label="item.shot_number" :value="item.id" :key="index"></el-option>
+                  </el-select>
+                </el-col>
+                <el-col :span="6">
+                  <el-input placeholder="请输入场号镜头号" v-model.trim="search.shot_number">
+                    <el-button slot="append" icon="el-icon-search" @click=""></el-button>
+                  </el-input>
+                </el-col>
+              </el-row>
             </div>
           </div>
+          <section>
+            <div class="ovf-hd w-200 m-r-10 fl">
+              <el-input placeholder="输入关键字进行过滤" v-model="filterText"></el-input>
+              <el-tree
+                  class="filter-tree"
+                  :data="data2"
+                  :props="defaultProps"
+                  default-expand-all
+                  :filter-node-method="filterNode"
+                  ref="tree2">
+              </el-tree>
+            </div>
+            <div class="ovf-hd">
+              <el-col :span="4">
+              <!--<el-col :span="12" v-for="item in projectRefList" :key="item.id">-->
+                <div class="grid-content p-b-5">
+                <!--<div class="grid-content p-b-5" @click="referenceDetail(item.id)">-->
+                  <el-card class="ovf-hd">
+                    1233523423423443
+                    1233523423423443
+                    1233523423423443
+                    1233523423423443
+                    1233523423423443
+                    1233523423423443
+                  </el-card>
+                </div>
+              </el-col>
+              <el-col :span="4">
+              <!--<el-col :span="12" v-for="item in projectList" :key="item.id">-->
+                <div class="grid-content p-b-5">
+                <!--<div class="grid-content p-b-5" @click="referenceDetail(item.id)">-->
+                  <el-card class="ovf-hd">
+                    1233523423423443
+                    1233523423423443
+                    1233523423423443
+                    1233523423423443
+                    1233523423423443
+                    1233523423423443
+                  </el-card>
+                </div>
+              </el-col>
+              <el-col :span="4">
+              <!--<el-col :span="12" v-for="item in projectList" :key="item.id">-->
+                <div class="grid-content p-b-5">
+                <!--<div class="grid-content p-b-5" @click="referenceDetail(item.id)">-->
+                  <el-card class="ovf-hd">
+                    1233523423423443
+                    1233523423423443
+                    1233523423423443
+                    1233523423423443
+                    1233523423423443
+                    1233523423423443
+                  </el-card>
+                </div>
+              </el-col>
+            </div>
+            <!--<div class="pos-rel p-t-20" v-if="projectList.length">-->
+            <div class="pos-rel p-t-20">
+              <div class="block tx-r">
+                <el-pagination
+                    @current-change="projectRefCurrentChange"
+                    :current-page.sync="currentPage"
+                    :page-size="10"
+                    layout="prev, pager, next, jumper"
+                    :total="projectRefDataCount">
+                </el-pagination>
+              </div>
+            </div>
+          </section>
         </el-tab-pane>
         <el-tab-pane label="公共" name="common">
           <div class="ovf-hd">
@@ -277,6 +267,32 @@
         </el-card>
       </div>
     </transition>
+    <el-dialog title="上传文件" :visible.sync="dialogFormVisible" width="30%">
+      <el-form :model="form" size="medium">
+        <el-form-item label="名称" label-width="120px">
+          <el-input v-model="form.name" auto-complete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="场号/资产" label-width="120px">
+          <el-input v-model="form.name" auto-complete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="类型" label-width="120px">
+          <el-radio-group v-model="form.type" size="small">
+            <el-radio label="1" border>镜头类型</el-radio>
+            <el-radio label="2" border>资产类型</el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item label="镜头号/资产号" label-width="120px">
+          <el-input v-model="form.name" auto-complete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="环节" label-width="120px">
+          <el-input v-model="form.name" auto-complete="off"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -287,19 +303,29 @@
   export default {
     data () {
       return {
+        dialogFormVisible: false,
         isList: false,
         isReferenceDetailShow: false,
         activeName: 'project',
         page: 1,
         limit: 10,
-        projectCurrentChange: 1,
+        projectRefCurrentChange: 1,
         commonCurrentChange: 1,
         currentPage: 1,
-        projectDataCount: 0,
-        projectList: [],
+        projectRefDataCount: 0,
+        projectRefList: [],
         commonDataCount: 0,
         commonList: [],
         filterText: '',
+        projectList: [],
+        fieldList: [],
+        shotList: [],
+        search: {
+          project_id: '',
+          field_id: '',
+          shot_id: '',
+          shot_number: ''
+        },
         data2: [{
           id: 1,
           label: '一级 1',
@@ -338,6 +364,12 @@
         defaultProps: {
           children: 'children',
           label: 'label'
+        },
+        form: {
+          name: '',
+          field: '',
+          tache: '',
+          type: ''
         }
       }
     },
@@ -362,6 +394,44 @@
         }else {
           this.getAllAssetsList()
         }
+      },
+      addReference() {
+        this.dialogFormVisible = true
+      },
+//      获取所有项目
+      getProjects() {
+        this.apiGet('admin/projects').then((res) => {
+          this.handelResponse(res, (data) => {
+            this.projectList = data.list
+          })
+        })
+      },
+//      获取所有场号、集号
+      getFields() {
+        const data = {
+          params: {
+            project_id: this.search.project_id,
+            type: 1
+          }
+        }
+        this.apiGet('admin/get_fields', data).then((res) => {
+          this.handelResponse(res, (data) => {
+            this.fieldList = data
+          })
+        })
+      },
+//      获取所有场号集号下的镜头号
+      getShotsNum() {
+        const data = {
+          params: {
+            field_id: this.search.field_id
+          }
+        }
+        this.apiGet('admin/get_shot_num', data).then((res) => {
+          this.handelResponse(res, (data) => {
+            this.shotList = data
+          })
+        })
       },
       /*
        * 切换资产tab方法
@@ -409,8 +479,8 @@
           this.handelResponse(res, (data) => {
             switch (asset_status) {
               case 'project':
-                this.projectDataCount = data.dataCount
-                this.projectList = data.list
+                this.projectRefDataCount = data.dataCount
+                this.projectRefList = data.list
                 break;
               case 'common':
                 this.commonDataCount = data.dataCount

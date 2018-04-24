@@ -796,7 +796,7 @@
         this.frame_range1 = data.frame_range.split(',')[0]
         this.frame_range2 = data.frame_range.split(',')[1]
         this.form.material_number = data.material_number
-        let asset_ids = data.asset_ids ? data.asset_ids : []
+        let asset_ids = data.asset_ids ? data.asset_ids.split(',') : []
         if(asset_ids.length > 0){
           _(asset_ids).forEach((key) => {
             this.form.asset_ids.push(parseInt(key))
