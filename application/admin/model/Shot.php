@@ -20,34 +20,35 @@ class Shot extends Common
 	protected $tache_byname_arr = [3 => '美术部', 4 => '模型部', 5 => '贴图部', 6 => '绑定部', 7 => '跟踪部', 8 => '动画部', 9 => '数字绘景部', 10 => '特效部', 11 => '灯光部', 12 => '合成部'];
 
 	//镜头概况
-	public function survey_list(){
+	public function survey_list()
+	{
 		$where = [];
-		if(!empty($keywords['project_id']) && empty($keywords['shot_number'])){
+		if (!empty($keywords['project_id']) && empty($keywords['shot_number'])) {
 			$where['project_id'] = $keywords['project_id'];
 		}
-		if(!empty($keywords['field_id']) && empty($keywords['shot_number'])){
+		if (!empty($keywords['field_id']) && empty($keywords['shot_number'])) {
 			$where['field_id'] = $keywords['field_id'];
 		}
-		if(!empty($keywords['shot_id']) && empty($keywords['shot_number'])){
+		if (!empty($keywords['shot_id']) && empty($keywords['shot_number'])) {
 			$where['id'] = $keywords['shot_id'];
 		}
-		if(!empty($keywords['shot_number'])){	//手动输入镜头编号
+		if (!empty($keywords['shot_number'])) {  //手动输入镜头编号
 			$shot_number_len = strlen($keywords['shot_number']);
 			//后期可对3 镜头号长度进行配置
-			if($shot_number_len == 3){	//前端  对三位进行判断 必填场号
+			if ($shot_number_len == 3) {  //前端  对三位进行判断 必填场号
 				$where['shot_number'] = $keywords['shot_number'];
 			}
 			//后期可对场号长度进行配置  场号+镜头号  暂定为6
-			if($shot_number_len == 6){
-				$shot_number = substr($keywords['shot_number'],3,3);
+			if ($shot_number_len == 6) {
+				$shot_number = substr($keywords['shot_number'], 3, 3);
 				$where['shot_number'] = $shot_number;
 			}
 		}
-		$in_production_count = $this->where($where)->where('status',5)->count('id');	//制作中
-		$feedback_count = $this->where($where)->where('status',15)->count('id');	//反馈中
-		$pause_count = $this->where($where)->where('is_pause',2)->count('id');	//暂停
-		$waiting_assets_count = $this->where($where)->where('is_assets',1)->count('id');	//等待资产
-		$finish_count = $this->where($where)->where('status','in',[25,30])->count('id');	//客户通过 和 完成
+		$in_production_count = $this->where($where)->where('status', 5)->count('id');  //制作中
+		$feedback_count = $this->where($where)->where('status', 15)->count('id');  //反馈中
+		$pause_count = $this->where($where)->where('is_pause', 2)->count('id');  //暂停
+		$waiting_assets_count = $this->where($where)->where('is_assets', 1)->count('id');  //等待资产
+		$finish_count = $this->where($where)->where('status', 'in', [25, 30])->count('id');  //客户通过 和 完成
 		$data['in_production_count'] = $in_production_count;
 		$data['feedback_count'] = $feedback_count;
 		$data['pause_count'] = $pause_count;
@@ -66,24 +67,24 @@ class Shot extends Common
 	public function getList($keywords, $page, $limit)
 	{
 		$where = [];
-		if(!empty($keywords['project_id']) && empty($keywords['shot_number'])){
+		if (!empty($keywords['project_id']) && empty($keywords['shot_number'])) {
 			$where['project_id'] = $keywords['project_id'];
 		}
-		if(!empty($keywords['field_id']) && empty($keywords['shot_number'])){
+		if (!empty($keywords['field_id']) && empty($keywords['shot_number'])) {
 			$where['field_id'] = $keywords['field_id'];
 		}
-		if(!empty($keywords['shot_id']) && empty($keywords['shot_number'])){
+		if (!empty($keywords['shot_id']) && empty($keywords['shot_number'])) {
 			$where['id'] = $keywords['shot_id'];
 		}
-		if(!empty($keywords['shot_number'])){	//手动输入镜头编号
+		if (!empty($keywords['shot_number'])) {  //手动输入镜头编号
 			$shot_number_len = strlen($keywords['shot_number']);
 			//后期可对3 镜头号长度进行配置
-			if($shot_number_len == 3){	//前端  对三位进行判断 必填场号
+			if ($shot_number_len == 3) {  //前端  对三位进行判断 必填场号
 				$where['shot_number'] = $keywords['shot_number'];
 			}
 			//后期可对场号长度进行配置  场号+镜头号  暂定为6
-			if($shot_number_len == 6){
-				$shot_number = substr($keywords['shot_number'],3,3);
+			if ($shot_number_len == 6) {
+				$shot_number = substr($keywords['shot_number'], 3, 3);
 				$where['shot_number'] = $shot_number;
 			}
 		}
@@ -124,31 +125,31 @@ class Shot extends Common
 	 * @throws \think\exception\DbException
 	 * @author zjs 2018/3/28
 	 */
-	public function getList_byStatus($keywords,$page, $limit, $status ='', $is_assets ='', $is_pause ='')
+	public function getList_byStatus($keywords, $page, $limit, $status = '', $is_assets = '', $is_pause = '')
 	{
 		$where = [];
-		if(!empty($keywords['project_id']) && empty($keywords['shot_number'])){
+		if (!empty($keywords['project_id']) && empty($keywords['shot_number'])) {
 			$where['project_id'] = $keywords['project_id'];
 		}
-		if(!empty($keywords['field_id']) && empty($keywords['shot_number'])){
+		if (!empty($keywords['field_id']) && empty($keywords['shot_number'])) {
 			$where['field_id'] = $keywords['field_id'];
 		}
-		if(!empty($keywords['shot_id']) && empty($keywords['shot_number'])){
+		if (!empty($keywords['shot_id']) && empty($keywords['shot_number'])) {
 			$where['id'] = $keywords['shot_id'];
 		}
-		if(!empty($keywords['shot_number'])){	//手动输入镜头编号
+		if (!empty($keywords['shot_number'])) {  //手动输入镜头编号
 			$shot_number_len = strlen($keywords['shot_number']);
 			//后期可对3 镜头号长度进行配置
-			if($shot_number_len == 3){	//前端  对三位进行判断 必填场号
+			if ($shot_number_len == 3) {  //前端  对三位进行判断 必填场号
 				$where['shot_number'] = $keywords['shot_number'];
 			}
 			//后期可对场号长度进行配置  场号+镜头号  暂定为6
-			if($shot_number_len == 6){
-				$shot_number = substr($keywords['shot_number'],3,3);
+			if ($shot_number_len == 6) {
+				$shot_number = substr($keywords['shot_number'], 3, 3);
 				$where['shot_number'] = $shot_number;
 			}
 		}
-		if(!empty($status)){
+		if (!empty($status)) {
 			$where['status'] = $status;
 		}
 		$where['is_assets'] = $is_assets;
@@ -179,22 +180,20 @@ class Shot extends Common
 	}
 
 	//添加镜头及任务
-	public function addData($param,$group_id)
+	public function addData($param, $group_id)
 	{
 		$project_obj = Project::get($param['project_id']);
 		//开启事务
 		$this->startTrans();
 		try {
-			//资产ID 多项 字符串 以逗号分割(现在没有不加资产)
-			$param['asset_ids'] = !empty($param['asset_ids']) ? implode(",",$param['asset_ids']) : '';
+			$is_assets = !empty($param['asset_ids']) ? $this->check_assets_status($param['asset_ids']) : 2;  // return 1/2
 			$param['shot_image'] = str_replace('\\', '/', $param['shot_image']);
 			$param['plan_start_timestamp'] = strtotime($param['plan_start_timestamp']);
 			$param['plan_end_timestamp'] = strtotime($param['plan_end_timestamp']);
 			$param['create_time'] = time();
+			//接收的环节下的工作室可以为空 ，将数据存储到 $tache_data 中
 			foreach ($param['tache'] as $key => $value) {
-				if (!empty($value)) {
-					$tache_data[$key] = $value;
-				}
+				$tache_data[$key] = $value;
 			}
 			//保存镜头表
 			$result = $this->allowField(true)->save($param);
@@ -206,8 +205,8 @@ class Shot extends Common
 				return false;
 			} else {
 				//镜头表新增成功 更新所属项目表镜头数量 lens_count +1
-				$lens_count['lens_count'] = $this->where('project_id',$param['project_id'])->count('id');
-				Db::name('admin_project')->where('id',$param['project_id'])->update($lens_count);
+				$lens_count['lens_count'] = $this->where('project_id', $param['project_id'])->count('id');
+				Db::name('admin_project')->where('id', $param['project_id'])->update($lens_count);
 
 				$project_byname = $project_obj->project_byname;
 				$field_name = Field::get($param['field_id'])->name;
@@ -216,7 +215,32 @@ class Shot extends Common
 				//exec_python($str);
 				//根据环节分配任务给各大工作室
 				foreach ($tache_data as $key => $val) {
-					foreach ($val as $k => $v) {
+					//根据环节内的工作室是否为空创建任务
+					if (!empty($val)) {
+						foreach ($val as $k => $v) {
+							$task_data['group_id'] = $group_id;    //所属角色ID
+							$task_data['user_id'] = 0;   //所属用户ID
+							$task_data['project_id'] = $curr_shot_obj->project_id;   //所属项目ID
+							$task_data['field_id'] = $curr_shot_obj->field_id;   //场号ID
+							$task_data['shot_id'] = $shot_id;  //镜头ID
+							$task_data['tache_id'] = $key;  //环节ID
+							$task_data['tache_sort'] = Tache::get($key)->sort;  //环节排序
+							$task_data['studio_id'] = $v;   //工作室ID
+							$task_data['task_type'] = 1;    //镜头类型
+							$task_data['task_image'] = $curr_shot_obj->shot_image;
+							$task_data['task_byname'] = $curr_shot_obj->shot_byname;//任务简称暂且为镜头的简称，任务模块中，可修改
+							$task_data['task_priority_level'] = $curr_shot_obj->priority_level;   //任务优先级
+							$task_data['difficulty'] = $curr_shot_obj->difficulty;    //任务难度
+							$task_data['plan_start_timestamp'] = $curr_shot_obj->plan_start_timestamp;  //计划开始时间
+							$task_data['plan_end_timestamp'] = $curr_shot_obj->plan_end_timestamp;    //计划结束时间
+							$task_data['task_status'] = 1;  //任务状态
+							$task_data['is_assets'] = $is_assets; //是否为等待资产 1是 2否
+							$task_data['pid'] = 0;  //工作室顶级任务ID都为0
+							$task_data['create_time'] = time();//创建时间
+							$task_model = new Workbench();
+							$task_model->data($task_data)->save();
+						}
+					} else {
 						$task_data['group_id'] = $group_id;    //所属角色ID
 						$task_data['user_id'] = 0;   //所属用户ID
 						$task_data['project_id'] = $curr_shot_obj->project_id;   //所属项目ID
@@ -224,7 +248,7 @@ class Shot extends Common
 						$task_data['shot_id'] = $shot_id;  //镜头ID
 						$task_data['tache_id'] = $key;  //环节ID
 						$task_data['tache_sort'] = Tache::get($key)->sort;  //环节排序
-						$task_data['studio_id'] = $v;   //工作室ID
+						$task_data['studio_id'] = 0;   //工作室ID
 						$task_data['task_type'] = 1;    //镜头类型
 						$task_data['task_image'] = $curr_shot_obj->shot_image;
 						$task_data['task_byname'] = $curr_shot_obj->shot_byname;//任务简称暂且为镜头的简称，任务模块中，可修改
@@ -233,7 +257,7 @@ class Shot extends Common
 						$task_data['plan_start_timestamp'] = $curr_shot_obj->plan_start_timestamp;  //计划开始时间
 						$task_data['plan_end_timestamp'] = $curr_shot_obj->plan_end_timestamp;    //计划结束时间
 						$task_data['task_status'] = 1;  //任务状态
-						$task_data['is_assets'] = 2; //是否为等待资产 1是 2否
+						$task_data['is_assets'] = $is_assets; //是否为等待资产 1是 2否
 						$task_data['pid'] = 0;  //工作室顶级任务ID都为0
 						$task_data['create_time'] = time();//创建时间
 						$task_model = new Workbench();
@@ -241,8 +265,8 @@ class Shot extends Common
 					}
 				}
 				//更新所属镜头 所属项目的任务数量
-				$task_count['task_count'] = Workbench::where('project_id',$param['project_id'])->count('id');
-				Db::name('admin_project')->where('id',$param['project_id'])->update($task_count);
+				$task_count['task_count'] = Workbench::where('project_id', $param['project_id'])->count('id');
+				Db::name('admin_project')->where('id', $param['project_id'])->update($task_count);
 				$this->commit();
 				return true;
 			}
@@ -265,67 +289,75 @@ class Shot extends Common
 		$this->startTrans();
 		try {
 			//资产ID 多项 字符串 以逗号分割(现在没有不加资产)
-			$param['asset_ids'] = !empty($param['asset_ids'])? implode(',',$param['asset_ids']) : '';
+			$param['asset_ids'] = !empty($param['asset_ids']) ? implode(',', $param['asset_ids']) : '';
 			$param['plan_start_timestamp'] = strtotime($param['plan_start_timestamp']);
 			$param['plan_end_timestamp'] = strtotime($param['plan_end_timestamp']);
 			$param['create_time'] = time();
+			//检测所属镜头ID的资产是否包含未完成的任务
+			$is_assets = !empty($param['asset_ids']) ? $this->check_assets_status($param['asset_ids']) : 2;  // return 1/2
 			foreach ($param['tache'] as $key => $value) {
 				if (!empty($value)) {
 					$tache_data[$key] = $value;
 				}
 			}
 			$shot_model = new Shot();
-			if (!empty($tache_data)) {  //环节不为空  执行更新本镜头数据及添加相应环节的任务
-				//更新当前镜头行记录
-				$shot_model->allowField(true)->save($param, [$this->getPk() => $id]);
-				$project_byname = Project::get($param['project_id'])->project_byname;
-				$field_name = Field::get($param['field_id'])->name;
-				//执行redis添加镜头所属目录 python
-				$str = "'Shot' '{$project_byname}' '{$field_name}' '{$param['shot_name']}'";
-				//exec_python($str);
-				//根据环节分配任务给各大工作室
-				foreach ($tache_data as $key => $val) {
-					foreach ($val as $k => $v) {
-						$task_data['group_id'] = 5;  //角色为工作室总监
-						$task_data['user_id'] = 0;
-						$task_data['project_id'] = $param['project_id'];   //所属项目ID
-						$task_data['field_id'] = $param['field_id'];   //场号ID
-						$task_data['shot_id'] = $id;  //镜头ID
-						$task_data['tache_id'] = $key;  //环节ID
-						$task_data['tache_sort'] = Tache::get($key)->sort;  //环节排序
-						$task_data['studio_id'] = $v;   //工作室ID
-						$task_data['task_type'] = 1;    //镜头类型
-						$task_data['task_image'] = $shot_obj->shot_image;
-						$task_data['task_byname'] = $shot_obj->shot_byname;//任务简称暂且为镜头的简称，任务模块中，可修改
-						$task_data['task_priority_level'] = $shot_obj->priority_level;   //任务优先级
-						$task_data['difficulty'] = $shot_obj->difficulty;    //任务难度
-						$task_data['plan_start_timestamp'] = $shot_obj->plan_start_timestamp;  //计划开始时间
-						$task_data['plan_end_timestamp'] = $shot_obj->plan_end_timestamp;    //计划结束时间
-						$task_data['task_status'] = 1;  //任务状态
-						$task_data['is_assets'] = 2; //是否为等待资产 1是 2否
-						$task_data['pid'] = 0;  //工作室顶级任务ID都为0
-						$task_data['create_time'] = time();//创建时间
-						$task_model = new Workbench();
-						$task_model->data($task_data, true)->isUpdate(false)->save();
-					}
+			//更新当前镜头行记录
+			$shot_model->allowField(true)->save($param, [$this->getPk() => $id]);
+			$project_byname = Project::get($param['project_id'])->project_byname;
+			$field_name = Field::get($param['field_id'])->name;
+			//执行redis添加镜头所属目录 python
+			$str = "'Shot' '{$project_byname}' '{$field_name}' '{$param['shot_name']}'";
+			//根据环节分配任务给各大工作室
+			foreach ($tache_data as $key => $val) {
+				foreach ($val as $k => $v) {
+					$task_data['group_id'] = 0;
+					$task_data['user_id'] = 0;
+					$task_data['project_id'] = $param['project_id'];   //所属项目ID
+					$task_data['field_id'] = $param['field_id'];   //场号ID
+					$task_data['shot_id'] = $id;  //镜头ID
+					$task_data['tache_id'] = $key;  //环节ID
+					$task_data['tache_sort'] = Tache::get($key)->sort;  //环节排序
+					$task_data['studio_id'] = $v;   //工作室ID
+					$task_data['task_type'] = 1;    //镜头类型
+					$task_data['task_image'] = $shot_obj->shot_image;
+					$task_data['task_byname'] = $shot_obj->shot_byname;//任务简称暂且为镜头的简称，任务模块中，可修改
+					$task_data['task_priority_level'] = $shot_obj->priority_level;   //任务优先级
+					$task_data['difficulty'] = $shot_obj->difficulty;    //任务难度
+					$task_data['plan_start_timestamp'] = $shot_obj->plan_start_timestamp;  //计划开始时间
+					$task_data['plan_end_timestamp'] = $shot_obj->plan_end_timestamp;    //计划结束时间
+					$task_data['task_status'] = 1;  //任务状态
+					$task_data['is_assets'] = $is_assets; //是否为等待资产 1是 2否
+					$task_data['pid'] = 0;  //工作室顶级任务ID都为0
+					$task_data['create_time'] = time();//创建时间
+					$task_model = new Workbench();
+					$task_model->data($task_data, true)->isUpdate(false)->save();
 				}
-				//更新所属项目的任务数量
-				$task_count['task_count'] = Workbench::where('project_id',$shot_obj->project_id)->count('id');
-				Db::name('admin_project')->where('id',$shot_obj->project_id)->update($task_count);
-				$this->commit();
-				return true;
-			} else {  //更新本镜头数据
-				//更新所属项目的任务数量
-				$task_count['task_count'] = Workbench::where('project_id',$shot_obj->project_id)->count('id');
-				Db::name('admin_project')->where('id',$shot_obj->project_id)->update($task_count);
-				$shot_model->allowField(true)->save($param, [$this->getPk() => $id]);
-				$this->commit();
-				return true;
 			}
+			//更新所属项目的任务数量
+			$task_count['task_count'] = Workbench::where('project_id', $shot_obj->project_id)->count('id');
+			Db::name('admin_project')->where('id', $shot_obj->project_id)->update($task_count);
+			$this->commit();
+			return true;
 		} catch (\Exception $e) {
 			$this->rollback();
 			$this->error = '编辑失败';
 			return false;
+		}
+	}
+
+	//检测所属镜头下的资产
+	public function check_assets_status($asset_ids_str)
+	{
+		$asset_ids = explode(',', $asset_ids_str);
+		foreach ($asset_ids as $key => $value) {
+			if (Asset::get($value)->status < 20) {  //通过 非等待资产状态
+				$check_data[] = 1;
+			}
+		}
+		if (!empty($check_data)) {
+			return 1;
+		} else {
+			return 2;
 		}
 	}
 
@@ -335,11 +367,13 @@ class Shot extends Common
 		$data = $this->get($id);
 		$data->project_name = Project::get($data->project_id)->project_name;
 		$data->field_name = Field::get($data->field_id)->name;
+		$data->asset_name = !empty($data->asset_ids) ? $this->get_assets_name($data->asset_ids)['asset_names'] : '';
 		$data->time_name = $this->time_arr[$data->time];
 		$data->ambient_name = $this->ambient_arr[$data->ambient];
 		$data->difficulty_name = $this->difficulty_arr[$data->difficulty];
 		$data->priority_level_name = $this->priority_level_arr[$data->priority_level];
 		$data->tache_info = $this->get_studio_byTache($data->id);
+		$data->asset_info = !empty($data->asset_ids) ? $this->get_assets_name($data->asset_ids)['asset_arr'] : [];
 		if (!$data) {
 			$this->error = '暂无此数据';
 			return false;
@@ -390,16 +424,33 @@ class Shot extends Common
 	public function get_studio_name($studio_id_arr)
 	{
 		foreach ($studio_id_arr as $key => $value) {
-			$arr[$key]['id'] = $value;
-			$arr[$key]['name'] = Studio::get($value)->name;
+			if($value!=0){
+				$arr[$key]['id'] = $value;
+				$arr[$key]['name'] = Studio::get($value)->name;
+			}else{
+				$arr = [];
+			}
 		}
 		return $arr;
+	}
+
+	//根据资产ID string 获取名称
+	public function get_assets_name($asset_ids_str){
+		$asset_ids_arr = explode(',',$asset_ids_str);
+		$asset_arr = [];
+		foreach($asset_ids_arr as $key=>$value){
+			$asset_arr[$key]['type'] = Field::get(Asset::get($value)->field_id)->explain;
+			$asset_arr[$key]['name'] = $asset_names[] = Asset::get($value)->asset_name;
+		}
+		$data['asset_names'] = implode(',',$asset_names);
+		$data['asset_arr'] = $asset_arr;
+		return $data;
 	}
 
 	//获取当前镜头各环节进度
 	public function rate_of_progress($shot_id)
 	{
-		$tache_data = array_unique(Workbench::where(['pid'=>0,'shot_id'=>$shot_id])->column('tache_id'));  //获取所属镜头的环节
+		$tache_data = array_unique(Workbench::where(['pid' => 0, 'shot_id' => $shot_id])->column('tache_id'));  //获取所属镜头的环节
 		foreach ($tache_data as $key => $value) {
 			//根据当前镜头ID与环节ID查询是否有其任务
 			$curr_task_data = Workbench::where(['shot_id' => $shot_id, 'tache_id' => $value])->find();
@@ -496,37 +547,40 @@ class Shot extends Common
 	}
 
 	//根据项目ID及场号ID 获取镜头ID 及镜头编号
-	public function get_shot_number($param){
+	public function get_shot_number($param)
+	{
 		$data = [];
-		if(!empty($param['field_id'])){
-			$data = $this->where('field_id',$param['field_id'])->select();
+		if (!empty($param['field_id'])) {
+			$data = $this->where('field_id', $param['field_id'])->select();
 		}
 		return $data;
 	}
 
 	//校验所属项目、所属场号下的镜头编号是否重复
-	public function check_shot_num($param){
-		$check_result = $this->where(['field_id'=>$param['field_id'],'shot_number'=>$param['shot_number']])->value('id');
-		if(!empty($check_result)){
+	public function check_shot_num($param)
+	{
+		$check_result = $this->where(['field_id' => $param['field_id'], 'shot_number' => $param['shot_number']])->value('id');
+		if (!empty($check_result)) {
 			$this->error = '镜头编号已重复';
 			return false;
-		}else{
+		} else {
 			return true;
 		}
 	}
 
 	//获取模板
-	public function shot_template(){
+	public function shot_template()
+	{
 		$file_name = '123.xls';
-		$files = "uploads/Projects/excels/".$file_name;
-		if(is_file($files)){
+		$files = "uploads/Projects/excels/" . $file_name;
+		if (is_file($files)) {
 			return $files;
-		}else{
+		} else {
 			$PHPExcel = new \PHPExcel();
 			$PHPSheet = $PHPExcel->getActiveSheet();
 			$PHPSheet->setTitle("demo"); //给当前活动sheet设置名称
-			$PHPSheet->setCellValue("A1","姓名")->setCellValue("B1","分数");//表格数据
-			$PHPSheet->setCellValue("A2","张三")->setCellValue("B2","2121");//表格数据
+			$PHPSheet->setCellValue("A1", "姓名")->setCellValue("B1", "分数");//表格数据
+			$PHPSheet->setCellValue("A2", "张三")->setCellValue("B2", "2121");//表格数据
 			$objWriter = \PHPExcel_IOFactory::createWriter($PHPExcel, 'Excel2007');
 			header('Content-Disposition: attachment;filename=".$file_name."');
 			header('Content-Type: application/vnd.ms-excel; charset=utf-8');
