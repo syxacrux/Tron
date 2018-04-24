@@ -162,37 +162,87 @@
           </section>
         </el-tab-pane>
         <el-tab-pane label="公共" name="common">
-          <div class="ovf-hd">
-            <el-col :span="12" v-for="item in commonList" :key="item.id">
-              <div class="grid-content p-b-5" @click="referenceDetail(item.id)">
-                <el-card class="ovf-hd">
-                </el-card>
-              </div>
-            </el-col>
-          </div>
-          <div class="pos-rel p-t-20" v-if="commonList.length">
-            <div class="block tx-r">
-              <el-pagination
-                  @current-change="commonCurrentChange"
-                  :current-page.sync="currentPage"
-                  :page-size="10"
-                  layout="prev, pager, next, jumper"
-                  :total="commonDataCount">
-              </el-pagination>
+          <section>
+            <div class="ovf-hd w-200 m-r-10 fl">
+              <el-input placeholder="输入关键字进行过滤" v-model="filterText"></el-input>
+              <el-tree
+                  class="filter-tree"
+                  :data="data2"
+                  :props="defaultProps"
+                  default-expand-all
+                  :filter-node-method="filterNode"
+                  ref="tree2">
+              </el-tree>
             </div>
-          </div>
+            <div class="ovf-hd">
+              <el-col :span="4">
+                <!--<el-col :span="12" v-for="item in commonList" :key="item.id">-->
+                <div class="grid-content p-b-5">
+                  <!--<div class="grid-content p-b-5" @click="referenceDetail(item.id)">-->
+                  <el-card class="ovf-hd">
+                    1233523423423443
+                    1233523423423443
+                    1233523423423443
+                    1233523423423443
+                    1233523423423443
+                    1233523423423443
+                  </el-card>
+                </div>
+              </el-col>
+              <el-col :span="4">
+                <!--<el-col :span="12" v-for="item in projectList" :key="item.id">-->
+                <div class="grid-content p-b-5">
+                  <!--<div class="grid-content p-b-5" @click="referenceDetail(item.id)">-->
+                  <el-card class="ovf-hd">
+                    1233523423423443
+                    1233523423423443
+                    1233523423423443
+                    1233523423423443
+                    1233523423423443
+                    1233523423423443
+                  </el-card>
+                </div>
+              </el-col>
+              <el-col :span="4">
+                <!--<el-col :span="12" v-for="item in projectList" :key="item.id">-->
+                <div class="grid-content p-b-5">
+                  <!--<div class="grid-content p-b-5" @click="referenceDetail(item.id)">-->
+                  <el-card class="ovf-hd">
+                    1233523423423443
+                    1233523423423443
+                    1233523423423443
+                    1233523423423443
+                    1233523423423443
+                    1233523423423443
+                  </el-card>
+                </div>
+              </el-col>
+            </div>
+            <!--<div class="pos-rel p-t-20" v-if="commonList.length">-->
+            <div class="pos-rel p-t-20">
+              <div class="block tx-r">
+                <el-pagination
+                    @current-change="commonCurrentChange"
+                    :current-page.sync="currentPage"
+                    :page-size="10"
+                    layout="prev, pager, next, jumper"
+                    :total="commonDataCount">
+                </el-pagination>
+              </div>
+            </div>
+          </section>
         </el-tab-pane>
       </el-tabs>
     </div>
-    <transition name="el-zoom-in-top">
-      <div v-show="isReferenceDetailShow" class="reference_detail fr">
+    <transition name="el-zoom-in-center">
+      <div v-show="!isReferenceDetailShow" class="reference_detail fr">
         <el-card>
-          <!--<div slot="header" class="clearfix">-->
-            <!--<span>资产详情</span>-->
+          <div slot="header" class="clearfix">
+            <span>参考文件详情</span>
             <!--<i v-if="editShow" class="el-icon-edit m-l-5 fz-14 c-light-gray pointer" @click="editAsset"></i>-->
             <!--<i v-if="deleteShow" class="el-icon-delete m-l-5 fz-14 c-light-gray pointer" @click="deleteAsset"></i>-->
-            <!--<i class="el-icon-close fr pointer" @click="isAssetDetailShow = !isAssetDetailShow"></i>-->
-          <!--</div>-->
+            <i class="el-icon-close fr pointer" @click="isReferenceDetailShow = !isReferenceDetailShow"></i>
+          </div>
           <!--<el-row :gutter="20" class="m-b-5">-->
             <!--<el-col :span="12">-->
               <!--<p class="m-0">资产缩略图：<img :src="address + editAssetDetail.asset_image" alt="" class="vtcal-mid h-40">-->
@@ -201,67 +251,26 @@
           <!--</el-row>-->
           <!--<el-row :gutter="20" class="m-b-5">-->
             <!--<el-col :span="12">-->
-              <!--<p class="m-0">资产简称：<span>{{ editAssetDetail.asset_byname }}</span></p>-->
+              <!--<p class="m-0">名称：<span>{{ editAssetDetail.asset_byname }}</span></p>-->
             <!--</el-col>-->
             <!--<el-col :span="12">-->
-              <!--<p class="m-0">资产所属项目：<span>{{ editAssetDetail.project_name }}</span></p>-->
-            <!--</el-col>-->
-          <!--</el-row>-->
-          <!--<el-row :gutter="20" class="m-b-5">-->
-            <!--<el-col :span="12">-->
-              <!--<p class="m-0">资产名称：<span>{{ editAssetDetail.asset_name }}</span></p>-->
-            <!--</el-col>-->
-            <!--<el-col :span="12">-->
-              <!--<p class="m-0">资产类型：<span>{{ editAssetDetail.type_name }}</span></p>-->
-            <!--</el-col>-->
-          <!--</el-row>-->
-          <!--<el-row :gutter="20" class="m-b-5">-->
-            <!--<el-col :span="24">-->
-              <!--<p class="m-0">计划开始时间：<span>{{ j2time(editAssetDetail.plan_start_timestamp) }}</span></p>-->
-            <!--</el-col>-->
-          <!--</el-row>-->
-          <!--<el-row :gutter="20" class="m-b-5">-->
-            <!--<el-col :span="24">-->
-              <!--<p class="m-0">计划结束时间：<span>{{ j2time(editAssetDetail.plan_end_timestamp) }}</span></p>-->
+              <!--<p class="m-0">场号/资产：<span>{{ editAssetDetail.project_name }}</span></p>-->
             <!--</el-col>-->
           <!--</el-row>-->
           <!--<el-row :gutter="20" class="m-b-5">-->
             <!--<el-col :span="12">-->
-              <!--<p class="m-0">资产优先级：<span>{{ editAssetDetail.priority_level_name }}</span></p>-->
+              <!--<p class="m-0">镜头号/资产号：<span>{{ editAssetDetail.asset_name }}</span></p>-->
             <!--</el-col>-->
             <!--<el-col :span="12">-->
-              <!--<p class="m-0">资产难度：<span>{{ editAssetDetail.difficulty_name }}</span></p>-->
-            <!--</el-col>-->
-          <!--</el-row>-->
-          <!--<el-row :gutter="20" class="m-b-5">-->
-            <!--<el-col :span="24">-->
-              <!--<p class="m-0">-->
-                <!--环节所属工作室：-->
-                <!--<span class="tache_studio dp-b" v-for="(item, index) in editAssetDetail.tache_info" :key="index">-->
-                    <!--<i class="el-icon-close m-l-5 c-light-gray pointer" v-if="deleteShowTache"-->
-                       <!--@click="deleteTache(index)"></i>-->
-                    <!--<span>{{ index }}：</span>-->
-                    <!--<el-tag size="mini" v-for="studio in item" :closable="deleteShowTacheStudio" type="info"-->
-                            <!--@close="deleteTacheStudio(index, studio)" :key="studio.id">-->
-                      <!--{{ studio.name }}-->
-                    <!--</el-tag>-->
-                  <!--</span>-->
-              <!--</p>-->
+              <!--<p class="m-0">所属项目：<span>{{ editAssetDetail.type_name }}</span></p>-->
             <!--</el-col>-->
           <!--</el-row>-->
           <!--<el-row :gutter="20" class="m-b-5">-->
             <!--<el-col :span="12">-->
-              <!--<p class="m-0">二级公司：<span>{{ editAssetDetail.second_company }}</span></p>-->
+              <!--<p class="m-0">使用环节：<span>{{ editAssetDetail.priority_level_name }}</span></p>-->
             <!--</el-col>-->
-          <!--</el-row>-->
-          <!--<el-row :gutter="20" class="m-b-5">-->
             <!--<el-col :span="12">-->
-              <!--<p class="m-0">资产备注：<span>{{ editAssetDetail.asset_explain }}</span></p>-->
-            <!--</el-col>-->
-          <!--</el-row>-->
-          <!--<el-row :gutter="20" class="m-b-5">-->
-            <!--<el-col :span="24">-->
-              <!--<p class="m-0">制作要求：<span>{{ editAssetDetail.make_demand }}</span></p>-->
+              <!--<p class="m-0">提供者：<span>{{ editAssetDetail.difficulty_name }}</span></p>-->
             <!--</el-col>-->
           <!--</el-row>-->
         </el-card>
@@ -269,22 +278,22 @@
     </transition>
     <el-dialog title="上传文件" :visible.sync="dialogFormVisible" width="30%">
       <el-form :model="form" size="medium">
-        <el-form-item label="名称" label-width="120px">
+        <el-form-item label="名称:" label-width="120px">
           <el-input v-model="form.name" auto-complete="off"></el-input>
         </el-form-item>
-        <el-form-item label="场号/资产" label-width="120px">
+        <el-form-item label="场号/资产:" label-width="120px">
           <el-input v-model="form.name" auto-complete="off"></el-input>
         </el-form-item>
-        <el-form-item label="类型" label-width="120px">
+        <el-form-item label="类型:" label-width="120px">
           <el-radio-group v-model="form.type" size="small">
             <el-radio label="1" border>镜头类型</el-radio>
             <el-radio label="2" border>资产类型</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="镜头号/资产号" label-width="120px">
+        <el-form-item label="镜头号/资产号:" label-width="120px">
           <el-input v-model="form.name" auto-complete="off"></el-input>
         </el-form-item>
-        <el-form-item label="环节" label-width="120px">
+        <el-form-item label="环节:" label-width="120px">
           <el-input v-model="form.name" auto-complete="off"></el-input>
         </el-form-item>
       </el-form>
@@ -548,7 +557,7 @@
   }
 
   .reference_list .reference_detail {
-    width: 25%;
+    width: 40%;
     height: 75%;
     position: fixed;
     right: 20px;
