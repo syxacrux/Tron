@@ -731,7 +731,7 @@
       },
 //      等待资产中切换分页
       waitingCurrentChange(page) {
-        this.getShots('waiting', page)
+        this.getShots('waiting_assets', page)
       },
 //      镜头暂停切换分页
       pauseCurrentChange(page) {
@@ -792,7 +792,7 @@
       /*
       * 获取某个状态的镜头看板内容
       * params: {
-      *   shot_status: 区分请求接口的地址（in_production、feedback、waiting、pause、finish）
+      *   shot_status: 区分请求接口的地址（in_production、feedback、waiting_assets、pause、finish）
       * }
       * */
       getShots(shot_status, page) {
@@ -816,7 +816,7 @@
                 this.feedbackDataCount = data.dataCount
                 this.feedbackList = data.list
                 break;
-              case 'waiting_shot':
+              case 'waiting_assets':
                 this.waitingDataCount = data.dataCount
                 this.waitingList = data.list
                 break;
@@ -895,7 +895,7 @@
             this.getShots('feedback', 1)
             break;
           case 'shotsNotDevelopment':
-            this.getShots('waiting_shot', 1)
+            this.getShots('waiting_assets', 1)
             break;
           case 'shotsSuspend':
             this.getShots('pause', 1)
