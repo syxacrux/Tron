@@ -636,6 +636,15 @@
       },
 //      编辑镜头
       edit(form) {
+        if (
+          this.artOfStudio.length === 0 && this.modelOfStudio.length === 0 && this.mapOfStudio.length === 0 &&
+          this.bindOfStudio.length === 0 && this.trackOfStudio.length === 0 && this.animateOfStudio.length === 0 &&
+          this.paintOfStudio.length === 0 && this.specialOfStudio.length === 0 && this.lightOfStudio.length === 0 &&
+          this.synchOfStudio.length === 0
+        ) {
+          _g.toastMsg('warning', '请选择至少一个环节所属工作室')
+          return
+        }
         if (!this.form.shot_image) {
           _g.toastMsg('warning', '请插入镜头缩略图')
           return
@@ -787,7 +796,7 @@
         this.frame_range1 = data.frame_range.split(',')[0]
         this.frame_range2 = data.frame_range.split(',')[1]
         this.form.material_number = data.material_number
-        let asset_ids = data.asset_ids ? data.asset_ids : []
+        let asset_ids = data.asset_ids ? data.asset_ids.split(',') : []
         if(asset_ids.length > 0){
           _(asset_ids).forEach((key) => {
             this.form.asset_ids.push(parseInt(key))

@@ -424,7 +424,7 @@ class Shot extends Common
 	public function get_studio_name($studio_id_arr)
 	{
 		foreach ($studio_id_arr as $key => $value) {
-			if($value!=0){
+			if($value != 0){
 				$arr[$key]['id'] = $value;
 				$arr[$key]['name'] = Studio::get($value)->name;
 			}else{
