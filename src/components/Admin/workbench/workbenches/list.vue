@@ -978,7 +978,7 @@
     text-align: right;
   }
   .workbench_list .task_detail {
-    width: 25%;
+    width: 30%;
     position: fixed;
     right: 20px;
     top: 100px;
