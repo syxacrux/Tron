@@ -452,12 +452,12 @@
                 <p class="m-0">所属项目：<span>{{ finishList.project_name }}</span></p>
               </el-col>
                <el-col :span="12">
-                <p class="m-0">镜头名称：<span>{{ finishList.shot_name }}</span></p>
+                <p class="m-0">镜头名称/资产名称：<span>{{ finishList.shot_name }}</span></p>
               </el-col>
             </el-row>
             <el-row :gutter="20" class="m-b-5">
               <el-col :span="12">
-                <p class="m-0">镜头简称：<span>{{ finishList.shot_byname }}</span></p>
+                <p class="m-0">镜头简称/资产简称：<span>{{ finishList.shot_byname }}</span></p>
               </el-col>
               <el-col :span="12">
                 <p class="m-0">场号/集号：<span>{{ finishList.field_number }}</span></p>
