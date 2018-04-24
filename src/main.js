@@ -11,6 +11,8 @@ import 'assets/css/kanban.css'
 import 'assets/css/global.css'
 import 'assets/css/base.css'
 import './.htaccess'
+// import $ from 'jquery'
+// Vue.prototype.$ = jquery
 Vue.use(ElementUI)
 Vue.use(vueKanban)
 
