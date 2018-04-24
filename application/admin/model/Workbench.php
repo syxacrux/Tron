@@ -65,7 +65,7 @@ class Workbench extends Common
 		for ($i = 0; $i < count($list); $i++) {
 			$list[$i]['project_name'] = Project::get($list[$i]['project_id'])->project_name;
 			$list[$i]['field_number'] = Db::name('field')->where('id', $list[$i]['field_id'])->value('name');
-			$list[$i]['shot_number'] = Shot::get($list[$i]['shot_id'])->shot_number;
+			$list[$i]['shot_number'] = ($list[$i]['task_type'] == 1) ? Shot::get($list[$i]['shot_id'])->shot_number : Asset::get($list[$i]['asset_id'])->asset_name;
 			$list[$i]['difficulty'] = $this->difficulty_arr[$list[$i]['difficulty']];
 			$list[$i]['task_priority_level'] = $this->task_priority_level_arr[$list[$i]['task_priority_level']];
 			$list[$i]['status_cn'] = $this->status_arr[$list[$i]['task_status']];
@@ -193,7 +193,7 @@ class Workbench extends Common
 		//重组数组
 		foreach ($list_data as $key => $value) {
 			$list_data[$key]['project_name'] = Project::get($value['project_id'])->project_byname;
-			$list_data[$key]['shot_number'] = Db::name('field')->where('id', $value['field_id'])->value('name') . Shot::get($value['shot_id'])->shot_number;
+			$list_data[$key]['shot_number'] = ($value['task_type'] == 1) ? Field::get($value['field_id'])->name . Shot::get($value['shot_id'])->shot_number : Asset::get($value['asset_id'])->asset_name;
 			$list_data[$key]['task_priority_level'] = $this->task_priority_level_arr[$value['task_priority_level']];    //任务优先级
 			$list_data[$key]['difficulty'] = $this->difficulty_arr[$value['difficulty']];   //任务难度
 			$list_data[$key]['surplus_days'] = floatval(sprintf("%.2f", ($value['plan_end_timestamp'] - time()) / 86400)) . "天";   //剩余天数
