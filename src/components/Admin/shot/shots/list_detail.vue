@@ -525,7 +525,7 @@
                   <span class="tache_studio dp-b" v-for="(item, index) in editShotDetail.tache_info" :key="index">
                     <i class="el-icon-close m-l-5 c-light-gray pointer" v-if="deleteShowTache" @click="deleteTache(index)" ></i>
                     <span>{{ index }}：</span>
-                    <el-tag size="mini" v-for="studio in item" :closable="deleteShowTacheStudio" type="info" @close="deleteTacheStudio(index, studio)" :key="studio.id">
+                    <el-tag v-if="item.length" size="mini" v-for="studio in item" :closable="deleteShowTacheStudio" type="info" @close="deleteTacheStudio(index, studio)" :key="studio.id">
                       {{ studio.name }}
                     </el-tag>
                   </span>
