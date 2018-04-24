@@ -541,6 +541,38 @@
           _g.toastMsg('warning', '请输入计划起止时间')
           return
         }
+        let obj = {}
+        if(this.isArt) {
+          obj[3] = this.artOfStudio
+        }
+        if(this.isModel) {
+          obj[4] = this.modelOfStudio
+        }
+        if(this.isMap) {
+          obj[5] = this.mapOfStudio
+        }
+        if(this.isBind) {
+          obj[6] = this.bindOfStudio
+        }
+        if(this.isTrack) {
+          obj[7] = this.trackOfStudio
+        }
+        if(this.isAni) {
+          obj[8] = this.animateOfStudio
+        }
+        if(this.isPaint) {
+          obj[9] = this.paintOfStudio
+        }
+        if(this.isSpec) {
+          obj[10] = this.specialOfStudio
+        }
+        if(this.isLight) {
+          obj[11] = this.lightOfStudio
+        }
+        if(this.isSynch) {
+          obj[12] = this.synchOfStudio
+        }
+        this.form.tache = obj
 //        必填项
         this.form.asset_image = this.form.asset_image.slice(this.form.asset_image.indexOf('uploads'))
         this.form.project_id = parseInt(this.form.project_id)
@@ -553,18 +585,18 @@
         this.form.priority_level = this.form.priority_level ? parseInt(this.form.priority_level) : 1
         this.form.difficulty = this.form.difficulty ? parseInt(this.form.difficulty) : 1
 
-        this.form.tache = {
-          3: this.artOfStudio,
-          4: this.modelOfStudio,
-          5: this.mapOfStudio,
-          6: this.bindOfStudio,
-          7: this.trackOfStudio,
-          8: this.animateOfStudio,
-          9: this.paintOfStudio,
-          10: this.specialOfStudio,
-          11: this.lightOfStudio,
-          12: this.synchOfStudio
-        }
+        // this.form.tache = {
+        //   3: this.artOfStudio,
+        //   4: this.modelOfStudio,
+        //   5: this.mapOfStudio,
+        //   6: this.bindOfStudio,
+        //   7: this.trackOfStudio,
+        //   8: this.animateOfStudio,
+        //   9: this.paintOfStudio,
+        //   10: this.specialOfStudio,
+        //   11: this.lightOfStudio,
+        //   12: this.synchOfStudio
+        // }
         console.log(this.form)
         this.$refs.form.validate((pass) => {
           if (pass) {
