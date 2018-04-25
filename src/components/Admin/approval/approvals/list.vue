@@ -117,9 +117,9 @@
         </el-col>
         <el-col :span="10">
             <div class="imagebox dailies-video" id="signx">
-				<img id="imgs" src="../../../../assets/images/bg1.jpg" >
+				<!-- <img id="imgs" src="../../../../assets/images/bg1.jpg" > -->
                
-                <!-- <img id="imgs" src="/uploads/Projects/images/20180424/699b8793314dc874d0e66748ff4a97c9.jpg" > -->
+                <img id="imgs" src="/uploads/Projects/images/20180424/699b8793314dc874d0e66748ff4a97c9.jpg" >
 		    </div>
             <button id="capture">Capture</button>
             <div id="output"></div>
