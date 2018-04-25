@@ -38,8 +38,10 @@ return [
 	'admin/base/getVerify'  =>      ['admin/base/getVerify', ['method' => 'GET']],
 	// [基础] 上传图片
 	'admin/upload'          =>      ['admin/upload/index', ['method' => 'POST']],
-	// [基础]  上传缩略图
+	// [基础] 上传缩略图
 	'admin/upload_image'    =>      ['admin/upload/images_add', ['method' => 'POST']],
+	// [基础]	上传excel文件
+	'admin/upload_excel'		=>			['admin/upload/excels_add',	['method' => 'POST']],
 	// 保存系统配置
 	'admin/systemConfigs'   =>      ['admin/systemConfigs/save', ['method' => 'POST']],
 	// [规则] 批量删除

@@ -5,7 +5,6 @@
 // | Author: linchuangbin <linchuangbin@honraytech.com>
 // +----------------------------------------------------------------------
 namespace app\admin\controller;
-use think\Request;
 use think\Controller;
 
 class Upload extends Controller{
@@ -50,6 +49,30 @@ class Upload extends Controller{
         }
         return resultArray(['error'=>$file->getError()]);
     }
+
+	/**
+	 * excel文件上传
+	 * 移动到所属项目根目录 /uploads/Projects/excels/import 目录下
+	 * @return array
+	 * @author zjs 2018/04/25
+	 */
+		public function excels_add(){
+			header('Access-Control-Allow-Origin: *');
+			header('Access-Control-Allow-Methods: POST');
+			header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
+			$file = request()->file('file');
+			if (!$file) {
+				return resultArray(['error' => '请上传Excel文件']);
+			}
+			$excels_dir = ROOT_PATH.DS.'uploads'.DS.'Projects'.DS.'excels'.DS.'import';
+			$host_excels_path = 'uploads'. DS .'Projects'.DS.'excels'.DS.'import';
+			//移动文件
+			$info = $file->validate(['ext'=>'xls,xlsx,xltx'])->move($excels_dir);
+			if ($info) {
+				return resultArray(['data' =>$host_excels_path.DS.$info->getSaveName()]);
+			}
+			return resultArray(['error'=>$file->getError()]);
+		}
 
 }
  
