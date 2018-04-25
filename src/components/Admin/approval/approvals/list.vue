@@ -119,7 +119,7 @@
             <div class="imagebox dailies-video" id="signx">
 			      	<!-- <img id="imgs" src="../../../../assets/images/bg1.jpg" > -->
                
-                <img id="imgs" src="http://127.0.0.1:8888//uploads/Projects/images/20180424/699b8793314dc874d0e66748ff4a97c9.jpg">
+                <img id="imgs" src="http://127.0.0.1:8888//uploads/Projects/images/20180424/699b8793314dc874d0e66748ff4a97c9.jpg" crossOrigin='Anonymous'>
 		        </div>
             <button id="capture">Capture</button>
             <div id="output"></div>
@@ -171,19 +171,19 @@
                 taintTest: false,
                 onrendered: function (canvas) {
                   console.log(canvas)
-                    // var imgData = canvas.toDataURL("png");
-                    // var img=new Image();
-                    // img.src=imgData;
-                    // console.log(imgData)
-                    // document.getElementById("output").appendChild(img);
-                    canvas.id = "mycanvas";    
-                    //生成base64图片数据 
-                    // canvas.setAttribute('crossOrigin', 'anonymous');   
-                    var dataUrl = canvas.toDataURL();    
-                    console.log(dataUrl)
-                    var newImg = document.createElement("img");    
-                    newImg.src =  dataUrl;    
-                    document.getElementById("output").appendChild(newImg);    
+                    var imgData = canvas.toDataURL("png");
+                    var img=new Image();
+                    img.src=imgData;
+                    console.log(imgData)
+                    document.getElementById("output").appendChild(img);
+                    // canvas.id = "mycanvas";    
+                    // //生成base64图片数据 
+                    // // canvas.setAttribute('crossOrigin', 'anonymous');   
+                    // var dataUrl = canvas.toDataURL();    
+                    // console.log(dataUrl)
+                    // var newImg = document.createElement("img");    
+                    // newImg.src =  dataUrl;    
+                    // document.getElementById("output").appendChild(newImg);    
                 }
             });
            })
@@ -195,15 +195,15 @@
           //         var ctx = canvas.getContext("2d");
           //         ctx.drawImage(img, 0, 0, img.width, img.height);
                   
-          //         var ext = img.src.substring(img.src.lastIndexOf(".")+1).toLowerCase();
-          //         console.log(ext)
+          //         // var ext = img.src.substring(img.src.lastIndexOf(".")+1).toLowerCase();
+          //         // console.log(ext)
           //         var dataURL = canvas.toDataURL();
           //         console.log(dataURL,123)
           //         return dataURL;
           // }
           // $('#capture').click(function(){
           //   var image = new Image();
-          //   image.crossOrigin = '';
+          //   image.crossOrigin = 'anonymous';
           //   image.src = $('#imgs').attr('src');
           //   var base64 = getBase64Image(image);
           //   console.log(base64);
