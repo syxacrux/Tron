@@ -4,7 +4,7 @@
       <el-breadcrumb separator="/">
         <el-breadcrumb-item :to="{ path: '/admin' }">首页</el-breadcrumb-item>
         <el-breadcrumb-item :to="{ path: '/admin/approvals/list' }">审批管理</el-breadcrumb-item>
-        <el-breadcrumb-item>dailies管理</el-breadcrumb-item>
+        <el-breadcrumb-item>审批列表</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
     <div class="m-b-20 ovf-hd">
@@ -116,9 +116,15 @@
             </el-col>
         </el-col>
         <el-col :span="10">
-            <div class="imagebox" id="signx">
-				<img id="video" src="/Users/tengshifei/code/tron/uploads/Projects/images/20180409/1b8aec24c2d643f471c3860180fb4a4f.jpg" >
+            <div class="imagebox dailies-video" id="signx">
+				<!-- <img id="imgs" src="../../../../assets/images/bg1.jpg" > -->
+               
+                <img id="imgs" src="/uploads/Projects/images/20180424/699b8793314dc874d0e66748ff4a97c9.jpg" >
 		    </div>
+            <button id="capture">Capture</button>
+            <div id="output"></div>
+            <canvas id="myCanvas" width="895"  height="517">
+			</canvas> <!--整个画布-->
         </el-col>
       </el-row>
     </div>
@@ -128,8 +134,11 @@
   import btnGroup from '../../../Common/btn-group.vue'
   import http from '../../../../assets/js/http'
   import _g from '@/assets/js/global'
-  import $ from 'jquery'
-//   import sign from '@/assets/js/jquery-sign.js'
+//   import $ from 'jquery'
+  import '@/assets/js/jquery-1.11.1.min.js'
+  import '@/assets/js/jquery-sign.js'
+  import '@/assets/js/html2canvas.js'
+  import '@/assets/css/signStyle.css'
 
    export default {
        data () {
@@ -148,17 +157,85 @@
         } 
        },
        created() {
-           console.log($)
+           $.sign.bindSign('#signx');//初始化
+          
+           
+       },
+       mounted(){
+           $('#capture').click(function(){
+               console.log(122)
+               html2canvas(document.getElementById('signx'), {
+                allowTaint: true,
+                taintTest: false,
+                onrendered: function (canvas) {
+                    // var imgData = canvas.toDataURL("png");
+                    // var img=new Image();
+                    // img.src=imgData;
+                    // console.log(imgData)
+                    // document.getElementById("output").appendChild(img);
+                    canvas.id = "mycanvas";    
+                    //生成base64图片数据    
+                    var dataUrl = canvas.toDataURL();    
+                    var newImg = document.createElement("img");    
+                    newImg.src =  dataUrl;    
+                    document.getElementById("output").appendChild(newImg);    
+                }
+            });
+           })
+           	// (function() {
+            //     "use strict";
+            //     var video, $capture;
+            //     var scale = 0.25;
+            //     var initialize = function() {
+            //         $capture = $("#capture");
+            //         // video = $("#video").get(0);
+            //         video=$('.dailies-video>img').get(0)
+            //         $("#capture").click(captureImage);        
+            //     };
+            //     var captureImage = function() {
+            //         var canvas = document.createElement("canvas");
+            //         var str=$('.dailies-video>img').css('width').substr(0,$('.dailies-video>img').css('width').length-2)
+            //         // canvas.width = video.videoWidth * scale;
+            //         // canvas.height = video.videoHeight * scale;
+            //         canvas.height = 517;
+            //         canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+            //         var img = document.createElement("img");
+            //         img.src = canvas.toDataURL();
+            //         $capture.prepend(img);
+            //         var ce=document.getElementById("myCanvas");
+            //         var ctx=ce.getContext("2d");
+            //         var img=new Image();
+            //         ctx.clearRect(0,0,895,canvas.height);
+            //         img.onload = function(){
+            //         ctx.drawImage(img,0,0,canvas.width,canvas.height);
+            //         };
+            //         img.src=canvas.toDataURL();
+            //     };
+            //     $(initialize);      
+            // }());
+        
+       },
+       methods: {
+
        }
    }
 </script>
 <style>
+body,html,div,ul,li,a{
+	margin:0;
+	padding:0;
+	}
 .imagebox{
-	width:800px;
-	height:auto;
+	width:600px;
+    height:auto;
+    margin:0 auto;
+    position:relative;
 }
 .imagebox img{
 	width:100%;
+}
+#myCanvas{
+    display: none;
 }
 </style>
 

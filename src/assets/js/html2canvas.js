@@ -1,5 +1,5 @@
 /**
- * Created by 陈智 on 2017/3/3.
+ * tengfei2017/3/3.
  */
 /*
  html2canvas 0.5.0-beta2 <http://html2canvas.hertzen.com>
