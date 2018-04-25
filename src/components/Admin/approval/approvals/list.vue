@@ -117,13 +117,13 @@
         </el-col>
         <el-col :span="10">
             <div class="imagebox dailies-video" id="signx">
-				<!-- <img id="imgs" src="../../../../assets/images/bg1.jpg" > -->
+			      	<!-- <img id="imgs" src="../../../../assets/images/bg1.jpg" > -->
                
-                <img id="imgs" src="/uploads/Projects/images/20180424/699b8793314dc874d0e66748ff4a97c9.jpg" >
-		    </div>
+                <img id="imgs" src="http://127.0.0.1:8888//uploads/Projects/images/20180424/699b8793314dc874d0e66748ff4a97c9.jpg">
+		        </div>
             <button id="capture">Capture</button>
             <div id="output"></div>
-            <canvas id="myCanvas" width="895"  height="517">
+            <!-- <canvas id="myCanvas" width="895"  height="517"> -->
 			</canvas> <!--整个画布-->
         </el-col>
       </el-row>
@@ -163,25 +163,50 @@
        },
        mounted(){
            $('#capture').click(function(){
+
                console.log(122)
                html2canvas(document.getElementById('signx'), {
                 allowTaint: true,
                 taintTest: false,
                 onrendered: function (canvas) {
+                  console.log(canvas)
                     // var imgData = canvas.toDataURL("png");
                     // var img=new Image();
                     // img.src=imgData;
                     // console.log(imgData)
                     // document.getElementById("output").appendChild(img);
                     canvas.id = "mycanvas";    
-                    //生成base64图片数据    
+                    //生成base64图片数据 
+                    // canvas.setAttribute('crossOrigin', 'anonymous');   
                     var dataUrl = canvas.toDataURL();    
+                    console.log(dataUrl)
                     var newImg = document.createElement("img");    
                     newImg.src =  dataUrl;    
                     document.getElementById("output").appendChild(newImg);    
                 }
             });
            })
+          // function getBase64Image(img) {
+          //   console.log(img)
+          //         var canvas = document.createElement("canvas");
+          //         canvas.width = img.width;
+          //         canvas.height = img.height;
+          //         var ctx = canvas.getContext("2d");
+          //         ctx.drawImage(img, 0, 0, img.width, img.height);
+                  
+          //         var ext = img.src.substring(img.src.lastIndexOf(".")+1).toLowerCase();
+          //         console.log(ext)
+          //         var dataURL = canvas.toDataURL();
+          //         console.log(dataURL,123)
+          //         return dataURL;
+          // }
+          // $('#capture').click(function(){
+          //   var image = new Image();
+          //   image.crossOrigin = '';
+          //   image.src = $('#imgs').attr('src');
+          //   var base64 = getBase64Image(image);
+          //   console.log(base64);
+          // })
            	// (function() {
             //     "use strict";
             //     var video, $capture;
