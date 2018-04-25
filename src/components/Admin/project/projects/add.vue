@@ -322,7 +322,10 @@
     },
     methods: {
       handleAvatarSuccess(res, file) {
+        console.log(res)
+        console.log(file)
         this.image = URL.createObjectURL(file.raw);
+        console.log(this.image)
         this.form.project_image = res.data;
       },
       beforeAvatarUpload(file) {
