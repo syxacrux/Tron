@@ -40,6 +40,8 @@ return [
 	'admin/upload'          =>      ['admin/upload/index', ['method' => 'POST']],
 	// [基础] 上传缩略图
 	'admin/upload_image'    =>      ['admin/upload/images_add', ['method' => 'POST']],
+	// [基础] 生成base64格式的图片并上传到目录中
+	'admin/image_base64'    =>      ['admin/upload/images_base64_add', ['method' => 'POST']],
 	// [基础]	上传excel文件
 	'admin/upload_excel'		=>			['admin/upload/excels_add',	['method' => 'POST']],
 	// 保存系统配置

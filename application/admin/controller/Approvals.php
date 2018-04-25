@@ -16,9 +16,6 @@ class Approvals extends BaseCommon
 	//标准列表
 	public function index()
 	{
-		header('Access-Control-Allow-Origin: *');
-		header('Access-Control-Allow-Methods: POST');
-		header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
 		$shot_model = model('Shot');
 		$param = $this->param;
 		$keywords = !empty($param['keywords']) ? json_decode($param['keywords'],true) : '';
@@ -28,6 +25,10 @@ class Approvals extends BaseCommon
 		return resultArray(['data' => $data]);
 	}
 
+	//图片base64解析并生成图片存入服务器中
+	public function images_base64_upload(){
+
+	}
 
 	//详情
 	public function read()
