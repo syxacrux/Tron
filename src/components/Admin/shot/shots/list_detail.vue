@@ -9,7 +9,7 @@
       </el-breadcrumb>
     </div>
     <div class="m-b-20 pos-rel">
-      <div class="pos-abs">
+      <div class="pos-abs t-0 l-0">
         <el-row :gutter="10" class="m-b-5">
           <el-col :span="5">
             <el-select v-model="search.project_id" placeholder="请选择项目" @change="getFields">

@@ -63,7 +63,7 @@
       <el-tabs v-if="!isList" v-model="activeName" @tab-click="tabClick" class="fl">
         <el-tab-pane label="项目" name="project">
           <div class="m-b-20 pos-rel h-40">
-            <div class="pos-abs">
+            <div class="pos-abs t-0l-0">
               <el-row :gutter="10" class="m-b-5">
                 <el-col :span="5">
                   <el-select v-model="search.project_id" placeholder="请选择项目" @change="getFields">
@@ -296,6 +296,17 @@
         <el-form-item label="环节:" label-width="120px">
           <el-input v-model="form.name" auto-complete="off"></el-input>
         </el-form-item>
+        <el-form-item label="镜头文件：" prop="shot_file">
+          <el-upload class="upload_shotFile" ref="upload"
+                     action="https://jsonplaceholder.typicode.com/posts/"
+                     :on-preview="handlePreview"
+                     :file-list="fileList"
+                     :limit="1"
+                     :auto-upload="false">
+            <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
+            <div slot="tip" class="el-upload__tip">只能上传一个xls/xlsx格式文件</div>
+          </el-upload>
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
@@ -329,6 +340,7 @@
         projectList: [],
         fieldList: [],
         shotList: [],
+        fileList: [],
         search: {
           project_id: '',
           field_id: '',
@@ -386,6 +398,9 @@
       filterNode(value, data) {
         if (!value) return true;
         return data.label.indexOf(value) !== -1;
+      },
+      handlePreview(file) {
+        console.log(file);
       },
       referenceDetail(id) {
         //        判断资产详情传入值是否为数字
