@@ -123,8 +123,9 @@
 		        </div>
             <button id="capture">Capture</button>
             <div id="output"></div>
-            <!-- <canvas id="myCanvas" width="895"  height="517"> -->
-			</canvas> <!--整个画布-->
+            <!-- <canvas id="myCanvas" width="895"  height="517">
+			</canvas>  -->
+      <!--整个画布-->
         </el-col>
       </el-row>
     </div>
