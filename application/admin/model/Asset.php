@@ -240,52 +240,105 @@ class Asset extends Common
 			$param['plan_start_timestamp'] = strtotime($param['plan_start_timestamp']);
 			$param['plan_end_timestamp'] = strtotime($param['plan_end_timestamp']);
 			$param['create_time'] = time();
-			foreach ($param['tache'] as $key => $value) {
-				if (!empty($value)) {
-					$tache_data[$key] = $value;
-				}
-			}
-			/**
-			 * begin 环节内工作室不为空
-			 * 执行新增操作
-			 */
+
+
 			$asset_model = new Asset();
 			$asset_model->allowField(true)->save($param, [$this->getPk() => $id]);//更新当前镜头行记录
 			$project_byname = Project::get($param['project_id'])->project_byname;
 			$field_name = Field::get($param['field_id'])->name;
 			//执行redis添加资产所属目录 python
 			$str = "'Asset' '{$project_byname}' '{$field_name}' '{$param['asset_byname']}'";
-			//根据环节分配任务给各大工作室 新增操作
-			foreach ($tache_data as $key => $val) {
-				foreach ($val as $k => $v) {
-					$task_data['group_id'] = 5;  //角色为工作室总监
-					$task_data['user_id'] = 0;
-					$task_data['project_id'] = $param['project_id'];   //所属项目ID
-					$task_data['field_id'] = $param['field_id'];   //资产类型ID
-					$task_data['asset_id'] = $id;  //资产ID
-					$task_data['tache_id'] = $key;  //环节ID
-					$task_data['tache_sort'] = Tache::get($key)->sort;  //环节排序
-					$task_data['studio_id'] = $v;   //工作室ID
-					$task_data['task_type'] = 2;    //资产类型
-					$task_data['task_image'] = $asset_obj->asset_image;
-					$task_data['task_byname'] = $asset_obj->asset_byname;//任务简称暂且为资产的简称，任务模块中，可修改
-					$task_data['task_priority_level'] = $asset_obj->priority_level;   //任务优先级
-					$task_data['difficulty'] = $asset_obj->difficulty;    //任务难度
-					$task_data['plan_start_timestamp'] = $asset_obj->plan_start_timestamp;  //计划开始时间
-					$task_data['plan_end_timestamp'] = $asset_obj->plan_end_timestamp;    //计划结束时间
-					$task_data['task_status'] = 1;  //任务状态
-					$task_data['is_assets'] = 1; //是否为等待资产 1是 2否
-					$task_data['pid'] = 0;  //工作室顶级任务ID都为0
-					$task_data['create_time'] = time();//创建时间
-					$task_model = new Workbench();
-					$task_model->data($task_data, true)->isUpdate(false)->save();
+			/* 修改基本信息 或者 为环节分配所属工作室的任务 */
+			if(!empty($param['tache'])){
+				/**
+				 * begin 处理环节内的数据
+				 * $tache_has_data array 环节内包含工作室
+				 * $tache_empty_data array 环节内不包含工作室时 环节ID校验所属资产包含的环节，过滤已存在的返回
+				 * 执行为环节创建任务的操作
+				 */
+				foreach ($param['tache'] as $key => $value) {
+					if (!empty($value)) {
+						$tache_has_data[$key] = $value;	//存在工作室
+					}else{
+						$tache_empty_data[] = $key;	//不存在工作室
+					}
 				}
+				//获取当前镜头下的所有环节
+				$tache_by_task = array_unique(Workbench::where('asset_id',$id)->column('tache_id'));
+				//弹出相同的环节
+				foreach($tache_by_task as $key=>$value){
+					foreach($tache_empty_data as $k=>$v){
+						if($v==$value){
+							unset($tache_empty_data[$k]);
+						}else{
+							break;
+						}
+					}
+				}
+				//环节内有工作室 给相应工作室总监分配任务
+				if(!empty($tache_has_data)){
+					foreach ($tache_has_data as $key => $val) {
+						foreach ($val as $k => $v) {
+							$task_data['group_id'] = 5;  //角色为工作室总监
+							$task_data['user_id'] = 0;
+							$task_data['project_id'] = $param['project_id'];   //所属项目ID
+							$task_data['field_id'] = $param['field_id'];   //资产类型ID
+							$task_data['asset_id'] = $id;  //资产ID
+							$task_data['tache_id'] = $key;  //环节ID
+							$task_data['tache_sort'] = Tache::get($key)->sort;  //环节排序
+							$task_data['studio_id'] = $v;   //工作室ID
+							$task_data['task_type'] = 2;    //资产类型
+							$task_data['task_image'] = $asset_obj->asset_image;
+							$task_data['task_byname'] = $asset_obj->asset_byname;//任务简称暂且为资产的简称，任务模块中，可修改
+							$task_data['task_priority_level'] = $asset_obj->priority_level;   //任务优先级
+							$task_data['difficulty'] = $asset_obj->difficulty;    //任务难度
+							$task_data['plan_start_timestamp'] = $asset_obj->plan_start_timestamp;  //计划开始时间
+							$task_data['plan_end_timestamp'] = $asset_obj->plan_end_timestamp;    //计划结束时间
+							$task_data['task_status'] = 1;  //任务状态
+							$task_data['is_assets'] = 1; //是否为等待资产 1是 2否
+							$task_data['pid'] = 0;  //工作室顶级任务ID都为0
+							$task_data['create_time'] = time();//创建时间
+							$task_model = new Workbench();
+							$task_model->data($task_data, true)->isUpdate(false)->save();
+						}
+						unset($task_data);
+					}
+				}
+				//新增环节 但无工作室
+				if(!empty($tache_empty_data)){
+					foreach ($tache_empty_data as $key=>$value){
+						$task_data['group_id'] = 0;  //角色为工作室总监
+						$task_data['user_id'] = 0;
+						$task_data['project_id'] = $param['project_id'];   //所属项目ID
+						$task_data['field_id'] = $param['field_id'];   //资产类型ID
+						$task_data['asset_id'] = $id;  //资产ID
+						$task_data['tache_id'] = $value;  //环节ID
+						$task_data['tache_sort'] = Tache::get($key)->sort;  //环节排序
+						$task_data['studio_id'] = 0;   //工作室ID
+						$task_data['task_type'] = 2;    //资产类型
+						$task_data['task_image'] = $asset_obj->asset_image;
+						$task_data['task_byname'] = $asset_obj->asset_byname;//任务简称暂且为资产的简称，任务模块中，可修改
+						$task_data['task_priority_level'] = $asset_obj->priority_level;   //任务优先级
+						$task_data['difficulty'] = $asset_obj->difficulty;    //任务难度
+						$task_data['plan_start_timestamp'] = $asset_obj->plan_start_timestamp;  //计划开始时间
+						$task_data['plan_end_timestamp'] = $asset_obj->plan_end_timestamp;    //计划结束时间
+						$task_data['task_status'] = 1;  //任务状态
+						$task_data['is_assets'] = 1; //是否为等待资产 1是 2否
+						$task_data['pid'] = 0;  //工作室顶级任务ID都为0
+						$task_data['create_time'] = time();//创建时间
+						$task_model = new Workbench();
+						$task_model->data($task_data, true)->isUpdate(false)->save();
+					}
+					unset($task_data);
+				}
+
+				$this->commit();
+				return true;
+			}else{
+				$asset_model->allowField(true)->save($param, [$this->getPk() => $id]);//更新当前资产 行记录
+				$this->commit();
+				return true;
 			}
-			$this->commit();
-			return true;
-			/**
-			 * end 环节内工作室不为空
-			 */
 		} catch (\Exception $e) {
 			$this->rollback();
 			$this->error = '编辑失败';
@@ -351,7 +404,8 @@ class Asset extends Common
 	//根据工作室ID数组拼接成中文字符串
 	public function get_studio_name($studio_id_arr)
 	{
-		foreach ($studio_id_arr as $key => $value) {
+		$studio_ids_arr = array_unique($studio_id_arr);
+		foreach ($studio_ids_arr as $key => $value) {
 			if($value != 0){
 				$arr[$key]['id'] = $value;
 				$arr[$key]['name'] = Studio::get($value)->name;

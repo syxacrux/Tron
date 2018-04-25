@@ -163,17 +163,17 @@
         </el-tab-pane>
         <el-tab-pane label="公共" name="common">
           <section>
-            <div class="ovf-hd w-200 m-r-10 fl">
-              <el-input placeholder="输入关键字进行过滤" v-model="filterText"></el-input>
-              <el-tree
-                  class="filter-tree"
-                  :data="data2"
-                  :props="defaultProps"
-                  default-expand-all
-                  :filter-node-method="filterNode"
-                  ref="tree2">
-              </el-tree>
-            </div>
+            <!--<div class="ovf-hd w-200 m-r-10 fl">-->
+              <!--<el-input placeholder="输入关键字进行过滤" v-model="filterText"></el-input>-->
+              <!--<el-tree-->
+                  <!--class="filter-tree"-->
+                  <!--:data="data2"-->
+                  <!--:props="defaultProps"-->
+                  <!--default-expand-all-->
+                  <!--:filter-node-method="filterNode"-->
+                  <!--ref="tree2">-->
+              <!--</el-tree>-->
+            <!--</div>-->
             <div class="ovf-hd">
               <el-col :span="4">
                 <!--<el-col :span="12" v-for="item in commonList" :key="item.id">-->
