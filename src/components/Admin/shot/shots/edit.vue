@@ -636,7 +636,7 @@
       },
 //      编辑镜头
       edit(form) {
-        if(this.isArt || this.isModel || this.isMap || this.isBind || this.isTrack ||
+        /*if(this.isArt || this.isModel || this.isMap || this.isBind || this.isTrack ||
           this.isAni || this.isPaint || this.isSpec || this.isLight || this.isSynch) {
           if (
             this.artOfStudio.length === 0 && this.modelOfStudio.length === 0 && this.mapOfStudio.length === 0 &&
@@ -647,7 +647,7 @@
             _g.toastMsg('warning', '请选择至少一个环节所属工作室')
             return
           }
-        }
+        }*/
 
         if (!this.form.shot_image) {
           _g.toastMsg('warning', '请插入镜头缩略图')

@@ -309,21 +309,66 @@ class Shot extends Common
 			if(!empty($param['tache'])){
 				foreach ($param['tache'] as $key => $value) {
 					if (!empty($value)) {
-						$tache_data[$key] = $value;
+						$tache_has_data[$key] = $value;	//存在工作室
+					}else{
+						$tache_empty_data[] = $key;	//不存在工作室
 					}
 				}
-				//根据环节分配任务给各大工作室
-				foreach ($tache_data as $key => $val) {
-					foreach ($val as $k => $v) {
-						$task_data['group_id'] = 5;
+				//获取当前镜头下的所有环节
+				$tache_by_task = array_unique(Workbench::where('shot_id',$id)->column('tache_id'));
+				//弹出相同的环节
+				foreach($tache_by_task as $key=>$value){
+					foreach($tache_empty_data as $k=>$v){
+						if($v==$value){
+							unset($tache_empty_data[$k]);
+						}else{
+							break;
+						}
+					}
+				}
+				if(!empty($tache_has_data)){
+					//环节内有工作室 给相应工作室总监分配任务
+					foreach ($tache_has_data as $key => $value) {
+						foreach ($value as $k => $v) {
+							$task_data['group_id'] = 5;
+							$task_data['user_id'] = 0;
+							$task_data['project_id'] = $param['project_id'];   //所属项目ID
+							$task_data['field_id'] = $param['field_id'];   //场号ID
+							$task_data['shot_id'] = $id;  //镜头ID
+							$task_data['asset_id'] = 0;
+							$task_data['tache_id'] = $key;  //环节ID
+							$task_data['tache_sort'] = Tache::get($key)->sort;  //环节排序
+							$task_data['studio_id'] = $v;   //工作室ID
+							$task_data['task_type'] = 1;    //镜头类型
+							$task_data['task_image'] = $shot_obj->shot_image;
+							$task_data['task_byname'] = $shot_obj->shot_byname;//任务简称暂且为镜头的简称，任务模块中，可修改
+							$task_data['task_priority_level'] = $shot_obj->priority_level;   //任务优先级
+							$task_data['difficulty'] = $shot_obj->difficulty;    //任务难度
+							$task_data['plan_start_timestamp'] = $shot_obj->plan_start_timestamp;  //计划开始时间
+							$task_data['plan_end_timestamp'] = $shot_obj->plan_end_timestamp;    //计划结束时间
+							$task_data['task_status'] = 1;  //任务状态
+							$task_data['is_assets'] = $is_assets; //是否为等待资产 1是 2否
+							$task_data['pid'] = 0;  //工作室顶级任务ID都为0
+							$task_data['create_time'] = time();//创建时间
+							$task_model = new Workbench();
+							$task_model->data($task_data, true)->isUpdate(false)->save();
+						}
+					}
+					unset($task_data);
+				}
+
+				//新增环节 但无工作室
+				if(!empty($tache_empty_data)){
+					foreach ($tache_empty_data as $key=>$value){
+						$task_data['group_id'] = 0;
 						$task_data['user_id'] = 0;
 						$task_data['project_id'] = $param['project_id'];   //所属项目ID
 						$task_data['field_id'] = $param['field_id'];   //场号ID
 						$task_data['shot_id'] = $id;  //镜头ID
 						$task_data['asset_id'] = 0;
-						$task_data['tache_id'] = $key;  //环节ID
-						$task_data['tache_sort'] = Tache::get($key)->sort;  //环节排序
-						$task_data['studio_id'] = $v;   //工作室ID
+						$task_data['tache_id'] = $value;  //环节ID
+						$task_data['tache_sort'] = Tache::get($value)->sort;  //环节排序
+						$task_data['studio_id'] = 0;   //工作室ID
 						$task_data['task_type'] = 1;    //镜头类型
 						$task_data['task_image'] = $shot_obj->shot_image;
 						$task_data['task_byname'] = $shot_obj->shot_byname;//任务简称暂且为镜头的简称，任务模块中，可修改
@@ -339,6 +384,7 @@ class Shot extends Common
 						$task_model->data($task_data, true)->isUpdate(false)->save();
 					}
 				}
+				//添加
 				$this->commit();
 				return true;
 			}else{	//更新镜头数据
