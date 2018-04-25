@@ -119,11 +119,8 @@
             <div class="imagebox dailies-video" id="signx">
 			      	<!-- <img id="imgs" src="../../../../assets/images/bg1.jpg" > -->
                
-<<<<<<< HEAD
-                <img id="imgs" src="http://127.0.0.1:8888//uploads/Projects/images/20180424/699b8793314dc874d0e66748ff4a97c9.jpg">
-=======
+
                 <img id="imgs" src="http://127.0.0.1:8888/uploads/Projects/images/20180424/699b8793314dc874d0e66748ff4a97c9.jpg">
->>>>>>> 532033a71556ec1a04c7ee30dbcadf79a7ccf649
 		        </div>
             <button id="capture">Capture</button>
             <div id="output"></div>
