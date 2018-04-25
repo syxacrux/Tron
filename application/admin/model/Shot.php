@@ -307,6 +307,12 @@ class Shot extends Common
 			$str = "'Shot' '{$project_byname}' '{$field_name}' '{$param['shot_name']}'";
 			/* 修改基本信息 或者 为环节分配所属工作室的任务 */
 			if(!empty($param['tache'])){
+				/**
+				 * begin 处理环节内的数据
+				 * $tache_has_data array 环节内包含工作室
+				 * $tache_empty_data array 环节内不包含工作室时 环节ID校验所属镜头包含的环节，过滤已存在的返回
+				 * 执行为环节创建任务的操作
+				 */
 				foreach ($param['tache'] as $key => $value) {
 					if (!empty($value)) {
 						$tache_has_data[$key] = $value;	//存在工作室
@@ -326,8 +332,8 @@ class Shot extends Common
 						}
 					}
 				}
+				//环节内有工作室 给相应工作室总监分配任务
 				if(!empty($tache_has_data)){
-					//环节内有工作室 给相应工作室总监分配任务
 					foreach ($tache_has_data as $key => $value) {
 						foreach ($value as $k => $v) {
 							$task_data['group_id'] = 5;
@@ -353,8 +359,8 @@ class Shot extends Common
 							$task_model = new Workbench();
 							$task_model->data($task_data, true)->isUpdate(false)->save();
 						}
+						unset($task_data);
 					}
-					unset($task_data);
 				}
 
 				//新增环节 但无工作室
@@ -383,6 +389,7 @@ class Shot extends Common
 						$task_model = new Workbench();
 						$task_model->data($task_data, true)->isUpdate(false)->save();
 					}
+					unset($task_data);
 				}
 				//添加
 				$this->commit();
