@@ -117,13 +117,13 @@
         </el-col>
         <el-col :span="10">
             <div class="imagebox dailies-video" id="signx">
-			      	<!-- <img id="imgs" src="../../../../assets/images/bg1.jpg" > -->
-               
-
-                <img id="imgs" src="http://127.0.0.1:8888/uploads/Projects/images/20180424/699b8793314dc874d0e66748ff4a97c9.jpg">
+			      	<img id="imgs" src="../../../../assets/images/bg1.jpg" >
+                <!-- <img id="imgs" src="http://127.0.0.1:8888/uploads/Projects/images/20180424/699b8793314dc874d0e66748ff4a97c9.jpg"> -->
 		        </div>
             <button id="capture">Capture</button>
             <div id="output"></div>
+            
+            <div @click="addField">1222</div>
             <!-- <canvas id="myCanvas" width="895"  height="517">
 			</canvas>  -->
       <!--整个画布-->
@@ -133,9 +133,14 @@
   </div>
 </template>
 <script>
-  import btnGroup from '../../../Common/btn-group.vue'
+  // import btnGroup from '../../../Common/btn-group.vue'
+  // import http from '../../../../assets/js/http'
+  // import _g from '@/assets/js/global'
+
+  import fomrMixin from '@/assets/js/form_com'
   import http from '../../../../assets/js/http'
   import _g from '@/assets/js/global'
+  import axios from 'axios'
 //   import $ from 'jquery'
   import '@/assets/js/jquery-1.11.1.min.js'
   import '@/assets/js/jquery-sign.js'
@@ -156,6 +161,9 @@
             shot_id:'',//镜头选中的值
             shot_number:''//输入狂的值
           },
+          fieldForm:{
+            images:''
+          },
         } 
        },
        created() {
@@ -164,18 +172,21 @@
            
        },
        mounted(){
+          let thiss=this
            $('#capture').click(function(){
 
                console.log(122)
                html2canvas(document.getElementById('signx'), {
-                allowTaint: true,
+                // allowTaint: true,
                 taintTest: false,
                 onrendered: function (canvas) {
                   console.log(canvas)
+                  canvas.crossOrigin = "Anonymous"
                     var imgData = canvas.toDataURL("png");
                     var img=new Image();
                     img.src=imgData;
                     console.log(imgData)
+                    thiss.fieldForm.images=imgData
                     document.getElementById("output").appendChild(img);
                     // canvas.id = "mycanvas";    
                     // //生成base64图片数据 
@@ -185,7 +196,7 @@
                     // var newImg = document.createElement("img");    
                     // newImg.src =  dataUrl;    
                     // document.getElementById("output").appendChild(newImg);    
-                }
+                },useCORS:true
             });
            })
           // function getBase64Image(img) {
@@ -243,8 +254,23 @@
         
        },
        methods: {
-
-       }
+         addField(form) {
+           console.log(this.fieldForm)
+            this.apiPost('admin/image_base64', this.fieldForm).then((res) => {
+              this.handelResponse(res, (data) => {
+                _g.toastMsg('success', '添加成功')
+                setTimeout(() => {
+                  this.isAddField = false
+                  this.getFields()
+                }, 1500)
+                this.isLoading = !this.isLoading
+              }, () => {
+                this.isLoading = !this.isLoading
+              })
+            })
+        },
+       },
+        mixins: [http, fomrMixin],
    }
 </script>
 <style>
