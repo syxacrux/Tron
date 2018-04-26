@@ -25,11 +25,6 @@ class Approvals extends BaseCommon
 		return resultArray(['data' => $data]);
 	}
 
-	//图片base64解析并生成图片存入服务器中
-	public function images_base64_upload(){
-
-	}
-
 	//详情
 	public function read()
 	{

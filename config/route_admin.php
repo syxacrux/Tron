@@ -19,6 +19,7 @@ return [
 			'admin/shots'         =>		'admin/shots',
 			'admin/workbenches'   =>		'admin/workbenches',
 			'admin/assets'				=>		'admin/assets',
+			'admin/references'		=>		'admin/references',
 	],
 	// [获取信息]
 	'admin/infos/index'     =>      ['admin/infos/index',['method' => 'POST']],
