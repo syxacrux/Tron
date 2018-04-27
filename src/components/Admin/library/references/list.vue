@@ -72,7 +72,7 @@
                   </el-select>
                 </el-col>
                 <el-col :span="5">
-                  <el-select v-model="search.field_id" placeholder="请选择场号" @change="getShotsNum">
+                  <el-select v-model="search.field_id" placeholder="请选择场号" @change="getShotsNumOrAsset">
                     <el-option label="请选择场号" value=""></el-option>
                     <el-option v-for="item in fieldList" :label="item.name" :value="item.id" :key="item.id"></el-option>
                   </el-select>
@@ -276,41 +276,66 @@
         </el-card>
       </div>
     </transition>
-    <el-dialog title="上传文件" :visible.sync="dialogFormVisible" width="30%">
-      <el-form :model="form" size="medium">
-        <el-form-item label="名称:" label-width="120px">
-          <el-input v-model="form.name" auto-complete="off"></el-input>
+    <el-dialog title="上传文件" :visible.sync="isUploadReference" width="30%">
+      <el-form :model="form" label-width="120px" :rules="uploadRule">
+        <el-form-item label="文件名称:">
+          <el-input v-model="form.file_name" auto-complete="off"></el-input>
         </el-form-item>
-        <el-form-item label="场号/资产:" label-width="120px">
-          <el-input v-model="form.name" auto-complete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="类型:" label-width="120px">
-          <el-radio-group v-model="form.type" size="small">
-            <el-radio label="1" border>镜头类型</el-radio>
-            <el-radio label="2" border>资产类型</el-radio>
+        <el-form-item label="类型:">
+          <el-radio-group v-model="form.resource_type" size="small" @change="getShotOrAsset">
+            <el-radio label="1">公共类型</el-radio>
+            <el-radio label="2">镜头类型</el-radio>
+            <el-radio label="3">资产类型</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="镜头号/资产号:" label-width="120px">
-          <el-input v-model="form.name" auto-complete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="环节:" label-width="120px">
-          <el-input v-model="form.name" auto-complete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="镜头文件：" prop="shot_file">
-          <el-upload class="upload_shotFile" ref="upload"
-                     action="https://jsonplaceholder.typicode.com/posts/"
-                     :on-preview="handlePreview"
-                     :file-list="fileList"
-                     :limit="1"
-                     :auto-upload="false">
-            <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
-            <div slot="tip" class="el-upload__tip">只能上传一个xls/xlsx格式文件</div>
-          </el-upload>
-        </el-form-item>
+        <div v-if="isResourceType">
+          <el-form-item label="所属项目:">
+            <el-select v-model="form.project_id" placeholder="请选择项目" @change="getFields">
+              <el-option label="请选择项目" value=""></el-option>
+              <el-option v-for="item in projectList" :label="item.project_name" :value="item.id" :key="item.id"></el-option>
+            </el-select>
+          </el-form-item>
+          <div v-if="this.form.resource_type == 2">
+            <el-form-item label="场号/集号:">
+              <el-select v-model="form.field_id" placeholder="请选择场号/集号" @change="getShotsNumOrAsset">
+                <el-option label="请选择场号/集号" value=""></el-option>
+                <el-option v-for="item in fieldList" :label="item.name" :value="item.id" :key="item.id"></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="镜头号:">
+              <el-select v-model="form.resource_id" placeholder="请选择镜头号">
+                <el-option label="请选择镜头号" value=""></el-option>
+                <el-option v-for="item in shotList" :label="item.shot_number" :value="item.id" :key="item.id"></el-option>
+              </el-select>
+            </el-form-item>
+          </div>
+          <div v-if="this.form.resource_type == 3">
+            <el-form-item label="资产类型:">
+              <el-select v-model="form.field_id" placeholder="请选择资产类型" @change="getShotsNumOrAsset">
+                <el-option label="请选择资产类型" value=""></el-option>
+                <el-option v-for="item in fieldList" :label="item.explain" :value="item.id"
+                           :key="item.id"></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="资产号:">
+              <el-select v-model="form.resource_id" placeholder="请选择资产号">
+                <el-option label="请选择资产号" value=""></el-option>
+                <el-option v-for="item in assetList" :label="item.asset_name" :value="item.id"
+                           :key="item.id"></el-option>
+              </el-select>
+            </el-form-item>
+          </div>
+          <el-form-item label="环节:">
+            <el-select v-model="form.tache_info" placeholder="请选择环节" multiple class="">
+              <el-option v-for="item in tacheList" :label="item.explain" :value="item.id"
+                         :key="item.id"></el-option>
+            </el-select>
+          </el-form-item>
+        </div>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+        <el-button @click="isUploadReference = false">取 消</el-button>
+        <el-button type="primary" @click="isUploadReference = false">确 定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -323,9 +348,10 @@
   export default {
     data () {
       return {
-        dialogFormVisible: false,
+        isUploadReference: false,
         isList: false,
         isReferenceDetailShow: false,
+        isResourceType: false,
         activeName: 'project',
         page: 1,
         limit: 10,
@@ -341,6 +367,8 @@
         fieldList: [],
         shotList: [],
         fileList: [],
+        tacheList: [],
+        assetList: [],
         search: {
           project_id: '',
           field_id: '',
@@ -387,10 +415,30 @@
           label: 'label'
         },
         form: {
-          name: '',
-          field: '',
-          tache: '',
-          type: ''
+          file_name: '',
+          resource_type: '',
+          project_id: '',
+          field_id: '',
+          resource_id: '',
+          tache_info: []
+        },
+        uploadRule: {
+//          file_name: [
+//            { required: true, message: '请输入活动名称', trigger: 'blur' },
+//            { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+//          ],
+//          region: [
+//            { required: true, message: '请选择活动区域', trigger: 'change' }
+//          ],
+//          date1: [
+//            { type: 'date', required: true, message: '请选择日期', trigger: 'change' }
+//          ],
+//          date2: [
+//            { type: 'date', required: true, message: '请选择时间', trigger: 'change' }
+//          ],
+//          type: [
+//            { type: 'array', required: true, message: '请至少选择一个活动性质', trigger: 'change' }
+//          ]
         }
       }
     },
@@ -420,7 +468,37 @@
         }
       },
       addReference() {
-        this.dialogFormVisible = true
+        this.isUploadReference = true
+//        获取环节列表
+        this.apiGet('admin/taches').then((res) => {
+          this.handelResponse(res, (data) => {
+            this.tacheList = data.list
+          })
+        })
+      },
+//      改变上传文件类型
+      getShotOrAsset(value) {
+        this.form.project_id = ""
+        this.form.field_id = ""
+        this.form.resource_id = ""
+        this.fieldList = []
+        this.shotList = []
+        this.assetList = []
+        switch (value) {
+          case "1" :
+            this.form.tache_info = []
+            this.isResourceType = false
+            console.log(this.form, value)
+            break;
+          case "2" :
+            this.isResourceType = true
+            console.log(this.form, value)
+            break;
+          case "3" :
+            this.isResourceType = true
+            console.log(this.form, value)
+            break;
+        }
       },
 //      获取所有项目
       getProjects() {
@@ -430,32 +508,62 @@
           })
         })
       },
-//      获取所有场号、集号
+//      获取所有场号、集号/资产类型
       getFields() {
+        let project_id = this.isUploadReference ? this.form.project_id : this.search.project_id
         const data = {
           params: {
-            project_id: this.search.project_id,
+            project_id: project_id,
             type: 1
           }
         }
-        this.apiGet('admin/get_fields', data).then((res) => {
-          this.handelResponse(res, (data) => {
-            this.fieldList = data
+        if(this.form.resource_type == 2){
+          this.apiGet('admin/get_fields', data).then((res) => {
+            this.handelResponse(res, (data) => {
+              this.form.field_id = ''
+              this.fieldList = data
+            })
           })
-        })
+        }else if(this.form.resource_type == 3) {
+          const data = {
+            params: {
+              project_id: project_id,
+              type:2
+            }
+          }
+          this.apiGet('admin/get_fields', data).then((res) => {
+            this.handelResponse(res, (data) => {
+              this.form.field_id = ''
+              this.fieldList = data
+            })
+          })
+
+        }
       },
-//      获取所有场号集号下的镜头号
-      getShotsNum() {
+//      获取所有场号集号下的镜头号/资产号
+      getShotsNumOrAsset() {
+        this.form.resource_id = ''
+        let field_id = this.isUploadReference ? this.form.field_id : this.search.field_id
         const data = {
           params: {
-            field_id: this.search.field_id
+            field_id: field_id
           }
         }
-        this.apiGet('admin/get_shot_num', data).then((res) => {
-          this.handelResponse(res, (data) => {
-            this.shotList = data
+        if(this.form.resource_type == 2) {
+          this.apiGet('admin/get_shot_num', data).then((res) => {
+            this.handelResponse(res, (data) => {
+              this.shotList = data
+            })
           })
-        })
+        }else if(this.form.resource_type == 3) {
+          this.apiGet('asset/get_asset_name', data).then((res) => {
+            this.handelResponse(res, (data) => {
+              console.log(data)
+              this.assetList = data
+            })
+          })
+        }
+
       },
       /*
        * 切换资产tab方法
@@ -533,6 +641,7 @@
     },
     created () {
       this.getAllReferencesList()
+      this.getProjects()
     },
     components: {
 
