@@ -17,32 +17,8 @@ export default (function () {
     const link = window.imgUrl + value
     return link
   })
-  Vue.filter('toolType', function (value) {
-    let type = ''
-    if (value == 1) {
-      type = '系统工具'
-    } else if (value == 2) {
-      type = '说明知道'
-    }
-    return type
-  })
   Vue.filter('numToString', function (value) {
     const string = value.toString()
-    return string
-  })
-  Vue.filter('projectState', function (value) {
-    let string = ''
-    switch (value) {
-      case '1':
-        string = '售前项目'
-        break
-      case '2':
-        string = '服务中项目'
-        break
-      case '3':
-        string = '已结束项目'
-        break
-    }
     return string
   })
   Vue.filter('time', function (value) {

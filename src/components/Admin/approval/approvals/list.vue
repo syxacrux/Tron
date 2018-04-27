@@ -54,6 +54,7 @@
     <div>
       <el-row>
         <el-col :span="14">
+          <div class="ovf-hd">
             <el-col :span="6">
                 <div class="grid-content p-b-5">
                   <el-card class="ovf-hd">
@@ -114,34 +115,118 @@
                   </el-card>
                 </div>
             </el-col>
+          </div>
+          <div class="pos-rel p-t-20">
+              <div class="block tx-r">
+                <el-pagination
+                    @current-change="handleCurrentChange"
+                    :current-page.sync="currentPage"
+                    :page-size="limit"
+                    layout="prev, pager, next, jumper"
+                    :total="dataCount">
+                </el-pagination>
+              </div>
+            </div>
         </el-col>
         <el-col :span="10">
+            <el-row class="dailies-state">
+              <el-button type="primary"> 审核通过</el-button>
+              <el-button type="success">客户通过</el-button>
+              <el-button type="warning">已审核</el-button>
+            </el-row>
+          <!-- <el-row :gutter="20" class="dailies-el"> -->
             <div class="imagebox dailies-video" id="signx">
 			      	<img id="imgs" src="../../../../assets/images/bg1.jpg" >
-                <!-- <img id="imgs" src="http://127.0.0.1:8888/uploads/Projects/images/20180424/699b8793314dc874d0e66748ff4a97c9.jpg"> -->
 		        </div>
-            <button id="capture">Capture</button>
-            <div id="output"></div>
-            
-            <div @click="addField">1222</div>
-            <!-- <canvas id="myCanvas" width="895"  height="517">
-			</canvas>  -->
-      <!--整个画布-->
+            <div>
+              <button id="capture" @click="dialogVisible = true">截图</button>
+              <button id="play">播放/暂停</button>
+              <input type="range" min="0" value="0" id="range" step="0.1"/>
+            </div>
+            <!-- <div id="output"></div> -->
+            <!-- <div @click="addField">1222</div> -->
+          <!-- </el-row> -->
+          <!-- <el-row :gutter="20" class="m-b-5 dailies-information">
+              <el-col :span="24">
+                <p class="m-0">Dailies<span>11</span></p>
+              </el-col>
+              <el-col :span="12">
+                <p class="m-0"><span>任务优先级：</span><span>11</span></p>
+              </el-col>
+              <el-col :span="12">
+                <p class="m-0"><span>任务难度：</span><span>222</span></p>
+              </el-col>
+              <el-col :span="12">
+                <p class="m-0"><span>任务优先级：</span><span>11</span></p>
+              </el-col>
+              <el-col :span="12">
+                <p class="m-0"><span>任务难度：</span><span>222</span></p>
+              </el-col>
+              <el-col :span="12">
+                <p class="m-0"><span>任务难度：</span><span>222</span></p>
+              </el-col>
+          </el-row> -->
+          <el-collapse v-model="activeNames" @change="handleChange">
+            <el-collapse-item title="Dailies" name="1">
+              <el-col :span="12">
+                <p class="m-0"><span>任务优先级：</span><span>11</span></p>
+              </el-col>
+              <el-col :span="12">
+                <p class="m-0"><span>任务难度：</span><span>222</span></p>
+              </el-col>
+              <el-col :span="12">
+                <p class="m-0"><span>任务优先级：</span><span>11</span></p>
+              </el-col>
+              <el-col :span="12">
+                <p class="m-0"><span>任务难度：</span><span>222</span></p>
+              </el-col>
+              <el-col :span="12">
+                <p class="m-0"><span>任务难度：</span><span>222</span></p>
+              </el-col>
+            </el-collapse-item>
+            <el-collapse-item title="反馈信息" name="1">
+              <div class="Dailies-text">
+                <el-col :span="6">
+                  <img class="Dailies-headPortrait" src="../../../../assets/images/bg1.jpg">
+                </el-col>
+                <el-col :span="18">
+                  <p class="m-0"><span>赵九四:这张图片是错的</span><span></span></p>
+                  <p class="m-0"><span>赵九1:这张图片是错的</span><span></span></p>
+                </el-col>
+              </div>
+              <div class="Dailies-text">
+                <el-col :span="6">
+                  <img class="Dailies-headPortrait" src="../../../../assets/images/bg1.jpg">
+                </el-col>
+                <el-col :span="18">
+                  <p class="m-0"><span>赵九四:这张图片是错的</span><span></span></p>
+                  <p class="m-0"><span>赵九1:这张图片是错的</span><span></span></p>
+                </el-col>
+              </div>
+            </el-collapse-item>
+          </el-collapse>
         </el-col>
       </el-row>
     </div>
+    <!-- <div class=""> -->
+      <el-dialog
+          title="提示"
+          :visible.sync="dialogVisible"
+          width="30%"
+          :before-close="handleClose">
+          <span>这是一段信息</span>
+          <span slot="footer" class="dialog-footer">
+            <el-button @click="dialogVisible = false">取 消</el-button>
+            <el-button type="primary" @click="dialogVisible = false">上传</el-button>
+          </span>
+        </el-dialog>
+    <!-- </div> -->
   </div>
 </template>
 <script>
-  // import btnGroup from '../../../Common/btn-group.vue'
-  // import http from '../../../../assets/js/http'
-  // import _g from '@/assets/js/global'
-
   import fomrMixin from '@/assets/js/form_com'
   import http from '../../../../assets/js/http'
   import _g from '@/assets/js/global'
-  import axios from 'axios'
-//   import $ from 'jquery'
   import '@/assets/js/jquery-1.11.1.min.js'
   import '@/assets/js/jquery-sign.js'
   import '@/assets/js/html2canvas.js'
@@ -150,6 +235,11 @@
    export default {
        data () {
         return{
+          limit: 10,
+          currentPage: 1,
+          dataCount: null,
+          activeNames: ['1'],
+          dialogVisible: false,
           screeningProject:[],//项目下拉列表数据
         // screeningType:[],//类型
           screeningSite:[],//场号下拉列表数据
@@ -161,9 +251,10 @@
             shot_id:'',//镜头选中的值
             shot_number:''//输入狂的值
           },
-          fieldForm:{
-            images:''
+          form:{
+            shot_number:'12'
           },
+
         } 
        },
        created() {
@@ -187,7 +278,7 @@
                     img.src=imgData;
                     console.log(imgData)
                     thiss.fieldForm.images=imgData
-                    document.getElementById("output").appendChild(img);
+                    // document.getElementById("output").appendChild(img);
                     // canvas.id = "mycanvas";    
                     // //生成base64图片数据 
                     // // canvas.setAttribute('crossOrigin', 'anonymous');   
@@ -254,6 +345,20 @@
         
        },
        methods: {
+          handleChange(val) {
+            console.log(val);
+          },
+         //      切换页码
+          handleCurrentChange(page) {
+            this.getAllStudios(page)
+          },
+          handleClose(done) {
+            this.$confirm('确认关闭？')
+              .then(_ => {
+                done();
+              })
+              .catch(_ => {});
+          },
          addField(form) {
            console.log(this.fieldForm)
             this.apiPost('admin/image_base64', this.fieldForm).then((res) => {
@@ -270,7 +375,7 @@
             })
         },
        },
-        mixins: [http, fomrMixin],
+      mixins: [http, fomrMixin],
    }
 </script>
 <style>
@@ -278,17 +383,33 @@ body,html,div,ul,li,a{
 	margin:0;
 	padding:0;
 	}
-.imagebox{
+.approvals_list .imagebox{
 	width:600px;
     height:auto;
     margin:0 auto;
     position:relative;
 }
-.imagebox img{
+.approvals_list .imagebox img{
 	width:100%;
 }
-#myCanvas{
+.approvals_list #myCanvas{
     display: none;
+}
+.approvals_list .dailies-information{
+  padding: 20px;
+}
+.approvals_list .Dailies-text{
+  height: 150px;
+  padding: 10px;
+}
+.approvals_list .Dailies-headPortrait{
+ width: 100%;
+}
+.approvals_list .dailies-el{
+  margin-left:0px;
+}
+.approvals_list .dailies-state {
+  text-align: right;
 }
 </style>
 

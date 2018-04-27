@@ -1,7 +1,7 @@
 // JavaScript Document
 (function($){
 	var n=0;
-	var cX,cY,indexId=0,removeId,Data=[],DOM,changeSignColor=false,signColor;
+	var cX,cY,indexId=0,removeId,removeHtml,Data=[],DOM,changeSignColor=false,signColor;
 	var changeBodyColor=false,bodyColor,changeFontColor=false,fontColor;
 	var Rleft,Rtop;//需要删除的坐标
 	jQuery.sign={
@@ -53,6 +53,7 @@
 		});
 		//注册鼠标右键点击事件
 		$(document).on("click","#addsign",function(e){
+			// console.log(n)
 			e.preventDefault();
 			$(dom).append("<div class='inputSignBox'></div>");
 			$('.inputSignBox').append("<div class='outSignbox'>X</div>");
@@ -88,37 +89,41 @@
 
 						$('.chooseBox').remove();
 						n++
-						console.log(n)
-						var l=$(this).offset().left,T=$(this).offset().top;
-						// $('.hintBox').remove();
-						var t=$(this).attr("theSign");
-						$('.imagebox').append("<div class='hintBox hintBox"+n+"'>"+text+"</div>");
-						var Hw=$('.hintBox'+n).width(),Hh=$('.hintBox'+n).height();
-						if(Hh>35){
-							$('.hintBox'+n).css({"text-align":"left"});
-						}
-						$('.hintBox'+n).append("<div class='triangle-down triangle-down"+n+"'></div>");
-						// $('.triangle-down'+n).css({"left":Hw/2-10,"top":Hh});
-						$('.triangle-down'+n).css({"left":0,"top":Hh});
-						if(Hh>20){
-							$('.hintBox'+n).css({"left":cX-25,"top":cY-45-(Hh-20)})
-						}else{
-							$('.hintBox'+n).css({"left":cX-25,"top":cY-45});
-						}
-						// $('.hintBox'+n).css({"left":cX-25,"top":cY-45+(Hh-56)});
-						if(changeBodyColor){
-							$('.hintBox'+n).css("background",bodyColor);
-							$('.triangle-down'+n).css("border-top","10px solid "+bodyColor);
+						if(text != undefined){
+							var l=$(this).offset().left,T=$(this).offset().top;
+							// $('.hintBox').remove();
+							var t=$(this).attr("theSign");
+							$('.imagebox').append("<div class='hintBox hintBox"+n+"'>"+text+"</div>");
+							var Hw=$('.hintBox'+n).width(),Hh=$('.hintBox'+n).height();
+							if(Hh>35){
+								$('.hintBox'+n).css({"text-align":"left"});
 							}
-						if(changeFontColor){
-							$('.hintBox'+n).css("color",fontColor);
+							$('.hintBox'+n).append("<div class='triangle-down triangle-down"+n+"'></div>");
+							// $('.triangle-down'+n).css({"left":Hw/2-10,"top":Hh});
+							$('.triangle-down'+n).css({"left":0,"top":Hh});
+							if(Hh>20){
+								$('.hintBox'+n).css({"left":cX-25,"top":cY-45-(Hh-20)})
+							}else{
+								$('.hintBox'+n).css({"left":cX-25,"top":cY-45});
 							}
+							// $('.hintBox'+n).css({"left":cX-25,"top":cY-45+(Hh-56)});
+							if(changeBodyColor){
+								$('.hintBox'+n).css("background",bodyColor);
+								$('.triangle-down'+n).css("border-top","10px solid "+bodyColor);
+								}
+							if(changeFontColor){
+								$('.hintBox'+n).css("color",fontColor);
+								}
+						}
+
 			});//确认编辑
 		$(document).on('mousedown','[id*=Ts]',function(e){
 			var m=$(this).attr('id').replace(/[^0-9]/ig, "");
+			var we=$(this).next();
 			if(e.which==3){
 				e.stopPropagation();
 				removeId=m;
+				removeHtml=we
 				$('.chooseBox').remove();
 				Rleft=$(this).css("left").replace(/[^0-9]/ig, "");
 				Rtop=$(this).css("top").replace(/[^0-9]/ig, "");
@@ -130,7 +135,9 @@
 		$(document).on('click','#deleteSign',function(){
 			deleteData(Rleft,Rtop);
 			$('#Ts'+removeId).remove();
-			$('.hintBox'+(Number(removeId)+1)).remove();
+			$(removeHtml).remove();
+			// $('#Ts'+removeId).next().remove();
+			// $('.hintBox'+(Number(removeId)+1)).remove();
 		});//删除标记
 	}
 		/*
