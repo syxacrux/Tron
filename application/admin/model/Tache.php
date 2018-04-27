@@ -121,9 +121,9 @@ class Tache extends Common{
 
     /**
      * 多环节ID字符串转换相对应的环节名称，以逗号分割
-     * @param $ids
-     * @param $value
-     * @param $tag
+     * @param $ids string
+     * @param $value string 要获取的字段名
+     * @param $tag string 分割符
      * @return string
      * @author zjs 2018/3/15
      */

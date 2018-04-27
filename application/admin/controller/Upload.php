@@ -54,7 +54,14 @@ class Upload extends Controller
 		return resultArray(['error' => $file->getError()]);
 	}
 
+	/**
+	 * 上传的图片以base64解码存储到服务器中
+	 * @return array
+	 */
 	public function images_base64_add(){
+		header('Access-Control-Allow-Origin: *');
+		header('Access-Control-Allow-Methods: POST');
+		header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
 		$image_str = request()->post('images');
 		$imageName = time().'.png';
 		if(strstr($image_str,',')){
