@@ -8,7 +8,7 @@
       </el-breadcrumb>
     </div>
     <div class="m-b-20 pos-rel">
-      <el-button type="primary" class="btn-link-large add-btn fl" @click="addReference">
+      <el-button v-if="addShow" type="primary" class="btn-link-large add-btn fl" @click="addReference">
         <i class="el-icon-plus"></i>&nbsp;&nbsp;上传资料
       </el-button>
       <div class="tx-r">
@@ -106,7 +106,7 @@
             <div class="ovf-hd">
               <el-col :span="4">
               <!--<el-col :span="12" v-for="item in projectRefList" :key="item.id">-->
-                <div class="grid-content p-b-5">
+                <div class="grid-content p-b-5" @click="referenceDetail">
                 <!--<div class="grid-content p-b-5" @click="referenceDetail(item.id)">-->
                   <el-card class="ovf-hd">
                     1233523423423443
@@ -235,12 +235,12 @@
       </el-tabs>
     </div>
     <transition name="el-zoom-in-center">
-      <div v-show="!isReferenceDetailShow" class="reference_detail fr">
+      <div v-show="isReferenceDetailShow" class="reference_detail fr">
         <el-card>
           <div slot="header" class="clearfix">
             <span>参考文件详情</span>
-            <!--<i v-if="editShow" class="el-icon-edit m-l-5 fz-14 c-light-gray pointer" @click="editAsset"></i>-->
-            <!--<i v-if="deleteShow" class="el-icon-delete m-l-5 fz-14 c-light-gray pointer" @click="deleteAsset"></i>-->
+            <i v-if="editShow" class="el-icon-edit m-l-5 fz-14 c-light-gray pointer" @click="editReference"></i>
+            <i v-if="deleteShow" class="el-icon-delete m-l-5 fz-14 c-light-gray pointer" @click="deleteReference"></i>
             <i class="el-icon-close fr pointer" @click="isReferenceDetailShow = !isReferenceDetailShow"></i>
           </div>
           <!--<el-row :gutter="20" class="m-b-5">-->
@@ -455,17 +455,17 @@
         if (!/^[0-9]*$/.test(id)) {
           id = id.id
         }
-        this.id = id
-        this.apiGet('admin/assets/' + id).then((res) => {
-          this.handelResponse(res, (data) => {
-            this.editAssetDetail = data
-          })
-        })
-        if (!this.isReferenceDetailShow) {
+//        this.id = id
+//        this.apiGet('admin/references/' + id).then((res) => {
+//          this.handelResponse(res, (data) => {
+//            this.editAssetDetail = data
+//          })
+//        })
+//        if (!this.isReferenceDetailShow) {
           this.isReferenceDetailShow = !this.isReferenceDetailShow
-        }else {
-          this.getAllAssetsList()
-        }
+//        }else {
+//          this.getAllReferencesList()
+//        }
       },
       addReference() {
         this.isUploadReference = true
@@ -558,7 +558,6 @@
         }else if(this.form.resource_type == 3) {
           this.apiGet('asset/get_asset_name', data).then((res) => {
             this.handelResponse(res, (data) => {
-              console.log(data)
               this.assetList = data
             })
           })
@@ -644,7 +643,18 @@
       this.getProjects()
     },
     components: {
-
+      //      添加参考库文件按钮
+      addShow () {
+        return _g.getHasRule('references-save')
+      },
+      //      编辑参考库文件按钮
+      editShow () {
+        return _g.getHasRule('references-update')
+      },
+      //      删除参考库文件按钮
+      deleteShow () {
+        return _g.getHasRule('references-delete')
+      }
     },
     mixins: [http],
     computed: {
