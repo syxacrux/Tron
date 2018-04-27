@@ -22,6 +22,10 @@ import systemConfig from '@/components/Admin/system/config/add.vue'
 import ruleList from '@/components/Admin/system/rule/list.vue'
 import ruleAdd from '@/components/Admin/system/rule/add.vue'
 import ruleEdit from '@/components/Admin/system/rule/edit.vue'
+// 系统配置-系统配置项
+import deployList from '@/components/Admin/system/deploy/list.vue'
+import deployAdd from '@/components/Admin/system/deploy/add.vue'
+import deployEdit from '@/components/Admin/system/deploy/edit.vue'
 // 账户管理-角色管理
 import groupsList from '@/components/Admin/personnel/groups/list.vue'
 import groupsAdd from '@/components/Admin/personnel/groups/add.vue'
@@ -50,14 +54,13 @@ import workbenchesList from '@/components/Admin/workbench/workbenches/list.vue'
 // 镜头管理-镜头
 import shotsList from '@/components/Admin/shot/shots/list.vue'
 import shotsAdd from '@/components/Admin/shot/shots/add.vue'
-import shotsEdit from '@/components/Admin/shot/shots/edit.vue'
 import shotsListDetail from '@/components/Admin/shot/shots/list_detail.vue'
 // 资产库管理 - 资产
 import assetsList from '@/components/Admin/library/assets/list.vue'
 import assetsAdd from '@/components/Admin/library/assets/add.vue'
 // 库管理-参考库管理
 import referencesList from '@/components/Admin/library/references/list.vue'
-//审批管理-dailies
+// 审批管理-审批管理
 import approvalsList from '@/components/Admin/approval/approvals/list.vue'
 
 Vue.use(VueRouter)
@@ -128,6 +131,26 @@ const routes = [
         component: ruleEdit,
         name: 'ruleEdit',
         meta: { hideLeft: false, module: 'Admin', menu: 'rule' }
+      }
+    ]
+  },
+  // 系统配置-系统配置项
+  {
+    path: '/admin',
+    component: Home,
+    children: [
+      {
+        path: 'deploy/list',
+        component: deployList,
+        name: 'deployList',
+        meta: { hideLeft: false, module: 'Admin', menu: 'deploy' }
+      },
+      { path: 'deploy/add', component: ruleAdd, name: 'deployAdd', meta: { hideLeft: false, module: 'Admin', menu: 'deploy' }},
+      {
+        path: 'deploy/edit/:id',
+        component: deployEdit,
+        name: 'deployEdit',
+        meta: { hideLeft: false, module: 'Admin', menu: 'deploy' }
       }
     ]
   },
