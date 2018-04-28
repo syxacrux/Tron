@@ -55,8 +55,8 @@
       <el-row>
         <el-col :span="14">
           <div class="ovf-hd">
-            <el-col :span="6">
-                <div class="grid-content p-b-5">
+            <el-col :span="6" class="parent">
+                <div class="grid-content p-b-5 ">
                   <el-card class="ovf-hd">
                     1233523423423443
                     1233523423423443
@@ -64,6 +64,21 @@
                     1233523423423443
                     1233523423423443
                     1233523423423443
+                  </el-card>
+                </div>
+                <div class="grid-content p-b-5 subelement">
+                  <el-card class="ovf-hd">
+                   审核通过
+                  </el-card>
+                </div>
+                <div class="grid-content p-b-5 subelement">
+                  <el-card class="ovf-hd">
+                   客户通过
+                  </el-card>
+                </div>
+                <div class="grid-content p-b-5 subelement">
+                  <el-card class="ovf-hd">
+                   已审核
                   </el-card>
                 </div>
             </el-col>
@@ -184,7 +199,7 @@
                 <p class="m-0"><span>任务难度：</span><span>222</span></p>
               </el-col>
             </el-collapse-item>
-            <el-collapse-item title="反馈信息" name="1">
+            <el-collapse-item title="反馈信息" name="2">
               <div class="Dailies-text">
                 <el-col :span="6">
                   <img class="Dailies-headPortrait" src="../../../../assets/images/bg1.jpg">
@@ -212,9 +227,9 @@
       <el-dialog
           title="提示"
           :visible.sync="dialogVisible"
-          width="30%"
+          width="35%"
           :before-close="handleClose">
-          <span>这是一段信息</span>
+          <img :src="fieldForm.images">
           <span slot="footer" class="dialog-footer">
             <el-button @click="dialogVisible = false">取 消</el-button>
             <el-button type="primary" @click="dialogVisible = false">上传</el-button>
@@ -254,7 +269,9 @@
           form:{
             shot_number:'12'
           },
-
+          fieldForm:{
+            images:''
+          }
         } 
        },
        created() {
@@ -264,10 +281,8 @@
        },
        mounted(){
           let thiss=this
-           $('#capture').click(function(){
-
-               console.log(122)
-               html2canvas(document.getElementById('signx'), {
+          $('#capture').click(function(){
+              html2canvas(document.getElementById('signx'), {
                 // allowTaint: true,
                 taintTest: false,
                 onrendered: function (canvas) {
@@ -276,8 +291,8 @@
                     var imgData = canvas.toDataURL("png");
                     var img=new Image();
                     img.src=imgData;
-                    console.log(imgData)
                     thiss.fieldForm.images=imgData
+                    $('.signIndex,.hintBox').remove()
                     // document.getElementById("output").appendChild(img);
                     // canvas.id = "mycanvas";    
                     // //生成base64图片数据 
@@ -288,61 +303,8 @@
                     // newImg.src =  dataUrl;    
                     // document.getElementById("output").appendChild(newImg);    
                 },useCORS:true
-            });
-           })
-          // function getBase64Image(img) {
-          //   console.log(img)
-          //         var canvas = document.createElement("canvas");
-          //         canvas.width = img.width;
-          //         canvas.height = img.height;
-          //         var ctx = canvas.getContext("2d");
-          //         ctx.drawImage(img, 0, 0, img.width, img.height);
-                  
-          //         // var ext = img.src.substring(img.src.lastIndexOf(".")+1).toLowerCase();
-          //         // console.log(ext)
-          //         var dataURL = canvas.toDataURL();
-          //         console.log(dataURL,123)
-          //         return dataURL;
-          // }
-          // $('#capture').click(function(){
-          //   var image = new Image();
-          //   image.crossOrigin = 'anonymous';
-          //   image.src = $('#imgs').attr('src');
-          //   var base64 = getBase64Image(image);
-          //   console.log(base64);
-          // })
-           	// (function() {
-            //     "use strict";
-            //     var video, $capture;
-            //     var scale = 0.25;
-            //     var initialize = function() {
-            //         $capture = $("#capture");
-            //         // video = $("#video").get(0);
-            //         video=$('.dailies-video>img').get(0)
-            //         $("#capture").click(captureImage);        
-            //     };
-            //     var captureImage = function() {
-            //         var canvas = document.createElement("canvas");
-            //         var str=$('.dailies-video>img').css('width').substr(0,$('.dailies-video>img').css('width').length-2)
-            //         // canvas.width = video.videoWidth * scale;
-            //         // canvas.height = video.videoHeight * scale;
-            //         canvas.height = 517;
-            //         canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
-            //         var img = document.createElement("img");
-            //         img.src = canvas.toDataURL();
-            //         $capture.prepend(img);
-            //         var ce=document.getElementById("myCanvas");
-            //         var ctx=ce.getContext("2d");
-            //         var img=new Image();
-            //         ctx.clearRect(0,0,895,canvas.height);
-            //         img.onload = function(){
-            //         ctx.drawImage(img,0,0,canvas.width,canvas.height);
-            //         };
-            //         img.src=canvas.toDataURL();
-            //     };
-            //     $(initialize);      
-            // }());
-        
+              });
+          })
        },
        methods: {
           handleChange(val) {
@@ -386,7 +348,7 @@ body,html,div,ul,li,a{
 .approvals_list .imagebox{
 	width:600px;
     height:auto;
-    margin:0 auto;
+    margin:5px auto;
     position:relative;
 }
 .approvals_list .imagebox img{
@@ -410,6 +372,20 @@ body,html,div,ul,li,a{
 }
 .approvals_list .dailies-state {
   text-align: right;
+}
+.approvals_list .parent{
+  position: relative;
+}
+.approvals_list .subelement{
+  position: absolute;
+  top: 30%;
+  text-align: center;
+  background-color: rgba(0,0,0,0);
+  color: #67c23a;
+}
+.approvals_list .subelement div{
+  background-color: rgba(0,0,0,0.3);
+  color: #67c23a;
 }
 </style>
 
