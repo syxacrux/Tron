@@ -3,7 +3,7 @@
     <div class="m-b-20">
       <el-breadcrumb separator="/">
         <el-breadcrumb-item :to="{ path: '/admin' }">首页</el-breadcrumb-item>
-        <el-breadcrumb-item :to="{ path: '/admin/studios/list' }">系统配置项管理</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ path: '/admin/deploys/list' }">系统配置项管理</el-breadcrumb-item>
         <el-breadcrumb-item>编辑系统配置项</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
@@ -91,7 +91,8 @@
         this.apiGet('admin/systemdeploys/' + this.form.id).then((res) => {
           this.handelResponse(res, (data) => {
             this.form.name = data.name
-            this.form.pid = data.pid
+            this.form.pid = data.pid.toString()
+            this.form.sort = data.sort
             this.form.explain = data.explain
           })
         })
