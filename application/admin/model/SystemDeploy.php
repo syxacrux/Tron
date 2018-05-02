@@ -34,6 +34,9 @@ class SystemDeploy extends Common{
 			$list = $list->page($page, $limit);
 		}
 		$list = $list ->select();
+		foreach($list as $key=>$value){
+			$list[$key]['pname'] = ($value['pid'] != 0 ) ? $this->get($value['pid'])->explain : '无';
+		}
 		$data['list'] = $list;
 		$data['dataCount'] = $dataCount;
 		return $data;
