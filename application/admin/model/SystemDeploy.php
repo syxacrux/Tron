@@ -39,5 +39,15 @@ class SystemDeploy extends Common{
 		return $data;
 	}
 
+	//详情
+	public function getData_ById($id){
+		$config_deploy_obj = $this->get($id);
+		if(!$config_deploy_obj){
+			$this->error = '暂无此数据';
+			return false;
+		}
+		$config_deploy_obj->pname = ($config_deploy_obj->pid == 0) ? '无' : $this->get($config_deploy_obj->pid)->name;
+		return $config_deploy_obj;
+	}
 
 }

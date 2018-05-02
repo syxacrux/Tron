@@ -24,7 +24,7 @@ class SystemDeploys extends BaseCommon{
 	public function read(){
 		$deploy_model = model('SystemDeploy');
 		$param = $this->param;
-		$data = $deploy_model->getDataById($param['id']);
+		$data = $deploy_model->getData_ById($param['id']);
 		if (!$data) {
 			return resultArray(['error' => $deploy_model->getError()]);
 		}
