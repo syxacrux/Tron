@@ -49,7 +49,7 @@ class SystemDeploy extends Common{
 			$this->error = '暂无此数据';
 			return false;
 		}
-		$config_deploy_obj->pname = ($config_deploy_obj->pid == 0) ? '无' : $this->get($config_deploy_obj->pid)->name;
+		$config_deploy_obj->pname = ($config_deploy_obj->pid == 0) ? '无' : $this->get($config_deploy_obj->pid)->explain;
 		return $config_deploy_obj;
 	}
 
