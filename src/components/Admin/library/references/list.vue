@@ -249,30 +249,30 @@
               <!--</p>-->
             <!--</el-col>-->
           <!--</el-row>-->
-          <!--<el-row :gutter="20" class="m-b-5">-->
-            <!--<el-col :span="12">-->
-              <!--<p class="m-0">名称：<span>{{ editAssetDetail.asset_byname }}</span></p>-->
-            <!--</el-col>-->
-            <!--<el-col :span="12">-->
-              <!--<p class="m-0">场号/资产：<span>{{ editAssetDetail.project_name }}</span></p>-->
-            <!--</el-col>-->
-          <!--</el-row>-->
-          <!--<el-row :gutter="20" class="m-b-5">-->
-            <!--<el-col :span="12">-->
-              <!--<p class="m-0">镜头号/资产号：<span>{{ editAssetDetail.asset_name }}</span></p>-->
-            <!--</el-col>-->
-            <!--<el-col :span="12">-->
-              <!--<p class="m-0">所属项目：<span>{{ editAssetDetail.type_name }}</span></p>-->
-            <!--</el-col>-->
-          <!--</el-row>-->
-          <!--<el-row :gutter="20" class="m-b-5">-->
-            <!--<el-col :span="12">-->
-              <!--<p class="m-0">使用环节：<span>{{ editAssetDetail.priority_level_name }}</span></p>-->
-            <!--</el-col>-->
-            <!--<el-col :span="12">-->
-              <!--<p class="m-0">提供者：<span>{{ editAssetDetail.difficulty_name }}</span></p>-->
-            <!--</el-col>-->
-          <!--</el-row>-->
+          <el-row :gutter="20" class="m-b-5">
+            <el-col :span="12">
+              <p class="m-0">名称：<span>aaaaaaaaaaaa</span></p>
+            </el-col>
+            <el-col :span="12">
+              <p class="m-0">场号/资产：<span>aaaaaaaaaaaa</span></p>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20" class="m-b-5">
+            <el-col :span="12">
+              <p class="m-0">镜头号/资产号：<span>aaaaaaaaaaaa</span></p>
+            </el-col>
+            <el-col :span="12">
+              <p class="m-0">所属项目：<span>aaaaaaaaaaaa</span></p>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20" class="m-b-5">
+            <el-col :span="12">
+              <p class="m-0">使用环节：<span>aaaaaaaaaaaa</span></p>
+            </el-col>
+            <el-col :span="12">
+              <p class="m-0">提供者：<span>aaaaaaaaaaaa</span></p>
+            </el-col>
+          </el-row>
         </el-card>
       </div>
     </transition>
@@ -467,6 +467,12 @@
 //          this.getAllReferencesList()
 //        }
       },
+      editReference() {
+
+      },
+      deleteReference() {
+
+      },
       addReference() {
         this.isUploadReference = true
 //        获取环节列表
@@ -643,6 +649,10 @@
       this.getProjects()
     },
     components: {
+
+    },
+    mixins: [http],
+    computed: {
       //      添加参考库文件按钮
       addShow () {
         return _g.getHasRule('references-save')
@@ -655,10 +665,6 @@
       deleteShow () {
         return _g.getHasRule('references-delete')
       }
-    },
-    mixins: [http],
-    computed: {
-
     },
     watch: {
       filterText(val) {

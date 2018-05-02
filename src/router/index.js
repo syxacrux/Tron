@@ -92,7 +92,12 @@ const routes = [
         name: 'menuList',
         meta: { hideLeft: false, module: 'Admin', menu: 'menu' }
       },
-      { path: 'menu/add', component: menuAdd, name: 'menuAdd', meta: { hideLeft: false, module: 'Admin', menu: 'menu' }},
+      {
+        path: 'menu/add',
+        component: menuAdd,
+        name: 'menuAdd',
+        meta: { hideLeft: false, module: 'Admin', menu: 'menu' }
+      },
       {
         path: 'menu/edit/:id',
         component: menuEdit,
@@ -125,7 +130,12 @@ const routes = [
         name: 'ruleList',
         meta: { hideLeft: false, module: 'Admin', menu: 'rule' }
       },
-      { path: 'rule/add', component: ruleAdd, name: 'ruleAdd', meta: { hideLeft: false, module: 'Admin', menu: 'rule' }},
+      {
+        path: 'rule/add',
+        component: ruleAdd,
+        name: 'ruleAdd',
+        meta: { hideLeft: false, module: 'Admin', menu: 'rule' }
+      },
       {
         path: 'rule/edit/:id',
         component: ruleEdit,
@@ -145,7 +155,12 @@ const routes = [
         name: 'deployList',
         meta: { hideLeft: false, module: 'Admin', menu: 'deploy' }
       },
-      { path: 'deploy/add', component: ruleAdd, name: 'deployAdd', meta: { hideLeft: false, module: 'Admin', menu: 'deploy' }},
+      {
+        path: 'deploy/add',
+        component: deployAdd,
+        name: 'deployAdd',
+        meta: { hideLeft: false, module: 'Admin', menu: 'deploy' }
+      },
       {
         path: 'deploy/edit/:id',
         component: deployEdit,
@@ -208,8 +223,18 @@ const routes = [
     path: '/busi',
     component: Home,
     children: [
-      { path: 'mail/list', component: mailList, name: 'mailList', meta: { hideLeft: false, module: 'Busi', menu: 'mail' }},
-      { path: 'mail/add', component: mailAdd, name: 'mailAdd', meta: { hideLeft: false, module: 'Busi', menu: 'mail' }},
+      {
+        path: 'mail/list',
+        component: mailList,
+        name: 'mailList',
+        meta: { hideLeft: false, module: 'Busi', menu: 'mail' }
+      },
+      {
+        path: 'mail/add',
+        component: mailAdd,
+        name: 'mailAdd',
+        meta: { hideLeft: false, module: 'Busi', menu: 'mail' }
+      },
       {
         path: 'mail/edit/:id',
         component: mailEdit,
