@@ -14,6 +14,7 @@
     <el-table v-if="listShow" :data="tableData" style="width: 100%" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="50"></el-table-column>
       <el-table-column label="系统配置项名称" prop="name"></el-table-column>
+      <el-table-column label="排序" prop="sort"></el-table-column>
       <el-table-column label="备注" prop="explain"></el-table-column>
       <!--<el-table-column label="状态" prop="status">-->
       <!--<template slot-scope="scope">-->
@@ -81,7 +82,7 @@
           type: 'warning'
         }).then(() => {
           _g.openGlobalLoading()
-          this.apiDelete('admin/SystemDeploys/', item.id).then((res) => {
+          this.apiDelete('admin/systemdeploys/', item.id).then((res) => {
             _g.closeGlobalLoading()
             this.handelResponse(res, (data) => {
               _g.toastMsg('success', '删除成功')
@@ -108,7 +109,7 @@
             limit: this.limit
           }
         }
-        this.apiGet('admin/SystemDeploys', data).then((res) => {
+        this.apiGet('admin/systemdeploys', data).then((res) => {
           this.handelResponse(res, (data) => {
             this.tableData = data.list
             this.dataCount = data.dataCount
