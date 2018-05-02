@@ -14,7 +14,7 @@ class SystemDeploys extends BaseCommon{
 	public function index(){
 		$deploy_model = model('SystemDeploy');
 		$param = $this->param;
-		$keywords = !empty($param['keywords']) ? $param['keywords']: '';
+		$keywords = !empty($param['keywords']) ? json_decode($param['keywords'],true): '';
 		$page = !empty($param['page']) ? $param['page']: '';
 		$limit = !empty($param['limit']) ? $param['limit']: '';
 		$data = $deploy_model->getList($keywords, $page, $limit);
@@ -71,13 +71,4 @@ class SystemDeploys extends BaseCommon{
 		return resultArray(['data' => '删除成功']);
 	}
 
-	public function enables(){
-		$deploy_model = model('SystemDeploy');
-		$param = $this->param;
-		$data = $deploy_model->enableDatas($param['ids'], $param['status'], true);
-		if (!$data) {
-			return resultArray(['error' => $deploy_model->getError()]);
-		}
-		return resultArray(['data' => '操作成功']);
-	}
 }

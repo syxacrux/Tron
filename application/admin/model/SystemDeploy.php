@@ -8,7 +8,7 @@ class SystemDeploy extends Common{
 
 	/**
 	 * 获取列表
-	 * @param $keyword
+	 * @param $keywords
 	 * @param $page
 	 * @param $limit
 	 * @return mixed
@@ -17,10 +17,15 @@ class SystemDeploy extends Common{
 	 * @throws \think\exception\DbException
 	 * @author zjs 2018/3/16
 	 */
-	public function getList($keyword, $page, $limit){
+	public function getList($keywords, $page, $limit){
 		$where = [];
-		if ($keyword) {
-			$where['name'] = ['like', '%'.$keyword.'%'];
+		//配置项名称
+		if (!empty($keywords['name'])) {
+			$where['name'] = ['like', '%'.$keywords['name'].'%'];
+		}
+		//所属父级
+		if(!empty($keywords['pid'])){
+			$where['pid'] = $keywords['pid'];
 		}
 		$dataCount = $this->where($where)->count('id');
 		$list = $this->where($where);
@@ -34,28 +39,5 @@ class SystemDeploy extends Common{
 		return $data;
 	}
 
-
-	/**
-	 * 多工作室ID字符串转换相对应的工作室名称，以逗号分割
-	 * @param $ids
-	 * @param $tag
-	 * @return string
-	 * @throws \think\db\exception\DataNotFoundException
-	 * @throws \think\db\exception\ModelNotFoundException
-	 * @throws \think\exception\DbException
-	 * @author zjs 2018/3/13
-	 */
-	public static function get_studio_names($ids,$value,$tag){
-		if(!empty($ids)){
-			$studio_ids = explode(',',$ids);
-			foreach($studio_ids as $key=>$val){
-				$res[] = self::where('id',$val)->value($value);
-			}
-			$data = implode($tag,$res);
-		}else{
-			$data = '';
-		}
-		return $data;
-	}
 
 }
