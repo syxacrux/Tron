@@ -66,17 +66,17 @@
                     1233523423423443
                   </el-card>
                 </div>
-                <div class="grid-content p-b-5 subelement">
+                <div v-if="type === 'A'" class="grid-content p-b-5 subelement">
                   <el-card class="ovf-hd">
                    审核通过
                   </el-card>
                 </div>
-                <div class="grid-content p-b-5 subelement">
+                <div v-else-if="type === 'B'" class="grid-content p-b-5 subelement">
                   <el-card class="ovf-hd">
                    客户通过
                   </el-card>
                 </div>
-                <div class="grid-content p-b-5 subelement">
+                <div v-else class="grid-content p-b-5 subelement">
                   <el-card class="ovf-hd">
                    已审核
                   </el-card>
@@ -271,7 +271,8 @@
           },
           fieldForm:{
             images:''
-          }
+          },
+          type:'C'
         } 
        },
        created() {
