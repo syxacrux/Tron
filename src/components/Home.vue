@@ -85,7 +85,7 @@
     right: 0px;
     top: 0px;
     bottom: 0px;
-    left: 220px;
+    left: 175px;
     overflow-y: scroll;
     padding: 20px 20px 0;
   }
@@ -121,7 +121,7 @@
   }
   
   .aside {
-    width: 220px !important;
+    width: 175px !important;
     height: 100%;
     overflow-y: scroll !important;
   }

@@ -179,7 +179,7 @@
     padding: 18px 0;
   }
 
-  .shot_list .box-card-p,.shot_list  .box-card-div {
+  .shot_list .box-card-p,.shot_list .box-card-div {
     /* display: inline-block; */
     float: left;
   }
