@@ -10,7 +10,7 @@ return [
 	'__rest__'=>[
 			'admin/upload'        =>		'admin/upload',
 			'admin/rules'		   		=>		'admin/rules',
-			'admin/deploys'				=>		'admin/deploys',
+			'admin/systemdeploys'	=>		'admin/systemdeploys',
 			'admin/groups'		   	=>		'admin/groups',
 			'admin/users'		   		=>		'admin/users',
 			'admin/menus'		   		=>		'admin/menus',
