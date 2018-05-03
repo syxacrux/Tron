@@ -22,6 +22,9 @@ return [
 			'admin/assets'				=>		'admin/assets',
 			'admin/references'		=>		'admin/references',
 	],
+
+	// 测试
+	'admin/base/test'				=>			['admin/base/test',['method' => 'POST|GET']],
 	// [获取信息]
 	'admin/infos/index'     =>      ['admin/infos/index',['method' => 'POST']],
 	// 刷新token
