@@ -51,7 +51,7 @@
         <el-table ref="multipleTable" :data="tableData" tooltip-effect="dark"
                   @selection-change="handleSelectionChange" @row-click="shotDetail">
           <el-table-column type="selection" width="55"></el-table-column>
-          <el-table-column prop="shot_image" label="缩略图">
+          <el-table-column prop="shot_image" label="缩略图" width="120">
             <template slot-scope="scope">
               <!--<img :src="address + 'uploads/Projects/images/20180315/0ac2a237e3803fed26471175554c180a.jpg'" alt="" class="dp-b h-60">-->
               <img :src="address + scope.row.shot_image" alt="" class="dp-b h-60">
@@ -70,8 +70,16 @@
               </el-tag>
             </template>
           </el-table-column>
-          <el-table-column prop="plan_start_time" label="计划开始"></el-table-column>
-          <el-table-column prop="plan_end_time" label="计划结束"></el-table-column>
+          <el-table-column prop="plan_start_time" label="计划开始" width="150">
+            <template slot-scope="scope">
+                {{ scope.row.plan_start_time.slice(0,11) }}
+            </template>
+          </el-table-column>
+          <el-table-column prop="plan_end_time" label="计划结束">
+            <template slot-scope="scope">
+              {{ scope.row.plan_end_time.slice(0,11) }}
+            </template>
+          </el-table-column>
           <el-table-column prop="actual_start_timestamp" label="实际开始"></el-table-column>
           <el-table-column prop="actual_end_timestamp" label="实际结束"></el-table-column>
           <!--<el-table-column prop="make_demand" label="备注"></el-table-column>-->
