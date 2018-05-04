@@ -272,7 +272,10 @@
           fieldForm:{
             images:''
           },
-          type:'C'
+          num:0,//计时器
+          Counter:0,//计时器状态
+          type:'C',
+          int:null,
         } 
        },
        created() {
@@ -282,6 +285,8 @@
        },
        mounted(){
           let thiss=this
+          let int
+          let as=['/static/img/bg1.jpg','/static/img/logo.png','/static/img/logo2.png','/static/img/logo4.png']
           $('#capture').click(function(){
               html2canvas(document.getElementById('signx'), {
                 // allowTaint: true,
@@ -305,7 +310,22 @@
                     // document.getElementById("output").appendChild(newImg);    
                 },useCORS:true
               });
-          })
+          });
+          //播放暂停
+          $('#play').click(function(){
+            clearTimeout(int);
+            if(thiss.Counter == 0){
+              int=setInterval(function(){
+                thiss.num=thiss.num+1
+                console.log(thiss.num)
+                // $('#imgs').attr('src',as[1])
+                thiss.Counter=1
+              },1000)
+            }else{
+              clearTimeout(int);
+              thiss.Counter = 0
+            }
+          });
        },
        methods: {
           handleChange(val) {
@@ -322,6 +342,8 @@
               })
               .catch(_ => {});
           },
+          //开始
+        //提交截图
          addField(form) {
            console.log(this.fieldForm)
             this.apiPost('admin/image_base64', this.fieldForm).then((res) => {
