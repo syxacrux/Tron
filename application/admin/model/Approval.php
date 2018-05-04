@@ -22,7 +22,13 @@ class Approval extends Common
 			$where['task_id'] = ['in',$task_ids_arr];
 		}
 		if(!empty($keywords['resource_name'])){	//镜头简称 | 资产名称  类型不能为空
+			switch ($keywords['type']){
+				case 1:	//镜头
 
+					break;
+				case 2:	//资产
+					break;
+			}
 			//$task_ids_arr =
 		}
 	}
