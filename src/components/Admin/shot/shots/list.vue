@@ -25,7 +25,7 @@
       <router-link class="btn-link-large add-btn" to="add" v-if="addShow">
         <i class="el-icon-plus"></i>&nbsp;&nbsp;添加镜头
       </router-link>
-      <div class="pos-abs">
+      <div class="pos-abs r-0 t-0">
         <el-badge :value="workingCount" :max="10" class="item" v-if="inDevelopmentShow">
           <el-button size="large" @click="getShotsDetail('shotsInDevelopment')">制作中</el-button>
         </el-badge>
@@ -44,7 +44,7 @@
       </div>
     </div>
     <div class="shots ovf-hd">
-      <el-col class="shots_list" :span="12">
+      <el-col class="" :span="12">
         <el-card class="box-card">
           <div v-for="o in 4" :key="o" class="text item1">
             {{'列表内容 ' + o }}
@@ -78,7 +78,7 @@
           </div>
         </div>
       </el-col>
-      <el-col class="shots_list" :span="12">
+      <el-col class="" :span="12">
         <el-card class="box-card">
           <div v-for="o in 4" :key="o" class="text item1">
             {{'列表内容 ' + o }}
@@ -170,27 +170,21 @@
   }
 </script>
 <style>
-  .shot_list .pos-abs {
-    display: inline-block;
-    right: 0;
-  }
-
-
-  .text {
+  .shot_list .text {
     font-size: 14px;
     /* padding: 18px 0; */
   }
 
-  .item1 {
+  .shot_list .item1 {
     padding: 18px 0;
   }
 
-  .box-card-p, .box-card-div {
+  .shot_list .box-card-p,.shot_list .box-card-div {
     /* display: inline-block; */
     float: left;
   }
 
-  .box-after:after {
+  .shot_list .box-after:after {
     content: '';
     height: 0;
     line-height: 0;

@@ -16,12 +16,12 @@ class Approvals extends BaseCommon
 	//标准列表
 	public function index()
 	{
-		$shot_model = model('Shot');
+		$approval_model = model('Approval');
 		$param = $this->param;
 		$keywords = !empty($param['keywords']) ? json_decode($param['keywords'],true) : '';
 		$page = !empty($param['page']) ? $param['page'] : '';
 		$limit = !empty($param['limit']) ? $param['limit'] : '';
-		$data = $shot_model->getList($keywords, $page, $limit);
+		$data = $approval_model->getList($keywords, $page, $limit);
 		return resultArray(['data' => $data]);
 	}
 

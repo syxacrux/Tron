@@ -12,6 +12,7 @@ class Infos extends BaseCommon
         $data = $userModel->getInfo($uid);
         return resultArray(['data' => $data]);
     }
+
     public function refresh(){
         $userModel = model('User');
         $uid = $this->uid;

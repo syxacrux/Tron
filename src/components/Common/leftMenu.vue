@@ -7,9 +7,15 @@
       text-color="#fff"
       active-text-color="#e4ba55"
       @open="handleOpen">
-      <el-submenu v-for="menu in menuData" :key="menu.id" :index="menu.id.toString()">
+      <el-submenu v-for="(menu, index) in menuData" :key="menu.id" :index="menu.id.toString()">
         <template slot="title">
-          <i class="el-icon-menu"></i>
+          <i v-if="index === 0" class="el-icon-tickets"></i>
+          <i v-if="index === 1" class="el-icon-view"></i>
+          <i v-if="index === 2" class="el-icon-document"></i>
+          <i v-if="index === 3" class="el-icon-news"></i>
+          <i v-if="index === 4" class="el-icon-edit-outline"></i>
+          <i v-if="index === 5" class="el-icon-menu"></i>
+          <i v-if="index === 6" class="el-icon-setting"></i>
           <span>{{menu.title}}</span>
         </template>
         <el-menu-item-group>
@@ -29,7 +35,8 @@ export default {
     const path = this.defaultOpends()
     return {
       actived: '54',
-      defaultActive: path
+      defaultActive: path,
+      menu_icon: ['ticket', 'view', 'document', 'news', 'eidt-outline', 'menu', 'setting']
     }
   },
   methods: {

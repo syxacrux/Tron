@@ -7,10 +7,8 @@
 
 namespace app\admin\controller;
 
-use app\admin\model\Access;
 use com\verify\HonrayVerify;
 use app\common\controller\Common;
-use think\Db;
 use think\Request;
 
 class Base extends Common
@@ -84,6 +82,13 @@ class Base extends Common
 		return resultArray(['data' => $data]);
 	}
 
+	//测试
+	public function test(){
+		$model = model('Test');
+		$param = $this->param;
+		$data = $model->getTestList($param);
+		return resultArray(['data' => $data]);
+	}
 
 	// miss 路由：处理没有匹配到的路由规则
 	public function miss()
