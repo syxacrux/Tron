@@ -12,7 +12,7 @@
         <!-- <template> -->
         <el-row :gutter="10" class="m-b-5">
           <el-col :span="4">
-            <el-select v-model="search.project_id" placeholder="请选择项目" @change="screenChange(1)">
+            <el-select v-model="search.project_id" placeholder="请选择项目" @change="screenChange()">
               <el-option
                 v-for="item in screeningProject"
                 :key="item.id"
@@ -22,13 +22,13 @@
             </el-select>
           </el-col>
           <el-col :span="4">
-            <el-select v-model="search.type"  style="margin-left: 10px;" placeholder="请选择类型" @change="screenChange(2)">
+            <el-select v-model="search.type"  style="margin-left: 10px;" placeholder="请选择类型" @change="typeChange()">
               <el-option label="镜头" value="1"></el-option>
               <el-option label="资产" value="2"></el-option>
             </el-select>
           </el-col>
           <el-col :span="5">
-            <el-select v-model="search.field_id"  style="margin-left: 10px;" placeholder="请选择场号或资产类型" @change="screenChange(3)">
+            <el-select v-model="search.field_id"  style="margin-left: 10px;" placeholder="请选择场号或资产类型" @change="siteChange()">
               <el-option
                 v-for="item in screeningSite"
                 :key="item.id"
@@ -38,7 +38,7 @@
             </el-select>
           </el-col>
           <el-col :span="5">
-            <el-select v-model="search.shot_id"  style="margin-left: 10px;" placeholder="请选择镜头号或资产简称" @change="screenChange()">
+            <el-select v-model="search.shot_id"  style="margin-left: 10px;" placeholder="请选择镜头号或资产简称" @change="lensChange()">
               <el-option
                 v-for="item in screeningShot"
                 :key="item.id"
@@ -55,36 +55,31 @@
       <el-row>
         <el-col :span="14">
           <div class="ovf-hd">
-            <el-col :span="6" class="parent">
+            <el-col :span="6" class="parent"  v-for="(data , index) in array" :key="data.id">
                 <div class="grid-content p-b-5 ">
-                  <el-card class="ovf-hd">
-                    1233523423423443
-                    1233523423423443
-                    1233523423423443
-                    1233523423423443
-                    1233523423423443
-                    1233523423423443
+                  <el-card class="ovf-hd picture">
+                    {{data}}
                   </el-card>
                 </div>
                 <div v-if="type === 'A'" class="grid-content p-b-5 subelement">
-                  <el-card class="ovf-hd">
+                  <!-- <el-card class="ovf-hd picture"> -->
                    审核通过
-                  </el-card>
+                  <!-- </el-card> -->
                 </div>
                 <div v-else-if="type === 'B'" class="grid-content p-b-5 subelement">
-                  <el-card class="ovf-hd">
+                  <!-- <el-card class="ovf-hd picture"> -->
                    客户通过
-                  </el-card>
+                  <!-- </el-card> -->
                 </div>
                 <div v-else class="grid-content p-b-5 subelement">
-                  <el-card class="ovf-hd">
+                  <!-- <el-card class="ovf-hd picture"> -->
                    已审核
-                  </el-card>
+                  <!-- </el-card> -->
                 </div>
             </el-col>
             <el-col :span="6">
                 <div class="grid-content p-b-5">
-                  <el-card class="ovf-hd">
+                  <el-card class="ovf-hd picture">
                     1233523423423443
                     1233523423423443
                     1233523423423443
@@ -144,7 +139,7 @@
             </div>
         </el-col>
         <el-col :span="10">
-            <el-row class="dailies-state">
+            <el-row class="dailies-state ">
               <el-button type="primary"> 审核通过</el-button>
               <el-button type="success">客户通过</el-button>
               <el-button type="warning">已审核</el-button>
@@ -269,6 +264,10 @@
           form:{
             shot_number:'12'
           },
+          array:[
+            '12335234234234431233',
+            '12335234234234431233',
+          ],
           fieldForm:{
             images:''
           },
@@ -359,7 +358,67 @@
               })
             })
         },
+        getsprojects(){
+          // this.apiGet('admin/projects')
+          this.apiGet('admin/projects').then((res) => {
+            this.handelResponse(res, (data) => {
+              this.screeningProject = data.list
+            })
+          })
+        },
+        screenChange(){
+          this.search.field_id = ''
+          this.search.shot_id = ''
+          const data = {
+            params: {
+              project_id: this.search.project_id
+            }
+          }
+          this.apiGet('admin/get_fields', data).then((res) => {//请求项目下的场号
+            this.handelResponse(res, (data) => {
+              // this.screeningSite = data
+            })
+          })
+        },
+        typeChange(){
+          this.search.field_id = ''
+          this.search.shot_id = ''
+          const datatype = {
+            params: {
+              project_id: this.search.project_id,
+              type: this.search.type
+            }
+          }
+          this.apiGet('admin/get_fields', datatype).then((res) => {//请求项目下的场号
+            this.handelResponse(res, (data) => {
+             this.screeningSite = data
+              
+            })
+          })
+        },
+        siteChange(){
+          this.search.shot_id = ''
+            const datas = {
+              params: {
+                field_id: this.search.field_id
+              }
+            }
+            this.apiGet('admin/get_shot_num', datas).then((res) => {//请求项目下的场号
+              this.handelResponse(res, (data) => {
+                this.screeningShot = data
+              })
+            })
+        },
+        lensChange(){
+
+        },
+        init() {
+          this.getsprojects()
+        },
        },
+      created() {
+        this.init()
+      },
       mixins: [http, fomrMixin],
    }
 </script>
@@ -401,14 +460,21 @@ body,html,div,ul,li,a{
 }
 .approvals_list .subelement{
   position: absolute;
-  top: 30%;
+  top: 3px;
   text-align: center;
-  background-color: rgba(0,0,0,0);
+  background-color: rgba(0,0,0,0.5);
   color: #67c23a;
+  /* height: 148px; */
+  line-height: 140px;
+  width: 99%;
+  border-radius: 4px;
 }
 .approvals_list .subelement div{
   background-color: rgba(0,0,0,0.3);
   color: #67c23a;
+}
+.approvals_list .picture{
+  height: 148px;
 }
 </style>
 
