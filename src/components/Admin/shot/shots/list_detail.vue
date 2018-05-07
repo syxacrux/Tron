@@ -85,7 +85,7 @@
           <!--<el-table-column prop="make_demand" label="备注"></el-table-column>-->
         </el-table>
         <div class="pos-rel p-t-20">
-          <!--<btnGroup :selectedData="multipleSelection" :type="'studios'"></btnGroup>-->
+          <btnGroup :selectedData="multipleSelection" :type="'studios'"></btnGroup>
           <div class="block tx-r">
             <el-pagination
                 @current-change="listCurrentChange"
