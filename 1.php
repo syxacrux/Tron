@@ -13,18 +13,21 @@
 //$result = $redis->get('site');
 //var_dump($result);
 
-$redis = new redis();
-$redis->connect('127.0.0.1', 6379);
-while(true){
-	//sleep(1);
-	if($redis->ping() != '+PONG'){	//检测是否连接成功
-		$redis->connect('127.0.0.1', 6379);
-	}
-	if($redis->lLen("pyFile") != 0){
-		$res = $redis->rpop('pyFile');
-		if($res){
-			//echo "$res".PHP_EOL;
-			system($res);
-		}
-	}
-}
+//$redis = new redis();
+//$redis->connect('127.0.0.1', 6379);
+//while(true){
+//	//sleep(1);
+//	if($redis->ping() != '+PONG'){	//检测是否连接成功
+//		$redis->connect('127.0.0.1', 6379);
+//	}
+//	if($redis->lLen("pyFile") != 0){
+//		$res = $redis->rpop('pyFile');
+//		if($res){
+//			//echo "$res".PHP_EOL;
+//			system($res);
+//		}
+//	}
+//}
+
+$a = 'Wcf0924';
+echo md5($a);

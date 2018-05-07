@@ -159,8 +159,8 @@ class Workbench extends Common
 						return $data;
 					}
 					$shot_number_len = strlen($keywords['shot_number']);
-					$config_shot_len = intval(SystemDeploy::get(2)->name);
-					$config_field_len = intval(SystemDeploy::get(3)->name);
+					$config_shot_len = intval(Parameter::get(2)->name);
+					$config_field_len = intval(Parameter::get(3)->name);
 					//后期可对3 镜头号长度进行配置 暂时未用上
 					if ($shot_number_len == 3) {
 						$where['shot_id'] = $shot_id;

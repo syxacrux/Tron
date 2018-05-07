@@ -83,7 +83,7 @@
           type: 'warning'
         }).then(() => {
           _g.openGlobalLoading()
-          this.apiDelete('admin/systemdeploys/', item.id).then((res) => {
+          this.apiDelete('admin/parameters/', item.id).then((res) => {
             _g.closeGlobalLoading()
             this.handelResponse(res, (data) => {
               _g.toastMsg('success', '删除成功')
@@ -110,7 +110,7 @@
             limit: this.limit
           }
         }
-        this.apiGet('admin/systemdeploys', data).then((res) => {
+        this.apiGet('admin/parameters', data).then((res) => {
           this.handelResponse(res, (data) => {
             this.tableData = data.list
             this.dataCount = data.dataCount
@@ -139,19 +139,19 @@
     computed: {
 //      系统配置项列表
       listShow () {
-        return _g.getHasRule('SystemDeploys-index')
+        return _g.getHasRule('Parameters-index')
       },
 //      添加系统配置项按钮
       addShow () {
-        return _g.getHasRule('SystemDeploys-save')
+        return _g.getHasRule('Parameters-save')
       },
 //      编辑系统配置项按钮
       editShow () {
-        return _g.getHasRule('SystemDeploys-update')
+        return _g.getHasRule('Parameters-update')
       },
 //      删除系统配置项按钮
       deleteShow () {
-        return _g.getHasRule('SystemDeploys-delete')
+        return _g.getHasRule('Parameters-delete')
       }
     },
     components: {

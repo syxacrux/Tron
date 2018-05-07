@@ -6,13 +6,12 @@
 // +----------------------------------------------------------------------
 
 namespace app\admin\controller;
-use app\admin\model\Access;
 use app\common\controller\BaseCommon;
 
-class SystemDeploys extends BaseCommon{
+class Parameters extends BaseCommon{
 
 	public function index(){
-		$deploy_model = model('SystemDeploy');
+		$deploy_model = model('Parameter');
 		$param = $this->param;
 		$keywords = !empty($param['keywords']) ? json_decode($param['keywords'],true): '';
 		$page = !empty($param['page']) ? $param['page']: '';

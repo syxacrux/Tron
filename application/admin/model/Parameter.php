@@ -2,9 +2,9 @@
 namespace app\admin\model;
 use app\common\model\Common;
 
-class SystemDeploy extends Common{
+class Parameter extends Common{
 
-	protected $name = 'system_deploy';
+	protected $name = 'system_parameter';
 
 	/**
 	 * 获取列表

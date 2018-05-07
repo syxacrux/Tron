@@ -23,9 +23,9 @@ import ruleList from '@/components/Admin/system/rule/list.vue'
 import ruleAdd from '@/components/Admin/system/rule/add.vue'
 import ruleEdit from '@/components/Admin/system/rule/edit.vue'
 // 系统配置-系统配置项
-import deployList from '@/components/Admin/system/deploy/list.vue'
-import deployAdd from '@/components/Admin/system/deploy/add.vue'
-import deployEdit from '@/components/Admin/system/deploy/edit.vue'
+import parametersList from '@/components/Admin/system/parameters/list.vue'
+import parametersAdd from '@/components/Admin/system/parameters/add.vue'
+import parametersEdit from '@/components/Admin/system/parameters/edit.vue'
 // 账户管理-角色管理
 import groupsList from '@/components/Admin/personnel/groups/list.vue'
 import groupsAdd from '@/components/Admin/personnel/groups/add.vue'
@@ -150,22 +150,22 @@ const routes = [
     component: Home,
     children: [
       {
-        path: 'deploy/list',
-        component: deployList,
-        name: 'deployList',
-        meta: { hideLeft: false, module: 'Admin', menu: 'deploy' }
+        path: 'parameters/list',
+        component: parametersList,
+        name: 'parametersList',
+        meta: { hideLeft: false, module: 'Admin', menu: 'parameters' }
       },
       {
-        path: 'deploy/add',
-        component: deployAdd,
-        name: 'deployAdd',
-        meta: { hideLeft: false, module: 'Admin', menu: 'deploy' }
+        path: 'parameters/add',
+        component: parametersAdd,
+        name: 'parametersAdd',
+        meta: { hideLeft: false, module: 'Admin', menu: 'parameters' }
       },
       {
-        path: 'deploy/edit/:id',
-        component: deployEdit,
-        name: 'deployEdit',
-        meta: { hideLeft: false, module: 'Admin', menu: 'deploy' }
+        path: 'parameters/edit/:id',
+        component: parametersEdit,
+        name: 'parametersEdit',
+        meta: { hideLeft: false, module: 'Admin', menu: 'parameters' }
       }
     ]
   },
@@ -394,7 +394,7 @@ const routes = [
       }
     ]
   },
-  //审批管理-dailies
+  // 审批管理-dailies
   {
     path: '/admin',
     component: Home,
