@@ -12,20 +12,24 @@ import _g from '@/assets/js/global.js'
 import Login from '@/components/Account/Login.vue'
 import refresh from '@/components/refresh.vue'
 import Home from '@/components/Home.vue'
-// 系统配置-菜单管理
+// 系统管理-菜单管理
 import menuList from '@/components/Admin/system/menu/list.vue'
 import menuAdd from '@/components/Admin/system/menu/add.vue'
 import menuEdit from '@/components/Admin/system/menu/edit.vue'
-// 系统配置-权限参数
+// 系统管理-权限参数
 import systemConfig from '@/components/Admin/system/config/add.vue'
-// 系统配置-权限规则
+// 系统管理-权限规则
 import ruleList from '@/components/Admin/system/rule/list.vue'
 import ruleAdd from '@/components/Admin/system/rule/add.vue'
 import ruleEdit from '@/components/Admin/system/rule/edit.vue'
-// 系统配置-系统配置项
+// 系统管理-系统配置项
 import parametersList from '@/components/Admin/system/parameters/list.vue'
 import parametersAdd from '@/components/Admin/system/parameters/add.vue'
 import parametersEdit from '@/components/Admin/system/parameters/edit.vue'
+// 系统管理-问题反馈
+import helpsList from '@/components/Admin/system/helps/list.vue'
+import helpsAdd from '@/components/Admin/system/helps/add.vue'
+import helpsEdit from '@/components/Admin/system/helps/edit.vue'
 // 账户管理-角色管理
 import groupsList from '@/components/Admin/personnel/groups/list.vue'
 import groupsAdd from '@/components/Admin/personnel/groups/add.vue'
@@ -81,7 +85,7 @@ const routes = [
       { path: '/refresh', component: refresh, name: 'refresh' }
     ]
   },
-  // 系统配置-菜单管理
+  // 系统管理-菜单管理
   {
     path: '/admin',
     component: Home,
@@ -106,7 +110,7 @@ const routes = [
       }
     ]
   },
-  // 系统配置-权限参数
+  // 系统管理-权限参数
   {
     path: '/admin',
     component: Home,
@@ -119,7 +123,7 @@ const routes = [
       }
     ]
   },
-  // 系统配置-权限规则
+  // 系统管理-权限规则
   {
     path: '/admin',
     component: Home,
@@ -144,7 +148,7 @@ const routes = [
       }
     ]
   },
-  // 系统配置-系统配置项
+  // 系统管理-系统配置项
   {
     path: '/admin',
     component: Home,
@@ -166,6 +170,31 @@ const routes = [
         component: parametersEdit,
         name: 'parametersEdit',
         meta: { hideLeft: false, module: 'Admin', menu: 'parameters' }
+      }
+    ]
+  },
+  // 系统管理-问题反馈
+  {
+    path: '/admin',
+    component: Home,
+    children: [
+      {
+        path: 'helps/list',
+        component: helpsList,
+        name: 'helpsList',
+        meta: { hideLeft: false, module: 'Admin', menu: 'helps' }
+      },
+      {
+        path: 'helps/add',
+        component: helpsAdd,
+        name: 'helpsAdd',
+        meta: { hideLeft: false, module: 'Admin', menu: 'helps' }
+      },
+      {
+        path: 'helps/edit/:id',
+        component: helpsEdit,
+        name: 'helpsEdit',
+        meta: { hideLeft: false, module: 'Admin', menu: 'helps' }
       }
     ]
   },

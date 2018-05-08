@@ -140,6 +140,7 @@
         </el-col>
         <el-col :span="10">
             <el-row class="dailies-state ">
+              <el-button type="info">复原</el-button>
               <el-button type="primary"> 审核通过</el-button>
               <el-button type="success">客户通过</el-button>
               <el-button type="warning">已审核</el-button>
