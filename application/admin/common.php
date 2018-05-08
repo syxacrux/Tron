@@ -147,6 +147,23 @@ function exec_python_file($str){
     $redis::LPush("pyFile",$cmd);
 }
 
+//获取当前所属主机信息
+function osname()
+{
+	$agent = $_SERVER['HTTP_USER_AGENT'];
+	$arr['ip'] = getenv('REMOTE_ADDR');
+	if (mb_eregi('Linux', $agent)) {
+		$arr['name'] = 'linux';
+		$arr['path'] = '/All';
+	} else if (mb_eregi('Windows', $agent)) {
+		$arr['name'] = 'windows';
+		$arr['path'] = 'x:';
+	} else if (mb_eregi('Mac os', $agent)) {
+		$arr['name'] = 'mac os';
+		$arr['path'] = '/Volumes/All';
+	}
+	return $arr;
+}
 
 
 
