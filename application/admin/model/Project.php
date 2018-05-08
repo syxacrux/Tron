@@ -91,6 +91,10 @@ class Project extends Common
 				$cmd = "python /var/www/html/tronPipelineScript/createDirPath/parser.py $str ";
 				$redis::LPush("pyFile",$cmd);
 				*/
+
+				/*
+				 exec_python_file($str);
+				 */
 				return true;
 			}
 		} catch (\Exception $e) {

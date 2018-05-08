@@ -1,6 +1,6 @@
 <?php
 // bsf管理模板函数文件
-
+use redis\RedisPackage;
 /**
  * 给树状菜单添加level并去掉没有子菜单的菜单项
  * @param  array   $data  [description]

@@ -11,7 +11,7 @@
  Target Server Version : 50635
  File Encoding         : 65001
 
- Date: 10/04/2018 16:56:42
+ Date: 07/05/2018 20:05:19
 */
 
 SET NAMES utf8mb4;
@@ -36,7 +36,8 @@ INSERT INTO `oa_admin_access` VALUES (5, 5);
 INSERT INTO `oa_admin_access` VALUES (6, 3);
 INSERT INTO `oa_admin_access` VALUES (8, 7);
 INSERT INTO `oa_admin_access` VALUES (9, 4);
-INSERT INTO `oa_admin_access` VALUES (10, 1);
+INSERT INTO `oa_admin_access` VALUES (10, 5);
+INSERT INTO `oa_admin_access` VALUES (11, 6);
 COMMIT;
 
 -- ----------------------------
@@ -58,11 +59,11 @@ CREATE TABLE `oa_admin_group` (
 -- Records of oa_admin_group
 -- ----------------------------
 BEGIN;
-INSERT INTO `oa_admin_group` VALUES (1, 'SuperViser', '监管人', '1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,40,41,42,43,44,45,46,52,53,54,55,56,47,48,49,51,57,58,66,67,68,73,69,73,80,77,78,79,82,85,59,60,61,62,63,70,71,72,74,75,76,81,83,84,86,87,88,50', NULL, 0, 1);
+INSERT INTO `oa_admin_group` VALUES (1, 'SuperViser', '监管人', '1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,40,41,42,43,44,45,46,52,53,54,55,56,73,80,59,60,61,62,63,70,71,72,74,75,76,81,83,84,86,87,39,47,48,49,50,51,88,89,57,58,66,67,68,69,73,77,78,79,82,85,90,91,108,109,110,111,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107', NULL, 0, 1);
 INSERT INTO `oa_admin_group` VALUES (2, 'VFX', '视效总监', '1,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,46,36,37,38,39,40,41,42,43,44,45,47,48,49,50,51', 1, 0, 1);
 INSERT INTO `oa_admin_group` VALUES (3, 'VRD', '视效总制片', '1,47,48,49,50,51,41,42,43,44,45,36,37,38,39,40,32,33,34,46', NULL, 0, 1);
 INSERT INTO `oa_admin_group` VALUES (4, 'PRD', '制片', '1,47,48,49,50,51,41,42,43,44,45,36,37,38,39,40,32,33,34,46,52,53,54,55,56,57,58,59,60,61,62,63,64,65', NULL, 0, 1);
-INSERT INTO `oa_admin_group` VALUES (5, 'teamLeader', '工作室总监', '1,32,33,34,46,36,37,39,40,41,42,43,44,45,47,48', 2, 0, 1);
+INSERT INTO `oa_admin_group` VALUES (5, 'teamLeader', '工作室总监', '1,32,33,34,46,52,53,47,48,49,50,51,88,57,58,66,67,68,69,73,77,78,79,80,82,85,59,60,61,62,63,70,71,72,74,75,76,81,83,84,86,89', 2, 0, 1);
 INSERT INTO `oa_admin_group` VALUES (6, 'groupLeader', '组长', '1,47,48,41,42,43,44,45,36,37,38,39,40,32,33,34,46,28,29,30,20,21,22', 3, 0, 1);
 INSERT INTO `oa_admin_group` VALUES (7, 'artist', '制作人', '1,47,48,41,42,36,37,32,33,34,46,28,29,30,20,21', 4, 6, 1);
 COMMIT;
@@ -84,28 +85,34 @@ CREATE TABLE `oa_admin_menu` (
   `module` varchar(50) DEFAULT NULL,
   `menu` varchar(50) DEFAULT NULL COMMENT '三级菜单吗',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8 COMMENT='后台菜单表';
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8 COMMENT='后台菜单表';
 
 -- ----------------------------
 -- Records of oa_admin_menu
 -- ----------------------------
 BEGIN;
 INSERT INTO `oa_admin_menu` VALUES (1, 0, '管理', '', '', 1, 0, 1, 32, 'Admin', '');
-INSERT INTO `oa_admin_menu` VALUES (2, 1, '系统配置', '', '', 1, 0, 1, 33, 'Admin', '');
-INSERT INTO `oa_admin_menu` VALUES (3, 2, '菜单管理', '/admin/menu/list', '', 1, 0, 1, 11, 'Admin', 'menu');
-INSERT INTO `oa_admin_menu` VALUES (4, 2, '系统参数', '/admin/config/add', '', 1, 0, 1, 19, 'Admin', 'systemConfig');
-INSERT INTO `oa_admin_menu` VALUES (5, 2, '权限规则', '/admin/rule/list', '', 1, 0, 1, 3, 'Admin', 'rule');
-INSERT INTO `oa_admin_menu` VALUES (6, 1, '账户管理', '', '', 1, 0, 1, 34, 'Admin', '');
+INSERT INTO `oa_admin_menu` VALUES (2, 1, '系统配置', '', '', 1, 20, 1, 33, 'Admin', '');
+INSERT INTO `oa_admin_menu` VALUES (3, 2, '菜单管理', '/admin/menu/list', '', 1, 1, 1, 11, 'Admin', 'menu');
+INSERT INTO `oa_admin_menu` VALUES (4, 2, '系统参数', '/admin/config/add', '', 1, 4, 1, 19, 'Admin', 'systemConfig');
+INSERT INTO `oa_admin_menu` VALUES (5, 2, '权限规则', '/admin/rule/list', '', 1, 2, 1, 3, 'Admin', 'rule');
+INSERT INTO `oa_admin_menu` VALUES (6, 1, '账户管理', '', '', 1, 19, 1, 34, 'Admin', '');
 INSERT INTO `oa_admin_menu` VALUES (7, 6, '工作室管理', '/admin/studios/list', '', 1, 1, 1, 37, 'Admin', 'studios');
 INSERT INTO `oa_admin_menu` VALUES (8, 6, '环节管理', '/admin/taches/list', '', 1, 2, 1, 42, 'Admin', 'studios');
 INSERT INTO `oa_admin_menu` VALUES (9, 6, '角色管理', '/admin/groups/list', '', 1, 3, 1, 21, 'Admin', 'groups');
 INSERT INTO `oa_admin_menu` VALUES (10, 6, '成员列表', '/admin/users/list', '', 1, 4, 1, 29, 'Admin', 'users');
-INSERT INTO `oa_admin_menu` VALUES (11, 1, '项目管理', '', '', 1, 0, 1, 46, 'Admin', '');
+INSERT INTO `oa_admin_menu` VALUES (11, 1, '项目管理', '', '', 1, 1, 1, 46, 'Admin', '');
 INSERT INTO `oa_admin_menu` VALUES (12, 11, '项目列表', '/admin/projects/list', '', 1, 1, 1, 48, 'Admin', 'projects');
-INSERT INTO `oa_admin_menu` VALUES (13, 1, '工作台管理', '', '', 1, 0, 1, 52, 'Admin', '');
+INSERT INTO `oa_admin_menu` VALUES (13, 1, '工作台管理', '', '', 1, 4, 1, 52, 'Admin', '');
 INSERT INTO `oa_admin_menu` VALUES (14, 13, '工作台', '/admin/workbenches/list', '', 1, 1, 1, 58, 'Admin', 'workbenches');
-INSERT INTO `oa_admin_menu` VALUES (15, 1, '镜头管理', '', '', 1, 0, 1, 53, 'Admin', '');
+INSERT INTO `oa_admin_menu` VALUES (15, 1, '镜头管理', '', '', 1, 2, 1, 53, 'Admin', '');
 INSERT INTO `oa_admin_menu` VALUES (16, 15, '镜头列表', '/admin/shots/list', '', 1, 1, 1, 60, 'Admin', 'shots');
+INSERT INTO `oa_admin_menu` VALUES (17, 1, '库管理', '', '', 1, 3, 1, 54, 'Admin', '');
+INSERT INTO `oa_admin_menu` VALUES (18, 17, '参考库管理', '/admin/references/list', '', 1, 5, 1, 91, 'Admin', 'references');
+INSERT INTO `oa_admin_menu` VALUES (19, 17, '资产库管理', '/admin/assets/list', '', 1, 1, 1, 93, 'Admin', 'assets');
+INSERT INTO `oa_admin_menu` VALUES (20, 1, '审批管理', '', '', 1, 5, 1, 55, 'Admin', '');
+INSERT INTO `oa_admin_menu` VALUES (21, 20, '审批列表', '/admin/approvals/list', '', 1, 1, 1, 107, 'Admin', 'approvals');
+INSERT INTO `oa_admin_menu` VALUES (22, 2, '系统配置项', '/admin/parameters/list', '', 1, 3, 1, 113, 'Admin', 'parameter');
 COMMIT;
 
 -- ----------------------------
@@ -149,7 +156,7 @@ CREATE TABLE `oa_admin_project` (
 -- Records of oa_admin_project
 -- ----------------------------
 BEGIN;
-INSERT INTO `oa_admin_project` VALUES (1, '2,3', 'uploads/Projects/images/20180321/6a7a5b472463faf75df69abf7b80ea6d.jpg', '扶摇', 'FUY', 2, '', '0', 1, 1, 1, 0, '+1,+1', 0, 0, 0, '5', '5,6', '4,5,10', '5,6', '5,6', '5,6', '4', 1521648000, 1525017600, 1, 1, 1521602422);
+INSERT INTO `oa_admin_project` VALUES (1, '2,3', 'uploads/Projects/images/20180321/6a7a5b472463faf75df69abf7b80ea6d.jpg', '扶摇', 'FUY', 2, '', '0', 1, 1, 1, 0, '+1,+1', 0, 1, 21, '5', '5,6', '4,5,10', '5,6', '5,6', '5,6', '4', 1521648000, 1525017600, 1, 1, 1521602422);
 INSERT INTO `oa_admin_project` VALUES (2, '2,3', 'uploads/Projects/images/20180410/66c50ccf593263bbfca20124cc370e70.jpg', '大主宰', 'DZZ', 2, '', '0', 1, 1, 1, 0, '+1,+1', 0, 0, 0, '5', '5,6', '4,5,10', '5,6', '5,6', '5,6', '4', 1521648000, 1525017600, 2, 1, 1523345748);
 INSERT INTO `oa_admin_project` VALUES (3, '2,3', 'uploads/Projects/images/20180321/cc25c2dabdf2c23bc36a808a30d4dca0.jpg', '七剑', 'QJ', 2, '', '0', 1, 1, 1, 0, '+1,+1', 0, 0, 0, '5', '5,6', '5,6', '5,6', '5,6', '5,6', '4', 1520870400, 1524672000, 1, 1, 1521601009);
 COMMIT;
@@ -166,7 +173,7 @@ CREATE TABLE `oa_admin_rule` (
   `pid` int(11) DEFAULT '0' COMMENT '父id，默认0',
   `status` tinyint(3) DEFAULT '1' COMMENT '状态，1启用，0禁用',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=90 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=117 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of oa_admin_rule
@@ -224,7 +231,7 @@ INSERT INTO `oa_admin_rule` VALUES (50, '编辑项目', 'update', 3, 47, 1);
 INSERT INTO `oa_admin_rule` VALUES (51, '删除项目', 'delete', 3, 47, 1);
 INSERT INTO `oa_admin_rule` VALUES (52, '工作台二级菜单', 'workbench', 3, 32, 1);
 INSERT INTO `oa_admin_rule` VALUES (53, '镜头管理二级菜单', 'shot', 3, 32, 1);
-INSERT INTO `oa_admin_rule` VALUES (54, '库管理菜单', 'library', 3, 32, 1);
+INSERT INTO `oa_admin_rule` VALUES (54, '库管理二级菜单', 'library', 3, 32, 1);
 INSERT INTO `oa_admin_rule` VALUES (55, '审批管理二级菜单', 'approval', 3, 32, 1);
 INSERT INTO `oa_admin_rule` VALUES (56, '时间计划管理二级菜单', 'timeplan', 3, 32, 1);
 INSERT INTO `oa_admin_rule` VALUES (57, '工作台管理', 'workbenches', 2, 1, 1);
@@ -241,14 +248,13 @@ INSERT INTO `oa_admin_rule` VALUES (69, '工作台标准列表', 'index_list', 3
 INSERT INTO `oa_admin_rule` VALUES (70, '删除环节', 'delete_tache', 3, 59, 1);
 INSERT INTO `oa_admin_rule` VALUES (71, '删除工作室', 'delete_studio', 3, 59, 1);
 INSERT INTO `oa_admin_rule` VALUES (72, '批量导入镜头', 'shot_import', 3, 59, 1);
-INSERT INTO `oa_admin_rule` VALUES (73, '删除所属任务制作人', 'delete_userId', 3, 57, 1);
+INSERT INTO `oa_admin_rule` VALUES (73, '删除所属任务制作人', 'delete_userid', 3, 57, 1);
 INSERT INTO `oa_admin_rule` VALUES (74, '镜头制作中的列表', 'in_production_data', 3, 59, 1);
 INSERT INTO `oa_admin_rule` VALUES (75, '镜头暂停列表', 'pause_data', 3, 59, 1);
 INSERT INTO `oa_admin_rule` VALUES (76, '镜头完成状态列表', 'finish_data', 3, 59, 1);
 INSERT INTO `oa_admin_rule` VALUES (77, '等待上游资产列表', 'wait_upper_assets', 3, 57, 1);
 INSERT INTO `oa_admin_rule` VALUES (78, '等待上游镜头列表', 'wait_upper_shots', 3, 57, 1);
 INSERT INTO `oa_admin_rule` VALUES (79, '工作台完成列表', 'finish_list', 3, 57, 1);
-INSERT INTO `oa_admin_rule` VALUES (80, '工作台标准列表', 'index_list', 3, 57, 1);
 INSERT INTO `oa_admin_rule` VALUES (81, '反馈中列表', 'feedback_data', 3, 59, 1);
 INSERT INTO `oa_admin_rule` VALUES (82, '工作台详情', 'read', 3, 57, 1);
 INSERT INTO `oa_admin_rule` VALUES (83, '镜头详情', 'read', 3, 59, 1);
@@ -258,6 +264,33 @@ INSERT INTO `oa_admin_rule` VALUES (86, '添加场号', 'save_field', 3, 59, 1);
 INSERT INTO `oa_admin_rule` VALUES (87, '编辑成员', 'update', 3, 28, 1);
 INSERT INTO `oa_admin_rule` VALUES (88, '获取当前用户权限', 'editProject_ByAuth', 3, 47, 1);
 INSERT INTO `oa_admin_rule` VALUES (89, '项目详情', 'read', 3, 47, 1);
+INSERT INTO `oa_admin_rule` VALUES (90, '参考库管理', 'references', 2, 1, 1);
+INSERT INTO `oa_admin_rule` VALUES (91, '参考库列表', 'index', 3, 90, 1);
+INSERT INTO `oa_admin_rule` VALUES (92, '资产库管理', 'assets', 2, 1, 1);
+INSERT INTO `oa_admin_rule` VALUES (93, '资产库列表', 'index', 3, 92, 1);
+INSERT INTO `oa_admin_rule` VALUES (94, '添加资产', 'save', 3, 92, 1);
+INSERT INTO `oa_admin_rule` VALUES (95, '编辑资产', 'update', 3, 92, 1);
+INSERT INTO `oa_admin_rule` VALUES (96, '删除资产', 'delete', 3, 92, 1);
+INSERT INTO `oa_admin_rule` VALUES (97, '删除环节', 'delete_tache', 3, 92, 1);
+INSERT INTO `oa_admin_rule` VALUES (98, '删除工作室', 'delete_studio', 3, 92, 1);
+INSERT INTO `oa_admin_rule` VALUES (99, '批量导入资产', 'asset_import', 3, 92, 1);
+INSERT INTO `oa_admin_rule` VALUES (100, '制作中列表', 'in_production_data', 3, 92, 1);
+INSERT INTO `oa_admin_rule` VALUES (101, '暂停列表', 'pause_data', 3, 92, 1);
+INSERT INTO `oa_admin_rule` VALUES (102, '完成状态列表', 'finish_data', 3, 92, 1);
+INSERT INTO `oa_admin_rule` VALUES (103, '反馈中列表', 'feedback_data', 3, 92, 1);
+INSERT INTO `oa_admin_rule` VALUES (104, '资产详情', 'read', 3, 92, 1);
+INSERT INTO `oa_admin_rule` VALUES (105, '添加资产分类', 'save_field', 3, 92, 1);
+INSERT INTO `oa_admin_rule` VALUES (106, '审批管理', 'approvals', 2, 1, 1);
+INSERT INTO `oa_admin_rule` VALUES (107, '审批列表', 'index', 3, 106, 1);
+INSERT INTO `oa_admin_rule` VALUES (108, '添加参考文件', 'save', 3, 90, 1);
+INSERT INTO `oa_admin_rule` VALUES (109, '编辑参考文件', 'update', 3, 90, 1);
+INSERT INTO `oa_admin_rule` VALUES (110, '参考库详情', 'read', 3, 90, 1);
+INSERT INTO `oa_admin_rule` VALUES (111, '删除参考库文件', 'delete', 3, 90, 1);
+INSERT INTO `oa_admin_rule` VALUES (112, '系统配置项', 'SystemDeploys', 2, 1, 1);
+INSERT INTO `oa_admin_rule` VALUES (113, '系统配置列表', 'index', 3, 112, 1);
+INSERT INTO `oa_admin_rule` VALUES (114, '添加系统配置项', 'save', 3, 112, 1);
+INSERT INTO `oa_admin_rule` VALUES (115, '编辑系统配置项', 'update', 3, 112, 1);
+INSERT INTO `oa_admin_rule` VALUES (116, '删除系统配置项', 'delete', 3, 112, 1);
 COMMIT;
 
 -- ----------------------------
@@ -333,7 +366,7 @@ CREATE TABLE `oa_admin_user` (
   `status` tinyint(3) DEFAULT NULL COMMENT '状态,1启用0禁用',
   `create_time` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of oa_admin_user
@@ -345,7 +378,69 @@ INSERT INTO `oa_admin_user` VALUES (5, 'luoxin', 'd93a5def7511da3d0f2d171d9c344e
 INSERT INTO `oa_admin_user` VALUES (6, 'lijz', 'd93a5def7511da3d0f2d171d9c344e91', '李锦智', '', 8, '8', 1, 1521019302);
 INSERT INTO `oa_admin_user` VALUES (8, 'wangcy', 'd93a5def7511da3d0f2d171d9c344e91', '王春雨', '', 6, '6', 1, 1521170493);
 INSERT INTO `oa_admin_user` VALUES (9, 'liwb', 'd93a5def7511da3d0f2d171d9c344e91', '李文斌', '', 6, '6', 1, 1521172074);
-INSERT INTO `oa_admin_user` VALUES (10, 'liangcy', 'd93a5def7511da3d0f2d171d9c344e91', '梁辰雨', '', 7, '3,5', 1, 1521172198);
+INSERT INTO `oa_admin_user` VALUES (10, 'liangcy', 'd93a5def7511da3d0f2d171d9c344e91', '梁辰雨', '', 7, '5,6', 1, 1521172198);
+INSERT INTO `oa_admin_user` VALUES (11, 'zhangpp', 'd93a5def7511da3d0f2d171d9c344e91', '张培培', '', 4, '8,9', 1, 1524817999);
+COMMIT;
+
+-- ----------------------------
+-- Table structure for oa_approvals
+-- ----------------------------
+DROP TABLE IF EXISTS `oa_approvals`;
+CREATE TABLE `oa_approvals` (
+  `id` int(32) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `project_id` int(32) DEFAULT '0' COMMENT '所属项目ID',
+  `resource_type` tinyint(3) DEFAULT '0' COMMENT '类型 1镜头 2资产',
+  `resource_id` int(32) DEFAULT '0' COMMENT '镜头ID | 资产ID',
+  `task_id` int(32) DEFAULT '0' COMMENT '任务表ID',
+  `user_id` int(11) DEFAULT '0',
+  `file_name` varchar(255) DEFAULT '' COMMENT '文件名称 只是该文件名称',
+  `version` varchar(50) DEFAULT '' COMMENT '版本号',
+  `explain` varchar(255) DEFAULT '' COMMENT '审批备注',
+  `root_directory_name` varchar(255) DEFAULT '' COMMENT '根目录名称 全路径 只存除文件名称外的全路径',
+  `submit_status` tinyint(3) DEFAULT '0' COMMENT '提交状态 1成功 2未成功 回调 python脚本',
+  `file_type` tinyint(3) DEFAULT '0' COMMENT '1图片 2视频文件',
+  `status` tinyint(3) DEFAULT '0' COMMENT '同任务表状态同时更新所属任务表的状态 用于提交审核状态',
+  `thumbnail` varchar(255) DEFAULT '' COMMENT '缩略图',
+  PRIMARY KEY (`id`),
+  KEY `project_id` (`project_id`),
+  KEY `resource_id` (`resource_id`),
+  KEY `task_id` (`task_id`),
+  KEY `user_id` (`user_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='审批表';
+
+-- ----------------------------
+-- Table structure for oa_asset
+-- ----------------------------
+DROP TABLE IF EXISTS `oa_asset`;
+CREATE TABLE `oa_asset` (
+  `id` int(32) NOT NULL AUTO_INCREMENT,
+  `project_id` int(11) NOT NULL COMMENT '所属项目ID',
+  `field_id` int(11) NOT NULL COMMENT '类型ID',
+  `asset_image` varchar(1000) NOT NULL COMMENT '资产缩略图地址',
+  `asset_byname` varchar(20) NOT NULL COMMENT '资产简称',
+  `asset_name` varchar(255) NOT NULL COMMENT '资产名称',
+  `asset_explain` varchar(1000) DEFAULT '' COMMENT '资产备注',
+  `priority_level` tinyint(3) DEFAULT '1' COMMENT '资产优先级 1D 2C 3B 4A',
+  `difficulty` tinyint(3) DEFAULT '1' COMMENT '资产难度1D 2C 3B 4A 5S',
+  `second_company` varchar(100) DEFAULT '' COMMENT '二级公司(相当于其他工作室ID )',
+  `make_demand` varchar(1000) DEFAULT '' COMMENT '制作要求',
+  `status` tinyint(3) DEFAULT '1' COMMENT '状态 1等待制作 5制作中 10等待审核 15反馈中 20内部审核通过 25完成 30客户通过',
+  `is_pause` tinyint(3) NOT NULL DEFAULT '1' COMMENT '是否暂停 1 非暂停 2暂停',
+  `plan_start_timestamp` int(11) DEFAULT '0' COMMENT '计划开始时间',
+  `plan_end_timestamp` int(11) DEFAULT '0' COMMENT '计划结束时间',
+  `actual_start_timestamp` int(11) DEFAULT NULL COMMENT '实际开始时间',
+  `actual_end_timestamp` int(11) DEFAULT NULL COMMENT '实际结束时间',
+  `create_time` int(11) DEFAULT '0' COMMENT '创建时间',
+  PRIMARY KEY (`id`),
+  KEY `project_id` (`project_id`),
+  KEY `field_id` (`field_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='资产库表';
+
+-- ----------------------------
+-- Records of oa_asset
+-- ----------------------------
+BEGIN;
+INSERT INTO `oa_asset` VALUES (1, 1, 8, 'uploads/Projects/images/20180424/7841043c1e939cd3b412cfbb563b68de.jpg', 'jirou', '鸡肉', '', 1, 1, '', '', 1, 1, 1524499200, 1527350400, NULL, NULL, 1524573232);
 COMMIT;
 
 -- ----------------------------
@@ -355,25 +450,55 @@ DROP TABLE IF EXISTS `oa_field`;
 CREATE TABLE `oa_field` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `project_id` int(11) NOT NULL COMMENT '所属项目ID',
-  `name` varchar(255) DEFAULT NULL COMMENT '场号/集号',
+  `name` varchar(255) DEFAULT NULL COMMENT '场号/集号/资产类型名称',
+  `explain` varchar(255) DEFAULT NULL COMMENT '中文备注',
+  `type` tinyint(3) DEFAULT '1' COMMENT '1镜头 2资产',
   PRIMARY KEY (`id`),
   KEY `project_id` (`project_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='=场/集表';
+) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COMMENT='业务类型表';
 
 -- ----------------------------
 -- Records of oa_field
 -- ----------------------------
 BEGIN;
-INSERT INTO `oa_field` VALUES (1, 1, '123');
-INSERT INTO `oa_field` VALUES (4, 1, '002');
+INSERT INTO `oa_field` VALUES (1, 1, '001', NULL, 1);
+INSERT INTO `oa_field` VALUES (4, 1, '002', NULL, 1);
+INSERT INTO `oa_field` VALUES (5, 2, '001', NULL, 1);
+INSERT INTO `oa_field` VALUES (6, 1, '003', NULL, 1);
+INSERT INTO `oa_field` VALUES (7, 1, '004', NULL, 1);
+INSERT INTO `oa_field` VALUES (8, 1, 'food', '食物', 2);
+INSERT INTO `oa_field` VALUES (9, 1, 'cartoon', '卡通', 2);
 COMMIT;
+
+-- ----------------------------
+-- Table structure for oa_references
+-- ----------------------------
+DROP TABLE IF EXISTS `oa_references`;
+CREATE TABLE `oa_references` (
+  `id` int(15) NOT NULL AUTO_INCREMENT,
+  `project_id` int(11) unsigned DEFAULT '0' COMMENT '所属项目ID',
+  `field_id` int(11) unsigned DEFAULT '0' COMMENT '资产类型/场号/集号ID',
+  `resource_type` tinyint(3) DEFAULT '0' COMMENT '类型 1公共 2镜头 3资产',
+  `resource_id` int(11) unsigned DEFAULT '0' COMMENT '镜头ID/资产ID 类型为1时 可为空',
+  `path` int(11) NOT NULL COMMENT '所属目录路径 如：/Common/food',
+  `file_name` tinyint(3) DEFAULT NULL COMMENT '文件名称',
+  `tache_info` varchar(255) DEFAULT '' COMMENT '使用环节 ，多个以逗号分割',
+  `user_id` int(11) DEFAULT NULL COMMENT '所属用户',
+  `create_year` year(4) DEFAULT '0000' COMMENT '创建当前年',
+  `create_time` int(11) DEFAULT '0' COMMENT '创建时间戳',
+  PRIMARY KEY (`id`),
+  KEY `project_id` (`project_id`),
+  KEY `field_id` (`field_id`),
+  KEY `resource_id` (`resource_id`),
+  KEY `user_id` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='参考库表';
 
 -- ----------------------------
 -- Table structure for oa_shot
 -- ----------------------------
 DROP TABLE IF EXISTS `oa_shot`;
 CREATE TABLE `oa_shot` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(32) NOT NULL AUTO_INCREMENT,
   `project_id` int(11) NOT NULL COMMENT '所属项目ID',
   `field_id` int(11) NOT NULL COMMENT '场号ID',
   `asset_ids` varchar(255) DEFAULT NULL COMMENT '资产ID(多个以逗号分割)',
@@ -405,15 +530,13 @@ CREATE TABLE `oa_shot` (
   PRIMARY KEY (`id`),
   KEY `project_id` (`project_id`),
   KEY `field_id` (`field_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8 COMMENT='镜头表';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='镜头表';
 
 -- ----------------------------
 -- Records of oa_shot
 -- ----------------------------
 BEGIN;
-INSERT INTO `oa_shot` VALUES (11, 1, 1, '', 'uploads/Projects/images/20180409/cc0a09b50fcd51d3cde9d2c5c8991749.jpg', '001', 'damao', '大猫', '', 0, '101,134', 1, 1, '+1,+1', 0, '', 1, 1, '', '', '我的要求', 5, 2, 1, 1522252800, 1523376000, NULL, NULL, 1523269588);
-INSERT INTO `oa_shot` VALUES (12, 1, 1, '', 'uploads/Projects/images/20180329/e72d3f1d0202928e900fea7b8903331e.jpg', '002', 'damao', '大猫', '', 0, '', 1, 1, '', 0, '', 1, 2, '', '', '', 1, 2, 1, 1522252800, 1523289600, NULL, NULL, 1522322100);
-INSERT INTO `oa_shot` VALUES (13, 1, 1, '', 'uploads/Projects/images/20180402/be558f6c157c077b2ba703f86337ccb5.jpg', '002', 'FUY', '扶摇', '', 0, '101,135', 1, 1, '+1,+1', 0, '', 1, 1, '', '', '', 1, 2, 1, 1522598400, 1525795200, NULL, NULL, 1522657105);
+INSERT INTO `oa_shot` VALUES (1, 1, 1, '', 'uploads/Projects/images/20180425/a845b5d20142c838248c1231446e1b07.jpg', '001', 'dengguang', '灯光', '', 0, '', 1, 2, '', 0, '', 1, 1, '', '', '', 5, 2, 1, 1524758400, 1527696000, 1524559591, NULL, 1524660577);
 COMMIT;
 
 -- ----------------------------
@@ -428,7 +551,7 @@ CREATE TABLE `oa_system_config` (
   `need_auth` tinyint(4) DEFAULT '1' COMMENT '1需要登录后才能获取，0不需要登录即可获取',
   PRIMARY KEY (`id`),
   UNIQUE KEY `参数名` (`name`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='【配置】系统配置表';
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='【配置】系统参数表';
 
 -- ----------------------------
 -- Records of oa_system_config
@@ -441,19 +564,42 @@ INSERT INTO `oa_system_config` VALUES (4, 'IDENTIFYING_CODE', '0', 0, 1);
 COMMIT;
 
 -- ----------------------------
+-- Table structure for oa_system_parameter
+-- ----------------------------
+DROP TABLE IF EXISTS `oa_system_parameter`;
+CREATE TABLE `oa_system_parameter` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `name` varchar(50) DEFAULT '' COMMENT '名称',
+  `sort` int(11) DEFAULT '0' COMMENT '排序',
+  `pid` tinyint(4) unsigned DEFAULT '0' COMMENT '所属父级',
+  `explain` varchar(255) DEFAULT '1' COMMENT '备注',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='【配置】系统配置表';
+
+-- ----------------------------
+-- Records of oa_system_parameter
+-- ----------------------------
+BEGIN;
+INSERT INTO `oa_system_parameter` VALUES (1, 'Common', 0, 0, '参考库公共分类');
+INSERT INTO `oa_system_parameter` VALUES (2, '3', 0, 0, '镜头号长度');
+INSERT INTO `oa_system_parameter` VALUES (3, '3', 0, 0, '场号长度');
+COMMIT;
+
+-- ----------------------------
 -- Table structure for oa_task
 -- ----------------------------
 DROP TABLE IF EXISTS `oa_task`;
 CREATE TABLE `oa_task` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `group_id` int(11) DEFAULT NULL COMMENT '角色ID',
-  `user_id` int(11) DEFAULT NULL COMMENT '所属用户',
-  `project_id` int(11) NOT NULL COMMENT '所属项目ID',
-  `field_id` int(11) NOT NULL COMMENT '场号/集号ID',
-  `shot_id` int(11) DEFAULT NULL COMMENT '镜头ID 根据任务类型存值',
-  `assets_id` int(11) DEFAULT NULL COMMENT '资产ID 根据任务类型存值',
+  `id` int(32) NOT NULL AUTO_INCREMENT,
+  `shot_id` int(32) DEFAULT NULL COMMENT '镜头ID 根据任务类型存值',
+  `asset_id` int(32) DEFAULT NULL COMMENT '资产ID 根据任务类型存值',
+  `task_status` tinyint(3) DEFAULT '1' COMMENT '任务状态 1等待制作 5制作中 10等待审核 15反馈中 20内部审核通过 25提交发布 30完成(客户通过)',
   `tache_id` int(11) NOT NULL COMMENT '环节ID',
   `tache_sort` tinyint(3) DEFAULT NULL COMMENT '环节序号',
+  `field_id` int(11) NOT NULL COMMENT '场号/集号ID',
+  `project_id` int(11) NOT NULL COMMENT '所属项目ID',
+  `user_id` int(11) DEFAULT NULL COMMENT '所属用户',
+  `group_id` int(11) DEFAULT NULL COMMENT '角色ID',
   `studio_id` int(11) NOT NULL COMMENT '工作室ID',
   `task_type` tinyint(3) DEFAULT NULL COMMENT '任务类型 1镜头 2资产',
   `task_image` varchar(255) DEFAULT NULL COMMENT '镜头缩略图',
@@ -469,7 +615,6 @@ CREATE TABLE `oa_task` (
   `actually_start_timestamp` int(11) DEFAULT '0' COMMENT '任务实际开始时间',
   `actually_end_timestamp` int(11) DEFAULT '0' COMMENT '任务实际结时时间',
   `finish_degree` int(3) DEFAULT '0' COMMENT '完成度',
-  `task_status` tinyint(3) DEFAULT '1' COMMENT '任务状态 1等待制作 5制作中 10等待审核 15反馈中 20内部审核通过 25提交发布 30完成(客户通过)',
   `is_assets` tinyint(3) DEFAULT '2' COMMENT '是否为等待资产 1是 2否',
   `is_pause` tinyint(3) NOT NULL DEFAULT '1' COMMENT '是否暂停 1 非暂停 2暂停',
   `camera_model` varchar(100) DEFAULT '' COMMENT '相机型号',
@@ -479,35 +624,36 @@ CREATE TABLE `oa_task` (
   `camera_focus` varchar(100) DEFAULT '' COMMENT '相机焦距',
   `focus_distance` varchar(50) DEFAULT '' COMMENT '对焦距离',
   `depth_of_field` varchar(50) DEFAULT '' COMMENT '景深',
-  `pid` int(11) DEFAULT NULL COMMENT '所属任务主键',
+  `pid` int(32) DEFAULT NULL COMMENT '所属任务主键',
   `create_time` int(11) DEFAULT '0' COMMENT '创建时间',
   `update_time` int(11) DEFAULT '0' COMMENT '改变状态时更新时间',
   PRIMARY KEY (`id`),
   KEY `project_id` (`project_id`),
   KEY `field_id` (`field_id`),
   KEY `shot_id` (`shot_id`),
-  KEY `assets_id` (`assets_id`),
+  KEY `assets_id` (`asset_id`),
   KEY `tache_id` (`tache_id`),
   KEY `studio_id` (`studio_id`),
   KEY `user_id` (`user_id`),
   KEY `group_id` (`group_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8 COMMENT='任务表';
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8 COMMENT='任务表';
 
 -- ----------------------------
 -- Records of oa_task
 -- ----------------------------
 BEGIN;
-INSERT INTO `oa_task` VALUES (22, 1, 0, 1, 1, 11, NULL, 7, 7, 7, 1, 'uploads/Projects/images/20180329/9b466489a34add762c7e781a35882c8d.jpg', 'damao', '', 1, 1, '', NULL, NULL, 1522252800, 1523376000, 0, 0, 0, 1, 2, 1, '', '', 1, NULL, '', '', '', 0, 1522312119, 0);
-INSERT INTO `oa_task` VALUES (24, 1, 10, 1, 1, 11, 0, 5, 5, 8, 1, 'uploads/Projects/images/20180409/45b0d621435b0ad6b113dfe20ea006d4.jpg', 'damao', '这是要求', 2, 1, '', NULL, NULL, 1522252800, 1523289600, 0, 0, 0, 5, 2, 1, '', '', 1, NULL, '', '', '', 0, 1522322100, 0);
-INSERT INTO `oa_task` VALUES (25, 1, 0, 1, 1, 12, NULL, 7, 7, 5, 1, 'uploads/Projects/images/20180329/e72d3f1d0202928e900fea7b8903331e.jpg', 'damao', '', 1, 1, '', NULL, NULL, 1522252800, 1523289600, 0, 0, 0, 1, 2, 1, '', '', 1, NULL, '', '', '', 0, 1522322100, 0);
-INSERT INTO `oa_task` VALUES (26, 1, 0, 1, 1, 13, NULL, 3, 3, 4, 1, 'uploads/Projects/images/20180402/be558f6c157c077b2ba703f86337ccb5.jpg', 'FUY', '', 1, 1, '', NULL, NULL, 1522598400, 1525795200, 0, 0, 0, 1, 2, 1, '', '', 1, NULL, '', '', '', 0, 1522657105, 0);
-INSERT INTO `oa_task` VALUES (27, 1, 0, 1, 1, 13, NULL, 3, 3, 5, 1, 'uploads/Projects/images/20180402/be558f6c157c077b2ba703f86337ccb5.jpg', 'FUY', '', 1, 1, '', NULL, NULL, 1522598400, 1525795200, 0, 0, 0, 1, 2, 1, '', '', 1, NULL, '', '', '', 0, 1522657105, 0);
-INSERT INTO `oa_task` VALUES (28, 1, 0, 1, 1, 13, NULL, 5, 5, 7, 1, 'uploads/Projects/images/20180402/be558f6c157c077b2ba703f86337ccb5.jpg', 'FUY', '', 1, 1, '', NULL, NULL, 1522598400, 1525795200, 0, 0, 0, 1, 2, 1, '', '', 1, NULL, '', '', '', 0, 1522657105, 0);
-INSERT INTO `oa_task` VALUES (29, 1, 10, 1, 1, 13, 0, 5, 5, 6, 1, 'uploads/Projects/images/20180402/be558f6c157c077b2ba703f86337ccb5.jpg', 'FUY', '', 1, 1, '', NULL, NULL, 1522598400, 1525795200, 0, 0, 0, 25, 2, 1, '', '', 1, NULL, '', '', '', 0, 1522657105, 0);
-INSERT INTO `oa_task` VALUES (32, 1, 4, 1, 1, 11, 0, 7, 7, 7, 1, 'uploads/Projects/images/20180409/f45c54a3c09dface207240a35e9b809f.jpg', 'damao', '', 1, 1, '', NULL, NULL, 1522252800, 1523376000, 0, 0, 0, 1, 2, 1, '', '', 1, NULL, '', '', '', 22, 1523280483, 1523280483);
-INSERT INTO `oa_task` VALUES (35, 1, 10, 1, 1, 11, 0, 7, 7, 7, 1, 'uploads/Projects/images/20180329/9b466489a34add762c7e781a35882c8d.jpg', 'damao', '', 1, 1, '', NULL, NULL, 1522252800, 1523376000, 0, 0, 0, 1, 2, 1, '', '', 1, NULL, '', '', '', 22, 1523340556, 1523340556);
-INSERT INTO `oa_task` VALUES (36, 1, 9, 1, 1, 11, 0, 7, 7, 7, 1, 'uploads/Projects/images/20180329/9b466489a34add762c7e781a35882c8d.jpg', 'damao', '', 1, 1, '', NULL, NULL, 1522252800, 1523376000, 0, 0, 0, 1, 2, 1, '', '', 1, NULL, '', '', '', 22, 1523340556, 1523340556);
-INSERT INTO `oa_task` VALUES (37, 1, 10, 1, 1, 12, 0, 7, 7, 5, 1, 'uploads/Projects/images/20180329/e72d3f1d0202928e900fea7b8903331e.jpg', 'damao', '', 1, 1, '', NULL, NULL, 1522252800, 1523289600, 0, 0, 0, 1, 2, 1, '', '', 1, NULL, '', '', '', 25, 1523340584, 1523340584);
+INSERT INTO `oa_task` VALUES (6, 1, 0, 1, 11, 11, 1, 1, 0, 5, 7, 1, 'uploads/Projects/images/20180424/83f2842a891b39316a915c880ce10e28.jpg', 'dengguang', '', 1, 1, '', NULL, NULL, 1524758400, 1527696000, 0, 0, 0, 2, 1, '', '', 1, NULL, '', '', '', 0, 1524561542, 0);
+INSERT INTO `oa_task` VALUES (7, 0, 1, 1, 3, 3, 8, 1, 0, 0, 0, 2, 'uploads/Projects/images/20180424/7841043c1e939cd3b412cfbb563b68de.jpg', 'jirou', '', 1, 1, '', NULL, NULL, 1524499200, 1527350400, 0, 0, 0, 1, 1, '', '', 1, NULL, '', '', '', 0, 1524561705, 0);
+INSERT INTO `oa_task` VALUES (8, 0, 1, 1, 5, 5, 8, 1, 0, 0, 0, 2, 'uploads/Projects/images/20180424/7841043c1e939cd3b412cfbb563b68de.jpg', 'jirou', '', 1, 1, '', NULL, NULL, 1524499200, 1527350400, 0, 0, 0, 1, 1, '', '', 1, NULL, '', '', '', 0, 1524561705, 0);
+INSERT INTO `oa_task` VALUES (9, 0, 1, 1, 7, 7, 8, 1, 0, 5, 4, 2, 'uploads/Projects/images/20180424/7841043c1e939cd3b412cfbb563b68de.jpg', 'jirou', '', 1, 1, '', NULL, NULL, 1524499200, 1527350400, 0, 0, 0, 1, 1, '', '', 1, NULL, '', '', '', 0, 1524561735, 0);
+INSERT INTO `oa_task` VALUES (10, 1, 0, 1, 9, 9, 1, 1, 0, 5, 8, 1, 'uploads/Projects/images/20180424/83f2842a891b39316a915c880ce10e28.jpg', 'dengguang', '', 1, 1, '', NULL, NULL, 1524758400, 1527696000, 0, 0, 0, 2, 1, '', '', 1, NULL, '', '', '', 0, 1524570697, 0);
+INSERT INTO `oa_task` VALUES (11, 1, 0, 1, 11, 11, 1, 1, 0, 5, 9, 1, 'uploads/Projects/images/20180424/83f2842a891b39316a915c880ce10e28.jpg', 'dengguang', '', 1, 1, '', NULL, NULL, 1524758400, 1527696000, 0, 0, 0, 2, 1, '', '', 1, NULL, '', '', '', 0, 1524570697, 0);
+INSERT INTO `oa_task` VALUES (12, 1, 0, 1, 9, 9, 1, 1, 0, 5, 5, 1, 'uploads/Projects/images/20180424/83f2842a891b39316a915c880ce10e28.jpg', 'dengguang', '', 1, 1, '', NULL, NULL, 1524758400, 1527696000, 0, 0, 0, 2, 1, '', '', 1, NULL, '', '', '', 0, 1524570844, 0);
+INSERT INTO `oa_task` VALUES (21, NULL, 1, 1, 12, 12, 8, 1, 0, 5, 4, 2, 'uploads/Projects/images/20180424/7841043c1e939cd3b412cfbb563b68de.jpg', 'jirou', '', 1, 1, '', NULL, NULL, 1524499200, 1527350400, 0, 0, 0, 1, 1, '', '', 1, NULL, '', '', '', 0, 1524573162, 0);
+INSERT INTO `oa_task` VALUES (22, NULL, 1, 1, 3, 3, 8, 1, 0, 5, 7, 2, 'uploads/Projects/images/20180424/7841043c1e939cd3b412cfbb563b68de.jpg', 'jirou', '', 1, 1, '', NULL, NULL, 1524499200, 1527350400, 0, 0, 0, 1, 1, '', '', 1, NULL, '', '', '', 0, 1524573232, 0);
+INSERT INTO `oa_task` VALUES (23, 1, 0, 1, 11, 11, 1, 1, 0, 5, 4, 1, 'uploads/Projects/images/20180424/83f2842a891b39316a915c880ce10e28.jpg', 'dengguang', '', 1, 2, '', NULL, NULL, 1524758400, 1527696000, 0, 0, 0, 2, 1, '', '', 1, NULL, '', '', '', 0, 1524577061, 0);
+INSERT INTO `oa_task` VALUES (25, 1, 0, 1, 3, 3, 1, 1, 0, 0, 0, 1, 'uploads/Projects/images/20180424/83f2842a891b39316a915c880ce10e28.jpg', 'dengguang', '', 1, 2, '', NULL, NULL, 1524758400, 1527696000, 0, 0, 0, 2, 1, '', '', 1, NULL, '', '', '', 0, 1524627217, 0);
+INSERT INTO `oa_task` VALUES (26, 1, 0, 1, 5, 5, 1, 1, 0, 0, 0, 1, 'uploads/Projects/images/20180424/83f2842a891b39316a915c880ce10e28.jpg', 'dengguang', '', 1, 2, '', NULL, NULL, 1524758400, 1527696000, 0, 0, 0, 2, 1, '', '', 1, NULL, '', '', '', 0, 1524627217, 0);
 COMMIT;
 
 -- ----------------------------
@@ -515,8 +661,8 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `oa_task_state_record`;
 CREATE TABLE `oa_task_state_record` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `task_id` int(11) DEFAULT NULL COMMENT '任务表ID',
+  `id` int(32) NOT NULL AUTO_INCREMENT,
+  `task_id` int(32) DEFAULT NULL COMMENT '任务表ID',
   `task_status` tinyint(3) DEFAULT NULL COMMENT ' 任务表状态',
   `user_id` int(11) DEFAULT NULL COMMENT '操作人ID',
   `create_timestamp` int(11) DEFAULT NULL COMMENT '创建时间戳',
@@ -524,33 +670,24 @@ CREATE TABLE `oa_task_state_record` (
   PRIMARY KEY (`id`),
   KEY `task_id` (`task_id`),
   KEY `user_id` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8 COMMENT='任务状态记录表';
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COMMENT='任务状态记录表';
 
 -- ----------------------------
 -- Records of oa_task_state_record
 -- ----------------------------
 BEGIN;
-INSERT INTO `oa_task_state_record` VALUES (1, 22, 5, 1, 1522664893, '2018-04-02 18:28:13');
-INSERT INTO `oa_task_state_record` VALUES (2, 23, 1, 1, 1522830334, '2018-04-04 16:25:34');
-INSERT INTO `oa_task_state_record` VALUES (3, 24, 15, 1, 1522834437, '2018-04-04 17:33:57');
-INSERT INTO `oa_task_state_record` VALUES (4, 24, 1, 1, 1522834440, '2018-04-04 17:34:00');
-INSERT INTO `oa_task_state_record` VALUES (5, 24, 15, 1, 1523163704, '2018-04-08 13:01:44');
-INSERT INTO `oa_task_state_record` VALUES (6, 24, 1, 1, 1523163706, '2018-04-08 13:01:46');
-INSERT INTO `oa_task_state_record` VALUES (7, 25, 15, 1, 1523163714, '2018-04-08 13:01:54');
-INSERT INTO `oa_task_state_record` VALUES (8, 25, 1, 1, 1523163723, '2018-04-08 13:02:03');
-INSERT INTO `oa_task_state_record` VALUES (9, 25, 15, 1, 1523163769, '2018-04-08 13:02:49');
-INSERT INTO `oa_task_state_record` VALUES (10, 25, 1, 1, 1523166791, '2018-04-08 13:53:11');
-INSERT INTO `oa_task_state_record` VALUES (11, 24, 15, 1, 1523166820, '2018-04-08 13:53:40');
-INSERT INTO `oa_task_state_record` VALUES (12, 24, 5, 1, 1523167103, '2018-04-08 13:58:23');
-INSERT INTO `oa_task_state_record` VALUES (13, 22, 1, 1, 1523167132, '2018-04-08 13:58:52');
-INSERT INTO `oa_task_state_record` VALUES (14, 30, 1, 4, 1523279970, '2018-04-09 21:19:30');
-INSERT INTO `oa_task_state_record` VALUES (15, 31, 1, 5, 1523279970, '2018-04-09 21:19:30');
-INSERT INTO `oa_task_state_record` VALUES (16, 32, 1, 4, 1523280483, '2018-04-09 21:28:03');
-INSERT INTO `oa_task_state_record` VALUES (17, 33, 1, 5, 1523280483, '2018-04-09 21:28:03');
-INSERT INTO `oa_task_state_record` VALUES (18, 34, 1, 5, 1523280906, '2018-04-09 21:35:06');
-INSERT INTO `oa_task_state_record` VALUES (19, 35, 1, 10, 1523340556, '2018-04-10 14:09:16');
-INSERT INTO `oa_task_state_record` VALUES (20, 36, 1, 9, 1523340556, '2018-04-10 14:09:16');
-INSERT INTO `oa_task_state_record` VALUES (21, 37, 1, 10, 1523340584, '2018-04-10 14:09:44');
+INSERT INTO `oa_task_state_record` VALUES (1, 1, 5, 1, 1524559591, '2018-04-24 16:46:31');
+INSERT INTO `oa_task_state_record` VALUES (5, 19, 1, 5, 1524573079, '2018-04-24 20:31:19');
+INSERT INTO `oa_task_state_record` VALUES (6, 20, 1, 4, 1524573079, '2018-04-24 20:31:19');
 COMMIT;
+
+-- ----------------------------
+-- Table structure for test
+-- ----------------------------
+DROP TABLE IF EXISTS `test`;
+CREATE TABLE `test` (
+  `id` int(11) DEFAULT NULL,
+  `year` year(4) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 SET FOREIGN_KEY_CHECKS = 1;
