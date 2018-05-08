@@ -65,7 +65,7 @@
         this.$refs[form].validate((valid) => {
           if (valid) {
             this.isLoading = true
-            this.apiPut('admin/systemdeploys/', this.form.id, this.form).then((res) => {
+            this.apiPut('admin/parameters/', this.form.id, this.form).then((res) => {
               this.handelResponse(res, (data) => {
                 this.isLoading = false
                 _g.toastMsg('success', '编辑成功')
@@ -80,7 +80,7 @@
         })
       },
       getStructures() {
-        this.apiGet('admin/systemdeploys').then((res) => {
+        this.apiGet('admin/parameters').then((res) => {
           this.handelResponse(res, (data) => {
             this.options = data.list
           })
@@ -88,7 +88,7 @@
       },
       getSystemDeploysInfo() {
         this.form.id = this.$route.params.id
-        this.apiGet('admin/systemdeploys/' + this.form.id).then((res) => {
+        this.apiGet('admin/parameters/' + this.form.id).then((res) => {
           this.handelResponse(res, (data) => {
             this.form.name = data.name
             this.form.pid = data.pid.toString()

@@ -279,7 +279,7 @@
     <el-dialog title="上传文件" :visible.sync="isUploadReference" width="30%">
       <el-form :model="form" label-width="120px" :rules="uploadRule">
         <el-form-item label="文件名称:">
-          <el-input v-model="form.file_name" auto-complete="off"></el-input>
+          <el-input v-model="form.file_name" auto-complete="off" class="w-200"></el-input>
         </el-form-item>
         <el-form-item label="类型:">
           <el-radio-group v-model="form.resource_type" size="small" @change="getShotOrAsset">
@@ -334,8 +334,8 @@
         </div>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="isUploadReference = false">取 消</el-button>
-        <el-button type="primary" @click="isUploadReference = false">确 定</el-button>
+        <el-button @click="removeReference">取 消</el-button>
+        <el-button type="primary" @click="submitReference">确 定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -467,20 +467,32 @@
 //          this.getAllReferencesList()
 //        }
       },
+//      清空上传参考库信息
+      removeReference() {
+
+      },
+//      编辑参考库
       editReference() {
 
       },
+//      删除参考库
       deleteReference() {
 
+      },
+//      提交参考库
+      submitReference() {
+        console.log(this.form)
       },
       addReference() {
         this.isUploadReference = true
 //        获取环节列表
-        this.apiGet('admin/taches').then((res) => {
-          this.handelResponse(res, (data) => {
-            this.tacheList = data.list
+        if(!this.tacheList.length) {
+          this.apiGet('admin/taches').then((res) => {
+            this.handelResponse(res, (data) => {
+              this.tacheList = data.list
+            })
           })
-        })
+        }
       },
 //      改变上传文件类型
       getShotOrAsset(value) {
@@ -601,7 +613,7 @@
       /*
        * 获取某个状态的资产看板内容
        * params: {
-       *   asset_status: 区分请求接口的地址（in_production、feedback、waiting、pause、finish）
+       *   reference_status: 区分请求接口的地址（in_production、feedback、waiting、pause、finish）
        * }
        * */
       getReferences (reference_status, page) {
@@ -614,7 +626,7 @@
         this.loading = true
         this.apiGet(url, data).then((res) => {
           this.handelResponse(res, (data) => {
-            switch (asset_status) {
+            switch (reference_status) {
               case 'project':
                 this.projectRefDataCount = data.dataCount
                 this.projectRefList = data.list

@@ -28,7 +28,7 @@
         <template slot-scope="scope">
           <div>
   					<span v-if="editShow">
-  						<router-link :to="{ name: 'deployEdit', params: { id: scope.row.id }}">
+  						<router-link :to="{ name: 'parametersEdit', params: { id: scope.row.id }}">
                 <el-button size="small" type="primary">编辑</el-button>
   						</router-link>
   					</span>
