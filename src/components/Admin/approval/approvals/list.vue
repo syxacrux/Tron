@@ -145,7 +145,6 @@
               <el-button type="success">客户通过</el-button>
               <el-button type="warning">已审核</el-button>
             </el-row>
-          <!-- <el-row :gutter="20" class="dailies-el"> -->
             <div class="imagebox dailies-video" id="signx">
 			      	<img id="imgs" src="../../../../assets/images/bg1.jpg" >
 		        </div>
@@ -154,9 +153,6 @@
               <button id="play">播放/暂停</button>
               <input type="range" min="0" value="0" id="range" step="0.1"/>
             </div>
-            <!-- <div id="output"></div> -->
-            <!-- <div @click="addField">1222</div> -->
-          <!-- </el-row> -->
           <!-- <el-row :gutter="20" class="m-b-5 dailies-information">
               <el-col :span="24">
                 <p class="m-0">Dailies<span>11</span></p>
@@ -278,15 +274,9 @@
           int:null,
         } 
        },
-       created() {
-           $.sign.bindSign('#signx');//初始化
-          
-           
-       },
        mounted(){
           let thiss=this
           let int
-          let as=['/static/img/bg1.jpg','/static/img/logo.png','/static/img/logo2.png','/static/img/logo4.png']
           $('#capture').click(function(){
               html2canvas(document.getElementById('signx'), {
                 // allowTaint: true,
@@ -419,6 +409,7 @@
        },
       created() {
         this.init()
+         $.sign.bindSign('#signx');//初始化
       },
       mixins: [http, fomrMixin],
    }
