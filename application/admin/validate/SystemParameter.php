@@ -8,11 +8,11 @@ use think\Validate;
 class SystemParameter extends Validate{
 
 	protected $rule = array(
-		'name'      => 'require',
+		'category'      => 'require',
 		'sort'			=> 'require',
 	);
 	protected $message = array(
-		'name.require'    		=> '配置项名称必须填写',
+		'category.require'    => '配置项名称必须填写',
 		'sort.require'				=> '配置项排序必须填写',
 	);
 }

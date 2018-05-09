@@ -2,7 +2,7 @@
 // +----------------------------------------------------------------------
 // | Description: 基础框架路由配置文件
 // +----------------------------------------------------------------------
-// | Author: linchuangbin <linchuangbin@honghaiweb.com>
+// | Author: zjs <839804865@qq.com>
 // +----------------------------------------------------------------------
 
 return [
@@ -22,6 +22,7 @@ return [
 			'admin/assets'				=>		'admin/assets',
 			'admin/references'		=>		'admin/references',
 			'admin/helps'					=>		'admin/helps',
+			'admin/helpsfeedback'
 	],
 
 	// 测试
