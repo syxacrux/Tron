@@ -98,11 +98,11 @@ class Help extends Common{
 		$res = HelpAnswer::where(['pid'=>0,'help_id'=>$help_id])->select();
 		foreach($res as $key=>$value){
 			$child_data = HelpAnswer::where('pid',$value['id'])->find();
-			$data[$key]['child'] = !empty($child_data) ? $child_data : [];
-			$data[$key]['child']['user_name'] = !empty($child_data) ? User::get($child_data['user_id'])->realname : '';
-			$data[$key]['child']['create_time'] = !empty($child_data) ? date("Y-m-d H:i:s",$child_data['create_time']) : 0;
+			$res[$key]['child'] = !empty($child_data) ? $child_data : [];
+			$res[$key]['child']['user_name'] = !empty($child_data) ? User::get($child_data['user_id'])->realname : '';
+			$res[$key]['child']['create_time'] = !empty($child_data) ? date("Y-m-d H:i:s",$child_data['create_time']) : 0;
 		}
-		return $data;
+		return $res;
 	}
 
 	//根据主键获取行记录
