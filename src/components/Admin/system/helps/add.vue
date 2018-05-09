@@ -142,7 +142,9 @@
       getParameters() {
         const data = {
           params: {
-            pid:  4
+            keywords: {
+              pid:  4
+            }
           }
         }
         this.apiGet('admin/parameters',data).then((res) => {
