@@ -11,10 +11,7 @@
       <el-form ref="form" :model="form" :rules="rules" label-width="130px">
         <el-form-item label="反馈类型：" prop="category_id">
           <el-select v-model="form.category_id" placeholder="请选择问题类型">
-            <el-option label="电脑" value="1"></el-option>
-            <el-option label="服务器" value="2"></el-option>
-            <el-option label="会议室" value="3"></el-option>
-            <el-option label="其他" value="4"></el-option>
+            <el-option v-for="item in options" :label="item.category" :value="item.id" :key="item.id"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="标题：" prop="title">
@@ -77,6 +74,7 @@
           explain: '',
           type: 1
         },
+        options: [],
         dynamicTags: [],
         inputVisible: false,
         inputValue: '',
@@ -142,7 +140,12 @@
       },
 //      获取父级分类
       getParameters() {
-        this.apiGet('admin/parameters').then((res) => {
+        const data = {
+          params: {
+            pid:  4
+          }
+        }
+        this.apiGet('admin/parameters',data).then((res) => {
           this.handelResponse(res, (data) => {
             this.options = data.list
           })
