@@ -76,6 +76,8 @@ class Help extends Common{
 	//问题回答
 	public function addAnswer_ById($param,$uid){
 		try{
+			$answer_obj = HelpAnswer::get($param['pid']);
+			$param['help_id'] = $answer_obj->help_id;
 			$param['user_id'] = $uid;
 			$param['create_time'] = time();
 			$answer_model = new HelpAnswer();
@@ -95,7 +97,9 @@ class Help extends Common{
 	//所有问题的所有回复
 	public function get_answer_list($help_id){
 		//获取所属问题的pid=0的行数据
+		var_dump($help_id);
 		$res = HelpAnswer::where(['pid'=>0,'help_id'=>$help_id])->select();
+		var_dump($res);
 		foreach($res as $key=>$value){
 			$child_data = HelpAnswer::where('pid',$value['id'])->find();
 			$res[$key]['child'] = !empty($child_data) ? $child_data : [];
