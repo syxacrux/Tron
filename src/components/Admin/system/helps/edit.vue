@@ -33,7 +33,7 @@
     data() {
       return {
         isEditHelps: false,
-        option: [],
+        options: [],
         form: {
           category_id: '',
           title: '',
