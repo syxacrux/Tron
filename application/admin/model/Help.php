@@ -118,7 +118,17 @@ class Help extends Common{
 		return $help_obj;
 	}
 
-
+	//删除回复
+	public function answerDel_ById($id){
+		try{
+			$help_answer_obj = new HelpAnswer();
+			$help_answer_obj->where('id',$id)->delete();
+			return true;
+		}catch(\Exception $e){
+			$this->error = '删除失败';
+			return false;
+		}
+	}
 
 
 }

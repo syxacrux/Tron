@@ -85,8 +85,19 @@ class Helps extends BaseCommon{
 		return resultArray(['data' => '删除成功']);
 	}
 
+	public function delete_answer(){
+		$help_model = model('Help');
+		$param = $this->param;
+		$data = $help_model->answerDel_ById($param['id']);
+		if(!$data){
+			return resultArray(['error'=>$help_model->getError()]);
+		}else{
+			return resultArray(['data'=>'删除回复成功']);
+		}
+	}
+
 	public function deletes(){
-		$help_model = model('Studio');
+		$help_model = model('Help');
 		$param = $this->param;
 		$data = $help_model->delDatas($param['ids'], true);
 		if (!$data) {
