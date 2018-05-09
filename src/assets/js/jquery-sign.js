@@ -33,12 +33,13 @@
 		********定义插件
 		*/
 	document.oncontextmenu = function(e){
-         e.preventDefault();
+        //  e.preventDefault();
          };//阻止鼠标右键默认事件
 	function defined(dom){
-		$(document).on("mousedown",dom,function(e){
+		$(document).on("dblclick",dom,function(e){
 		e.preventDefault();
-		if(e.which==3){
+		// console.log(e.which)
+		// if(e.which==3){	
 			$('.chooseBox').remove();
 			$(dom).append("<div class='chooseBox'><ul><li id='addsign'>添加标记</li></ul></div>");
 
@@ -49,7 +50,7 @@
 			$('.chooseBox').css({"left":l,"top":t});
 			cX=l;
 			cY=t;
-			}//鼠标右键
+			// }//鼠标右键
 		});
 		//注册鼠标右键点击事件
 		$(document).on("click","#addsign",function(e){
@@ -117,10 +118,10 @@
 						}
 
 			});//确认编辑
-		$(document).on('mousedown','[id*=Ts]',function(e){
+		$(document).on('dblclick','[id*=Ts]',function(e){
 			var m=$(this).attr('id').replace(/[^0-9]/ig, "");
 			var we=$(this).next();
-			if(e.which==3){
+			// if(e.which==3){
 				e.stopPropagation();
 				removeId=m;
 				removeHtml=we
@@ -130,7 +131,7 @@
 				var l=e.clientX-$(dom).offset().left,t=e.clientY-$(dom).offset().top;
 				$(dom).append("<div class='chooseBox'><ul><li id='deleteSign'>删除标记</li></ul></div>");
 				$('.chooseBox').css({"left":l,"top":t});
-				}
+				// }
 			});//弹出取消标记
 		$(document).on('click','#deleteSign',function(){
 			deleteData(Rleft,Rtop);
