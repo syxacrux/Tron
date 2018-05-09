@@ -73,11 +73,49 @@ class Help extends Common{
 		}
 	}
 
+	//问题回答
+	public function addAnswer_ById($param,$uid){
+		try{
+			$param['user_id'] = $uid;
+			$param['create_time'] = time();
+			$answer_model = new HelpAnswer();
+			$result = $answer_model->save($param);
+			if(false === $result){
+				$this->error = $this->getError();
+				return false;
+			}else{
+				return true;
+			}
+		}catch(\Exception $e){
+			$this->error = '回复失败';
+			return false;
+		}
+	}
 
+	//所有问题的所有回复
+	public function get_answer_list($help_id){
+		//获取所属问题的pid=0的行数据
+		$res = HelpAnswer::where(['pid'=>0,'help_id'=>$help_id])->select();
+		foreach($res as $key=>$value){
+			$child_data = HelpAnswer::where('pid',$value['id'])->find();
+			$data[$key]['child'] = !empty($child_data) ? $child_data : [];
+			$data[$key]['child']['user_name'] = !empty($child_data) ? User::get($child_data['user_id'])->realname : '';
+			$data[$key]['child']['create_time'] = !empty($child_data) ? date("Y-m-d H:i:s",$child_data['create_time']) : 0;
+		}
+		return $data;
+	}
 
 	//根据主键获取行记录
-	public function getData_ById(){
-
+	public function getData_ById($id){
+		$help_obj = $this->get($id);
+		if(!$help_obj){
+			$this->error = '暂无数据';
+			return false;
+		}
+		$help_obj->degree_name = Parameter::get($help_obj->degree)->category;
+		$help_obj->user_name = User::get($help_obj->user_id)->realname;
+		$help_obj->create_time = date('Y-m-d H:i:s',$help_obj->create_time);
+		return $help_obj;
 	}
 
 

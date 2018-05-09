@@ -144,7 +144,10 @@ return [
 	'asset/studio_del'			=>			['admin/assets/delete_studio',['method'=>'POST']],
 	// [资产库] 标准列表
 	'asset/index_list'			=>			['admin/assets/index_list',['method' => 'GET']],
-
+	// [问题反馈] 问题回复
+	'help/add_answer'				=>			['admin/helps/add_answer',['method' =>'POST']],
+	// [问题反馈] 查看所属问题所有回复
+	'help/answer_list'			=>			['admin/helps/answer_list',['method' =>'GET']],
 
 
 

@@ -43,6 +43,27 @@ class Helps extends BaseCommon{
 		return resultArray(['data' => '添加成功']);
 	}
 
+	//问题回复
+	public function add_answer(){
+		$help_model = model('Help');
+		$uid = $this->uid;
+		$param = $this->param;
+		$data = $help_model->addAnswer_ById($param,$uid);
+		if(!$data){
+			return resultArray(['error' => $help_model->getError()]);
+		}else{
+			return resultArray(['data'=>'回复成功']);
+		}
+	}
+
+	//所属问题回复列表
+	public function answer_list(){
+		$help_model = model('Help');
+		$param = $this->param;
+		$data = $help_model->get_answer_list($param['help_id']);
+		return resultArray($data);
+	}
+
 	public function update(){
 		$help_model = model('Help');
 		$uid = $this->uid;
