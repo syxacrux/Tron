@@ -26,8 +26,8 @@ class Help extends Common{
 		$list = $list->select();
 		for($i = 0;$i < count($list); $i++){
 			$list[$i]['type_name'] = ($list[$i]['type'] == 1) ? '[百科]' : '[问题]';
-			$list[$i]['category_name'] = Parameter::get($list[$i]['category_id'])->name;
-			$list[$i]['degree_name'] = Parameter::get($list[$i]['degree'])->name;
+			$list[$i]['category_name'] = Parameter::get($list[$i]['category_id'])->category;
+			$list[$i]['degree_name'] = Parameter::get($list[$i]['degree'])->category;
 			$list[$i]['user_name'] = User::get($list[$i]['user_id'])->realname;
 			$list[$i]['create_time'] = date("Y-m-d H:i:s",$list[$i]['create_time']);
 		}
