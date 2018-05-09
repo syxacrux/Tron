@@ -5,7 +5,7 @@ use think\Validate;
 /**
  * 设置模型
  */
-class Parameter extends Validate{
+class SystemParameter extends Validate{
 
 	protected $rule = array(
 		'name'      => 'require',

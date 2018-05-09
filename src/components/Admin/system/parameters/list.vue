@@ -13,7 +13,7 @@
     </div>
     <el-table v-if="listShow" :data="tableData" style="width: 100%" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="50"></el-table-column>
-      <el-table-column label="系统配置项名称" prop="name"></el-table-column>
+      <el-table-column label="系统配置项名称" prop="category"></el-table-column>
       <el-table-column label="父级" prop="pname"></el-table-column>
       <el-table-column label="排序" prop="sort"></el-table-column>
       <el-table-column label="备注" prop="explain"></el-table-column>
@@ -28,7 +28,7 @@
         <template slot-scope="scope">
           <div>
   					<span v-if="editShow">
-  						<router-link :to="{ name: 'deployEdit', params: { id: scope.row.id }}">
+  						<router-link :to="{ name: 'parametersEdit', params: { id: scope.row.id }}">
                 <el-button size="small" type="primary">编辑</el-button>
   						</router-link>
   					</span>
@@ -98,10 +98,10 @@
       },
 //      切换页码
       handleCurrentChange (page) {
-        this.getAllDeploy(page)
+        this.getAllParameter(page)
       },
 //      获取系统配置项列表
-      getAllDeploy (page) {
+        getAllParameter (page) {
         this.loading = true
         const data = {
           params: {
@@ -130,7 +130,7 @@
       },
 //      初始化系统配置项列表内容
       init () {
-        this.getAllDeploy(1)
+        this.getAllParameter(1)
       }
     },
     created () {

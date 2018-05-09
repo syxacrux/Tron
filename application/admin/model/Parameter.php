@@ -35,7 +35,7 @@ class Parameter extends Common{
 		}
 		$list = $list ->select();
 		foreach($list as $key=>$value){
-			$list[$key]['pname'] = ($value['pid'] != 0 ) ? $this->get($value['pid'])->explain : '无';
+			$list[$key]['pname'] = ($value['pid'] != 0 ) ? $this->get($value['pid'])->category : '顶级分类';
 		}
 		$data['list'] = $list;
 		$data['dataCount'] = $dataCount;
@@ -44,13 +44,13 @@ class Parameter extends Common{
 
 	//详情
 	public function getData_ById($id){
-		$config_deploy_obj = $this->get($id);
-		if(!$config_deploy_obj){
+		$parameter_obj = $this->get($id);
+		if(!$parameter_obj){
 			$this->error = '暂无此数据';
 			return false;
 		}
-		$config_deploy_obj->pname = ($config_deploy_obj->pid == 0) ? '无' : $this->get($config_deploy_obj->pid)->explain;
-		return $config_deploy_obj;
+		$parameter_obj->pname = ($parameter_obj->pid == 0) ? '无' : $this->get($parameter_obj->pid)->category;
+		return $parameter_obj;
 	}
 
 }

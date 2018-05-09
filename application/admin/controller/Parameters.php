@@ -11,61 +11,61 @@ use app\common\controller\BaseCommon;
 class Parameters extends BaseCommon{
 
 	public function index(){
-		$deploy_model = model('Parameter');
+		$parameter_model = model('Parameter');
 		$param = $this->param;
 		$keywords = !empty($param['keywords']) ? json_decode($param['keywords'],true): '';
 		$page = !empty($param['page']) ? $param['page']: '';
 		$limit = !empty($param['limit']) ? $param['limit']: '';
-		$data = $deploy_model->getList($keywords, $page, $limit);
+		$data = $parameter_model->getList($keywords, $page, $limit);
 		return resultArray(['data' => $data]);
 	}
 
 	public function read(){
-		$deploy_model = model('SystemDeploy');
+		$parameter_model = model('Parameter');
 		$param = $this->param;
-		$data = $deploy_model->getData_ById($param['id']);
+		$data = $parameter_model->getData_ById($param['id']);
 		if (!$data) {
-			return resultArray(['error' => $deploy_model->getError()]);
+			return resultArray(['error' => $parameter_model->getError()]);
 		}
 		return resultArray(['data' => $data]);
 	}
 
 	public function save(){
-		$deploy_model = model('SystemDeploy');
+		$parameter_model = model('Parameter');
 		$param = $this->param;
-		$data = $deploy_model->createData($param);
+		$data = $parameter_model->createData($param);
 		if (!$data) {
-			return resultArray(['error' => $deploy_model->getError()]);
+			return resultArray(['error' => $parameter_model->getError()]);
 		}
 		return resultArray(['data' => '添加成功']);
 	}
 
 	public function update(){
-		$deploy_model = model('SystemDeploy');
+		$parameter_model = model('Parameter');
 		$param = $this->param;
-		$data = $deploy_model->updateDataById($param, $param['id']);
+		$data = $parameter_model->updateDataById($param, $param['id']);
 		if (!$data) {
-			return resultArray(['error' => $deploy_model->getError()]);
+			return resultArray(['error' => $parameter_model->getError()]);
 		}
 		return resultArray(['data' => '编辑成功']);
 	}
 
 	public function delete(){
-		$deploy_model = model('SystemDeploy');
+		$parameter_model = model('Parameter');
 		$param = $this->param;
-		$data = $deploy_model->delDataById($param['id'], true);
+		$data = $parameter_model->delDataById($param['id'], true);
 		if (!$data) {
-			return resultArray(['error' => $deploy_model->getError()]);
+			return resultArray(['error' => $parameter_model->getError()]);
 		}
 		return resultArray(['data' => '删除成功']);
 	}
 
 	public function deletes(){
-		$deploy_model = model('SystemDeploy');
+		$parameter_model = model('Parameter');
 		$param = $this->param;
-		$data = $deploy_model->delDatas($param['ids'], true);
+		$data = $parameter_model->delDatas($param['ids'], true);
 		if (!$data) {
-			return resultArray(['error' => $deploy_model->getError()]);
+			return resultArray(['error' => $parameter_model->getError()]);
 		}
 		return resultArray(['data' => '删除成功']);
 	}

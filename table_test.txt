@@ -1,0 +1,12 @@
+CREATE TABLE `oa_library` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `category_id` tinyint(3) DEFAULT 0 COMMENT '问题分类ID',
+  `keywords` varchar(255) DEFAULT '' COMMENT '关键词 以逗号分割',
+  `content` text DEFAULT '' COMMENT '内容',
+  `status` tinyint(2) DEFAULT 1 comment '启用1 禁用2',
+  `user_id` int(11)  COMMENT '所属用户',
+  `explain` varchar(255) DEFAULT '' COMMENT '备注',
+  `create_time` int(11) DEFAULT 0 COMMENT '创建时间戳',
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`)
+) ENGINE=myisam DEFAULT CHARSET=utf8 COMMENT='文库表';

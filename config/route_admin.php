@@ -21,6 +21,7 @@ return [
 			'admin/workbenches'   =>		'admin/workbenches',
 			'admin/assets'				=>		'admin/assets',
 			'admin/references'		=>		'admin/references',
+			'admin/helps'					=>		'admin/helps',
 	],
 
 	// 测试
