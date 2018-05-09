@@ -139,19 +139,19 @@
     computed: {
 //      系统配置项列表
       listShow () {
-        return _g.getHasRule('Parameters-index')
+        return _g.getHasRule('parameters-index')
       },
 //      添加系统配置项按钮
       addShow () {
-        return _g.getHasRule('Parameters-save')
+        return _g.getHasRule('parameters-save')
       },
 //      编辑系统配置项按钮
       editShow () {
-        return _g.getHasRule('Parameters-update')
+        return _g.getHasRule('parameters-update')
       },
 //      删除系统配置项按钮
       deleteShow () {
-        return _g.getHasRule('Parameters-delete')
+        return _g.getHasRule('parameters-delete')
       }
     },
     components: {
