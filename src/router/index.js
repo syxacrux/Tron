@@ -29,7 +29,7 @@ import parametersEdit from '@/components/Admin/system/parameters/edit.vue'
 // 系统管理-问题反馈
 import helpsList from '@/components/Admin/system/helps/list.vue'
 import helpsAdd from '@/components/Admin/system/helps/add.vue'
-import helpsEdit from '@/components/Admin/system/helps/edit.vue'
+import helpDetail from '@/components/Admin/system/helps/list_detail.vue'
 // 账户管理-角色管理
 import groupsList from '@/components/Admin/personnel/groups/list.vue'
 import groupsAdd from '@/components/Admin/personnel/groups/add.vue'
@@ -191,9 +191,9 @@ const routes = [
         meta: { hideLeft: false, module: 'Admin', menu: 'helps' }
       },
       {
-        path: 'helps/edit/:id',
-        component: helpsEdit,
-        name: 'helpsEdit',
+        path: 'helps/list/:id',
+        component: helpDetail,
+        name: 'helpDetail',
         meta: { hideLeft: false, module: 'Admin', menu: 'helps' }
       }
     ]

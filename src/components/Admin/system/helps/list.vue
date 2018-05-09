@@ -23,21 +23,21 @@
       </div>
     </div>
     <div class="help_list">
-      <el-collapse v-model="activeName" accordion>
-        <el-collapse-item v-for="item in helpList" :title="`${item.category_name} - ${item.title}`" :name="item.id" :key="item.id">
-          <div>{{ item.content }}</div>
-          <div class="tx-r" style="display: block">
-            <span v-if="editShow">
-  						<!--<router-link :to="{ name: 'parametersEdit', params: { id: scope.row.id }}">-->
-                <el-button size="small" type="primary">回复</el-button>
-  						<!--</router-link>-->
-  					</span>
-            <span v-if="deleteShow">
-  						<el-button size="small" type="danger" @click="">删除</el-button>
-  					</span>
-          </div>
-        </el-collapse-item>
-      </el-collapse>
+      <ul>
+        <li v-for="item in helpList">
+          <router-link :to="{ name: 'helpDetail', params: {id: item.id} }">
+            {{ item.type_name }}   {{ item.title }}
+          </router-link>
+          <p class="tx-r fr">{{ item.create_time }}</p>
+          <!--<p class="tx-r" style="display: block">-->
+            <!--<span v-if="editShow">-->
+  						<!--&lt;!&ndash;<router-link :to="{ name: 'parametersEdit', params: { id: scope.row.id }}">&ndash;&gt;-->
+                <!--<el-button size="small" type="primary">回复</el-button>-->
+              <!--&lt;!&ndash;</router-link>&ndash;&gt;-->
+  					<!--</span>-->
+          <!--</p>-->
+        </li>
+      </ul>
     </div>
     <div class="pos-rel p-t-20">
       <div class="block pages">
@@ -102,27 +102,6 @@
       }
     },
     methods: {
-//      删除问题反馈执行方法
-      confirmDelete (item) {
-        this.$confirm('确认删除该问题反馈?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          _g.openGlobalLoading()
-          this.apiDelete('admin/helps/', item.id).then((res) => {
-            _g.closeGlobalLoading()
-            this.handelResponse(res, (data) => {
-              _g.toastMsg('success', '删除成功')
-              setTimeout(() => {
-                _g.shallowRefresh(this.$route.name)
-              }, 1500)
-            })
-          })
-        }).catch(() => {
-          // handle error
-        })
-      },
       helpDetail () {
 
       },
