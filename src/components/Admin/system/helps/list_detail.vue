@@ -16,7 +16,16 @@
         {{ helpDetail.content }}
         <p class="tx-r">
           <span>{{ helpDetail.create_time }}</span>
-          <el-button type="text" size="mini" class="m-0" @click="">回复</el-button>
+          <el-button type="text" size="mini" class="m-0" @click="show2 = !show2">回复</el-button>
+          <transition name="el-zoom-in-top">
+            <div v-show="show2" class="transition-box">
+              <el-input
+                  type="textarea"
+                  placeholder="请输入内容"
+                  v-model="publish_content">
+              </el-input>
+            </div>
+          </transition>
         </p>
       </div>
       <div class="help_publish">
@@ -24,7 +33,6 @@
           <el-form-item label="发表内容" prop="explain">
             <el-input
                 type="textarea"
-                :autosize="{ minRows: 2, maxRows: 4}"
                 placeholder="请输入内容"
                 v-model="publish_content">
             </el-input>
@@ -44,6 +52,7 @@
   export default {
     data () {
       return {
+        show2: false,
         isLoading: false,
         helpDetail: {},
         id: '',
@@ -54,7 +63,7 @@
       submitHelp() {
         let _this = this
         const data = {
-          id: this.id,
+          help_id: this.id,
           content: this.publish_content
         }
         this.apiPost('help/add_answer', data).then((res) => {
