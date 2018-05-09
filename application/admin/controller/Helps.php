@@ -36,7 +36,7 @@ class Helps extends BaseCommon{
 		$help_model = model('Help');
 		$uid = $this->uid;
 		$param = $this->param;
-		$data = $help_model->createData($param,$uid);
+		$data = $help_model->addData($param,$uid);
 		if (!$data) {
 			return resultArray(['error' => $help_model->getError()]);
 		}
@@ -45,8 +45,9 @@ class Helps extends BaseCommon{
 
 	public function update(){
 		$help_model = model('Help');
+		$uid = $this->uid;
 		$param = $this->param;
-		$data = $help_model->updateDataById($param, $param['id']);
+		$data = $help_model->updateData_ById($param, $param['id'],$uid);
 		if (!$data) {
 			return resultArray(['error' => $help_model->getError()]);
 		}

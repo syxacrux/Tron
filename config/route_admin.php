@@ -22,7 +22,6 @@ return [
 			'admin/assets'				=>		'admin/assets',
 			'admin/references'		=>		'admin/references',
 			'admin/helps'					=>		'admin/helps',
-			'admin/helpsfeedback'
 	],
 
 	// 测试

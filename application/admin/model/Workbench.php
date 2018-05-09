@@ -392,7 +392,7 @@ class Workbench extends Common
 			$param['actual_start_timestamp'] = strtotime($param['actual_start_timestamp']);
 			$param['actual_end_timestamp'] = strtotime($param['actual_end_timestamp']);
 			$param['create_time'] = time();
-			$result = $this->validate($this->name)->save($param);
+			$result = $this->save($param);
 			if (false === $result) {
 				$this->error = $this->getError();
 				return false;
