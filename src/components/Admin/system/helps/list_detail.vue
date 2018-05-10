@@ -16,22 +16,26 @@
         {{ helpDetail.content }}
         <p class="tx-r">
           <span>{{ helpDetail.create_time }}</span>
-          <el-button type="text" size="mini" class="m-0" @click="show2 = !show2">回复</el-button>
-          <transition name="el-zoom-in-top">
-            <div v-show="show2" class="transition-box">
-              <el-input
-                  type="textarea"
-                  placeholder="请输入内容"
-                  v-model="publish_content">
-              </el-input>
-            </div>
-          </transition>
+          <el-button type="text" size="mini" class="m-0" @click="publishFocus">回复</el-button>
+          <!--<transition name="el-zoom-in-top">-->
+            <!--<div v-show="show2" class="transition-box">-->
+              <!--<el-input-->
+                  <!--type="textarea"-->
+                  <!--placeholder="请输入内容"-->
+                  <!--v-model="publish_content">-->
+              <!--</el-input>-->
+            <!--</div>-->
+          <!--</transition>-->
         </p>
       </div>
+      <ul>
+        <li v-for="item in answerList">{{ item.user_name }}：{{ item.content }}{{ item.create_time }}</li>
+      </ul>
       <div class="help_publish">
         <el-form>
           <el-form-item label="发表内容" prop="explain">
             <el-input
+                ref="publishInput"
                 type="textarea"
                 placeholder="请输入内容"
                 v-model="publish_content">
@@ -55,6 +59,7 @@
         show2: false,
         isLoading: false,
         helpDetail: {},
+        answerList: [],
         id: '',
         publish_content: ''
       }
@@ -77,10 +82,19 @@
           })
         })
       },
+      publishFocus() {
+        $('html,body').animate({scrollTop:$('.help_publish').offset().top}, 800);
+        this.$refs.publishInput.focus();
+      },
       getAnswerList() {
-        this.apiGet('help/answer_list/' + this.id).then((res) => {
+        const data = {
+          params: {
+            help_id: this.id
+          }
+        }
+        this.apiGet('help/answer_list',  data).then((res) => {
           this.handelResponse(res, (data) => {
-            console.log(data)
+            this.answerList = data
           })
         })
       },
@@ -88,6 +102,7 @@
         this.apiGet('admin/helps/' + this.id).then((res) => {
           this.handelResponse(res, (data) => {
             this.helpDetail = data
+            this.getAnswerList()
           })
         })
       }

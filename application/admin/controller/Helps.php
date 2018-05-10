@@ -61,7 +61,7 @@ class Helps extends BaseCommon{
 		$help_model = model('Help');
 		$param = $this->param;
 		$data = $help_model->get_answer_list($param['help_id']);
-		return resultArray($data);
+		return resultArray(['data'=>$data]);
 	}
 
 	public function update(){
