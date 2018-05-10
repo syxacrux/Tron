@@ -9,23 +9,14 @@
       </el-breadcrumb>
     </div>
     <el-card class="box-card">
-      <div slot="header" class="clearfix">
+      <div v-if="helpDetail.type === 1" slot="header" class="clearfix">
         <span>{{ helpDetail.title }}</span>
       </div>
-      <div>
-        {{ helpDetail.content }}
+      <div class="help_content">
+        <pre class="m-0" v-html>{{ helpDetail.content }}</pre>
         <p class="tx-r">
           <span>{{ helpDetail.create_time }}</span>
           <el-button type="text" size="mini" class="m-0" @click="publishFocus">回复</el-button>
-          <!--<transition name="el-zoom-in-top">-->
-            <!--<div v-show="show2" class="transition-box">-->
-              <!--<el-input-->
-                  <!--type="textarea"-->
-                  <!--placeholder="请输入内容"-->
-                  <!--v-model="publish_content">-->
-              <!--</el-input>-->
-            <!--</div>-->
-          <!--</transition>-->
         </p>
       </div>
       <ul class="p-l-20 p-r-20 p-b-10 p-t-10">
@@ -37,11 +28,11 @@
       </ul>
       <div class="help_publish m-t-30">
         <el-form ref="form">
-          <el-form-item label="发表内容：" prop="publish_content">
+          <el-form-item label="回复内容：" prop="publish_content">
             <el-input
                 ref="publishInput"
                 type="textarea"
-                placeholder="请输入内容"
+                placeholder="请输入回复内容"
                 v-model="publish_content">
             </el-input>
           </el-form-item>
@@ -135,8 +126,13 @@
   .help_detail ul {
     background: #f7f8fa;
   }
-  .help_detail ul li {
-
+  .help_detail .help_content {
+    font-size: 14px;
+    line-height: 26px;
+    padding: 5px 20px;
+  }
+  .help_detail .help_content pre{
+    font-family: Microsoft YaHei;
   }
 
 </style>

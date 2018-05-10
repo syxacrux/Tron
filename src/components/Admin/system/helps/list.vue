@@ -25,20 +25,16 @@
     <div class="help_list">
       <ul>
         <li class="bor-b-gray m-b-10" v-for="item in helpList">
-          <router-link :to="{ name: 'helpDetail', params: {id: item.id} }">
+          <router-link v-if="item.type === 1" :to="{ name: 'helpDetail', params: {id: item.id} }">
             {{ item.type_name }}   {{ item.title }}
           </router-link>
-          <p class="tx-r fr fz-14">{{ item.user_name }} 发表于  {{ item.create_time }}</p>
-          <div class="h-40 w-1000 fz-12 c-black space_nowr">
+          <router-link v-if="item.type === 2" :to="{ name: 'helpDetail', params: {id: item.id} }">
+            {{ item.type_name }}   {{ item.content }}
+          </router-link>
+          <p class="tx-r fr fz-14">{{ item.user_name }} 发布于  {{ item.create_time }}</p>
+          <div v-if="item.type === 1" class="h-40 w-1000 fz-12 c-black space_nowr">
             {{ item.content }}
           </div>
-          <!--<p class="tx-r" style="display: block">-->
-            <!--<span v-if="editShow">-->
-  						<!--&lt;!&ndash;<router-link :to="{ name: 'parametersEdit', params: { id: scope.row.id }}">&ndash;&gt;-->
-                <!--<el-button size="small" type="primary">回复</el-button>-->
-              <!--&lt;!&ndash;</router-link>&ndash;&gt;-->
-  					<!--</span>-->
-          <!--</p>-->
         </li>
       </ul>
     </div>
@@ -54,13 +50,18 @@
       </div>
     </div>
     <el-dialog title="问题反馈" :visible.sync="isAddHelps" width="30%">
-      <el-form :model="form" label-width="120px" :rules="rules">
-        <el-form-item label="反馈类型：" prop="type">
+      <el-form ref="form" :model="form" label-width="120px" :rules="rules">
+        <el-form-item label="反馈类型：" prop="category_id">
           <el-select v-model="form.category_id" placeholder="请选择问题类型">
             <el-option v-for="item in options" :label="item.category" :value="item.id" :key="item.id"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="反馈内容：" prop="question">
+        <el-form-item label="反馈类型：" prop="degree">
+          <el-select v-model="form.degree" placeholder="请选择紧急程度">
+            <el-option v-for="item in degreeOptions" :label="item.category" :value="item.id" :key="item.id"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="反馈内容：" prop="content">
             <el-input
                 type="textarea"
                 :autosize="{ minRows: 2, maxRows: 4}"
@@ -91,14 +92,19 @@
         currentPage: 1,
         keywords: '',
         options: [],
+        degreeOptions: [],
         limit: 10,
+        page: 1,
         form: {
           category_id: '',
-          content: ''
+          content: '',
+          degree: '',
+          type: 2
         },
         rules: {
           category_id: [{required: true, message: '请选择问题类型', trigger: 'blur'}],
-          content: [{required: true, message: '请输入反馈内容', trigger: 'blur'}]
+          content: [{required: true, message: '请输入反馈内容', trigger: 'blur'}],
+          degree: [{required: true, message: '请输入反馈内容', trigger: 'blur'}]
         },
         editHelpDetail: {}
       }
@@ -117,9 +123,13 @@
                 setTimeout(() => {
                   this.isLoading = !this.isLoading
                   this.form = {
-                    type: '',
-                    question: ''
+                    category_id: '',
+                    content: '',
+                    degree: '',
+                    type: 2
                   }
+                  this.isAddHelps = !this.isAddHelps
+                  this.getAllHelps(this.page)
                 }, 1500)
               }, () => {
                 this.isLoading = !this.isLoading
@@ -134,6 +144,7 @@
       },
 //      获取问题反馈列表
       getAllHelps (page) {
+        this.page = page
         this.loading = true
         const data = {
           params: {
@@ -175,10 +186,26 @@
           })
         })
       },
+      //      获取父级分类
+      getDegreeList() {
+        const data = {
+          params: {
+            keywords: {
+              pid:  9
+            }
+          }
+        }
+        this.apiGet('admin/parameters',data).then((res) => {
+          this.handelResponse(res, (data) => {
+            this.degreeOptions = data.list
+          })
+        })
+      },
 //      初始化问题反馈列表内容
       init () {
         this.getAllHelps(1)
         this.getParameters()
+        this.getDegreeList()
       }
     },
     created () {
