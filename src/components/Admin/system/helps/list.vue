@@ -56,10 +56,8 @@
     <el-dialog title="问题反馈" :visible.sync="isAddHelps" width="30%">
       <el-form :model="form" label-width="120px" :rules="rules">
         <el-form-item label="反馈类型：" prop="type">
-          <el-select v-model="form.type" placeholder="请选择问题类型">
-            <el-option label="服务器" value="1"></el-option>
-            <el-option label="会议室" value="2"></el-option>
-            <el-option label="软件" value="3"></el-option>
+          <el-select v-model="form.category_id" placeholder="请选择问题类型">
+            <el-option v-for="item in options" :label="item.category" :value="item.id" :key="item.id"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="反馈内容：" prop="question">
@@ -67,7 +65,7 @@
                 type="textarea"
                 :autosize="{ minRows: 2, maxRows: 4}"
                 placeholder="请输入反馈内容"
-                v-model="form.question">
+                v-model="form.content">
             </el-input>
         </el-form-item>
       </el-form>
@@ -92,14 +90,15 @@
         helpList: [],
         currentPage: 1,
         keywords: '',
+        options: [],
         limit: 10,
         form: {
-          type: '',
-          question: ''
+          category_id: '',
+          content: ''
         },
         rules: {
-          type: [{required: true, message: '请选择问题类型', trigger: 'blur'}],
-          question: [{required: true, message: '请输入反馈内容', trigger: 'blur'}]
+          category_id: [{required: true, message: '请选择问题类型', trigger: 'blur'}],
+          content: [{required: true, message: '请输入反馈内容', trigger: 'blur'}]
         },
         editHelpDetail: {}
       }
@@ -161,9 +160,25 @@
           }
         }
       },
+//      获取父级分类
+      getParameters() {
+        const data = {
+          params: {
+            keywords: {
+              pid:  4
+            }
+          }
+        }
+        this.apiGet('admin/parameters',data).then((res) => {
+          this.handelResponse(res, (data) => {
+            this.options = data.list
+          })
+        })
+      },
 //      初始化问题反馈列表内容
       init () {
         this.getAllHelps(1)
+        this.getParameters()
       }
     },
     created () {

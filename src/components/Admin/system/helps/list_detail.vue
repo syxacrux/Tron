@@ -28,12 +28,16 @@
           <!--</transition>-->
         </p>
       </div>
-      <ul>
-        <li v-for="item in answerList">{{ item.user_name }}：{{ item.content }}{{ item.create_time }}</li>
+      <ul class="p-l-20 p-r-20 p-b-10 p-t-10">
+        <li v-for="item in answerList" class="p-t-5 p-b-5">
+          <span class="fz-14 c-black">{{ item.user_name }}</span>：
+          <span>{{ item.content }}</span>
+          <p class="fz-14 tx-r m-0 p-b-5 p-r-10 bor-b-gray">{{ item.create_time }}</p>
+        </li>
       </ul>
-      <div class="help_publish">
-        <el-form ref="form" :rules="rule">
-          <el-form-item label="发表内容" prop="publish_content">
+      <div class="help_publish m-t-30">
+        <el-form ref="form">
+          <el-form-item label="发表内容：" prop="publish_content">
             <el-input
                 ref="publishInput"
                 type="textarea"
@@ -52,7 +56,6 @@
 <script>
   import http from '../../../../assets/js/http'
   import _g from '@/assets/js/global'
-//  import ElForm from "../../../../../node_modules/element-ui/packages/form/src/form.vue";
   export default {
     data () {
       return {
@@ -61,12 +64,7 @@
         helpDetail: {},
         answerList: [],
         id: '',
-        publish_content: '',
-        rule: {
-          publish_content: [
-            {required: true, message: '请填写发表内容', trigger: 'blur'}
-          ]
-        }
+        publish_content: ''
       }
     },
     methods: {
@@ -125,7 +123,6 @@
 
     },
     components: {
-//      ElForm
 
     },
     mixins: [http]
@@ -135,4 +132,11 @@
   .help_detail .help_publish {
     border-top: 1px solid #eee;
   }
+  .help_detail ul {
+    background: #f7f8fa;
+  }
+  .help_detail ul li {
+
+  }
+
 </style>
