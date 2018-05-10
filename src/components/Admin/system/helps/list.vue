@@ -33,7 +33,7 @@
             {{ item.type_name }}   {{ item.title }}
           </router-link>
           <router-link v-if="item.type === 2" :to="{ name: 'helpDetail', params: {id: item.id} }">
-            {{ item.type_name }}   {{ item.content }}
+            <span class="degree">[{{ item.degree_name }}]</span>{{ item.type_name }}   {{ item.content }}
           </router-link>
           <p class="tx-r fr fz-14">{{ item.user_name }} 发布于  {{ item.create_time }}</p>
           <div v-if="item.type === 1" class="h-40 w-1000 fz-12 c-black space_nowr">
@@ -253,5 +253,9 @@
   .help .help_list li p{
     margin: 0;
     color: #666;
+  }
+  .help .help_list .degree{
+    color: orangered;
+    font-weight: 500;
   }
 </style>
