@@ -76,8 +76,6 @@ class Help extends Common{
 	//问题回答
 	public function addAnswer_ById($param,$uid){
 		try{
-			$answer_obj = HelpAnswer::get($param['pid']);
-			$param['help_id'] = $answer_obj->help_id;
 			$param['user_id'] = $uid;
 			$param['create_time'] = time();
 			$answer_model = new HelpAnswer();

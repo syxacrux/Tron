@@ -60,7 +60,6 @@ class Helps extends BaseCommon{
 	public function answer_list(){
 		$help_model = model('Help');
 		$param = $this->param;
-		var_dump($param);
 		$data = $help_model->get_answer_list($param['help_id']);
 		return resultArray($data);
 	}
