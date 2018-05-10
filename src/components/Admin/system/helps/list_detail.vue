@@ -133,6 +133,7 @@
   }
   .help_detail .help_content pre{
     font-family: Microsoft YaHei;
+    white-space: pre-line;
   }
 
 </style>
