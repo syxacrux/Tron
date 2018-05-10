@@ -96,17 +96,12 @@ class Help extends Common{
 
 	//所有问题的所有回复
 	public function get_answer_list($help_id){
-		//获取所属问题的pid=0的行数据
-		var_dump($help_id);
-		$res = HelpAnswer::where(['pid'=>0,'help_id'=>$help_id])->select();
-		var_dump($res);
-		foreach($res as $key=>$value){
-			$child_data = HelpAnswer::where('pid',$value['id'])->find();
-			$res[$key]['child'] = !empty($child_data) ? $child_data : [];
-			$res[$key]['child']['user_name'] = !empty($child_data) ? User::get($child_data['user_id'])->realname : '';
-			$res[$key]['child']['create_time'] = !empty($child_data) ? date("Y-m-d H:i:s",$child_data['create_time']) : 0;
+		$data = HelpAnswer::where('help_id',$help_id)->select();
+		for($i=0;$i<count($data);$i++){
+			$data[$i]['user_name'] = User::get($data[$i]['user_id'])->realname;
+			$data[$i]['create_time'] = date('Y-m-d H:i:s',$data[$i]['create_time']);
 		}
-		return $res;
+		return $data;
 	}
 
 	//根据主键获取行记录
