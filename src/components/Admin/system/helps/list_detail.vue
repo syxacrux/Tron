@@ -32,8 +32,8 @@
         <li v-for="item in answerList">{{ item.user_name }}：{{ item.content }}{{ item.create_time }}</li>
       </ul>
       <div class="help_publish">
-        <el-form>
-          <el-form-item label="发表内容" prop="explain">
+        <el-form ref="form" :rules="rule">
+          <el-form-item label="发表内容" prop="publish_content">
             <el-input
                 ref="publishInput"
                 type="textarea"
@@ -52,7 +52,7 @@
 <script>
   import http from '../../../../assets/js/http'
   import _g from '@/assets/js/global'
-  import ElForm from "../../../../../node_modules/element-ui/packages/form/src/form.vue";
+//  import ElForm from "../../../../../node_modules/element-ui/packages/form/src/form.vue";
   export default {
     data () {
       return {
@@ -61,12 +61,21 @@
         helpDetail: {},
         answerList: [],
         id: '',
-        publish_content: ''
+        publish_content: '',
+        rule: {
+          publish_content: [
+            {required: true, message: '请填写发表内容', trigger: 'blur'}
+          ]
+        }
       }
     },
     methods: {
       submitHelp() {
         let _this = this
+        if(!this.publish_content) {
+          _g.toastMsg('warning', '请填写发表内容')
+          return
+        }
         const data = {
           help_id: this.id,
           content: this.publish_content
@@ -74,6 +83,7 @@
         this.apiPost('help/add_answer', data).then((res) => {
           this.handelResponse(res, (data) => {
             _g.toastMsg('success', '回复成功')
+            this.publish_content = ''
             setTimeout(() => {
               _this.getAnswerList()
             }, 1500)
@@ -115,7 +125,7 @@
 
     },
     components: {
-      ElForm
+//      ElForm
 
     },
     mixins: [http]

@@ -24,11 +24,14 @@
     </div>
     <div class="help_list">
       <ul>
-        <li v-for="item in helpList">
+        <li class="bor-b-gray m-b-10" v-for="item in helpList">
           <router-link :to="{ name: 'helpDetail', params: {id: item.id} }">
             {{ item.type_name }}   {{ item.title }}
           </router-link>
-          <p class="tx-r fr">{{ item.create_time }}</p>
+          <p class="tx-r fr fz-14">{{ item.user_name }} 发表于  {{ item.create_time }}</p>
+          <div class="h-40 w-1000 fz-12 c-black space_nowr">
+            {{ item.content }}
+          </div>
           <!--<p class="tx-r" style="display: block">-->
             <!--<span v-if="editShow">-->
   						<!--&lt;!&ndash;<router-link :to="{ name: 'parametersEdit', params: { id: scope.row.id }}">&ndash;&gt;-->
@@ -198,8 +201,18 @@
     padding-bottom: 10px;
   }
   .help .help_list {
-    padding: 10px;
+    padding: 15px;
     border-radius: 5px;
     background: #fff;
+  }
+  .help .help_list li a{
+    color: #409eff;
+  }
+  .help .help_list li a:hover{
+    text-decoration: underline;
+  }
+  .help .help_list li p{
+    margin: 0;
+    color: #666;
   }
 </style>
