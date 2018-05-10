@@ -16,8 +16,12 @@
       </router-link>
       <div class="pos-abs r-0 t-0">
         <el-col>
-          <el-input placeholder="请输入关键字" class="input-with-select">
-            <el-button slot="append" icon="el-icon-search"></el-button>
+          <el-input placeholder="请输入关键字" v-model="search.keywords" class="input-with-select">
+            <el-select class="w-80" v-model="search.type" slot="prepend" placeholder="类型">
+              <el-option label="文章" value="1"></el-option>
+              <el-option label="问题" value="2"></el-option>
+            </el-select>
+            <el-button slot="append" icon="el-icon-search" @click="getAllHelps(1)"></el-button>
           </el-input>
         </el-col>
       </div>
@@ -95,6 +99,10 @@
         degreeOptions: [],
         limit: 10,
         page: 1,
+        search: {
+          keywords: '',
+          type: ''
+        },
         form: {
           category_id: '',
           content: '',
@@ -148,7 +156,7 @@
         this.loading = true
         const data = {
           params: {
-            keywords: this.keywords,
+            keywords: this.search,
             page: page,
             limit: this.limit
           }
@@ -159,17 +167,6 @@
             this.helpList = data.list
           })
         })
-      },
-//      获取关键字
-      getKeywords () {
-        let data = this.$route.query
-        if (data) {
-          if (data.keywords) {
-            this.keywords = data.keywords
-          } else {
-            this.keywords = ''
-          }
-        }
       },
 //      获取父级分类
       getParameters() {
