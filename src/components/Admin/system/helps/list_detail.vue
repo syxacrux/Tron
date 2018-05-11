@@ -19,11 +19,14 @@
           <el-button type="text" size="mini" class="m-0" @click="publishFocus">回复</el-button>
         </p>
       </div>
-      <ul class="p-l-20 p-r-20 p-b-10 p-t-10">
-        <li v-for="item in answerList" class="p-t-5 p-b-5">
-          <span class="fz-14 c-black">{{ item.user_name }}</span>：
+      <ul class="p-l-20 p-r-20 p-b-10 p-t-10" v-if="answerList.length !== 0">
+        <li v-for="item in answerList" class="p-t-5 p-b-5 fz-14">
+          <span class="c-black">{{ item.user_name }}</span>：
           <span>{{ item.content }}</span>
-          <p class="fz-14 tx-r m-0 p-b-5 p-r-10 bor-b-gray">{{ item.create_time }}</p>
+          <p class="tx-r m-0 p-b-5 p-r-10 bor-b-gray">
+            {{ item.create_time }}
+            <el-button type="text" size="mini" class="fz-12 m-0" @click="deletePublish(item)">删除</el-button>
+          </p>
         </li>
       </ul>
       <div class="help_publish m-t-30">
@@ -81,6 +84,29 @@
           })
         })
       },
+      deletePublish(item) {
+        const data = {
+          params: {
+            id: item.id
+          }
+        }
+        this.$confirm('确认删除该回复?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          _g.openGlobalLoading()
+          this.apiGet('help/del_answer', data).then((res) => {
+            _g.closeGlobalLoading()
+            this.handelResponse(res, (data) => {
+              _g.toastMsg('success', '删除成功')
+              this.getAnswerList()
+            })
+          })
+        }).catch(() => {
+          // handle error
+        })
+      },
       publishFocus() {
         $('html,body').animate({scrollTop:$('.help_publish').offset().top}, 800);
         this.$refs.publishInput.focus();
@@ -116,7 +142,13 @@
     components: {
 
     },
-    mixins: [http]
+    mixins: [http],
+    computed: {
+//      删除反馈按钮
+      deleteShow () {
+        return _g.getHasRule('helps-delete')
+      }
+    }
   }
 </script>
 <style>

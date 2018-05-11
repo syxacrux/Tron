@@ -8,11 +8,11 @@
       </el-breadcrumb>
     </div>
     <div class="m-b-20 pos-rel">
-      <a class="btn-link-large add-btn" @click="isAddHelps = true" v-if="addShow">
-        <i class="el-icon-plus"></i>&nbsp;&nbsp;创建问题
+      <a class="btn-link-large add-btn" @click="isAddHelps = true" v-if="addProblem">
+        <i class="el-icon-plus"></i>&nbsp;&nbsp;提出反馈
       </a>
-      <router-link class="btn-link-large add-btn" to="add" v-if="addShow">
-        <i class="el-icon-plus"></i>&nbsp;&nbsp;创建文章
+      <router-link class="btn-link-large add-btn" to="add" v-if="addArticle">
+        <i class="el-icon-plus"></i>&nbsp;&nbsp;发起文章
       </router-link>
       <div class="pos-abs r-0 t-0">
         <el-col>
@@ -29,11 +29,16 @@
     <div class="help_list">
       <ul>
         <li class="bor-b-gray m-b-10" v-for="item in helpList">
+          <transition name="el-zoom-in-center">
+            <el-checkbox-group v-show="show2" v-model="multipleSelection">
+              <el-checkbox :label="item" :key="item.id">{{ item }}</el-checkbox>
+            </el-checkbox-group>
+          </transition>
           <router-link v-if="item.type === 1" :to="{ name: 'helpDetail', params: {id: item.id} }">
             {{ item.type_name }}   {{ item.title }}
           </router-link>
           <router-link v-if="item.type === 2" :to="{ name: 'helpDetail', params: {id: item.id} }">
-            <span class="degree">[{{ item.degree_name }}]</span>{{ item.type_name }}   {{ item.content }}
+            <span class="degree">【{{ item.degree_name }}】</span>{{ item.type_name }}   {{ item.content }}
           </router-link>
           <p class="tx-r fr fz-14">{{ item.user_name }} 发布于  {{ item.create_time }}</p>
           <div v-if="item.type === 1" class="h-40 w-1000 fz-12 c-black space_nowr">
@@ -43,6 +48,9 @@
       </ul>
     </div>
     <div class="pos-rel p-t-20">
+      <el-button v-if="show2 == false" size="small" @click="show2 = !show2">选择</el-button>
+      <el-button v-if="show2 == true" size="small" @click="show2 = !show2">取消选择</el-button>
+      <btnGroup v-show="show2" :selectedData="multipleSelection" :type="'helps'"></btnGroup>
       <div class="block pages">
         <el-pagination
             @current-change="handleCurrentChange"
@@ -84,14 +92,17 @@
 </template>
 <script>
   import editHelps from './edit.vue'
+  import btnGroup from '../../../Common/btn-group.vue'
   import http from '../../../../assets/js/http'
   import _g from '@/assets/js/global'
   export default {
     data () {
       return {
+        show2: false,
         isAddHelps: false,
         activeName: '1',
         dataCount: null,
+        multipleSelection: [],
         helpList: [],
         currentPage: 1,
         keywords: '',
@@ -213,21 +224,23 @@
       listShow () {
         return _g.getHasRule('helps-index')
       },
-//      添加问题反馈按钮
-      addShow () {
+//      发起文章按钮
+      addArticle () {
         return _g.getHasRule('helps-save')
       },
-//      编辑问题反馈按钮
+//      发起文章按钮
+      addProblem () {
+        return _g.getHasRule('helps-save_problem')
+      },
+//      编辑文章按钮
       editShow () {
         return _g.getHasRule('helps-update')
       },
-//      删除问题反馈按钮
-      deleteShow () {
-        return _g.getHasRule('helps-delete')
-      }
+
     },
     components: {
-      editHelps
+      editHelps,
+      btnGroup
     },
     mixins: [http]
   }
@@ -257,5 +270,11 @@
   .help .help_list .degree{
     color: orangered;
     font-weight: 500;
+  }
+  .help .el-checkbox__label{
+    display: none;
+  }
+  .help .el-checkbox-group{
+    display: inline-block;
   }
 </style>

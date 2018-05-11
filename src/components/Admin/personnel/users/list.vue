@@ -12,10 +12,10 @@
           <i class="el-icon-plus"></i>&nbsp;&nbsp;添加成员
         </router-link>
       </div>
-      <div class="fl w-200" :class="{'m-l-30':addShow}">
-        <el-input placeholder="请输入成员" v-model="name">
-          <el-button slot="append" icon="el-icon-search" @click="search()"></el-button>
-        </el-input>
+      <div class="fl w-200" :class="{'m-l-30': addShow}">
+        <!--<el-input placeholder="请输入成员" v-model="name">-->
+          <!--<el-button slot="append" icon="el-icon-search" @click="search()"></el-button>-->
+        <!--</el-input>-->
       </div>
     </div>
     <el-table v-if="listShow" :data="tableData" style="width: 100%" @selection-change="selectItem">
