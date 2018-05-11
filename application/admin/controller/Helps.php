@@ -32,6 +32,7 @@ class Helps extends BaseCommon{
 		return resultArray(['data' => $data]);
 	}
 
+	//发起文章
 	public function save(){
 		$help_model = model('Help');
 		$uid = $this->uid;
@@ -43,12 +44,12 @@ class Helps extends BaseCommon{
 		return resultArray(['data' => '添加成功']);
 	}
 
-	//问题回复
-	public function add_answer(){
+	//发起问题
+	public function save_problem(){
 		$help_model = model('Help');
 		$uid = $this->uid;
 		$param = $this->param;
-		$data = $help_model->addAnswer_ById($param,$uid);
+		$data = $help_model->addProblem_ById($param,$uid);
 		if(!$data){
 			return resultArray(['error' => $help_model->getError()]);
 		}else{
@@ -61,9 +62,10 @@ class Helps extends BaseCommon{
 		$help_model = model('Help');
 		$param = $this->param;
 		$data = $help_model->get_answer_list($param['help_id']);
-		return resultArray($data);
+		return resultArray(['data'=>$data]);
 	}
 
+	//编辑文章
 	public function update(){
 		$help_model = model('Help');
 		$uid = $this->uid;
@@ -75,6 +77,7 @@ class Helps extends BaseCommon{
 		return resultArray(['data' => '编辑成功']);
 	}
 
+	//删除
 	public function delete(){
 		$help_model = model('Help');
 		$param = $this->param;
@@ -85,16 +88,30 @@ class Helps extends BaseCommon{
 		return resultArray(['data' => '删除成功']);
 	}
 
-	public function deletes(){
-		$help_model = model('Studio');
+	//删除回复
+	public function delete_answer(){
+		$help_model = model('Help');
 		$param = $this->param;
-		$data = $help_model->delDatas($param['ids'], true);
+		$data = $help_model->answerDel_ById($param['id']);
+		if(!$data){
+			return resultArray(['error'=>$help_model->getError()]);
+		}else{
+			return resultArray(['data'=>'删除回复成功']);
+		}
+	}
+
+	//根据多ID删除
+	public function deletes_by_ids(){
+		$help_model = model('Help');
+		$param = $this->param;
+		$data = $help_model->del_Datas($param['ids']);
 		if (!$data) {
 			return resultArray(['error' => $help_model->getError()]);
 		}
 		return resultArray(['data' => '删除成功']);
 	}
 
+	//批量启用 | 禁用 文章
 	public function enables(){
 		$help_model = model('Help');
 		$param = $this->param;

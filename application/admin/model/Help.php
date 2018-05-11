@@ -26,8 +26,8 @@ class Help extends Common{
 		$list = $list->select();
 		for($i = 0;$i < count($list); $i++){
 			$list[$i]['type_name'] = ($list[$i]['type'] == 1) ? '[百科]' : '[问题]';
-			$list[$i]['category_name'] = Parameter::get($list[$i]['category_id'])->name;
-			$list[$i]['degree_name'] = Parameter::get($list[$i]['degree'])->name;
+			$list[$i]['category_name'] = Parameter::get($list[$i]['category_id'])->category;
+			$list[$i]['degree_name'] = Parameter::get($list[$i]['degree'])->category;
 			$list[$i]['user_name'] = User::get($list[$i]['user_id'])->realname;
 			$list[$i]['create_time'] = date("Y-m-d H:i:s",$list[$i]['create_time']);
 		}
@@ -74,7 +74,7 @@ class Help extends Common{
 	}
 
 	//问题回答
-	public function addAnswer_ById($param,$uid){
+	public function addProblem_ById($param,$uid){
 		try{
 			$param['user_id'] = $uid;
 			$param['create_time'] = time();
@@ -94,13 +94,10 @@ class Help extends Common{
 
 	//所有问题的所有回复
 	public function get_answer_list($help_id){
-		//获取所属问题的pid=0的行数据
-		$res = HelpAnswer::where(['pid'=>0,'help_id'=>$help_id])->select();
-		foreach($res as $key=>$value){
-			$child_data = HelpAnswer::where('pid',$value['id'])->find();
-			$data[$key]['child'] = !empty($child_data) ? $child_data : [];
-			$data[$key]['child']['user_name'] = !empty($child_data) ? User::get($child_data['user_id'])->realname : '';
-			$data[$key]['child']['create_time'] = !empty($child_data) ? date("Y-m-d H:i:s",$child_data['create_time']) : 0;
+		$data = HelpAnswer::where('help_id',$help_id)->select();
+		for($i=0;$i<count($data);$i++){
+			$data[$i]['user_name'] = User::get($data[$i]['user_id'])->realname;
+			$data[$i]['create_time'] = date('Y-m-d H:i:s',$data[$i]['create_time']);
 		}
 		return $data;
 	}
@@ -118,7 +115,31 @@ class Help extends Common{
 		return $help_obj;
 	}
 
+	//删除回复
+	public function answerDel_ById($id){
+		try{
+			$help_answer_obj = new HelpAnswer();
+			$help_answer_obj->where('id',$id)->delete();
+			return true;
+		}catch(\Exception $e){
+			$this->error = '删除失败';
+			return false;
+		}
+	}
 
-
+	public function del_Datas($ids){
+		if (empty($ids)) {
+			$this->error = '删除失败';
+			return false;
+		}
+		try{
+			$ids = array_unique($ids);
+			$this->where('id','in',$ids)->delete();
+			return true;
+		}catch(\Exception $e){
+			$this->error = '删除失败';
+			return false;
+		}
+	}
 
 }

@@ -145,10 +145,15 @@ return [
 	// [资产库] 标准列表
 	'asset/index_list'			=>			['admin/assets/index_list',['method' => 'GET']],
 	// [问题反馈] 问题回复
-	'help/add_answer'				=>			['admin/helps/add_answer',['method' =>'POST']],
+	'help/add_answer'				=>			['admin/helps/save_problem',['method' =>'POST']],
 	// [问题反馈] 查看所属问题所有回复
 	'help/answer_list'			=>			['admin/helps/answer_list',['method' =>'GET']],
-
+	// [问题反馈] 删除回复
+	'help/del_answer'				=>			['admin/helps/delete_answer',['method' =>'GET']],
+	// [问题反馈] 批量启用/禁用
+	'admin/helps/enables'   =>      ['admin/helps/enables', ['method' => 'POST']],
+	// [问题] 批量删除
+	'admin/helps/deletes'   =>      ['admin/helps/deletes_by_ids', ['method' => 'POST']],
 
 
 

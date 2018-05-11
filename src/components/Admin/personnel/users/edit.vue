@@ -13,7 +13,8 @@
           <el-input v-model.trim="form.username" class="h-40 w-200" :maxlength=12 :disabled="true"></el-input>
         </el-form-item>
         <el-form-item label="密码" prop="password">
-          <el-input v-model.trim="form.password" class="h-40 w-200"></el-input>
+          <el-input type="password" v-model.trim="form.password" class="h-40 w-200"></el-input>
+          <el-button type="text" size="mini" class="fz-12 m-0" @click="getInitialPwd">点击初始化密码</el-button>
         </el-form-item>
         <el-form-item label="真实姓名" prop="realname">
           <el-input v-model.trim="form.realname" class="h-40 w-200"></el-input>
@@ -80,9 +81,9 @@
           username: [
             {required: true, message: '请输入用户名'}
           ],
-          password: [
-            {required: true, message: '请输入密码'}
-          ],
+//          password: [
+//            {required: true, message: '请输入密码'}
+//          ],
           realname: [
             {required: true, message: '请输入真实姓名'}
           ],
@@ -160,6 +161,9 @@
             })
           }
         })
+      },
+      getInitialPwd() {
+        this.form.password = 123456
       },
 //			获取所有角色
       getAllGroups() {

@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="btn_group">
 		<el-button :loading="enableLoading" size="small" @click="changeAttrInBtnGroup(1)" v-if="enableShow">启用</el-button>
 		<el-button :loading="disableLoading" size="small" @click="changeAttrInBtnGroup(0)" v-if="enableShow">禁用</el-button>
 		<el-button :loading="deleteLoading" size="small" @click="deleteDatasInBtnGroup()" v-if="deletesShow">删除</el-button>
@@ -36,6 +36,7 @@
           _g.toastMsg('warning', '请勾选数据')
           return
         }
+        console.log(this.selectedData)
         let word = ''
         if (cate == 1) {
           word = '启用'
@@ -52,6 +53,7 @@
         this.apiPost(url, data).then((res) => {
           this.handelResponse(res, (data) => {
             _g.toastMsg('success', word + '成功')
+            console.log(this.$route.name)
             setTimeout(() => {
               _g.shallowRefresh(this.$route.name)
             }, 1500)
@@ -79,6 +81,7 @@
             _g.toastMsg('success', res.data)
             setTimeout(() => {
               _g.shallowRefresh(this.$route.name)
+							console.log(this.$route.name)
             }, 1500)
           }, () => {
             this.deleteLoading = !this.deleteLoading
@@ -99,3 +102,8 @@
     mixins: [http]
   }
 </script>
+<style>
+	.btn_group {
+		display: inline-block;
+	}
+</style>
