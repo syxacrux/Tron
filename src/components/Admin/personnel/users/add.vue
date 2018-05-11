@@ -13,7 +13,7 @@
 					<el-input v-model.trim="form.username" class="h-40 w-200" :maxlength=12></el-input>
 				</el-form-item>
 				<el-form-item label="密码" prop="password">
-					<el-input v-model.trim="form.password" class="h-40 w-200"></el-input>
+					<el-input type="password" v-model.trim="form.password" class="h-40 w-200"></el-input>
 				</el-form-item>
 				<el-form-item label="真实姓名" prop="realname">
 					<el-input v-model.trim="form.realname" class="h-40 w-200"></el-input>
