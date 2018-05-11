@@ -150,7 +150,10 @@ return [
 	'help/answer_list'			=>			['admin/helps/answer_list',['method' =>'GET']],
 	// [问题反馈] 删除回复
 	'help/del_answer'				=>			['admin/helps/delete_answer',['method' =>'GET']],
-
+	// [问题反馈] 批量启用/禁用
+	'admin/helps/enables'   =>      ['admin/helps/enables', ['method' => 'POST']],
+	// [问题] 批量删除
+	'admin/helps/deletes'    =>      ['admin/helps/deletes', ['method' => 'POST']],
 
 
 
