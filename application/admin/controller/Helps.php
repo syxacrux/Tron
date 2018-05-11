@@ -33,7 +33,7 @@ class Helps extends BaseCommon{
 	}
 
 	//发起文章
-	public function save_article(){
+	public function save(){
 		$help_model = model('Help');
 		$uid = $this->uid;
 		$param = $this->param;
