@@ -56,7 +56,7 @@ class User extends Common
 			$where['studio_id'] = $keywords['studio_id'];
 		}
 		if(!empty($keywords['tache_id'])){
-			$where['tache_ids'] = ['like','%'.$keywords['tache_id'.'%']];
+			$where['tache_ids'] = ['like','%' . $keywords['tache_id'] . '%'];
 		}
 		// 默认除去超级管理员
 		$where['user.id'] = ['neq',1];
