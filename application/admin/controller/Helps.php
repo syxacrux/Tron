@@ -32,7 +32,8 @@ class Helps extends BaseCommon{
 		return resultArray(['data' => $data]);
 	}
 
-	public function save(){
+	//发起文章
+	public function save_article(){
 		$help_model = model('Help');
 		$uid = $this->uid;
 		$param = $this->param;
@@ -43,12 +44,12 @@ class Helps extends BaseCommon{
 		return resultArray(['data' => '添加成功']);
 	}
 
-	//问题回复
-	public function add_answer(){
+	//发起问题
+	public function save_problem(){
 		$help_model = model('Help');
 		$uid = $this->uid;
 		$param = $this->param;
-		$data = $help_model->addAnswer_ById($param,$uid);
+		$data = $help_model->addProblem_ById($param,$uid);
 		if(!$data){
 			return resultArray(['error' => $help_model->getError()]);
 		}else{
@@ -64,7 +65,8 @@ class Helps extends BaseCommon{
 		return resultArray(['data'=>$data]);
 	}
 
-	public function update(){
+	//编辑文章
+	public function update_article(){
 		$help_model = model('Help');
 		$uid = $this->uid;
 		$param = $this->param;
@@ -75,6 +77,7 @@ class Helps extends BaseCommon{
 		return resultArray(['data' => '编辑成功']);
 	}
 
+	//删除
 	public function delete(){
 		$help_model = model('Help');
 		$param = $this->param;
@@ -85,6 +88,7 @@ class Helps extends BaseCommon{
 		return resultArray(['data' => '删除成功']);
 	}
 
+	//删除回复
 	public function delete_answer(){
 		$help_model = model('Help');
 		$param = $this->param;
@@ -96,6 +100,7 @@ class Helps extends BaseCommon{
 		}
 	}
 
+	//根据ID删除
 	public function deletes(){
 		$help_model = model('Help');
 		$param = $this->param;
@@ -106,6 +111,7 @@ class Helps extends BaseCommon{
 		return resultArray(['data' => '删除成功']);
 	}
 
+	//批量启用 | 禁用 文章
 	public function enables(){
 		$help_model = model('Help');
 		$param = $this->param;
