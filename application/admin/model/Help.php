@@ -8,15 +8,17 @@ class Help extends Common{
 	protected $name = 'helps';
 
 	//带分页的列表
-	public function getHelpList($screen,$page,$limit){
+	public function getHelpList($screen,$user_id,$page,$limit){
 		$where = [];
+		if($user_id != 1){
+			$where['status'] = 1; //除超级管理员外，其他角色只能看到启用状态的数据
+		}
 		if(!empty($screen['category_id'])){
 			$where['category_id'] = $screen['category_id'];
 		}
 		if(!empty($screen['keywords'])){	//关键词
 			$where['keywords'] = ['like','%'.$screen['keywords']];
 		}
-		$where['status'] = 1; //默认显示启用
 		$dataCount = $this->where($where)->count('id');
 		$list = $this->where($where);
 		//若有分页

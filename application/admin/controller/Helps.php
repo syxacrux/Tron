@@ -15,10 +15,11 @@ class Helps extends BaseCommon{
 	public function index(){
 		$help_model = model('Help');
 		$param = $this->param;
+		$uid = $this->uid;
 		$screen = !empty($param['screen']) ? json_decode($param['screen'],true): '';
 		$page = !empty($param['page']) ? $param['page']: '';
 		$limit = !empty($param['limit']) ? $param['limit']: '';
-		$data = $help_model->getHelpList($screen, $page, $limit);
+		$data = $help_model->getHelpList($screen,$uid, $page, $limit);
 		return resultArray(['data' => $data]);
 	}
 
