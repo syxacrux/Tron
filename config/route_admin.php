@@ -149,7 +149,7 @@ return [
 	// [问题反馈] 查看所属问题所有回复
 	'help/answer_list'			=>			['admin/helps/answer_list',['method' =>'GET']],
 	// [问题反馈] 删除回复
-	'help/del_answer'		=>			['admin/helps/delete_answer',['method' =>'GET']],
+	'help/del_answer'				=>			['admin/helps/delete_answer',['method' =>'GET']],
 
 
 
