@@ -153,7 +153,7 @@ return [
 	// [问题反馈] 批量启用/禁用
 	'admin/helps/enables'   =>      ['admin/helps/enables', ['method' => 'POST']],
 	// [问题] 批量删除
-	'admin/helps/deletes'    =>      ['admin/helps/deletes', ['method' => 'POST']],
+	'admin/helps/deletes'   =>      ['admin/helps/deletes_by_ids', ['method' => 'POST']],
 
 
 

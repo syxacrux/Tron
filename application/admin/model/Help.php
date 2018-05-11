@@ -127,5 +127,19 @@ class Help extends Common{
 		}
 	}
 
+	public function del_Datas($ids){
+		if (empty($ids)) {
+			$this->error = '删除失败';
+			return false;
+		}
+		try{
+			$ids = array_unique($ids);
+			$this->where('id','in',$ids)->delete();
+			return true;
+		}catch(\Exception $e){
+			$this->error = '删除失败';
+			return false;
+		}
+	}
 
 }

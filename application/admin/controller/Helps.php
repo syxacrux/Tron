@@ -101,10 +101,10 @@ class Helps extends BaseCommon{
 	}
 
 	//根据多ID删除
-	public function deletes(){
+	public function deletes_by_ids(){
 		$help_model = model('Help');
 		$param = $this->param;
-		$data = $help_model->delDatas($param['ids'], true);
+		$data = $help_model->del_Datas($param['ids']);
 		if (!$data) {
 			return resultArray(['error' => $help_model->getError()]);
 		}
