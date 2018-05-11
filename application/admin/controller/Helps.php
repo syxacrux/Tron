@@ -66,7 +66,7 @@ class Helps extends BaseCommon{
 	}
 
 	//编辑文章
-	public function update_article(){
+	public function update(){
 		$help_model = model('Help');
 		$uid = $this->uid;
 		$param = $this->param;
