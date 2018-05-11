@@ -16,26 +16,29 @@
       </router-link>
       <div class="pos-abs r-0 t-0">
         <el-col>
-          <el-input placeholder="请输入关键字" class="input-with-select">
-            <el-button slot="append" icon="el-icon-search"></el-button>
+          <el-input placeholder="请输入关键字" v-model="search.keywords" class="input-with-select">
+            <el-select class="w-80" v-model="search.type" slot="prepend" placeholder="类型">
+              <el-option label="文章" value="1"></el-option>
+              <el-option label="问题" value="2"></el-option>
+            </el-select>
+            <el-button slot="append" icon="el-icon-search" @click="getAllHelps(1)"></el-button>
           </el-input>
         </el-col>
       </div>
     </div>
     <div class="help_list">
       <ul>
-        <li v-for="item in helpList">
-          <router-link :to="{ name: 'helpDetail', params: {id: item.id} }">
+        <li class="bor-b-gray m-b-10" v-for="item in helpList">
+          <router-link v-if="item.type === 1" :to="{ name: 'helpDetail', params: {id: item.id} }">
             {{ item.type_name }}   {{ item.title }}
           </router-link>
-          <p class="tx-r fr">{{ item.create_time }}</p>
-          <!--<p class="tx-r" style="display: block">-->
-            <!--<span v-if="editShow">-->
-  						<!--&lt;!&ndash;<router-link :to="{ name: 'parametersEdit', params: { id: scope.row.id }}">&ndash;&gt;-->
-                <!--<el-button size="small" type="primary">回复</el-button>-->
-              <!--&lt;!&ndash;</router-link>&ndash;&gt;-->
-  					<!--</span>-->
-          <!--</p>-->
+          <router-link v-if="item.type === 2" :to="{ name: 'helpDetail', params: {id: item.id} }">
+            <span class="degree">[{{ item.degree_name }}]</span>{{ item.type_name }}   {{ item.content }}
+          </router-link>
+          <p class="tx-r fr fz-14">{{ item.user_name }} 发布于  {{ item.create_time }}</p>
+          <div v-if="item.type === 1" class="h-40 w-1000 fz-12 c-black space_nowr">
+            {{ item.content }}
+          </div>
         </li>
       </ul>
     </div>
@@ -51,20 +54,23 @@
       </div>
     </div>
     <el-dialog title="问题反馈" :visible.sync="isAddHelps" width="30%">
-      <el-form :model="form" label-width="120px" :rules="rules">
-        <el-form-item label="反馈类型：" prop="type">
-          <el-select v-model="form.type" placeholder="请选择问题类型">
-            <el-option label="服务器" value="1"></el-option>
-            <el-option label="会议室" value="2"></el-option>
-            <el-option label="软件" value="3"></el-option>
+      <el-form ref="form" :model="form" label-width="120px" :rules="rules">
+        <el-form-item label="反馈类型：" prop="category_id">
+          <el-select v-model="form.category_id" placeholder="请选择问题类型">
+            <el-option v-for="item in options" :label="item.category" :value="item.id" :key="item.id"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="反馈内容：" prop="question">
+        <el-form-item label="反馈类型：" prop="degree">
+          <el-select v-model="form.degree" placeholder="请选择紧急程度">
+            <el-option v-for="item in degreeOptions" :label="item.category" :value="item.id" :key="item.id"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="反馈内容：" prop="content">
             <el-input
                 type="textarea"
                 :autosize="{ minRows: 2, maxRows: 4}"
                 placeholder="请输入反馈内容"
-                v-model="form.question">
+                v-model="form.content">
             </el-input>
         </el-form-item>
       </el-form>
@@ -89,14 +95,24 @@
         helpList: [],
         currentPage: 1,
         keywords: '',
+        options: [],
+        degreeOptions: [],
         limit: 10,
+        page: 1,
+        search: {
+          keywords: '',
+          type: ''
+        },
         form: {
-          type: '',
-          question: ''
+          category_id: '',
+          content: '',
+          degree: '',
+          type: 2
         },
         rules: {
-          type: [{required: true, message: '请选择问题类型', trigger: 'blur'}],
-          question: [{required: true, message: '请输入反馈内容', trigger: 'blur'}]
+          category_id: [{required: true, message: '请选择问题类型', trigger: 'blur'}],
+          content: [{required: true, message: '请输入反馈内容', trigger: 'blur'}],
+          degree: [{required: true, message: '请输入反馈内容', trigger: 'blur'}]
         },
         editHelpDetail: {}
       }
@@ -115,9 +131,13 @@
                 setTimeout(() => {
                   this.isLoading = !this.isLoading
                   this.form = {
-                    type: '',
-                    question: ''
+                    category_id: '',
+                    content: '',
+                    degree: '',
+                    type: 2
                   }
+                  this.isAddHelps = !this.isAddHelps
+                  this.getAllHelps(this.page)
                 }, 1500)
               }, () => {
                 this.isLoading = !this.isLoading
@@ -132,10 +152,11 @@
       },
 //      获取问题反馈列表
       getAllHelps (page) {
+        this.page = page
         this.loading = true
         const data = {
           params: {
-            keywords: this.keywords,
+            keywords: this.search,
             page: page,
             limit: this.limit
           }
@@ -147,20 +168,41 @@
           })
         })
       },
-//      获取关键字
-      getKeywords () {
-        let data = this.$route.query
-        if (data) {
-          if (data.keywords) {
-            this.keywords = data.keywords
-          } else {
-            this.keywords = ''
+//      获取父级分类
+      getParameters() {
+        const data = {
+          params: {
+            keywords: {
+              pid:  4
+            }
           }
         }
+        this.apiGet('admin/parameters',data).then((res) => {
+          this.handelResponse(res, (data) => {
+            this.options = data.list
+          })
+        })
+      },
+      //      获取父级分类
+      getDegreeList() {
+        const data = {
+          params: {
+            keywords: {
+              pid:  9
+            }
+          }
+        }
+        this.apiGet('admin/parameters',data).then((res) => {
+          this.handelResponse(res, (data) => {
+            this.degreeOptions = data.list
+          })
+        })
       },
 //      初始化问题反馈列表内容
       init () {
         this.getAllHelps(1)
+        this.getParameters()
+        this.getDegreeList()
       }
     },
     created () {
@@ -198,8 +240,22 @@
     padding-bottom: 10px;
   }
   .help .help_list {
-    padding: 10px;
+    padding: 15px;
     border-radius: 5px;
     background: #fff;
+  }
+  .help .help_list li a{
+    color: #409eff;
+  }
+  .help .help_list li a:hover{
+    text-decoration: underline;
+  }
+  .help .help_list li p{
+    margin: 0;
+    color: #666;
+  }
+  .help .help_list .degree{
+    color: orangered;
+    font-weight: 500;
   }
 </style>
