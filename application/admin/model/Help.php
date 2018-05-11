@@ -74,7 +74,7 @@ class Help extends Common{
 	}
 
 	//问题回答
-	public function addAnswer_ById($param,$uid){
+	public function addProblem_ById($param,$uid){
 		try{
 			$param['user_id'] = $uid;
 			$param['create_time'] = time();
