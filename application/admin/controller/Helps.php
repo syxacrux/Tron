@@ -100,7 +100,7 @@ class Helps extends BaseCommon{
 		}
 	}
 
-	//根据ID删除
+	//根据多ID删除
 	public function deletes(){
 		$help_model = model('Help');
 		$param = $this->param;
