@@ -118,9 +118,9 @@
         this.loading = true
         const data = {
           params: {
-//            keywords: {
-////              name: this.name
-//            },
+            keywords: {
+              name: this.name
+            },
             page: page,
             limit: this.limit
           }
@@ -144,7 +144,7 @@
       },
       init() {
         this.getKeywords()
-        this.getAllUsers()
+        this.getAllUsers(1)
       }
     },
     created() {

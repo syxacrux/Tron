@@ -49,8 +49,8 @@ class User extends Common
 	public function getDataList($keywords, $page, $limit)
 	{
 		$where = [];
-		if ($keywords) {
-			$where['username|realname'] = ['like', '%' . $keywords . '%'];
+		if ($keywords['name']) {
+			$where['username|realname'] = ['like', '%' . $keywords['name'] . '%'];
 		}
 		// 默认除去超级管理员
 		$where['user.id'] = array('neq', 1);
@@ -151,7 +151,7 @@ class User extends Common
 
 		try {
 			$userGroups['group_id'] = $param['group_id'];
-			Db::name('admin_access')->where('user_id', $id)->update($userGroups);
+			Access::where('user_id', $id)->update($userGroups);
 
 			if (!empty($param['password'])) {
 				$param['password'] = user_md5($param['password']);
