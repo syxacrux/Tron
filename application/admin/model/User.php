@@ -49,11 +49,17 @@ class User extends Common
 	public function getDataList($keywords, $page, $limit)
 	{
 		$where = [];
-		if ($keywords['name']) {
+		if(!empty($keywords['name'])){
 			$where['username|realname'] = ['like', '%' . $keywords['name'] . '%'];
 		}
+		if(!empty($keywords['studio_id'])){
+			$where['studio_id'] = $keywords['studio_id'];
+		}
+		if(!empty($keywords['tache_id'])){
+			$where['tache_ids'] = ['like','%'.$keywords['tache_id'.'%']];
+		}
 		// 默认除去超级管理员
-		$where['user.id'] = array('neq', 1);
+		$where['user.id'] = ['neq',1];
 		$dataCount = $this->alias('user')->where($where)->count('id');
 
 		$list = $this->where($where)->alias('user')

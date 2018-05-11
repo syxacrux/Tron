@@ -19,7 +19,7 @@ class Studios extends BaseCommon{
         $uid = $this->uid;
         $group_id = Access::where('user_id',$uid)->value('group_id'); //所属角色
         $param = $this->param;
-        $keywords = !empty($param['keywords']) ? $param['keywords']: '';
+        $keywords = !empty($param['keywords']) ? json_decode($param['keywords'],true): '';
         $page = !empty($param['page']) ? $param['page']: '';
         $limit = !empty($param['limit']) ? $param['limit']: '';
         $data = $studio_model->getList($keywords, $page, $limit,$uid,$group_id);
