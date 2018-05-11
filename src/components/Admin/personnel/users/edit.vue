@@ -81,9 +81,9 @@
           username: [
             {required: true, message: '请输入用户名'}
           ],
-          password: [
-            {required: true, message: '请输入密码'}
-          ],
+//          password: [
+//            {required: true, message: '请输入密码'}
+//          ],
           realname: [
             {required: true, message: '请输入真实姓名'}
           ],
