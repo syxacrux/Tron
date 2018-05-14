@@ -97,7 +97,7 @@
                 :titles="['请选择', '已选择']"
                 filterable
                 :filter-method="filterMethod"
-                filter-placeholder="请输入拼音"
+                filter-placeholder="请输入用户名"
                 v-model="scene_director"
                 :data="userList">
             </el-transfer>
@@ -107,7 +107,7 @@
                 :titles="['请选择', '已选择']"
                 filterable
                 :filter-method="filterMethod"
-                filter-placeholder="请输入拼音"
+                filter-placeholder="请输入用户名"
                 v-model="producer"
                 :data="userList">
             </el-transfer>
@@ -119,7 +119,7 @@
                 :titles="['请选择', '已选择']"
                 filterable
                 :filter-method="filterMethod"
-                filter-placeholder="请输入拼音"
+                filter-placeholder="请输入用户名"
                 v-model="scene_producer"
                 :data="userList">
             </el-transfer>
@@ -129,7 +129,7 @@
                 :titles="['请选择', '已选择']"
                 filterable
                 :filter-method="filterMethod"
-                filter-placeholder="请输入拼音"
+                filter-placeholder="请输入用户名"
                 v-model="visual_effects_boss"
                 :data="userList">
             </el-transfer>
@@ -141,7 +141,7 @@
                 :titles="['请选择', '已选择']"
                 filterable
                 :filter-method="filterMethod"
-                filter-placeholder="请输入拼音"
+                filter-placeholder="请输入用户名"
                 v-model="visual_effects_producer"
                 :data="userList">
             </el-transfer>
@@ -151,7 +151,7 @@
                 :titles="['请选择', '已选择']"
                 filterable
                 :filter-method="filterMethod"
-                filter-placeholder="请输入拼音"
+                filter-placeholder="请输入用户名"
                 v-model="second_company_producer"
                 :data="userList">
             </el-transfer>
@@ -163,7 +163,7 @@
                 :titles="['请选择', '已选择']"
                 filterable
                 :filter-method="filterMethod"
-                filter-placeholder="请输入拼音"
+                filter-placeholder="请输入用户名"
                 v-model="inside_coordinate"
                 :data="userList">
             </el-transfer>
