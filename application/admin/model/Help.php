@@ -6,6 +6,8 @@ use app\common\model\Common;
 
 class Help extends Common{
 	protected $name = 'helps';
+	protected $category_arr = [1=>'[百科]',2=>'[提问]'];
+	protected $system_category_arr = [0=>'未选择',1=>'mac',2=>'linux',3=>'windows'];
 
 	//带分页的列表
 	public function getHelpList($screen,$user_id,$page,$limit){
@@ -15,6 +17,9 @@ class Help extends Common{
 		}
 		if(!empty($screen['category_id'])){
 			$where['category_id'] = $screen['category_id'];
+		}
+		if(!empty($screen['system_category_id'])){
+			$where['system_category_id'] = $screen['system_category_id'];
 		}
 		if(!empty($screen['keywords'])){	//关键词
 			$where['keywords'] = ['like','%'.$screen['keywords']];
@@ -27,8 +32,9 @@ class Help extends Common{
 		}
 		$list = $list->select();
 		for($i = 0;$i < count($list); $i++){
-			$list[$i]['type_name'] = ($list[$i]['type'] == 1) ? '[百科]' : '[问题]';
+			$list[$i]['type_name'] = $this->category_arr[$list[$i]['type']];
 			$list[$i]['category_name'] = Parameter::get($list[$i]['category_id'])->category;
+			$list[$i]['system_category_name'] = $this->system_category_arr[$list[$i]['system_category_id']];
 			$list[$i]['degree_name'] = Parameter::get($list[$i]['degree'])->category;
 			$list[$i]['user_name'] = User::get($list[$i]['user_id'])->realname;
 			$list[$i]['create_time'] = date("Y-m-d H:i:s",$list[$i]['create_time']);
