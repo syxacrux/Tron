@@ -207,15 +207,18 @@ class Shot extends Common
 			} else {
 				//镜头表新增成功 更新所属项目表镜头数量 lens_count +1
 				$lens_count['lens_count'] = $this->where('project_id', $param['project_id'])->count('id');
-				Db::name('admin_project')->where('id', $param['project_id'])->update($lens_count);
+				$project_obj = new Project();
+				$project_obj->where('id', $param['project_id'])->update($lens_count);
 				$project_byname = $project_obj->project_byname;
 				$field_name = Field::get($param['field_id'])->name;
 
 				//执行redis添加镜头所属目录 python
 				$str = "'Shot' '{$project_byname}' '{$field_name}' '{$param['shot_name']}'";
-				/*$redis = new RedisPackage();
+				/*
+				$redis = new RedisPackage();
 				$cmd = "python /usr/local/httpd/htdocs/tron/tronPipelineScript/createDirPath/parser.py $str ";
-				$redis::LPush("pyFile",$cmd);*/
+				$redis::LPush("pyFile",$cmd);
+				*/
 
 				//根据环节分配任务给各大工作室
 				foreach ($tache_data as $key => $val) {
@@ -250,7 +253,7 @@ class Shot extends Common
 						$task_data['project_id'] = $curr_shot_obj->project_id;   //所属项目ID
 						$task_data['field_id'] = $curr_shot_obj->field_id;   //场号ID
 						$task_data['shot_id'] = $shot_id;  //镜头ID
-						$task_data['asset_id'] = 0;	//资产ID默认为0
+						$task_data['asset_id'] = 0;  //资产ID默认为0
 						$task_data['tache_id'] = $key;  //环节ID
 						$task_data['tache_sort'] = Tache::get($key)->sort;  //环节排序
 						$task_data['studio_id'] = 0;   //工作室ID
@@ -304,39 +307,42 @@ class Shot extends Common
 			$shot_model = new Shot();
 			//更新当前镜头行记录
 			$shot_model->allowField(true)->save($param, [$this->getPk() => $id]);
-			$project_byname = Project::get($param['project_id'])->project_byname;
-			$field_name = Field::get($param['field_id'])->name;
-			//执行redis添加镜头所属目录 python
-			$str = "'Shot' '{$project_byname}' '{$field_name}' '{$param['shot_name']}'";
+
 			/* 修改基本信息 或者 为环节分配所属工作室的任务 */
-			if(!empty($param['tache'])){
+			if (!empty($param['tache'])) {
 				/**
 				 * begin 处理环节内的数据
 				 * $tache_has_data array 环节内包含工作室
 				 * $tache_empty_data array 环节内不包含工作室时 环节ID校验所属镜头包含的环节，过滤已存在的返回
 				 * 执行为环节创建任务的操作
 				 */
+				$tache_empty_data = [];
+				$tache_has_data = [];
 				foreach ($param['tache'] as $key => $value) {
 					if (!empty($value)) {
-						$tache_has_data[$key] = $value;	//存在工作室
-					}else{
-						$tache_empty_data[] = $key;	//不存在工作室
+						$tache_has_data[$key] = $value;  //存在工作室
+					} else {
+						$tache_empty_data[] = $key;  //不存在工作室
 					}
 				}
 				//获取当前镜头下的所有环节
-				$tache_by_task = array_unique(Workbench::where('shot_id',$id)->column('tache_id'));
+				$tache_by_task = array_unique(Workbench::where('shot_id', $id)->column('tache_id'));
+
 				//弹出相同的环节
-				foreach($tache_by_task as $key=>$value){
-					foreach($tache_empty_data as $k=>$v){
-						if($v==$value){
-							unset($tache_empty_data[$k]);
-						}else{
-							break;
+				if (!empty($tache_empty_data)) {
+					foreach ($tache_by_task as $key => $value) {
+						foreach ($tache_empty_data as $k => $v) {
+							if ($v == $value) {
+								unset($tache_empty_data[$k]);
+							} else {
+								break;
+							}
 						}
 					}
 				}
+
 				//环节内有工作室 给相应工作室总监分配任务
-				if(!empty($tache_has_data)){
+				if (!empty($tache_has_data)) {
 					foreach ($tache_has_data as $key => $value) {
 						foreach ($value as $k => $v) {
 							$task_data['group_id'] = 5;
@@ -367,8 +373,8 @@ class Shot extends Common
 				}
 
 				//新增环节 但无工作室
-				if(!empty($tache_empty_data)){
-					foreach ($tache_empty_data as $key=>$value){
+				if (!empty($tache_empty_data)) {
+					foreach ($tache_empty_data as $key => $value) {
 						$task_data['group_id'] = 0;
 						$task_data['user_id'] = 0;
 						$task_data['project_id'] = $param['project_id'];   //所属项目ID
@@ -394,10 +400,14 @@ class Shot extends Common
 					}
 					unset($task_data);
 				}
+				//更新任务数据 过滤未分配工作室的任务
+				$task_count['task_count'] = Workbench::where('project_id', $param['project_id'])->where('studio_id','neq',0)->count('id');
+				$project_obj = new Project();
+				$project_obj->where('id', $param['project_id'])->update($task_count);
 				//添加
 				$this->commit();
 				return true;
-			}else{	//更新镜头数据
+			} else {  //更新镜头数据
 				$shot_model->allowField(true)->save($param, [$this->getPk() => $id]);
 				$this->commit();
 				return true;
@@ -488,10 +498,10 @@ class Shot extends Common
 	{
 		$studio_ids_arr = array_unique($studio_id_arr);
 		foreach ($studio_ids_arr as $key => $value) {
-			if($value != 0){
+			if ($value != 0) {
 				$arr[$key]['id'] = $value;
 				$arr[$key]['name'] = Studio::get($value)->name;
-			}else{
+			} else {
 				$arr = [];
 			}
 		}
@@ -500,14 +510,15 @@ class Shot extends Common
 	}
 
 	//根据资产ID string 获取名称
-	public function get_assets_name($asset_ids_str){
-		$asset_ids_arr = explode(',',$asset_ids_str);
+	public function get_assets_name($asset_ids_str)
+	{
+		$asset_ids_arr = explode(',', $asset_ids_str);
 		$asset_arr = [];
-		foreach($asset_ids_arr as $key=>$value){
+		foreach ($asset_ids_arr as $key => $value) {
 			$asset_arr[$key]['type'] = Field::get(Asset::get($value)->field_id)->explain;
 			$asset_arr[$key]['name'] = $asset_names[] = Asset::get($value)->asset_name;
 		}
-		$data['asset_names'] = implode(',',$asset_names);
+		$data['asset_names'] = implode(',', $asset_names);
 		$data['asset_arr'] = $asset_arr;
 		return $data;
 	}
@@ -603,6 +614,10 @@ class Shot extends Common
 				$this->error = '删除失败';
 				return false;
 			} else {
+				//更新所属项目任务数量 过滤未分配工作室的任务
+				$taskCount['task_count'] = Workbench::where('shot_id',$shot_obj->id)->where('studio_id','neq',0)->count('id');
+				$project_obj = new Project();
+				$project_obj->where('id',$shot_obj->project_id)->udpate($taskCount);
 				return true;
 			}
 		} catch (\Exception $e) {
