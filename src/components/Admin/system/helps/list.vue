@@ -15,7 +15,7 @@
         <i class="el-icon-plus"></i>&nbsp;&nbsp;发起文章
       </router-link>
     </div>
-    <div class="m-b-20 pos-rel">
+    <div class="m-b-10 h-40 pos-rel">
       <div class="pos-abs t-0 l-0">
         <el-row :gutter="10" class="m-b-5">
           <el-col :span="6  ">
@@ -26,8 +26,6 @@
               <el-option label="Window" :value="3"></el-option>
             </el-select>
           </el-col>
-        <!--</el-row>-->
-        <!--<el-row :gutter="10" class="m-b-5">-->
           <el-col :span="15">
             <el-input placeholder="请输入关键字" v-model="search.keywords" class="input-with-select">
               <el-select class="w-80" v-model="search.type" slot="prepend" placeholder="类型">
