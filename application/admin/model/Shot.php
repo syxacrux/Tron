@@ -591,6 +591,10 @@ class Shot extends Common
 				$this->error = '删除失败';
 				return false;
 			} else {
+				//更新所属项目的任务数量 过滤未分配工作室的任务
+				$taskCount['task_count'] = Workbench::where('id',$shot_obj->project_id)->where('studio_id','neq',0)->count('id');
+				$project_obj = new Project();
+				$project_obj->where('id',$shot_obj->project_id)->update($taskCount);
 				return true;
 			}
 		} catch (\Exception $e) {
