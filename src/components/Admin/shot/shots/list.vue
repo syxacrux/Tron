@@ -45,27 +45,27 @@
     </div>
     <div class="shots ovf-hd">
       <el-col class="" :span="12">
-        <el-card class="box-card">
-          <div v-for="o in 4" :key="o" class="text item1">
-            {{'列表内容 ' + o }}
-          </div>
-          <div class="box-after">
-            <p class="box-card-p">Liangcy:</p>
-            <div class="box-card-div">
-              <p>提交文件---fuy003002_rig_liangcy_sdddf_v0101提交dailies。</p>
-              <p>时间：20180207-14：52</p>
-              <p>时间：20180207-14：52</p>
-            </div>
-          </div>
-          <div class="box-after">
-            <p class="box-card-p">Liangcy:</p>
-            <div class="box-card-div">
-              <p>提交文件---fuy003002_rig_liangcy_sdddf_v0101提交dailies。</p>
-              <p>时间：20180207-14：52</p>
-              <p>时间：20180207-14：52</p>
-            </div>
-          </div>
-        </el-card>
+        <!--<el-card class="box-card">-->
+          <!--<div v-for="o in 4" :key="o" class="text item1">-->
+            <!--{{'列表内容 ' + o }}-->
+          <!--</div>-->
+          <!--<div class="box-after">-->
+            <!--<p class="box-card-p">Liangcy:</p>-->
+            <!--<div class="box-card-div">-->
+              <!--<p>提交文件-&#45;&#45;fuy003002_rig_liangcy_sdddf_v0101提交dailies。</p>-->
+              <!--<p>时间：20180207-14：52</p>-->
+              <!--<p>时间：20180207-14：52</p>-->
+            <!--</div>-->
+          <!--</div>-->
+          <!--<div class="box-after">-->
+            <!--<p class="box-card-p">Liangcy:</p>-->
+            <!--<div class="box-card-div">-->
+              <!--<p>提交文件-&#45;&#45;fuy003002_rig_liangcy_sdddf_v0101提交dailies。</p>-->
+              <!--<p>时间：20180207-14：52</p>-->
+              <!--<p>时间：20180207-14：52</p>-->
+            <!--</div>-->
+          <!--</div>-->
+        <!--</el-card>-->
         <div class="pos-rel p-t-20">
           <div class="block pages">
             <el-pagination
@@ -79,27 +79,27 @@
         </div>
       </el-col>
       <el-col class="" :span="12">
-        <el-card class="box-card">
-          <div v-for="o in 4" :key="o" class="text item1">
-            {{'列表内容 ' + o }}
-          </div>
-          <div class="box-after">
-            <p class="box-card-p">Liangcy:</p>
-            <div class="box-card-div">
-              <p>提交文件---fuy003002_rig_liangcy_sdddf_v0101提交dailies。</p>
-              <p>时间：20180207-14：52</p>
-              <p>时间：20180207-14：52</p>
-            </div>
-          </div>
-          <div class="box-after">
-            <p class="box-card-p">Liangcy:</p>
-            <div class="box-card-div">
-              <p>提交文件---fuy003002_rig_liangcy_sdddf_v0101提交dailies。</p>
-              <p>时间：20180207-14：52</p>
-              <p>时间：20180207-14：52</p>
-            </div>
-          </div>
-        </el-card>
+        <!--<el-card class="box-card">-->
+          <!--<div v-for="o in 4" :key="o" class="text item1">-->
+            <!--{{'列表内容 ' + o }}-->
+          <!--</div>-->
+          <!--<div class="box-after">-->
+            <!--<p class="box-card-p">Liangcy:</p>-->
+            <!--<div class="box-card-div">-->
+              <!--<p>提交文件-&#45;&#45;fuy003002_rig_liangcy_sdddf_v0101提交dailies。</p>-->
+              <!--<p>时间：20180207-14：52</p>-->
+              <!--<p>时间：20180207-14：52</p>-->
+            <!--</div>-->
+          <!--</div>-->
+          <!--<div class="box-after">-->
+            <!--<p class="box-card-p">Liangcy:</p>-->
+            <!--<div class="box-card-div">-->
+              <!--<p>提交文件-&#45;&#45;fuy003002_rig_liangcy_sdddf_v0101提交dailies。</p>-->
+              <!--<p>时间：20180207-14：52</p>-->
+              <!--<p>时间：20180207-14：52</p>-->
+            <!--</div>-->
+          <!--</div>-->
+        <!--</el-card>-->
         <div class="pos-rel p-t-20">
           <div class="block pages">
             <el-pagination

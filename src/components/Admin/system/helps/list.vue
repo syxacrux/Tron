@@ -14,16 +14,28 @@
       <router-link class="btn-link-large add-btn" to="add" v-if="addArticle">
         <i class="el-icon-plus"></i>&nbsp;&nbsp;发起文章
       </router-link>
-      <div class="pos-abs r-0 t-0">
-        <el-col>
-          <el-input placeholder="请输入关键字" v-model="search.keywords" class="input-with-select">
-            <el-select class="w-80" v-model="search.type" slot="prepend" placeholder="类型">
-              <el-option label="文章" value="1"></el-option>
-              <el-option label="问题" value="2"></el-option>
+    </div>
+    <div class="m-b-10 h-40 pos-rel">
+      <div class="pos-abs t-0 l-0">
+        <el-row :gutter="10" class="m-b-5">
+          <el-col :span="6  ">
+            <el-select v-model="search.system_category_id" placeholder="请选择系统">
+              <el-option label="所有系统" :value="0"></el-option>
+              <el-option label="Mac" :value="1"></el-option>
+              <el-option label="Linux" :value="2"></el-option>
+              <el-option label="Window" :value="3"></el-option>
             </el-select>
-            <el-button slot="append" icon="el-icon-search" @click="getAllHelps(1)"></el-button>
-          </el-input>
-        </el-col>
+          </el-col>
+          <el-col :span="15">
+            <el-input placeholder="请输入关键字" v-model="search.keywords" class="input-with-select">
+              <el-select class="w-80" v-model="search.type" slot="prepend" placeholder="类型">
+                <el-option label="文章" value="1"></el-option>
+                <el-option label="问题" value="2"></el-option>
+              </el-select>
+              <el-button slot="append" icon="el-icon-search" @click="getAllHelps(1)"></el-button>
+            </el-input>
+          </el-col>
+        </el-row>
       </div>
     </div>
     <div class="help_list" v-if="helpList.length">
@@ -112,6 +124,7 @@
         page: 1,
         search: {
           keywords: '',
+          system_category_id: '',
           type: ''
         },
         form: {
