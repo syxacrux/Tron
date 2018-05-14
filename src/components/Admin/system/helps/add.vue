@@ -19,7 +19,7 @@
         </el-form-item>
         <el-form-item label="系统：" prop="system_category_id">
           <el-select v-model="form.system_category_id" placeholder="请选择系统">
-            <el-option label="未选择" :value="0"></el-option>
+            <el-option label="所有系统" :value="0"></el-option>
             <el-option label="Mac" :value="1"></el-option>
             <el-option label="Linux" :value="2"></el-option>
             <el-option label="Window" :value="3"></el-option>
