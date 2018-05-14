@@ -17,7 +17,7 @@ class Shot extends Common
 	protected $ambient_arr = [1 => '室外', 2 => '室内'];    //环境(1外 2内)
 	protected $task_status_arr = [1 => 0, 5 => 20, 10 => 40, 15 => 60, 20 => 80, 25 => 100];    //用于任务状态计算进度百分比 status=>0%
 	//根据环节ID获取镜头页面进度条所用别名
-	protected $tache_byname_arr = [3 => '美术部', 4 => '模型部', 5 => '贴图部', 6 => '绑定部', 7 => '跟踪部', 8 => '动画部', 9 => '数字绘景部', 10 => '特效部', 11 => '灯光部', 12 => '合成部'];
+	protected $tache_byname_arr = [14 => '美术部', 18 => '模型部', 21 => '贴图部', 16 => '绑定部', 19 => '跟踪部', 22 => '动画部', 20 => '数字绘景部', 23 => '特效部', 24 => '灯光部', 25 => '合成部'];
 
 	//镜头概况
 	public function survey_list()
@@ -208,14 +208,15 @@ class Shot extends Common
 				//镜头表新增成功 更新所属项目表镜头数量 lens_count +1
 				$lens_count['lens_count'] = $this->where('project_id', $param['project_id'])->count('id');
 				Db::name('admin_project')->where('id', $param['project_id'])->update($lens_count);
-
 				$project_byname = $project_obj->project_byname;
 				$field_name = Field::get($param['field_id'])->name;
+
 				//执行redis添加镜头所属目录 python
 				$str = "'Shot' '{$project_byname}' '{$field_name}' '{$param['shot_name']}'";
-				$redis = new RedisPackage();
+				/*$redis = new RedisPackage();
 				$cmd = "python /usr/local/httpd/htdocs/tron/tronPipelineScript/createDirPath/parser.py $str ";
-				$redis::LPush("pyFile",$cmd);
+				$redis::LPush("pyFile",$cmd);*/
+
 				//根据环节分配任务给各大工作室
 				foreach ($tache_data as $key => $val) {
 					//根据环节内的工作室是否为空创建任务
