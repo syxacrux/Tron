@@ -129,22 +129,13 @@ function my_sort($arrays,$sort_key,$sort_order=SORT_DSC,$sort_type=SORT_NUMERIC 
 }
 
 /**
- * redis实例化 php需有此组件
- * @return mixed
- * @author zjs 2018/3/1
- */
-function RDS(){
-    return S(array('type'=>'Redis','host'=>'127.0.0.1','port'=>'6379','timeout'=>false));
-}
-
-/**
  * 执行python外部命令
  * @author zjs 2018/3/1
  */
 function exec_python_file($str){
-    $redis = new RedisPackage();
-    $cmd = "python /var/www/html/tronPipelineScript/createDirPath/parser.py $str ";
-    $redis::LPush("pyFile",$cmd);
+	$redis = new RedisPackage();
+	$cmd = "python /usr/local/httpd/htdocs/tron/tronPipelineScript/createDirPath/parser.py $str ";
+	$redis::LPush("pyFile",$cmd);
 }
 
 //获取当前所属主机信息

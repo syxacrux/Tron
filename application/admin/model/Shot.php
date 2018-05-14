@@ -4,7 +4,7 @@ namespace app\admin\model;
 
 use think\Db;
 use app\common\model\Common;
-use app\common\model\Excel;
+use redis\RedisPackage;
 
 
 class Shot extends Common
@@ -213,7 +213,9 @@ class Shot extends Common
 				$field_name = Field::get($param['field_id'])->name;
 				//执行redis添加镜头所属目录 python
 				$str = "'Shot' '{$project_byname}' '{$field_name}' '{$param['shot_name']}'";
-				//exec_python($str);
+				$redis = new RedisPackage();
+				$cmd = "python /usr/local/httpd/htdocs/tron/tronPipelineScript/createDirPath/parser.py $str ";
+				$redis::LPush("pyFile",$cmd);
 				//根据环节分配任务给各大工作室
 				foreach ($tache_data as $key => $val) {
 					//根据环节内的工作室是否为空创建任务
