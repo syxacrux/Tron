@@ -26,7 +26,7 @@
         </el-col>
       </div>
     </div>
-    <div class="help_list">
+    <div class="help_list" v-if="helpList.length">
       <ul>
         <li class="bor-b-gray m-b-10" v-for="item in helpList">
           <transition name="el-zoom-in-center">
@@ -47,7 +47,7 @@
         </li>
       </ul>
     </div>
-    <div class="pos-rel p-t-20">
+    <div class="pos-rel p-t-20" v-if="helpList.length">
       <el-button v-if="show2 == false" size="small" @click="show2 = !show2">选择</el-button>
       <el-button v-if="show2 == true" size="small" @click="show2 = !show2">取消选择</el-button>
       <btnGroup v-show="show2" :selectedData="multipleSelection" :type="'helps'"></btnGroup>
