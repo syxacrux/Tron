@@ -149,33 +149,14 @@
 			      	<img id="imgs" src="../../../../assets/images/bg1.jpg" >
 		        </div> -->
             <div class="imagebox1 dailies-video">
-			      	<img id="imgs" src="../../../../assets/images/bg1.jpg" >
+			      	<!-- <img id="imgs" src="../../../../assets/images/bg1.jpg" > -->
+              <video id='playVideo' width="600" controls src="../../../../assets/images/h264_32.3.mp4"></video>
 		        </div>
             <div>
               <button id="capture" @click="isTaskDetailShow = true">截图</button>
-              <button id="play">播放/暂停</button>
-              <input type="range" min="0" value="0" id="range" step="0.1"/>
+              <!-- <button id="play">播放/暂停</button> -->
+              <!-- <input type="range" min="0" value="0" id="range" step="0.1"/> -->
             </div>
-          <!-- <el-row :gutter="20" class="m-b-5 dailies-information">
-              <el-col :span="24">
-                <p class="m-0">Dailies<span>11</span></p>
-              </el-col>
-              <el-col :span="12">
-                <p class="m-0"><span>任务优先级：</span><span>11</span></p>
-              </el-col>
-              <el-col :span="12">
-                <p class="m-0"><span>任务难度：</span><span>222</span></p>
-              </el-col>
-              <el-col :span="12">
-                <p class="m-0"><span>任务优先级：</span><span>11</span></p>
-              </el-col>
-              <el-col :span="12">
-                <p class="m-0"><span>任务难度：</span><span>222</span></p>
-              </el-col>
-              <el-col :span="12">
-                <p class="m-0"><span>任务难度：</span><span>222</span></p>
-              </el-col>
-          </el-row> -->
           <el-collapse v-model="activeNames" @change="handleChange">
             <el-collapse-item title="Dailies" name="1">
               <el-col :span="12">
@@ -321,8 +302,10 @@
                     // document.getElementById("output").appendChild(newImg);    
                 },useCORS:true
               }); */
-              var str=$('.dailies-video>img').css('width').substr(0,$('.dailies-video>img').css('width').length-2)
-              var str1=$('.dailies-video>img').css('height').substr(0,$('.dailies-video>img').css('height').length-2)
+              // var str=$('.dailies-video>img').css('width').substr(0,$('.dailies-video>img').css('width').length-2)
+              // var str1=$('.dailies-video>img').css('height').substr(0,$('.dailies-video>img').css('height').length-2)
+              var str=$('.dailies-video>video').css('width').substr(0,$('.dailies-video>video').css('width').length-2)
+              var str1=$('.dailies-video>video').css('height').substr(0,$('.dailies-video>video').css('height').length-2)
               sketchpad = new Sketchpad({
                 element: '#sketchpad',
                 width: str,
@@ -330,6 +313,28 @@
               });
               sketchpad.penSize = 1
           });
+              //视屏播放器的控制设置
+          var videos=document.getElementById('playVideo')
+            $(document).keydown(function(e){
+                var key=e.which
+                if(key==32){
+                  e.preventDefault();
+                    if(videos.paused){
+                videos.play();
+              }else{
+                videos.pause();
+              }
+              return false;
+                }
+                if(key==39){
+                  videos.pause();
+              videos.currentTime+=0.042
+            }
+            if(key==37 && videos.currentTime!=0){
+              videos.pause();
+              videos.currentTime-=0.042;
+            }
+            });
           (function() {
             "use strict";
             var video, $capture;
@@ -337,16 +342,19 @@
             var initialize = function() {
               $capture = $("#capture");
               // video = $("#video").get(0);
-              video=$('.dailies-video>img').get(0)
+              // video=$('.dailies-video>img').get(0);
+              video=$('.dailies-video>video').get(0)
               $("#capture").click(captureImage);        
             };
             var captureImage = function() {
               var canvas = document.createElement("canvas");
               // canvas.width = video.videoWidth * scale;
               // canvas.height = video.videoHeight * scale;
-              var str=$('.dailies-video>img').css('width').substr(0,$('.dailies-video>img').css('width').length-2)
+              // var str=$('.dailies-video>img').css('width').substr(0,$('.dailies-video>img').css('width').length-2)
+               var str=$('.dailies-video>video').css('width').substr(0,$('.dailies-video>video').css('width').length-2)
                canvas.width =str * 1;
-              var str1=$('.dailies-video>img').css('height').substr(0,$('.dailies-video>img').css('height').length-2)
+              // var str1=$('.dailies-video>img').css('height').substr(0,$('.dailies-video>img').css('height').length-2)
+              var str1=$('.dailies-video>video').css('height').substr(0,$('.dailies-video>video').css('height').length-2)
 		     	    canvas.height =str1 * 1;
               canvas.getContext('2d')
                 .drawImage(video, 0, 0, canvas.width, canvas.height);
