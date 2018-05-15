@@ -83,9 +83,9 @@ class Project extends Common
 				return false;
 			} else {
 				//执行外部程序-开启队列
-				$redis = new RedisPackage();
+				/*$redis = new RedisPackage();
 				$cmd = "python /usr/local/httpd/htdocs/tron/tronPipelineScript/createDirPath/parser.py $str ";
-				$redis::LPush("pyFile",$cmd);
+				$redis::LPush("pyFile",$cmd);*/
 				return true;
 			}
 		} catch (\Exception $e) {

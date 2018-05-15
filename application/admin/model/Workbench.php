@@ -15,7 +15,7 @@ class Workbench extends Common
 	protected $difficulty_arr = [1 => 'D', 2 => 'C', 3 => 'B', 4 => 'A', 5 => 'S']; //任务难度
 	protected $task_status_degree_arr = [1 => 0, 5 => 20, 10 => 40, 15 => 60, 20 => 80, 25 => 100];    //用于任务状态计算进度百分比 status=>0%
 	//根据环节ID获取镜头页面进度条所用别名
-	protected $tache_byname_arr = [3 => '美术', 4 => '模型', 5 => '贴图', 6 => '绑定', 7 => '跟踪', 8 => '动画', 9 => '数绘', 10 => '特效', 11 => '灯光', 12 => '合成'];
+	protected $tache_byname_arr = [14 => '美术部', 18 => '模型部', 21 => '贴图部', 16 => '绑定部', 19 => '跟踪部', 22 => '动画部', 20 => '数字绘景部', 23 => '特效部', 24 => '灯光部', 25 => '合成部'];
 	protected $status_cn_arr = ['等待制作' => 1, '制作中' => 5, '等待审核' => 10, '反馈中' => 15, '审核通过' => 20, '提交发布' => 25, '完成' => 30];
 	protected $status_arr = [1 => '等待制作', 5 => '制作中', 10 => '等待审核', 15 => '反馈中', 20 => '审核通过', 25 => '提交发布', 30 => '完成'];
 
@@ -148,6 +148,7 @@ class Workbench extends Common
 		if (!empty($keywords['shot_id'])) {
 			$where['shot_id'] = $keywords['shot_id'];
 		}
+		//file_put_contents('aa.txt',var_export($where,true));
 		//手写输入
 		if (!empty($keywords['shot_number'])) {
 			switch ($keywords['type']){
