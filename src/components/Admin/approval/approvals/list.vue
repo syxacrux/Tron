@@ -149,8 +149,8 @@
 			      	<img id="imgs" src="../../../../assets/images/bg1.jpg" >
 		        </div> -->
             <div class="imagebox1 dailies-video">
-			      	<!-- <img id="imgs" src="../../../../assets/images/bg1.jpg" > -->
-              <video id='playVideo' width="600" controls src="../../../../assets/video/h264_32.3.mp4"></video>
+			      	<img id="imgs" src="../../../../assets/images/bg1.jpg" >
+              <!-- <video id='playVideo' width="600" controls src="../../../../assets/video/h264_32.3.mp4"></video> -->
 		        </div>
             <div>
               <button id="capture" @click="isTaskDetailShow = true">截图</button>
@@ -308,10 +308,10 @@
                     // document.getElementById("output").appendChild(newImg);    
                 },useCORS:true
               }); */
-              // var str=$('.dailies-video>img').css('width').substr(0,$('.dailies-video>img').css('width').length-2)
-              // var str1=$('.dailies-video>img').css('height').substr(0,$('.dailies-video>img').css('height').length-2)
-              var str=$('.dailies-video>video').css('width').substr(0,$('.dailies-video>video').css('width').length-2)
-              var str1=$('.dailies-video>video').css('height').substr(0,$('.dailies-video>video').css('height').length-2)
+              var str=$('.dailies-video>img').css('width').substr(0,$('.dailies-video>img').css('width').length-2)
+              var str1=$('.dailies-video>img').css('height').substr(0,$('.dailies-video>img').css('height').length-2)
+              // var str=$('.dailies-video>video').css('width').substr(0,$('.dailies-video>video').css('width').length-2)
+              // var str1=$('.dailies-video>video').css('height').substr(0,$('.dailies-video>video').css('height').length-2)
               sketchpad = new Sketchpad({
                 element: '#sketchpad',
                 width: str,
@@ -348,19 +348,19 @@
             var initialize = function() {
               $capture = $("#capture");
               // video = $("#video").get(0);
-              // video=$('.dailies-video>img').get(0);
-              video=$('.dailies-video>video').get(0)
+              video=$('.dailies-video>img').get(0);
+              // video=$('.dailies-video>video').get(0)
               $("#capture").click(captureImage);        
             };
             var captureImage = function() {
               var canvas = document.createElement("canvas");
               // canvas.width = video.videoWidth * scale;
               // canvas.height = video.videoHeight * scale;
-              // var str=$('.dailies-video>img').css('width').substr(0,$('.dailies-video>img').css('width').length-2)
-               var str=$('.dailies-video>video').css('width').substr(0,$('.dailies-video>video').css('width').length-2)
+              var str=$('.dailies-video>img').css('width').substr(0,$('.dailies-video>img').css('width').length-2)
+              //  var str=$('.dailies-video>video').css('width').substr(0,$('.dailies-video>video').css('width').length-2)
                canvas.width =str * 1;
-              // var str1=$('.dailies-video>img').css('height').substr(0,$('.dailies-video>img').css('height').length-2)
-              var str1=$('.dailies-video>video').css('height').substr(0,$('.dailies-video>video').css('height').length-2)
+              var str1=$('.dailies-video>img').css('height').substr(0,$('.dailies-video>img').css('height').length-2)
+              // var str1=$('.dailies-video>video').css('height').substr(0,$('.dailies-video>video').css('height').length-2)
 		     	    canvas.height =str1 * 1;
               canvas.getContext('2d')
                 .drawImage(video, 0, 0, canvas.width, canvas.height);
