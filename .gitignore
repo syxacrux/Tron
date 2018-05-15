@@ -5,6 +5,7 @@ composer.lock
 /config
 /runtime/log
 /src/main.js
+/src/assets/video
 /public
 /runtime/cache
 /uploads
