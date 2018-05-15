@@ -15,10 +15,11 @@ class Helps extends BaseCommon{
 	public function index(){
 		$help_model = model('Help');
 		$param = $this->param;
+		$uid = $this->uid;
 		$screen = !empty($param['screen']) ? json_decode($param['screen'],true): '';
 		$page = !empty($param['page']) ? $param['page']: '';
 		$limit = !empty($param['limit']) ? $param['limit']: '';
-		$data = $help_model->getHelpList($screen, $page, $limit);
+		$data = $help_model->getHelpList($screen,$uid, $page, $limit);
 		return resultArray(['data' => $data]);
 	}
 
@@ -75,6 +76,14 @@ class Helps extends BaseCommon{
 			return resultArray(['error' => $help_model->getError()]);
 		}
 		return resultArray(['data' => '编辑成功']);
+	}
+
+	//根据单词模糊匹配相应记录
+	public function new_ask_push(){
+		$help_model = model('Help');
+		$param = $this->param;
+		$data = $help_model->getAskData($param);
+		return resultArray(['data'=>$data]);
 	}
 
 	//删除

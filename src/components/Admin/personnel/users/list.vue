@@ -1,24 +1,40 @@
 <template>
-  <div>
+  <div class="user">
     <div class="m-b-20">
       <el-breadcrumb separator="/">
         <el-breadcrumb-item :to="{ path: '/admin' }">首页</el-breadcrumb-item>
         <el-breadcrumb-item>成员管理</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
-    <div class="m-b-20 ovf-hd">
-      <div class="fl" v-if="addShow">
-        <router-link class="btn-link-large add-btn" to="add">
-          <i class="el-icon-plus"></i>&nbsp;&nbsp;添加成员
-        </router-link>
-      </div>
-      <div class="fl w-200" :class="{'m-l-30': addShow}">
-        <!--<el-input placeholder="请输入成员" v-model="name">-->
-          <!--<el-button slot="append" icon="el-icon-search" @click="search()"></el-button>-->
-        <!--</el-input>-->
+    <div class="m-b-20 pos-rel">
+      <router-link v-if="addShow" class="btn-link-large add-btn" to="add">
+        <i class="el-icon-plus"></i>&nbsp;&nbsp;添加成员
+      </router-link>
+    </div>
+    <div class="m-b-20 h-40 pos-rel">
+      <div class="pos-abs t-0 l-0">
+        <el-row :gutter="10" class="m-b-5">
+          <el-col :span="6">
+            <el-select v-model="search.studio_id" placeholder="请选择工作室" @change="getAllUsers(1)">
+              <el-option label="请选择工作室" value=""></el-option>
+              <el-option v-for="item in studioList" :label="item.name" :value="item.id" :key="item.id"></el-option>
+            </el-select>
+          </el-col>
+          <el-col :span="6">
+            <el-select v-model="search.tache_id" placeholder="请选择环节" @change="getAllUsers(1)">
+              <el-option label="请选择环节" value=""></el-option>
+              <el-option v-for="item in tacheList" :label="item.explain" :value="item.id" :key="item.id"></el-option>
+            </el-select>
+          </el-col>
+          <el-col :span="7">
+            <el-input placeholder="请输入成员" v-model="search.name">
+              <el-button slot="append" icon="el-icon-search" @click="searches()"></el-button>
+            </el-input>
+          </el-col>
+        </el-row>
       </div>
     </div>
-    <el-table v-if="listShow" :data="tableData" style="width: 100%" @selection-change="selectItem">
+    <el-table v-if="listShow" class="w-100p" :data="tableData" @selection-change="selectItem">
       <el-table-column type="expand">
         <template slot-scope="props">
           <el-form label-position="left" inline class="demo-table-expand">
@@ -76,16 +92,19 @@
         tableData: [],
         dataCount: null,
         currentPage: 1,
-        keywords: {
-          name: ''
-        },
         multipleSelection: [],
+        studioList: [],
+        tacheList: [],
         limit: 10,
-        name: ''
+        search: {
+          studio_id: '',
+          tache_id: '',
+          name: ''
+        }
       }
     },
     methods: {
-      search() {
+      searches() {
         this.getAllUsers(1)
       },
       selectItem(val) {
@@ -114,13 +133,27 @@
           // catch error
         })
       },
+//      获取工作室列表
+      getAllStudios() {
+        this.apiGet('admin/studios').then((res) => {
+          this.handelResponse(res, (data) => {
+            this.studioList = data.list
+          })
+        })
+      },
+//      获取环节列表
+      getAllTaches() {
+        this.apiGet('admin/taches').then((res) => {
+          this.handelResponse(res, (data) => {
+            this.tacheList = data.list
+          })
+        })
+      },
       getAllUsers(page) {
         this.loading = true
         const data = {
           params: {
-            keywords: {
-              name: this.name
-            },
+            keywords: this.search,
             page: page,
             limit: this.limit
           }
@@ -132,18 +165,9 @@
           })
         })
       },
-      getKeywords() {
-        let data = this.$route.query
-        if (data) {
-          if (data.keywords) {
-            this.keywords = data.keywords
-          } else {
-            this.keywords = ''
-          }
-        }
-      },
       init() {
-        this.getKeywords()
+        this.getAllStudios()
+        this.getAllTaches()
         this.getAllUsers(1)
       }
     },

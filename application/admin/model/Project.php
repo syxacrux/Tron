@@ -77,24 +77,15 @@ class Project extends Common
 			$param['plan_end_timestamp'] = strtotime($param['plan_end_timestamp']);
 			$param['create_time'] = time();
 			$result = $this->validate($this->name)->save($param);
-			$str = 'Project ' . $param['project_byname'];
-			/*
-			$cmd = "python /var/www/html/tronPipelineScript/createDirPath/parser.py $str ";
-			system($cmd);*/
+			$str = "'Project' '{$param['project_byname']}'";
 			if (false === $result) {
 				$this->error = $this->getError();
 				return false;
 			} else {
 				//执行外部程序-开启队列
-				/*
-				$redis = new RedisPackage();
-				$cmd = "python /var/www/html/tronPipelineScript/createDirPath/parser.py $str ";
-				$redis::LPush("pyFile",$cmd);
-				*/
-
-				/*
-				 exec_python_file($str);
-				 */
+				/*$redis = new RedisPackage();
+				$cmd = "python /usr/local/httpd/htdocs/tron/tronPipelineScript/createDirPath/parser.py $str ";
+				$redis::LPush("pyFile",$cmd);*/
 				return true;
 			}
 		} catch (\Exception $e) {

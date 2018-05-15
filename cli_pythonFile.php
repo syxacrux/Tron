@@ -14,7 +14,7 @@ while(true){
         	//执行python
 					system($res);
 					//记录python 执行日志
-					$log_path = 'runtime'.DIRECTORY_SEPARATORlog.date("Ym");
+					$log_path = 'runtime'.DIRECTORY_SEPARATOR.'log'.DIRECTORY_SEPARATOR.date("Ym");
 					$log_file_name = $log_path.DIRECTORY_SEPARATOR.'python_'.date('d').'.txt';
 					$res_content = 'time:'.date("Y-m-d H:i:s").'   '.$res;
 					if(is_dir($log_path)){

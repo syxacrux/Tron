@@ -179,8 +179,38 @@ function import_user_role($host,$database,$user,$pwd,$local_host,$local_pwd,$loc
 
 //echo import_user_role($host,$database,$user,$pwd,$local_host,$local_pwd,$local_database);
 
+function update_user_password($host,$database,$user,$pwd,$local_host,$local_pwd,$local_database){
+	try {
+		$pdo = new PDO("mysql:host=$host;dbname=$database", $user, $pwd);
+	} catch (PDOException $e) {
+		echo 'Connection failed: ' . $e->getMessage();
+	}
+	$sql = "select * from userdata";
+	$pdo->query('set name utf8;');
+	$server_result = $pdo->query($sql)->fetchAll();
 
+//新增本地数据表数据
+	try {
+		$local_pdo = new PDO("mysql:host=$local_host;dbname=$local_database", $user, $local_pwd);
+	} catch (PDOException $e) {
+		echo 'Connection failed: ' . $e->getMessage();
+	}
 
+	foreach($server_result as $key=>$value){
+		$local_sql = "update oa_admin_user set `password`= :password where id=:id";
+		$sql_data = [
+			"id"			=> $value['uid'],
+			"password" => $value['password']
+		];
+		$local_result = $local_pdo->prepare($local_sql)->execute($sql_data);
+		if($local_result){
+			echo $local_pdo->lastInsertId().PHP_EOL;
+		}else{
+			echo '404'.PHP_EOL;
+		}
+	}
+}
+//echo update_user_password($host,$database,$user,$pwd,$local_host,$local_pwd,$local_database);
 
 
 

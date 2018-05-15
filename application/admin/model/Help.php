@@ -6,17 +6,24 @@ use app\common\model\Common;
 
 class Help extends Common{
 	protected $name = 'helps';
+	protected $category_arr = [1=>'[百科]',2=>'[提问]'];
+	protected $system_category_arr = [0=>'未选择',1=>'mac',2=>'linux',3=>'windows'];
 
 	//带分页的列表
-	public function getHelpList($screen,$page,$limit){
+	public function getHelpList($screen,$user_id,$page,$limit){
 		$where = [];
+		if($user_id != 1){
+			$where['status'] = 1; //除超级管理员外，其他角色只能看到启用状态的数据
+		}
 		if(!empty($screen['category_id'])){
 			$where['category_id'] = $screen['category_id'];
+		}
+		if(!empty($screen['system_category_id'])){
+			$where['system_category_id'] = $screen['system_category_id'];
 		}
 		if(!empty($screen['keywords'])){	//关键词
 			$where['keywords'] = ['like','%'.$screen['keywords']];
 		}
-		$where['status'] = 1; //默认显示启用
 		$dataCount = $this->where($where)->count('id');
 		$list = $this->where($where);
 		//若有分页
@@ -25,8 +32,9 @@ class Help extends Common{
 		}
 		$list = $list->select();
 		for($i = 0;$i < count($list); $i++){
-			$list[$i]['type_name'] = ($list[$i]['type'] == 1) ? '[百科]' : '[问题]';
+			$list[$i]['type_name'] = $this->category_arr[$list[$i]['type']];
 			$list[$i]['category_name'] = Parameter::get($list[$i]['category_id'])->category;
+			$list[$i]['system_category_name'] = $this->system_category_arr[$list[$i]['system_category_id']];
 			$list[$i]['degree_name'] = Parameter::get($list[$i]['degree'])->category;
 			$list[$i]['user_name'] = User::get($list[$i]['user_id'])->realname;
 			$list[$i]['create_time'] = date("Y-m-d H:i:s",$list[$i]['create_time']);
@@ -113,6 +121,24 @@ class Help extends Common{
 		$help_obj->user_name = User::get($help_obj->user_id)->realname;
 		$help_obj->create_time = date('Y-m-d H:i:s',$help_obj->create_time);
 		return $help_obj;
+	}
+
+	//根据单词查询相应问题列表
+	public function getAskData($param){
+		$where = [];
+		if(!empty($param['category_id'])){
+			$where['category_id'] = $param['category_id'];
+		}
+		if(!empty($param['word'])){
+			$where['title'] = ['like','%'.$param['word'].'%'];
+		}
+		$ask_data = $this->where($where);
+		//类型 1 显示几条 2显示所有
+		if($param['type']){
+			$ask_data = $ask_data->order('id desc')->limit(5);
+		}
+		$ask_data['data'] = $ask_data->select();
+		return $ask_data;
 	}
 
 	//删除回复

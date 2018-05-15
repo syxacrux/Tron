@@ -15,14 +15,21 @@
           </el-select>
         </el-form-item>
         <el-form-item label="标题：" prop="title">
-          <el-input v-model="form.title" class="h-40"></el-input>
+          <el-input v-model="form.title" class="h-40 w-200"></el-input>
+        </el-form-item>
+        <el-form-item label="系统：" prop="system_category_id">
+          <el-select v-model="form.system_category_id" placeholder="请选择系统">
+            <el-option label="所有系统" :value="0"></el-option>
+            <el-option label="Mac" :value="1"></el-option>
+            <el-option label="Linux" :value="2"></el-option>
+            <el-option label="Window" :value="3"></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="反馈内容：" prop="content" class="h-500">
           <el-input
               type="textarea"
               placeholder="请输入反馈内容"
-              v-model="form.content"
-              >
+              v-model="form.content">
           </el-input>
         </el-form-item>
         <el-form-item label="关键字：">
@@ -69,6 +76,7 @@
         form: {
           category_id: '',
           title: '',
+          system_category_id: '',
           content: '',
           keywords: '',
           explain: '',
@@ -80,10 +88,13 @@
         inputValue: '',
         rules: {
           category_id: [
-            {required: true, message: '请输入配置项名称', trigger: 'blur'}
+            {required: true, message: '请选择反馈类型', trigger: 'blur'}
           ],
           title: [
             {required: true, message: '请输入标题', trigger: 'blur'}
+          ],
+          system_category_id: [
+            {required: true, message: '请选择系统', trigger: 'blur'}
           ],
           content: [
             {required: true, message: '请输入反馈内容', trigger: 'blur'}
