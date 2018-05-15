@@ -123,6 +123,24 @@ class Help extends Common{
 		return $help_obj;
 	}
 
+	//根据单词查询相应问题列表
+	public function getAskData($param){
+		$where = [];
+		if(!empty($param['category_id'])){
+			$where['category_id'] = $param['category_id'];
+		}
+		if(!empty($param['word'])){
+			$where['title'] = ['like','%'.$param['word'].'%'];
+		}
+		$ask_data = $this->where($where);
+		//类型 1 显示几条 2显示所有
+		if($param['type']){
+			$ask_data = $ask_data->order('id desc')->limit(5);
+		}
+		$ask_data['data'] = $ask_data->select();
+		return $ask_data;
+	}
+
 	//删除回复
 	public function answerDel_ById($id){
 		try{

@@ -78,6 +78,14 @@ class Helps extends BaseCommon{
 		return resultArray(['data' => '编辑成功']);
 	}
 
+	//根据单词模糊匹配相应记录
+	public function new_ask_push(){
+		$help_model = model('Help');
+		$param = $this->param;
+		$data = $help_model->getAskData($param);
+		return resultArray(['data'=>$data]);
+	}
+
 	//删除
 	public function delete(){
 		$help_model = model('Help');
