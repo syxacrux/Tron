@@ -75,31 +75,57 @@
     </div>
     <el-dialog title="问题反馈" :visible.sync="isAddHelps" width="30%">
       <el-form ref="form" :model="form" label-width="120px" :rules="rules">
-        <el-form-item label="反馈类型：" prop="category_id">
+        <el-form-item label="问题类型：" prop="category_id">
           <el-select v-model="form.category_id" placeholder="请选择问题类型">
             <el-option v-for="item in options" :label="item.category" :value="item.id" :key="item.id"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="反馈类型：" prop="degree">
+        <el-form-item label="紧急程度：" prop="degree">
           <el-select v-model="form.degree" placeholder="请选择紧急程度">
             <el-option v-for="item in degreeOptions" :label="item.category" :value="item.id" :key="item.id"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="反馈内容：" prop="content">
+        <el-form-item label="标题：" prop="title">
+          <el-input v-model="form.title" class="h-40 w-200"></el-input>
+        </el-form-item>
+        <el-form-item label="问题描述：" prop="content">
             <el-input
                 type="textarea"
                 :autosize="{ minRows: 2, maxRows: 4}"
-                placeholder="请输入反馈内容"
-                v-model="form.content">
+                placeholder="请输入问题内容"
+                v-model="form.content"
+                @input="change">
             </el-input>
         </el-form-item>
+        <transition name="el-zoom-in-top">
+          <div v-show="show1" class="transition-box">
+            <ul>
+              <li>
+                <a href="#">
+                  [百科]我是一个问题
+                </a>
+                <div class="h-40 w-1000 fz-12 c-black space_nowr">
+                  我是内容啊我是内容啊我是内容啊我是内容啊我是内容啊我是内容啊我是内容啊我是内容啊我是内容啊我是内容啊我是内容啊我是内容啊
+                </div>
+                <!--<router-link :to="{ name: 'helpDetail', params: {id: item.id} }">-->
+                  <!--{{ item.type_name }}   {{ item.title }}-->
+                <!--</router-link>-->
+                <!--<div v-if="item.type === 1" class="h-40 w-1000 fz-12 c-black space_nowr">-->
+                  <!--{{ item.content }}-->
+                <!--</div>-->
+              </li>
+              <li>我好喜欢你呀！！！</li>
+              <li>我好喜欢你呀！！！</li>
+            </ul>
+          </div>
+        </transition>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="">取 消</el-button>
         <el-button type="primary" @click="addHelps(form)">确 定</el-button>
       </div>
     </el-dialog>
-    <editHelps :message="editHelpDetail" @updataHelpDetail="helpDetail" ref="editHelps"></editHelps>
+    <!--<editHelps :message="editHelpDetail" @updataHelpDetail="helpDetail" ref="editHelps"></editHelps>-->
   </div>
 </template>
 <script>
@@ -110,6 +136,7 @@
   export default {
     data () {
       return {
+        show1: false,
         show2: false,
         isAddHelps: false,
         activeName: '1',
@@ -129,21 +156,28 @@
         },
         form: {
           category_id: '',
+          title: '',
           content: '',
           degree: '',
           type: 2
         },
         rules: {
           category_id: [{required: true, message: '请选择问题类型', trigger: 'blur'}],
-          content: [{required: true, message: '请输入反馈内容', trigger: 'blur'}],
-          degree: [{required: true, message: '请输入反馈内容', trigger: 'blur'}]
+          title: [{required: true, message: '请输入标题', trigger: 'blur'}],
+          content: [{required: true, message: '请输入问题描述', trigger: 'blur'}],
+          degree: [{required: true, message: '请选择紧急程度', trigger: 'blur'}]
         },
         editHelpDetail: {}
       }
     },
     methods: {
-      helpDetail () {
-
+      change () {
+        if(this.form.content === '') {
+          this.show1 = false
+          return
+        }
+        this.show1 = true
+        console.log(this.form.content)
       },
       addHelps (form) {
         console.log(this.form)
