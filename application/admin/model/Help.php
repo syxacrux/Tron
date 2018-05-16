@@ -22,7 +22,7 @@ class Help extends Common{
 			$where['system_category_id'] = $screen['system_category_id'];
 		}
 		if(!empty($screen['keywords'])){	//关键词
-			$where['keywords'] = ['like','%'.$screen['keywords']];
+			$where['keywords'] = ['like','%'.$screen['keywords'].'%'];
 		}
 		$dataCount = $this->where($where)->count('id');
 		$list = $this->where($where);
@@ -132,20 +132,17 @@ class Help extends Common{
 		if(!empty($param['word'])){
 			$where['title'] = ['like','%'.$param['word'].'%'];
 		}
-		$ask_data = $this->where($where);
 		$dataCount = $this->where($where)->count('id');
 		if($page && $limit){
-			$ask_data = $ask_data->page($page,$limit);
+			$ask_data = $this->where($where)->page($page,$limit);
 		}else{
-			$ask_data = $ask_data->order('id desc')->limit(5);
+			$ask_data = $this->where($where)->order('id desc')->limit(5);
 		}
 		$ask_data = $ask_data->select();
-		foreach($ask_data as $key=>$value){
-			$data['id'] = $value['id'];
-			$data['title'] = $value['title'];
-			$data['depict'] = substr($value['content'],0,50)."...";
-		}
-		$data['list'] = $data;
+		for($i=0;$i<count($ask_data);$i++){
+		    $ask_data[$i]['content'] = mb_substr($ask_data[$i]['content'],0,20).'...';
+        }
+		$data['list'] = $ask_data;
 		$data['dataCount'] = $dataCount;
 		return $data;
 	}

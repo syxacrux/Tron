@@ -80,9 +80,10 @@ class Helps extends BaseCommon{
 	public function new_ask_push(){
 		$help_model = model('Help');
 		$param = $this->param;
-		$page = !empty($param['page']) ? $param['page']: '';
-		$limit = !empty($param['limit']) ? $param['limit']: '';
-		$data = $help_model->getAskData($param,$page,$limit);
+        $keywords = !empty($param['keywords']) ? json_decode($param['keywords'],true): '';
+        $page = !empty($param['page']) ? $param['page']: '';
+        $limit = !empty($param['limit']) ? $param['limit']: '';
+		$data = $help_model->getAskData($keywords,$page,$limit);
 		return resultArray(['data'=>$data]);
 	}
 

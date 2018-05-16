@@ -7,14 +7,14 @@
         <el-breadcrumb-item>问题反馈</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
-    <div class="m-b-20 pos-rel">
-      <a class="btn-link-large add-btn" @click="isAddHelps = true;getOptions();getDegreeList()" v-if="addProblem">
-        <i class="el-icon-plus"></i>&nbsp;&nbsp;发起提问
-      </a>
-      <router-link class="btn-link-large add-btn" to="add" v-if="addArticle">
-        <i class="el-icon-plus"></i>&nbsp;&nbsp;发起文章
-      </router-link>
-    </div>
+    <!--<div class="m-b-20 pos-rel">-->
+      <!--<a class="btn-link-large add-btn" @click="isAddHelps = true;getOptions();getDegreeList()" v-if="addProblem">-->
+        <!--<i class="el-icon-plus"></i>&nbsp;&nbsp;发起提问-->
+      <!--</a>-->
+      <!--<router-link class="btn-link-large add-btn" to="add" v-if="addArticle">-->
+        <!--<i class="el-icon-plus"></i>&nbsp;&nbsp;发起文章-->
+      <!--</router-link>-->
+    <!--</div>-->
     <!--<div class="m-b-10 h-40 pos-rel">-->
       <!--<div class="pos-abs t-0 l-0">-->
         <!--<el-row :gutter="10" class="m-b-5">-->
@@ -73,62 +73,6 @@
         </el-pagination>
       </div>
     </div>
-    <el-dialog title="问题反馈" :visible.sync="isAddHelps" width="30%">
-      <el-form ref="form" :model="form" label-width="120px" :rules="rules">
-        <el-form-item label="问题类型：" prop="category_id">
-          <el-select v-model="form.category_id" placeholder="请选择问题类型" @change="getCategories">
-            <el-option v-for="item in options" :label="item.category" :value="item.id" :key="item.id"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="不知道：" prop="category_id">
-          <el-select v-model="form.category_id" placeholder="请选择buzhdiao">
-            <el-option v-for="item in categoryOptions" :label="item.category" :value="item.id" :key="item.id"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="紧急程度：" prop="degree">
-          <el-select v-model="form.degree" placeholder="请选择紧急程度">
-            <el-option v-for="item in degreeOptions" :label="item.category" :value="item.id" :key="item.id"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="标题：" prop="title">
-          <el-input v-model="form.title" class="h-40 w-200" @input="change"></el-input>
-        </el-form-item>
-        <el-form-item label="问题描述：" prop="content">
-            <el-input
-                type="textarea"
-                :autosize="{ minRows: 2, maxRows: 4}"
-                placeholder="请输入问题内容"
-                v-model="form.content">
-            </el-input>
-        </el-form-item>
-        <transition name="el-zoom-in-top">
-          <div v-show="show1" class="transition-box">
-            <ul>
-              <li>
-                <a href="#">
-                  [百科]我是一个问题
-                </a>
-                <div class="h-40 w-1000 fz-12 c-black space_nowr">
-                  我是内容啊我是内容啊我是内容啊我是内容啊我是内容啊我是内容啊我是内容啊我是内容啊我是内容啊我是内容啊我是内容啊我是内容啊
-                </div>
-                <!--<router-link :to="{ name: 'helpDetail', params: {id: item.id} }">-->
-                  <!--{{ item.type_name }}   {{ item.title }}-->
-                <!--</router-link>-->
-                <!--<div v-if="item.type === 1" class="h-40 w-1000 fz-12 c-black space_nowr">-->
-                  <!--{{ item.content }}-->
-                <!--</div>-->
-              </li>
-              <li>我好喜欢你呀！！！</li>
-              <li>我好喜欢你呀！！！</li>
-            </ul>
-          </div>
-        </transition>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="">取 消</el-button>
-        <el-button type="primary" @click="addHelps(form)">确 定</el-button>
-      </div>
-    </el-dialog>
     <!--<editHelps :message="editHelpDetail" @updataHelpDetail="helpDetail" ref="editHelps"></editHelps>-->
   </div>
 </template>
@@ -140,79 +84,25 @@
   export default {
     data () {
       return {
-        show1: false,
         show2: false,
-        isAddHelps: false,
-        activeName: '1',
         dataCount: null,
         multipleSelection: [],
         helpList: [],
         currentPage: 1,
         keywords: '',
-        options: [],
-        categoryOptions: [],
-        degreeOptions: [],
         limit: 10,
         page: 1,
         search: {
           keywords: '',
           system_category_id: '',
           type: ''
-        },
-        form: {
-          category_id: '',
-          title: '',
-          content: '',
-          degree: '',
-          type: 2
-        },
-        rules: {
-          category_id: [{required: true, message: '请选择问题类型', trigger: 'blur'}],
-          title: [{required: true, message: '请输入标题', trigger: 'blur'}],
-          content: [{required: true, message: '请输入问题描述', trigger: 'blur'}],
-          degree: [{required: true, message: '请选择紧急程度', trigger: 'blur'}]
-        },
-        editHelpDetail: {}
+        }
       }
     },
     methods: {
-      change () {
-        if(this.form.title === '') {
-          this.show1 = false
-          return
-        }
-        this.show1 = true
-        console.log(this.form.title)
-      },
-      addHelps (form) {
-        console.log(this.form)
-        this.$refs.form.validate((pass) => {
-          if (pass) {
-            this.apiPost('admin/helps', this.form).then((res) => {
-              this.handelResponse(res, (data) => {
-                _g.toastMsg('success', '添加成功')
-                setTimeout(() => {
-                  this.isLoading = !this.isLoading
-                  this.form = {
-                    category_id: '',
-                    title: '',
-                    content: '',
-                    degree: '',
-                    type: 2
-                  }
-                  this.isAddHelps = !this.isAddHelps
-                  this.getAllHelps(this.page)
-                }, 1500)
-              }, () => {
-                this.isLoading = !this.isLoading
-              })
-            })
-          }
-        })
-      },
 //      切换页码
       handleCurrentChange (page) {
-        this.getAllParameter(page)
+        this.getAllHelps(page)
       },
 //      获取问题反馈列表
       getAllHelps (page) {
@@ -229,51 +119,6 @@
           this.handelResponse(res, (data) => {
             this.dataCount = data.dataCount
             this.helpList = data.list
-          })
-        })
-      },
-//      获取父级分类
-      getOptions() {
-        const data = {
-          params: {
-            keywords: {
-              pid:  4
-            }
-          }
-        }
-        this.apiGet('admin/parameters',data).then((res) => {
-          this.handelResponse(res, (data) => {
-            this.options = data.list
-          })
-        })
-      },
-//      获取父级分类
-      getCategories() {
-        const data = {
-          params: {
-            keywords: {
-              pid: this.form.category_id
-            }
-          }
-        }
-        this.apiGet('admin/parameters',data).then((res) => {
-          this.handelResponse(res, (data) => {
-            this.categoryOptions = data.list
-          })
-        })
-      },
-      //      获取父级分类
-      getDegreeList() {
-        const data = {
-          params: {
-            keywords: {
-              pid:  9
-            }
-          }
-        }
-        this.apiGet('admin/parameters',data).then((res) => {
-          this.handelResponse(res, (data) => {
-            this.degreeOptions = data.list
           })
         })
       },
