@@ -140,7 +140,12 @@ class Help extends Common{
 			$ask_data = $ask_data->order('id desc')->limit(5);
 		}
 		$ask_data = $ask_data->select();
-		$data['list'] = $ask_data;
+		foreach($ask_data as $key=>$value){
+			$data['id'] = $value['id'];
+			$data['title'] = $value['title'];
+			$data['depict'] = substr($value['content'],0,50)."...";
+		}
+		$data['list'] = $data;
 		$data['dataCount'] = $dataCount;
 		return $data;
 	}
