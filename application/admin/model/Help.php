@@ -124,7 +124,7 @@ class Help extends Common{
 	}
 
 	//根据单词查询相应问题列表
-	public function getAskData($param){
+	public function getAskData($param,$page,$limit){
 		$where = [];
 		if(!empty($param['category_id'])){
 			$where['category_id'] = $param['category_id'];
@@ -133,12 +133,16 @@ class Help extends Common{
 			$where['title'] = ['like','%'.$param['word'].'%'];
 		}
 		$ask_data = $this->where($where);
-		//类型 1 显示几条 2显示所有
-		if($param['type']){
+		$dataCount = $this->where($where)->count('id');
+		if($page && $limit){
+			$ask_data = $ask_data->page($page,$limit);
+		}else{
 			$ask_data = $ask_data->order('id desc')->limit(5);
 		}
-		$ask_data['data'] = $ask_data->select();
-		return $ask_data;
+		$ask_data = $ask_data->select();
+		$data['list'] = $ask_data;
+		$data['dataCount'] = $dataCount;
+		return $data;
 	}
 
 	//删除回复
@@ -153,6 +157,7 @@ class Help extends Common{
 		}
 	}
 
+	//多选删除
 	public function del_Datas($ids){
 		if (empty($ids)) {
 			$this->error = '删除失败';
