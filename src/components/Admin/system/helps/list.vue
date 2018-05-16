@@ -8,7 +8,7 @@
       </el-breadcrumb>
     </div>
     <div class="m-b-20 pos-rel">
-      <a class="btn-link-large add-btn" @click="isAddHelps = true" v-if="addProblem">
+      <a class="btn-link-large add-btn" @click="isAddHelps = true;getOptions();getDegreeList()" v-if="addProblem">
         <i class="el-icon-plus"></i>&nbsp;&nbsp;发起提问
       </a>
       <router-link class="btn-link-large add-btn" to="add" v-if="addArticle">
@@ -280,8 +280,6 @@
 //      初始化问题反馈列表内容
       init () {
         this.getAllHelps(1)
-        this.getOptions()
-        this.getDegreeList()
       }
     },
     created () {
