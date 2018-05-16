@@ -6,8 +6,6 @@
 // +----------------------------------------------------------------------
 
 namespace app\admin\controller;
-use redis\RedisPackage;
-use app\admin\model\Access;
 use app\common\controller\BaseCommon;
 
 class Helps extends BaseCommon{
