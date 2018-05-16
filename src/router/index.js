@@ -27,6 +27,7 @@ import parametersList from '@/components/Admin/system/parameters/list.vue'
 import parametersAdd from '@/components/Admin/system/parameters/add.vue'
 import parametersEdit from '@/components/Admin/system/parameters/edit.vue'
 // 系统管理-问题反馈
+import helpsIndex from '@/components/Admin/system/helps/index.vue'
 import helpsList from '@/components/Admin/system/helps/list.vue'
 import helpsAdd from '@/components/Admin/system/helps/add.vue'
 import helpDetail from '@/components/Admin/system/helps/list_detail.vue'
@@ -178,6 +179,12 @@ const routes = [
     path: '/admin',
     component: Home,
     children: [
+      {
+        path: 'helps/index',
+        component: helpsIndex,
+        name: 'helpsIndex',
+        meta: { hideLeft: false, module: 'Admin', menu: 'helps' }
+      },
       {
         path: 'helps/list',
         component: helpsList,
