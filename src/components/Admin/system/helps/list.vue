@@ -46,20 +46,25 @@
               <el-checkbox :label="item" :key="item.id">{{ item }}</el-checkbox>
             </el-checkbox-group>
           </transition>
-          <router-link v-if="item.type === 1" :to="{ name: 'helpDetail', params: {id: item.id} }">
-            {{ item.type_name }}   {{ item.title }}
+          <router-link v-if="isHelpResolve" :to="{ name: 'helpsResolve', params: {id: item.id} }">
+            <span class="degree" v-if="item.type === 2">【{{ item.degree_name }}】</span>
+            {{ item.type_name }}
+            <span>{{ item.title }}</span>
           </router-link>
-          <router-link v-if="item.type === 2" :to="{ name: 'helpDetail', params: {id: item.id} }">
-            <span class="degree">【{{ item.degree_name }}】</span>{{ item.type_name }}   {{ item.content }}
+          <router-link v-if="!isHelpResolve" :to="{ name: 'helpsDetail', params: {id: item.id} }">
+            <span class="degree" v-if="item.type === 2">【{{ item.degree_name }}】</span>
+            {{ item.type_name }}
+            <span>{{ item.title }}</span>
           </router-link>
           <p class="tx-r fr fz-14">{{ item.user_name }} 发布于  {{ item.create_time }}</p>
-          <div v-if="item.type === 1" class="h-40 w-1000 fz-12 c-black space_nowr">
-            {{ item.content }}
+          <div class="h-40 w-1000 fz-12 c-black space_nowr">
+            <span class="highlight">{{ item.content }}</span>
           </div>
         </li>
       </ul>
     </div>
     <div class="pos-rel p-t-20" v-if="helpList.length">
+      <el-button @click="$router.push({ name: 'helpsIndex' })" size="mini">返回</el-button>
       <el-button v-if="show2 == false" size="small" @click="show2 = !show2">选择</el-button>
       <el-button v-if="show2 == true" size="small" @click="show2 = !show2">取消选择</el-button>
       <btnGroup v-show="show2" :selectedData="multipleSelection" :type="'helps'"></btnGroup>
@@ -73,7 +78,6 @@
         </el-pagination>
       </div>
     </div>
-    <!--<editHelps :message="editHelpDetail" @updataHelpDetail="helpDetail" ref="editHelps"></editHelps>-->
   </div>
 </template>
 <script>
@@ -85,11 +89,13 @@
     data () {
       return {
         show2: false,
+        isHelpResolve: false,
         dataCount: null,
         multipleSelection: [],
         helpList: [],
         currentPage: 1,
         keywords: '',
+        filterName: '',
         limit: 10,
         page: 1,
         search: {
@@ -107,20 +113,43 @@
 //      获取问题反馈列表
       getAllHelps (page) {
         this.page = page
-        this.loading = true
-        const data = {
-          params: {
-            keywords: this.search,
-            page: page,
-            limit: this.limit
+        if (this.$route.query.word) {
+          console.log(1)
+          this.isHelpResolve = true
+          this.filterName = this.$route.query.word
+          var data = {
+            params: {
+              keywords: {
+                category_id : this.$route.query.category_id,
+                word: this.$route.query.word,
+              },
+              page: page,
+              limit: this.limit
+            }
           }
-        }
-        this.apiGet('admin/helps', data).then((res) => {
-          this.handelResponse(res, (data) => {
-            this.dataCount = data.dataCount
-            this.helpList = data.list
+          this.apiGet('help/new_ask_word', data).then((res) => {
+            this.handelResponse(res, (data) => {
+              this.dataCount = data.dataCount
+              this.helpList = data.list
+            })
           })
-        })
+        } else {
+          console.log(3)
+          this.isHelpResolve = false
+          var data = {
+            params: {
+              keywords: {},
+              page: page,
+              limit: this.limit
+            }
+          }
+          this.apiGet('admin/helps', data).then((res) => {
+            this.handelResponse(res, (data) => {
+              this.dataCount = data.dataCount
+              this.helpList = data.list
+            })
+          })
+        }
       },
 //      初始化问题反馈列表内容
       init () {
