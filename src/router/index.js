@@ -30,7 +30,8 @@ import parametersEdit from '@/components/Admin/system/parameters/edit.vue'
 import helpsIndex from '@/components/Admin/system/helps/index.vue'
 import helpsList from '@/components/Admin/system/helps/list.vue'
 import helpsAdd from '@/components/Admin/system/helps/add.vue'
-import helpDetail from '@/components/Admin/system/helps/list_detail.vue'
+import helpsDetail from '@/components/Admin/system/helps/list_detail.vue'
+import helpsResolve from '@/components/Admin/system/helps/edit.vue'
 // 账户管理-角色管理
 import groupsList from '@/components/Admin/personnel/groups/list.vue'
 import groupsAdd from '@/components/Admin/personnel/groups/add.vue'
@@ -192,15 +193,21 @@ const routes = [
         meta: { hideLeft: false, module: 'Admin', menu: 'helps' }
       },
       {
-        path: 'helps/add',
+        path: 'helps/add_article',
         component: helpsAdd,
         name: 'helpsAdd',
         meta: { hideLeft: false, module: 'Admin', menu: 'helps' }
       },
       {
         path: 'helps/list/:id',
-        component: helpDetail,
-        name: 'helpDetail',
+        component: helpsDetail,
+        name: 'helpsDetail',
+        meta: { hideLeft: false, module: 'Admin', menu: 'helps' }
+      },
+      {
+        path: 'helps/resolve/:id',
+        component: helpsResolve,
+        name: 'helpsResolve',
         meta: { hideLeft: false, module: 'Admin', menu: 'helps' }
       }
     ]

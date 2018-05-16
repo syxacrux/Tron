@@ -6,6 +6,11 @@
         <el-breadcrumb-item>问题反馈</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
+    <div class="m-b-20 pos-rel">
+      <router-link class="btn-link-large add-btn" to="add_article" v-if="isAddArticle">
+      <i class="el-icon-plus"></i>&nbsp;&nbsp;发起文章
+      </router-link>
+    </div>
     <div class="m-l-50 m-t-30 w-900">
       <h2>提问</h2>
       <el-form ref="form" :model="form" label-width="120px" :rules="rules">
@@ -39,19 +44,12 @@
           <div v-show="show1" class="transition-box">
             <ul>
               <li v-for="item in keywordList">
-                {{ item }}
-                <a href="#">
-                  [百科]我是一个问题
-                </a>
+                <router-link :to="{ name: 'helpsResolve', params: {id: item.id} }">
+                  {{ item.title }}
+                </router-link>
                 <div class="h-40 w-1000 fz-12 c-black space_nowr">
-                  我是内容啊我是内容啊我是内容啊我是内容啊我是内容啊我是内容啊我是内容啊我是内容啊我是内容啊我是内容啊我是内容啊我是内容啊
+                  {{ item.content }}
                 </div>
-                <!--<router-link :to="{ name: 'helpDetail', params: {id: item.id} }">-->
-                <!--{{ item.type_name }}   {{ item.title }}-->
-                <!--</router-link>-->
-                <!--<div v-if="item.type === 1" class="h-40 w-1000 fz-12 c-black space_nowr">-->
-                <!--{{ item.content }}-->
-                <!--</div>-->
               </li>
               <div @click="getKeywordList">查看所有相关</div>
             </ul>
@@ -129,10 +127,14 @@
         }
         this.apiGet('help/new_ask_word', data).then((res) => {
           this.handelResponse(res, (data) => {
+            if(data.list.length === 0) {
+              this.show1 = false
+              return
+            }
             this.keywordList = data.list
+            this.show1 = true
           })
         })
-        this.show1 = true
       },
 //      获取问题类型
       getTypeOptions() {
@@ -180,22 +182,7 @@
         })
       },
       getKeywordList() {
-        this.$router.push({ name: 'helpsList', query: this.keywords })
-        this.page = page
-        const data = {
-          params: {
-            category_id : this.form.category_id,
-            word: this.form.title,
-            page: page,
-            limit: this.limit
-          }
-        }
-        this.apiGet('admin/helps', data).then((res) => {
-          this.handelResponse(res, (data) => {
-            this.dataCount = data.dataCount
-            this.helpList = data.list
-          })
-        })
+        this.$router.push({ name: 'helpsList', query: this.keyword })
       }
     },
     created() {
@@ -204,7 +191,13 @@
       this.getTypeOptions();
       this.getDegreeList()
     },
-    mixins: [http, fomrMixin]
+    mixins: [http, fomrMixin],
+    computed: {
+//      发起文章按钮
+      isAddArticle () {
+        return _g.getHasRule('helps-save')
+      },
+    }
   }
 </script>
 <style>
