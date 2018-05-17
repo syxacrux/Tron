@@ -9,7 +9,7 @@
 
 #"Project" "HAC"
 #"Folder" "192.168.1.85|/DHG/Dailies/20161214"
-#"Seq" "HAC" "01"/
+#"Seq" "HAC" "01"
 #"Scene" "HAC" "01" "001"
 #"Shot" "HAC" "01" "001" "rig" "liangcy" "fileName"
 #"Asset" "HAC" "rig" "liangcy" "fileName"

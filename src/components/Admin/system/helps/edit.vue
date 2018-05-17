@@ -1,103 +1,84 @@
 <template>
-  <div class="help_edit">
-    <el-dialog title="问题反馈" :visible.sync="isEditHelps" width="30%">
-      <el-form :model="form" label-width="120px" :rules="rules">
-        <el-form-item label="反馈类型：" prop="category_id">
-          <el-select v-model="form.category_id" placeholder="请选择问题类型">
-            <el-option v-for="item in options" :label="item.category" :value="item.id" :key="item.id"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="反馈内容：">
-          <el-input placeholder="请输入反馈内容" v-model="form.question" class="w-200"></el-input>
-        </el-form-item>
-        <el-form-item label="回复反馈：">
-          <el-input
-              type="textarea"
-              :autosize="{ minRows: 2, maxRows: 4}"
-              placeholder="请回复反馈"
-              v-model="form.answer">
-          </el-input>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="">取 消</el-button>
-        <el-button type="primary" @click="">确 定</el-button>
+  <div class="help_detail">
+    <div class="m-b-20">
+      <el-breadcrumb separator="/">
+        <el-breadcrumb-item :to="{ path: '/admin' }">首页</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ path: '/admin' }">系统管理</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ path: '/admin/helps/list' }">问题反馈</el-breadcrumb-item>
+        <el-breadcrumb-item>文章详情</el-breadcrumb-item>
+      </el-breadcrumb>
+    </div>
+    <el-card class="box-card">
+      <div slot="header" class="clearfix">
+        <span>{{ helpDetail.title }}</span>
       </div>
-    </el-dialog>
+      <div class="help_content">
+        <pre class="m-0" v-html>{{ helpDetail.content }}</pre>
+        <p class="tx-r">
+          <span>{{ helpDetail.create_time }}</span>
+        </p>
+      </div>
+      <div class="help_publish m-t-30">
+        <el-button type="primary" @click="" size="mini" :loading="isLoading">已解决</el-button>
+        <el-button @click="$router.go(-1)" size="mini">未解决</el-button>
+      </div>
+    </el-card>
   </div>
 </template>
 <script>
   import http from '../../../../assets/js/http'
   import _g from '@/assets/js/global'
   export default {
-    data() {
+    data () {
       return {
-        isEditHelps: false,
-        options: [],
-        form: {
-          category_id: '',
-          title: '',
-          content: '',
-          keywords: '',
-          explain: ''
-        },
-        rules: {
-
-        }
+        isLoading: false,
+        helpDetail: {},
+        id: '',
       }
     },
     methods: {
-//      编辑镜头
-      edit(form) {
-        this.$refs.form.validate((pass) => {
-          if (pass) {
-            this.isLoading = !this.isLoading
-            this.apiPut('admin/shots/', this.id, this.form).then((res) => {
-              this.handelResponse(res, (data) => {
-                _g.toastMsg('success', '编辑成功')
-//                this.$emit('updataHelpDetail', this.id)
-                setTimeout(() => {
-                  this.isLoading = !this.isLoading
-                }, 1500)
-              }, () => {
-                this.isLoading = !this.isLoading
-              })
-            })
-          }
-        })
-      },
-      //      获取父级分类
-      getParameters() {
-        const data = {
-          params: {
-            keywords: {
-              pid:  4
-            }
-          }
-        }
-        this.apiGet('admin/parameters',data).then((res) => {
+      getHelpDetail(id) {
+        this.apiGet('admin/helps/' + this.id).then((res) => {
           this.handelResponse(res, (data) => {
-            this.options = data.list
+            this.helpDetail = data
           })
         })
-      },
-      async getCompleteData() {
-
       }
     },
-    created() {
-      this.getParameters()
-      this.getCompleteData()
-    },
-    mixins: [http],
-    props: ['message'],
-    watch: {
-      message: function(data, o) {
-
-      }
+    created () {
+      this.id = this.$route.params.id
+      this.getHelpDetail(this.id)
     },
     computed: {
 
+    },
+    components: {
+
+    },
+    mixins: [http],
+    computed: {
+//      删除反馈按钮
+      deleteShow () {
+        return _g.getHasRule('helps-delete')
+      }
     }
   }
 </script>
+<style>
+  .help_detail .help_publish {
+    border-top: 1px solid #eee;
+  }
+  .help_detail ul {
+    background: #f7f8fa;
+  }
+  .help_detail .help_content {
+    font-size: 14px;
+    line-height: 26px;
+    padding: 5px 20px;
+  }
+  .help_detail .help_content pre{
+    font-family: Microsoft YaHei;
+    white-space: pre-line;
+  }
+
+</style>

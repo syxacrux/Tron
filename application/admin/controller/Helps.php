@@ -6,8 +6,6 @@
 // +----------------------------------------------------------------------
 
 namespace app\admin\controller;
-use redis\RedisPackage;
-use app\admin\model\Access;
 use app\common\controller\BaseCommon;
 
 class Helps extends BaseCommon{
@@ -82,7 +80,10 @@ class Helps extends BaseCommon{
 	public function new_ask_push(){
 		$help_model = model('Help');
 		$param = $this->param;
-		$data = $help_model->getAskData($param);
+        $keywords = !empty($param['keywords']) ? json_decode($param['keywords'],true): '';
+        $page = !empty($param['page']) ? $param['page']: '';
+        $limit = !empty($param['limit']) ? $param['limit']: '';
+		$data = $help_model->getAskData($keywords,$page,$limit);
 		return resultArray(['data'=>$data]);
 	}
 

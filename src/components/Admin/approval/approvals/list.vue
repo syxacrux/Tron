@@ -149,8 +149,13 @@
 			      	<img id="imgs" src="../../../../assets/images/bg1.jpg" >
 		        </div> -->
             <div class="imagebox1 dailies-video">
+<<<<<<< HEAD
 			      	<img id="imgs" src="../../../../assets/images/bg1.jpg" >
               <!-- <video id='playVideo' width="600" controls src="../../../../assets/video/h264_32.3.mp4"></video> -->
+=======
+			      	<!-- <img id="imgs" src="../../../../assets/images/bg1.jpg" > -->
+              <!--<video id='playVideo' width="600" controls src="../../../../assets/video/h264_32.3.mp4"></video>-->
+>>>>>>> dc6570ac43fb45cf41a50b5b047e97ade874c925
 		        </div>
             <div>
               <button id="capture" @click="isTaskDetailShow = true">截图</button>

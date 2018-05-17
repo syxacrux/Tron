@@ -24,8 +24,8 @@ return [
 			'admin/helps'					=>		'admin/helps',
 	],
 
-	// 测试
-	'admin/base/test'				=>			['admin/base/test',['method' => 'POST|GET']],
+	// 测试 无验证权限
+	'admin/test'						=>			['admin/test/get_test',['method' => 'POST|GET']],
 	// [获取信息]
 	'admin/infos/index'     =>      ['admin/infos/index',['method' => 'POST']],
 	// 刷新token
@@ -147,7 +147,7 @@ return [
 	// [问题反馈] 问题回复
 	'help/add_answer'				=>			['admin/helps/save_problem',['method' =>'POST']],
 	// [问题反馈] 根据单词模糊匹配相应记录
-	'help/new_ask_word'			=>			['admin/helps/new_ask_push',['method' =>'GET']],
+	'help/new_ask_word'			=>			['admin/helps/new_ask_push',['method' =>'GET|POST']],
 	// [问题反馈] 查看所属问题所有回复
 	'help/answer_list'			=>			['admin/helps/answer_list',['method' =>'GET']],
 	// [问题反馈] 删除回复

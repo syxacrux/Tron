@@ -207,8 +207,8 @@ class Shot extends Common
 			} else {
 				//镜头表新增成功 更新所属项目表镜头数量 lens_count +1
 				$lens_count['lens_count'] = $this->where('project_id', $param['project_id'])->count('id');
-				$project_obj = new Project();
-				$project_obj->where('id', $param['project_id'])->update($lens_count);
+				$project_model = new Project();
+				$project_model->where('id', $param['project_id'])->update($lens_count);
 				$project_byname = $project_obj->project_byname;
 				$field_name = Field::get($param['field_id'])->name;
 

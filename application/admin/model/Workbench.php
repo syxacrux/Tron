@@ -411,31 +411,6 @@ class Workbench extends Common
 		}
 	}
 
-	/**
-	 * 添加场号/集号
-	 * @param $param
-	 * @return bool
-	 * @author zjs 2018/3/21
-	 */
-	public function addFieldData($param)
-	{
-		try {
-			$where = [];
-			$where['project_id'] = $param['project_id'];
-			$where['name'] = $param['name'];
-			$check_name = Db::name('field')->where($where)->find();
-			if (!empty($check_name)) {
-				$this->error = "名称重复，请重新填写";
-				return false;
-			} else {
-				Db::name('field')->insert($param);
-			}
-		} catch (\Exception $e) {
-			$this->error = '添加失败';
-			return false;
-		}
-	}
-
 	//根据任务状态组合完成进度数据
 	public function rate_of_progress($status, $tache_id)
 	{
@@ -531,6 +506,7 @@ class Workbench extends Common
 		$task_obj->project_name = $project_obj->project_name;
 		$task_obj->project_byname = $project_obj->project_byname;
 		$task_obj->field_number = Db::name('field')->where('id', $task_obj->field_id)->value('name');
+		$task_obj->tache_name = Tache::get($task_obj->tache_id)->explain;
 		$task_obj->shot_number = $shot_obj->shot_number;
 		$task_obj->shot_byname = $shot_obj->shot_byname;
 		$task_obj->shot_name = $shot_obj->shot_name;
