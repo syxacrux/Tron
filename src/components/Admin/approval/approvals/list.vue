@@ -38,7 +38,7 @@
             </el-select>
           </el-col>
           <el-col :span="5">
-            <el-select v-model="search.shot_id"  style="margin-left: 10px;" placeholder="请选择镜头号或资产简称" @change="lensChange()">
+            <el-select v-model="search.shot_id"  style="margin-left: 10px;" placeholder="请选择镜头号或资产简称">
               <el-option
                 v-for="item in screeningShot"
                 :key="item.id"
@@ -61,6 +61,7 @@
                     {{data}}
                   </el-card>
                 </div>
+                <div class="grid-content p-b-5 videoIcon">11</div>
                 <div v-if="type === 'A'" class="grid-content p-b-5 subelement">
                   <!-- <el-card class="ovf-hd picture"> -->
                    审核通过
@@ -149,13 +150,10 @@
 			      	<img id="imgs" src="../../../../assets/images/bg1.jpg" >
 		        </div> -->
             <div class="imagebox1 dailies-video">
-<<<<<<< HEAD
 			      	<img id="imgs" src="../../../../assets/images/bg1.jpg" >
               <!-- <video id='playVideo' width="600" controls src="../../../../assets/video/h264_32.3.mp4"></video> -->
-=======
 			      	<!-- <img id="imgs" src="../../../../assets/images/bg1.jpg" > -->
               <!--<video id='playVideo' width="600" controls src="../../../../assets/video/h264_32.3.mp4"></video>-->
->>>>>>> dc6570ac43fb45cf41a50b5b047e97ade874c925
 		        </div>
             <div>
               <button id="capture" @click="isTaskDetailShow = true">截图</button>
@@ -827,11 +825,12 @@
               })
             })
         },
-        lensChange(){
+        //请求数据
+        getApproval(){
 
         },
         init() {
-          this.getsprojects()
+          this.getApproval()
         },
        },
       created() {
@@ -887,6 +886,13 @@ body,html,div,ul,li,a{
   line-height: 140px;
   width: 99%;
   border-radius: 4px;
+}
+.approvals_list .videoIcon{
+   position: absolute;
+   bottom: 8px;
+   width: 20px;
+   height: 20px;
+   border: 1px solid red;
 }
 .approvals_list .subelement div{
   background-color: rgba(0,0,0,0.3);
