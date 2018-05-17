@@ -554,7 +554,7 @@ class Workbench extends Common
 					$task_data['update_time'] = time();
 					$this->data($task_data, true)->isUpdate(false)->save();
 					//为制作人创建目录  python
-
+					ExecPython::allot_artist($task_obj->task_type,$this->id);
 					//根据自增任务ID添加任务记录表记录
 					$task_record_data['task_id'] = $this->id;
 					$task_record_data['task_status'] = 1;

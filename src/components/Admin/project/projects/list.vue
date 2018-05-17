@@ -60,7 +60,8 @@
   export default {
     data() {
       return {
-        address: window.baseUrl + '/',
+        //address: window.baseUrl + '/',
+        address: '../../../',
         tableData: [],
         uid: '',
         keywords: {},
