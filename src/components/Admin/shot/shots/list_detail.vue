@@ -246,76 +246,79 @@
         </el-tab-pane>
         <el-tab-pane label="镜头未制作" name="shotsNotDevelopment">
           <div class="shot_card ovf-hd">
-            <div class="grid-content">
-              <h2 class="m-0">等待资产</h2>
-              <div class="ovf-hd">
-                <el-col :span="12" v-for="item in waitingList" :key="item.id" @click="shotDetail(item.id)">
-                  <div class="grid-content p-b-5">
-                    <el-card class="">
-                      <div class="">
-                        <div class="text-Lens pos-rel">
-                          <p class="text-Lens-name h-28 ">
-                            {{item.project_name}}：<span>{{item.shot_number}}</span>
-                          </p>
-                          <p class="text-Lens-rank pos-abs">
-                            <el-tooltip class="pointer" effect="dark" content="镜头难度" placement="bottom-start">
-                              <el-tag type="warning">{{item.difficulty}}</el-tag>
-                            </el-tooltip>
-                            <el-tooltip v-if="item.priority_level" class="pointer" effect="dark" content="镜头优先级"
-                                        placement="bottom-start">
-                              <el-tag type="danger">{{item.priority_level}}</el-tag>
-                            </el-tooltip>
-                          </p>
-                        </div>
-                        <div class="text-Lens m-t-10">
-                          <p class="text-Lens-assets">
-                            <el-tag type="info" v-if="item.asset_info.length" v-for="(asset, index) in item.asset_info" :key="asset.id">
-                              {{asset.name}}:{{asset.type}}
-                            </el-tag>
-                          </p>
-                          <p class="text-Lens-time fr tx-r">
-                          <span>
-                            <el-tooltip class="m-r-5 pointer" effect="dark" content="镜头剩余天数" placement="bottom-start">
-                              <span>{{ shotRemainDay(item.plan_end_timestamp) }}天</span>
-                            </el-tooltip>
-                            <el-tooltip class="m-r-5 pointer" effect="dark" content="镜头建立时间" placement="bottom-start">
-                              <span>{{ shotCreateTime(item.create_timestamp) }}天</span>
-                            </el-tooltip>
-                            <el-tooltip class="m-r-5 pointer" effect="dark" content="镜头制作中时间" placement="bottom-start">
-                              <span>0天</span>
-                            </el-tooltip>
-                          </span>
+            <el-col :span="12">
+              <div class="grid-content">
+                <h2 class="m-0">等待资产</h2>
+                <div class="ovf-hd">
+                  <!--<el-col :span="12" v-for="item in waitingList" :key="item.id" @click="shotDetail(item.id)">-->
+                  <el-col v-for="item in waitingList" :key="item.id" @click="shotDetail(item.id)">
+                    <div class="grid-content p-b-5">
+                      <el-card class="">
+                        <div class="">
+                          <div class="text-Lens pos-rel">
+                            <p class="text-Lens-name h-28 ">
+                              {{item.project_name}}：<span>{{item.shot_number}}</span>
+                            </p>
+                            <p class="text-Lens-rank pos-abs">
+                              <el-tooltip class="pointer" effect="dark" content="镜头难度" placement="bottom-start">
+                                <el-tag type="warning">{{item.difficulty}}</el-tag>
+                              </el-tooltip>
+                              <el-tooltip v-if="item.priority_level" class="pointer" effect="dark" content="镜头优先级"
+                                          placement="bottom-start">
+                                <el-tag type="danger">{{item.priority_level}}</el-tag>
+                              </el-tooltip>
+                            </p>
+                          </div>
+                          <div class="text-Lens m-t-10">
+                            <p class="text-Lens-assets">
+                              <el-tag type="info" v-if="item.asset_info.length" v-for="(asset, index) in item.asset_info" :key="asset.id">
+                                {{asset.name}}:{{asset.type}}
+                              </el-tag>
+                            </p>
+                            <p class="text-Lens-time fr tx-r">
                             <span>
-                            <el-tooltip class="m-r-5 pointer" effect="dark" content="预计结束时间" placement="bottom-start">
-                              <span>{{ j2time(item.plan_end_timestamp) }}</span>
-                            </el-tooltip>
-                          </span>
-                          </p>
+                              <el-tooltip class="m-r-5 pointer" effect="dark" content="镜头剩余天数" placement="bottom-start">
+                                <span>{{ shotRemainDay(item.plan_end_timestamp) }}天</span>
+                              </el-tooltip>
+                              <el-tooltip class="m-r-5 pointer" effect="dark" content="镜头建立时间" placement="bottom-start">
+                                <span>{{ shotCreateTime(item.create_timestamp) }}天</span>
+                              </el-tooltip>
+                              <el-tooltip class="m-r-5 pointer" effect="dark" content="镜头制作中时间" placement="bottom-start">
+                                <span>0天</span>
+                              </el-tooltip>
+                            </span>
+                              <span>
+                              <el-tooltip class="m-r-5 pointer" effect="dark" content="预计结束时间" placement="bottom-start">
+                                <span>{{ j2time(item.plan_end_timestamp) }}</span>
+                              </el-tooltip>
+                            </span>
+                            </p>
+                          </div>
+                          <div class="text-Lens-link m-t-10">
+                            <el-tag class="m-l-5" v-for="value in item.tache_info"
+                                    v-if="value.finish_degree !== ''?true:false" :key="value.id"
+                                    :type="value.finish_degree<100?'warning':'success'">
+                              {{ value.tache_byname }}：{{ value.finish_degree }}%
+                            </el-tag>
+                          </div>
                         </div>
-                        <div class="text-Lens-link m-t-10">
-                          <el-tag class="m-l-5" v-for="value in item.tache_info"
-                                  v-if="value.finish_degree !== ''?true:false" :key="value.id"
-                                  :type="value.finish_degree<100?'warning':'success'">
-                            {{ value.tache_byname }}：{{ value.finish_degree }}%
-                          </el-tag>
-                        </div>
-                      </div>
-                    </el-card>
+                      </el-card>
+                    </div>
+                  </el-col>
+                </div>
+                <div class="pos-rel p-t-20" v-if="waitingList.length">
+                  <div class="block tx-r">
+                    <el-pagination
+                        @current-change="waitingCurrentChange"
+                        :current-page.sync="currentPage"
+                        :page-size="10"
+                        layout="prev, pager, next, jumper"
+                        :total="waitingDataCount">
+                    </el-pagination>
                   </div>
-                </el-col>
-              </div>
-              <div class="pos-rel p-t-20" v-if="waitingList.length">
-                <div class="block tx-r">
-                  <el-pagination
-                      @current-change="waitingCurrentChange"
-                      :current-page.sync="currentPage"
-                      :page-size="10"
-                      layout="prev, pager, next, jumper"
-                      :total="waitingDataCount">
-                  </el-pagination>
                 </div>
               </div>
-            </div>
+            </el-col>
           </div>
         </el-tab-pane>
         <el-tab-pane v-if="suspendShow" label="镜头暂停" name="shotsSuspend">
