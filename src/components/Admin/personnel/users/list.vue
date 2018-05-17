@@ -27,7 +27,7 @@
             </el-select>
           </el-col>
           <el-col :span="7">
-            <el-input placeholder="请输入成员" v-model="search.name">
+            <el-input placeholder="请输入成员" v-model.trim="search.name">
               <el-button slot="append" icon="el-icon-search" @click="searches()"></el-button>
             </el-input>
           </el-col>
