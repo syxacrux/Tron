@@ -1,7 +1,6 @@
 <?php
 namespace app\admin\model;
 
-use think\Db;
 use app\common\model\Common;
 
 class Help extends Common{
