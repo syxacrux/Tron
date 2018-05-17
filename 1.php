@@ -37,3 +37,6 @@ date_default_timezone_set('PRC'); //设置中国时区
 //	echo 2;
 //}
 //file_put_contents('runtime/log/201805/aa.txt','123');
+
+$a = 'Mys7431';
+echo md5($a);
