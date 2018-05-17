@@ -38,7 +38,7 @@
             </el-select>
           </el-col>
           <el-col :span="5">
-            <el-select v-model="search.shot_id"  style="margin-left: 10px;" placeholder="请选择镜头号或资产简称" @change="lensChange()">
+            <el-select v-model="search.shot_id"  style="margin-left: 10px;" placeholder="请选择镜头号或资产简称">
               <el-option
                 v-for="item in screeningShot"
                 :key="item.id"
@@ -61,6 +61,7 @@
                     {{data}}
                   </el-card>
                 </div>
+                <div class="grid-content p-b-5 videoIcon">11</div>
                 <div v-if="type === 'A'" class="grid-content p-b-5 subelement">
                   <!-- <el-card class="ovf-hd picture"> -->
                    审核通过
@@ -149,6 +150,8 @@
 			      	<img id="imgs" src="../../../../assets/images/bg1.jpg" >
 		        </div> -->
             <div class="imagebox1 dailies-video">
+			      	<img id="imgs" src="../../../../assets/images/bg1.jpg" >
+              <!-- <video id='playVideo' width="600" controls src="../../../../assets/video/h264_32.3.mp4"></video> -->
 			      	<!-- <img id="imgs" src="../../../../assets/images/bg1.jpg" > -->
               <!--<video id='playVideo' width="600" controls src="../../../../assets/video/h264_32.3.mp4"></video>-->
 		        </div>
@@ -308,10 +311,10 @@
                     // document.getElementById("output").appendChild(newImg);    
                 },useCORS:true
               }); */
-              // var str=$('.dailies-video>img').css('width').substr(0,$('.dailies-video>img').css('width').length-2)
-              // var str1=$('.dailies-video>img').css('height').substr(0,$('.dailies-video>img').css('height').length-2)
-              var str=$('.dailies-video>video').css('width').substr(0,$('.dailies-video>video').css('width').length-2)
-              var str1=$('.dailies-video>video').css('height').substr(0,$('.dailies-video>video').css('height').length-2)
+              var str=$('.dailies-video>img').css('width').substr(0,$('.dailies-video>img').css('width').length-2)
+              var str1=$('.dailies-video>img').css('height').substr(0,$('.dailies-video>img').css('height').length-2)
+              // var str=$('.dailies-video>video').css('width').substr(0,$('.dailies-video>video').css('width').length-2)
+              // var str1=$('.dailies-video>video').css('height').substr(0,$('.dailies-video>video').css('height').length-2)
               sketchpad = new Sketchpad({
                 element: '#sketchpad',
                 width: str,
@@ -348,19 +351,19 @@
             var initialize = function() {
               $capture = $("#capture");
               // video = $("#video").get(0);
-              // video=$('.dailies-video>img').get(0);
-              video=$('.dailies-video>video').get(0)
+              video=$('.dailies-video>img').get(0);
+              // video=$('.dailies-video>video').get(0)
               $("#capture").click(captureImage);        
             };
             var captureImage = function() {
               var canvas = document.createElement("canvas");
               // canvas.width = video.videoWidth * scale;
               // canvas.height = video.videoHeight * scale;
-              // var str=$('.dailies-video>img').css('width').substr(0,$('.dailies-video>img').css('width').length-2)
-               var str=$('.dailies-video>video').css('width').substr(0,$('.dailies-video>video').css('width').length-2)
+              var str=$('.dailies-video>img').css('width').substr(0,$('.dailies-video>img').css('width').length-2)
+              //  var str=$('.dailies-video>video').css('width').substr(0,$('.dailies-video>video').css('width').length-2)
                canvas.width =str * 1;
-              // var str1=$('.dailies-video>img').css('height').substr(0,$('.dailies-video>img').css('height').length-2)
-              var str1=$('.dailies-video>video').css('height').substr(0,$('.dailies-video>video').css('height').length-2)
+              var str1=$('.dailies-video>img').css('height').substr(0,$('.dailies-video>img').css('height').length-2)
+              // var str1=$('.dailies-video>video').css('height').substr(0,$('.dailies-video>video').css('height').length-2)
 		     	    canvas.height =str1 * 1;
               canvas.getContext('2d')
                 .drawImage(video, 0, 0, canvas.width, canvas.height);
@@ -822,11 +825,12 @@
               })
             })
         },
-        lensChange(){
+        //请求数据
+        getApproval(){
 
         },
         init() {
-          this.getsprojects()
+          this.getApproval()
         },
        },
       created() {
@@ -882,6 +886,13 @@ body,html,div,ul,li,a{
   line-height: 140px;
   width: 99%;
   border-radius: 4px;
+}
+.approvals_list .videoIcon{
+   position: absolute;
+   bottom: 8px;
+   width: 20px;
+   height: 20px;
+   border: 1px solid red;
 }
 .approvals_list .subelement div{
   background-color: rgba(0,0,0,0.3);

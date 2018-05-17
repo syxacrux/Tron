@@ -1,15 +1,22 @@
 <template>
-  <div class="help_add">
+  <div class="help_index">
     <div class="m-b-20">
       <el-breadcrumb separator="/">
         <el-breadcrumb-item :to="{ path: '/admin' }">首页</el-breadcrumb-item>
         <el-breadcrumb-item>问题反馈</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
-    <div class="m-b-20 pos-rel">
-      <router-link class="btn-link-large add-btn" to="add_article" v-if="isAddArticle">
-      <i class="el-icon-plus"></i>&nbsp;&nbsp;发起文章
-      </router-link>
+    <div class="m-b-20 pos-rel tx-r">
+      <el-tooltip class="item" effect="dark" content="列表" placement="bottom">
+        <router-link to="add_article" class="list_btn m-r-10">
+          <img src="@/assets/images/helps/help_list.png">
+        </router-link>
+      </el-tooltip>
+      <el-tooltip class="item" effect="dark" content="发起文章" placement="bottom">
+        <router-link to="add_article" class="add_article m-r-10" v-if="isAddArticle">
+          <i class="el-icon-plus"></i>
+        </router-link>
+      </el-tooltip>
     </div>
     <div class="m-l-50 m-t-30 w-900">
       <h2>提问</h2>
@@ -201,5 +208,20 @@
   }
 </script>
 <style>
-
+  .help_index .add_article {
+    border: 2px solid #000;
+    border-radius: 5px;
+    color: #000;
+    font-size: 14px;
+    padding: 5px;
+  }
+  .help_index .list_btn{
+    display: inline-block;
+    width: 32px;
+    height: 25px;
+  }
+  .help_index .list_btn img{
+    width: 100%;
+    vertical-align: middle;
+  }
 </style>
