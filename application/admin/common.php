@@ -128,16 +128,6 @@ function my_sort($arrays,$sort_key,$sort_order=SORT_DSC,$sort_type=SORT_NUMERIC 
     return $arrays;
 }
 
-/**
- * 执行python外部命令
- * @author zjs 2018/3/1
- */
-function exec_python_file($str){
-	$redis = new RedisPackage();
-	$cmd = "python /usr/local/httpd/htdocs/tron/tronPipelineScript/createDirPath/parser.py $str ";
-	$redis::LPush("pyFile",$cmd);
-}
-
 //获取当前所属主机信息
 function osname()
 {
