@@ -81,8 +81,8 @@ class ExecPython extends Common{
 
 			}
 		}
-		//更新当前任务的三套系统路径
 		try{
+			//更新当前任务的三套系统路径
 			$task_model = new Workbench();
 			$task_model->save($param,['id'=>$task_id]);
 			$cmd = $str." '".$file_name."'";
@@ -99,4 +99,6 @@ class ExecPython extends Common{
 		}
 
 	}
+
+
 }
