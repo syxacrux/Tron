@@ -119,6 +119,7 @@ class Workbench extends Common
 		 * 二、工作室角色内的所有角色，根据当前用户所属工作室，获取包含的项目ID
 		 * 1.四大状态
 		 * 项目ID为数组转成字符串，以逗号分割
+		 * 显示工作室不为空的任务 不区分角色
 		 */
 		if ($group_id == 1 || $group_id == 2 || $group_id == 3 || $group_id == 4) {
 			$project_where['producer|scene_producer|scene_director|visual_effects_boss|visual_effects_producer|inside_coordinate'] = ['like', '%' . $uid . '%'];
@@ -128,7 +129,7 @@ class Workbench extends Common
 				$where['project_id'] = ['in', $project_ids];
 				$where['studio_id'] = 0;
 			} else {  //超级管理员 uid =1
-				$where = [];
+				$where['studio_id'] = ['neq',0];	//工作室不等于0的显示
 			}
 		} elseif ($group_id == 5 || $group_id == 6) {//工作室内角色 暂时为5 工作室总监，6组长
 			$where['studio_id'] = $user_obj->studio_id;
@@ -136,7 +137,7 @@ class Workbench extends Common
 			$where['studio_id'] = $user_obj->studio_id;
 			$where['user_id'] = $uid;
 		} else { // uid 为超级管理员
-			$where = [];
+			$where['studio_id'] = ['neq',0];	//工作室不等于0的显示
 		}
 		//加入条件查询
 		if (!empty($keywords['project_id'])) {
@@ -193,14 +194,14 @@ class Workbench extends Common
 			}
 		}
 		$dataCount = $this->where($where)->count('id'); //全部数量
-		// 若有分页
-		if ($page && $limit) {
+		//对分页设置为40时 四个数组平均重组数据
+		/*if ($page && $limit) {
 			//暂定为总页数为40 /每列显示10条数据 $limit 10
 			$every_limit = intval($limit) / 4;
 			$in_production_list = $this->where($where)->where('task_status', 5)->page($page, $every_limit)->select(); //制作中 in_production
 			$feedback_list = $this->where($where)->where('task_status', 'in', '10,15')->page($page, $every_limit)->select();   //反馈中 feedback  等待审核 反馈中
 			$submit_list = $this->where($where)->where('task_status', 25)->page($page, $every_limit)->select();  //提交发布 submit
-			$wait_production_list = $this->where($where)->where('task_status', 1)->page(1, 10)->select();  //等待制作 wait_production
+			$wait_production_list = $this->where($where)->where('task_status', 1)->page($page, $every_limit)->select();  //等待制作 wait_production
 			$list_data = array_merge($in_production_list, $feedback_list, $submit_list, $wait_production_list);
 		} else {
 			$in_production_list = $this->where($where)->where('task_status', 5)->select();
@@ -220,9 +221,26 @@ class Workbench extends Common
 			$list_data[$key]['create_timestamp'] = $value['create_time'];
 			$list_data[$key]['create_time'] = !empty($value['update_time']) ? '读任务状态记录表的最新时间' : date("Y-m-d H:i:s", $value['create_time']);
 			$list_data[$key]['task_finish_degree'] = $this->rate_of_progress($value['task_status'], $value['tache_id']);//任务完成度
+		}*/
+
+		//分页设置是10条，重新组合为 四个数组
+		if($page && $limit){
+			$in_production_list = $this->where($where)->where('task_status', 5)->page($page, $limit)->select(); //制作中 in_production
+			$feedback_list = $this->where($where)->where('task_status', 'in', '10,15')->page($page, $limit)->select();   //反馈中 feedback  等待审核 反馈中
+			$submit_list = $this->where($where)->where('task_status', 25)->page($page, $limit)->select();  //提交发布 submit
+			$wait_production_list = $this->where($where)->where('task_status', 1)->page($page, $limit)->select();  //等待制作 wait_production
+		}else{
+			$in_production_list = $this->where($where)->where('task_status', 5)->select();
+			$feedback_list = $this->where($where)->where('task_status', 'in', '10,15')->select();
+			$submit_list = $this->where($where)->where('task_status', 25)->select();
+			$wait_production_list = $this->where($where)->where('task_status', 1)->select();
 		}
 
-		$data['list'] = $list_data;
+		//$data['list'] = $list_data;
+		$data['in_production_list'] = $in_production_list;
+		$data['feedback_list'] = $feedback_list;
+		$data['submit_list'] = $submit_list;
+		$data['wait_production_list'] = $wait_production_list;
 		$data['dataCount'] = $dataCount;
 		return $data;
 	}
@@ -421,7 +439,7 @@ class Workbench extends Common
 	}
 
 	//任务状态改变并记录
-	public function change_task_status($task_id, $data, $uid, $group_id)
+	public function change_task_status($task_id, $data, $uid)
 	{
 		$task_data['task_status'] = $this->status_cn_arr[$data['status']];
 		$curr_task_data = $this->get($task_id);
@@ -439,12 +457,15 @@ class Workbench extends Common
 				//更改状态时将当前时间加入实际开始时间
 				$task_data['actually_start_timestamp'] = time();
 				$this->save($task_data, [$this->getPk() => $task_id]);
-				//查询当前镜头的状态如果是未开始，则更新为制作中 5
+				//查询当前镜头的状态如果是未开始，则更新为制作中 5  同时也更新项目表的状态为制作中 2
 				if($shot_status == 1){
 					$shot = Shot::get($shot_id);
 					$shot->status = 5;
 					$shot->actual_start_timestamp = time();
 					$shot->save();
+					$project = Project::get($curr_task_data->project_id);
+					$project->status = 2;
+					$project->save();
 				}
 			}else{
 				$this->error = '您没有给当前任务分配制作人,无法移动';
@@ -550,7 +571,7 @@ class Workbench extends Common
 					$task_data['update_time'] = time();
 					$this->data($task_data, true)->isUpdate(false)->save();
 					//为制作人创建目录  python
-
+					ExecPython::allot_artist($task_obj->task_type,$this->id);
 					//根据自增任务ID添加任务记录表记录
 					$task_record_data['task_id'] = $this->id;
 					$task_record_data['task_status'] = 1;
@@ -606,30 +627,16 @@ class Workbench extends Common
 		}
 	}
 
-	//根据所属任务ID弹出已存在的制作人列表
-	public function getUser_byTask($task_id, $uid)
+	//根据所属任务ID获取当前任务所属工作室下的环节下的所有制作人
+	public function getUser_byTask($task_id)
 	{
-		$tache_ids_arr = explode(',', User::get($uid)->tache_ids);
-		if (($uid != 1) || ($task_id != '')) {
-			foreach ($tache_ids_arr as $key => $value) {
-				$user_ids_arr[] = User::where('tache_ids', 'like', '%' . $value . '%')->column('id');
-			}
-			$user_arr_byTache = array_unique($user_ids_arr)[0];
-			//获取所属任务的制作人 用户ID
-			$curr_task_userId_arr = $this->where('pid', $task_id)->column('user_id');
-			foreach ($user_arr_byTache as $key => $value) {
-				foreach ($curr_task_userId_arr as $k => $v) {
-					if ($v == $value) unset($user_arr_byTache[$key]);
-				}
-			}
-			$user_arr = array_values($user_arr_byTache);
-		} else {  //获取所有用户
-			$user_arr = User::column('id');
-			unset($user_arr[0]);//弹出超级管理员自己
-		}
-		foreach ($user_arr as $key => $value) {
-			$user_data[$key]['id'] = $value;
-			$user_data[$key]['real_name'] = User::get($value)->realname;
+		$task_obj = $this->get($task_id);
+		$user_where['studio_id'] = $task_obj->studio_id;
+		$user_where['tache_ids'] = ['in',$task_obj->tache_id];
+		$user_arr = User::where($user_where)->select();
+		for($i = 0;$i < count($user_arr);$i++){
+			$user_data[$i]['id'] = $user_arr[$i]['id'];
+			$user_data[$i]['real_name'] = $user_arr[$i]['realname'];
 		}
 		$data['list'] = $user_data;
 		return $data;
