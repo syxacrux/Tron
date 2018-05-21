@@ -55,7 +55,7 @@
       <el-row>
         <el-col :span="14">
           <div class="ovf-hd">
-            <el-col :span="6" class="parent"  v-for="(data , index) in array" :key="data.id">
+            <el-col :span="6" class="parent"  v-for="(data , index) in array" :key="data.id" @click="dailiesGetdata">
                 <div class="grid-content p-b-5 ">
                   <el-card class="ovf-hd picture">
                     {{data}}
@@ -150,14 +150,14 @@
 			      	<img id="imgs" src="../../../../assets/images/bg1.jpg" >
 		        </div> -->
             <div class="imagebox1 dailies-video">
-			      	<img id="imgs" src="../../../../assets/images/bg1.jpg" >
-              <!-- <video id='playVideo' width="600" controls src="../../../../assets/video/h264_32.3.mp4"></video> -->
+			      	<!-- <img id="imgs" src="https://img.alicdn.com/bao/uploaded/TB1qimQIpXXXXXbXFXXSutbFXXX.jpg" > -->
+              <img id="imgs" :src="address +ims">
 			      	<!-- <img id="imgs" src="../../../../assets/images/bg1.jpg" > -->
-              <!--<video id='playVideo' width="600" controls src="../../../../assets/video/h264_32.3.mp4"></video>-->
 		        </div>
             <div>
               <button id="capture" @click="isTaskDetailShow = true">截图</button>
-              <!-- <button id="play">播放/暂停</button> -->
+              <button id="play">播放/暂停</button>
+              <button id="play" @click=" isShow =! isShow">全屏</button>
               <!-- <input type="range" min="0" value="0" id="range" step="0.1"/> -->
             </div>
           <el-collapse v-model="activeNames" @change="handleChange">
@@ -232,7 +232,11 @@
             </span>
       </div>
     </el-card>
+     <div class="fullScreen" v-show="isShow">
+        <img :src="address +ims" alt="">
+      </div>
   </div>
+  
 </template>
 <script>
   import fomrMixin from '@/assets/js/form_com'
@@ -252,12 +256,15 @@
    export default {
        data () {
         return{
+          address: window.baseUrl + '/',
+          ims:'src/assets/video/1.jpg',
           limit: 10,
           currentPage: 1,
           dataCount: null,
           activeNames: ['1'],
           dialogVisible: false,
           isTaskDetailShow:false,
+          isShow:false,//是否全屏
           screeningProject:[],//项目下拉列表数据
         // screeningType:[],//类型
           screeningSite:[],//场号下拉列表数据
@@ -289,28 +296,6 @@
           let thiss=this
           let int
           $('#capture').click(function(){
-              /* html2canvas(document.getElementById('signx'), {
-                // allowTaint: true,
-                taintTest: false,
-                onrendered: function (canvas) {
-                  console.log(canvas)
-                  canvas.crossOrigin = "Anonymous"
-                    let imgData = canvas.toDataURL("png");
-                    var img=new Image();
-                    img.src=imgData;
-                    thiss.fieldForm.images=imgData
-                    $('.signIndex,.hintBox').remove()
-                    // document.getElementById("output").appendChild(img);
-                    // canvas.id = "mycanvas";    
-                    // //生成base64图片数据 
-                    // // canvas.setAttribute('crossOrigin', 'anonymous');   
-                    // var dataUrl = canvas.toDataURL();    
-                    // console.log(dataUrl)
-                    // var newImg = document.createElement("img");    
-                    // newImg.src =  dataUrl;    
-                    // document.getElementById("output").appendChild(newImg);    
-                },useCORS:true
-              }); */
               var str=$('.dailies-video>img').css('width').substr(0,$('.dailies-video>img').css('width').length-2)
               var str1=$('.dailies-video>img').css('height').substr(0,$('.dailies-video>img').css('height').length-2)
               // var str=$('.dailies-video>video').css('width').substr(0,$('.dailies-video>video').css('width').length-2)
@@ -322,79 +307,108 @@
               });
               sketchpad.penSize = 1
           });
-              //视屏播放器的控制设置
-          var videos=document.getElementById('playVideo')
-            $(document).keydown(function(e){
-                var key=e.which
-                if(key==32){
-                  e.preventDefault();
-                    if(videos.paused){
-                videos.play();
-              }else{
-                videos.pause();
-              }
-              return false;
-                }
-                if(key==39){
-                  videos.pause();
-              videos.currentTime+=0.042
-            }
-            if(key==37 && videos.currentTime!=0){
-              videos.pause();
-              videos.currentTime-=0.042;
-            }
-            });
           (function() {
             "use strict";
             var video, $capture;
+            
             var scale = 0.3;
             var initialize = function() {
               $capture = $("#capture");
-              // video = $("#video").get(0);
-              video=$('.dailies-video>img').get(0);
-              // video=$('.dailies-video>video').get(0)
-              $("#capture").click(captureImage);        
+              // video=$('.dailies-video>img').get(0).src;
+              video=$('.dailies-video>img').get(0).src
+              $("#capture").click(function(){
+                captureImage(video)
+              });        
             };
-            var captureImage = function() {
+            var captureImage = function(videoUrl) {
               var canvas = document.createElement("canvas");
-              // canvas.width = video.videoWidth * scale;
-              // canvas.height = video.videoHeight * scale;
+              var context = canvas.getContext('2d');
               var str=$('.dailies-video>img').css('width').substr(0,$('.dailies-video>img').css('width').length-2)
-              //  var str=$('.dailies-video>video').css('width').substr(0,$('.dailies-video>video').css('width').length-2)
                canvas.width =str * 1;
               var str1=$('.dailies-video>img').css('height').substr(0,$('.dailies-video>img').css('height').length-2)
-              // var str1=$('.dailies-video>video').css('height').substr(0,$('.dailies-video>video').css('height').length-2)
-		     	    canvas.height =str1 * 1;
-              canvas.getContext('2d')
-                .drawImage(video, 0, 0, canvas.width, canvas.height);
-              var img = document.createElement("img");
-              img.src = canvas.toDataURL();
-              // $output.prepend(img);
-              var ce=document.getElementById("sketchpad");
-              var ctx=ce.getContext("2d");
-              var img=new Image();
-                img.onload = function(){
-                ctx.drawImage(img,0,0,canvas.width,canvas.height);
-                };
-                img.src=canvas.toDataURL();;
+               canvas.height =str1 * 1;
+               canvas.crossOrigin="Anonymous";
+               var images = new Image();
+               images.src = "https://img.alicdn.com/bao/uploaded/TB1qimQIpXXXXXbXFXXSutbFXXX.jpg"; //测试用
+              //  images.src = videoUrl; //上线用
+               images.crossOrigin = 'Anonymous';
+                images.onload = function(){   
+                 console.log(images);   
+                  context.drawImage(images, 0, 0, canvas.width, canvas.height);
+                  var img = document.createElement("img");
+                  var dataURL = canvas.toDataURL("image/jpg");
+                  console.log (dataURL);
+                  // var img = document.createElement("img");
+                  img.src=dataURL;
+                  var ce=document.getElementById("sketchpad");
+                  var ctx=ce.getContext("2d");
+                   var imgs=new Image();
+                    ctx.clearRect(0,0,895,canvas.height);
+                    imgs.onload = function(){
+                    ctx.drawImage(img,0,0,canvas.width,canvas.height);
+                    };
+                    imgs.src=canvas.toDataURL();
+               }
+               
+             
+                
+                console.log(canvas)
+              
+                
             };
             $(initialize);      
           }());
           //播放暂停
-          $('#play').click(function(){
+          function timer(){
             clearTimeout(int);
+            // console.log(thiss.Counter,'11')
             if(thiss.Counter == 0){
               int=setInterval(function(){
-                thiss.num=thiss.num+1
-                console.log(thiss.num)
-                // $('#imgs').attr('src',as[1])
                 thiss.Counter=1
-              },1000)
+                if(thiss.num < 31){
+                  thiss.num=thiss.num+1
+                }else{
+                  clearTimeout(int),
+                  thiss.Counter = 0,
+                  thiss.num = 1
+                }
+                // console.log(thiss.num)
+                 thiss.ims='src/assets/video/'+thiss.num+'.jpg'
+              },100)
             }else{
               clearTimeout(int);
               thiss.Counter = 0
             }
+          }
+          $('#play').click(function(){
+            timer()
           });
+          $(document).keydown(function(e){
+            var key=e.which
+            if(key==32){
+              timer()
+            }
+            if(key==27){
+              thiss.isShow = false
+              console.log(thiss.isShow)
+              console.log('1111')
+            }
+            if(key==39){
+              // console.log('11')
+              if(thiss.num < 31){
+                thiss.num=thiss.num+1
+                thiss.ims='src/assets/video/'+thiss.num+'.jpg'
+              }
+              // console.log(thiss.num)
+            }
+            if(key==37){
+              if(thiss.num > 1){
+                thiss.num=thiss.num-1
+                thiss.ims='src/assets/video/'+thiss.num+'.jpg'
+              }
+            }
+          });
+
           
           function Sketchpad(config) {
             // Enforces the context for all functions
@@ -743,6 +757,10 @@
 
        },
        methods: {
+          //点击获取图片序列
+          dailiesGetdata(){
+
+          },
           handleChange(val) {
             console.log(val);
           },
@@ -930,11 +948,22 @@ body,html,div,ul,li,a{
   }
 
 .approvals_list  .box-card {
-    width: 40%;
+    width: 45%;
     position:fixed;
     left: 50%;
     top: 50%;
     transform: translate(-50%,-50%);
   }
+.fullScreen{
+  width:100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+.fullScreen img{
+  width:100%;
+  height: 100%;
+}
 </style>
 
