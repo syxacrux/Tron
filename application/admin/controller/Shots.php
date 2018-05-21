@@ -242,11 +242,46 @@ class Shots extends BaseCommon
 	}
 
 	//获取模版
-	public function template(){
-		$shot_model = model('Shot');
-		$param = $this->param;
-		$data = $shot_model->shot_template($param);
-		return resultArray(['data'=>$data]);
+	public function import(){
+		header('Access-Control-Allow-Origin: *');
+		header('Access-Control-Allow-Methods: POST');
+		header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
+		header("content-type:text/html;charset=utf-8");
+		//上传excel文件
+		$file = request()->file('excel_file');
+		//移到/public/uploads/excel/下
+		$info = $file->move(ROOT_PATH.'public'.DS.'uploads'.DS.'excel');
+		//上传文件成功
+		if ($info) {
+			//引入PHPExcel类
+			vendor('PHPExcel.PHPExcel.Reader.Excel5');
+			//获取上传后的文件名
+			$fileName = $info->getSaveName();
+			//文件路径
+			$filePath = 'public/uploads/excel/'.$fileName;
+			//实例化PHPExcel类
+			$PHPReader = new \PHPExcel_Reader_Excel5();
+			//读取excel文件
+			$objPHPExcel = $PHPReader->load($filePath);
+			//读取excel文件中的第一个工作表
+			$sheet = $objPHPExcel->getSheet(0);
+			$allRow = $sheet->getHighestRow();  //取得总行数
+			//$allColumn = $sheet->getHighestColumn();  //取得总列数
+			//从第二行开始插入，第一行是列名
+			for ($j=2; $j <= $allRow; $j++) {
+				$data['name'] = $objPHPExcel->getActiveSheet()->getCell("A".$j)->getValue();
+				$data['tel'] = $objPHPExcel->getActiveSheet()->getCell("B".$j)->getValue();
+				$data['addr'] = $objPHPExcel->getActiveSheet()->getCell("C".$j)->getValue();
+				$last_id = Db::table('users')->insertGetId($data);//保存数据，并返回主键id
+				if ($last_id) {
+					echo "第".$j."行导入成功，users表第:".$last_id."条！<br/>";
+				}else{
+					echo "第".$j."行导入失败！<br/>";
+				}
+			}
+		}else{
+			echo "上传文件失败！";
+		}
 	}
 
 

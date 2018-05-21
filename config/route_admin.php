@@ -48,7 +48,7 @@ return [
 	'admin/upload_image'    =>      ['admin/upload/images_add', ['method' => 'POST']],
 	// [基础] 生成base64格式的图片并上传到目录中
 	'admin/image_base64'    =>      ['admin/upload/images_base64_add', ['method' => 'POST']],
-	// [基础]	上传excel文件
+	// [基础]	上传excel文件用于获取模板
 	'admin/upload_excel'		=>			['admin/upload/excels_add',	['method' => 'POST']],
 	// 保存系统配置
 	'admin/systemConfigs'   =>      ['admin/systemConfigs/save', ['method' => 'POST']],
@@ -97,7 +97,7 @@ return [
 	// [镜头] 等待资产列表
 	'shot/waiting_assets'   =>      ['admin/shots/waiting_assets_data',['method'=>'GET']],
 	// [镜头] 等待制作列表
-	'shot/waiting_shots'   =>      ['admin/shots/waiting_shots_data',['method'=>'GET']],
+	'shot/waiting_shots'    =>      ['admin/shots/waiting_shots_data',['method'=>'GET']],
 	// [镜头] 暂停列表
 	'shot/pause'            =>      ['admin/shots/pause_data',['method'=>'GET']],
 	// [镜头] 完成列表
@@ -108,8 +108,8 @@ return [
 	'shot/tache_del'				=>			['admin/shots/delete_tache',['method'=>'POST']],
 	// [镜头] 删除工作室
 	'shot/studio_del'				=>			['admin/shots/delete_studio',['method'=>'POST']],
-	// [镜头] 获取模版
-	'shot/template'					=>			['admin/shots/template',['method'=>'POST']],
+	// [镜头] 批量导入excel
+	'shot/import'						=>			['admin/shots/import',['method'=>'POST']],
 	// [工作台] 标准列表
 	'task/index_list'				=>			['admin/workbenches/index_list',['method' => 'GET']],
 	// [工作台] 改变状态

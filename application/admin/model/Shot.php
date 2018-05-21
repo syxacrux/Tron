@@ -663,7 +663,7 @@ class Shot extends Common
 			$PHPExcel = new \PHPExcel();
 			$PHPSheet = $PHPExcel->getActiveSheet();
 			$PHPSheet->setTitle("镜头模板"); //给当前活动sheet设置名称
-			$PHPSheet->setCellValue("A1", "姓名")->setCellValue("B1", "分数");//表格数据
+			$PHPSheet->setCellValue("A1", "姓名1")->setCellValue("B1", "分数");//表格数据
 			$PHPSheet->setCellValue("A2", "张三")->setCellValue("B2", "2121");//表格数据
 			$objWriter = \PHPExcel_IOFactory::createWriter($PHPExcel, 'Excel2007');
 			header('Content-Disposition: attachment;filename=".$file_name."');
@@ -673,6 +673,10 @@ class Shot extends Common
 			$objWriter->save($files); //文件通过浏览器下载
 			return $files;
 		}
+	}
+
+	public function shot_import($param){
+		
 	}
 
 }
