@@ -207,21 +207,24 @@
     }
   }
 </script>
-<style>
-  .help_index .add_article {
-    border: 2px solid #000;
-    border-radius: 5px;
-    color: #000;
-    font-size: 14px;
-    padding: 5px;
+<style lang="less" scoped>
+  .help_index{
+    .add_article {
+      border: 2px solid #000;
+      border-radius: 5px;
+      color: #000;
+      font-size: 14px;
+      padding: 2px;
+    }
+    .list_btn{
+      display: inline-block;
+      width: 25px;
+      height: 25px;
+      img{
+        width: 100%;
+        vertical-align: middle;
+      }
+    }
   }
-  .help_index .list_btn{
-    display: inline-block;
-    width: 32px;
-    height: 25px;
-  }
-  .help_index .list_btn img{
-    width: 100%;
-    vertical-align: middle;
-  }
+
 </style>
