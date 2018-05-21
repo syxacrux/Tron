@@ -351,7 +351,6 @@
           <el-upload class="upload_shotFile" ref="upload"
                      name="excel_file"
                      :action="importShotUrl"
-                     :on-preview="handlePreview"
                      :on-success="importShotSuccess"
                      :file-list="fileList"
                      :limit="1"
@@ -600,13 +599,11 @@
           })
         }
       },
-      handlePreview(file) {
-        console.log(file);
-      },
       importShotSuccess(res, file) {
-        console.log(res, file)
-//        this.image = URL.createObjectURL(file.raw);
-//        this.form.shot_image = res.data;
+        if(res.code === 200) {
+          _g.toastMsg('success', '导入成功')
+          this.isImportShot = false
+        }
       },
 //      批量导入镜头
       importShot() {

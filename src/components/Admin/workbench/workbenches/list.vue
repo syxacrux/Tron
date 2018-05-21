@@ -595,11 +595,11 @@
         }
         this.blocks.find(b => b.id === Number(id)).status = status;
         this.apiPost('task/change_status', data).then((res) => {
+          _g.shallowRefresh(this.$route.name)
           this.handelResponse(res, (data) => {
-
           }, () => {
-            this.isLoading = !this.isLoading
-            getAllWorkbenches('admin/workbenches', this.currentPage, 1, 40)
+//            this.getAllWorkbenches('admin/workbenches', this.currentPage, 1, 40)
+//            this.isLoading = !this.isLoading
           })
         })
       },
@@ -909,11 +909,6 @@
     text-align: center;
   }
 
-  .drag-container .drag-column .drag-column-header h2 {
-    width: 100%;
-    color: #fff;
-  }
-
   .drag-item {
     height: inherit;
     padding: 0;
@@ -925,22 +920,26 @@
     background: none;
   }
 
-  .drag-column-制作中 .drag-column-header, .drag-column-制作中 .drag-options, .drag-column-制作中 .is-moved {
-    background: #fb7d44;
+  .drag-column-制作中 .drag-column-header,
+  .drag-column-制作中 .drag-options,
+  .drag-column-制作中 .is-moved,
+  .drag-column-反馈中 .drag-column-header,
+  .drag-column-反馈中 .drag-options,
+  .drag-column-反馈中 .is-moved,
+  .drag-column-提交发布 .drag-column-header,
+  .drag-column-提交发布 .drag-options,
+  .drag-column-提交发布 .is-moved,
+  .drag-column-等待制作 .drag-column-header,
+  .drag-column-等待制作 .drag-options,
+  .drag-column-等待制作 .is-moved{
+    background: #fff;
+    color: #666;
+    border-left: 2px solid #409eff;
+    padding-left: 10px;
+    border-bottom-right-radius: 5px;
+    border-top-right-radius: 5px;
   }
 
-  .drag-column-反馈中 .drag-column-header, .drag-column-反馈中 .drag-options, .drag-column-反馈中 .is-moved {
-    /*background: #2a92bf;*/
-    background: #f4ce46;
-  }
-
-  .drag-column-提交发布 .drag-column-header, .drag-column-提交发布 .drag-options, .drag-column-提交发布 .is-moved {
-    background: #2a92bf;
-  }
-
-  .drag-column-等待制作 .drag-column-header, .drag-column-等待制作 .drag-options, .drag-column-等待制作 .is-moved {
-    background: #00b961;
-  }
 
   .workbench_list .task_detail .task-xing .el-card__body {
     padding: 15px;
