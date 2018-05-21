@@ -249,4 +249,5 @@ class Shots extends BaseCommon
 		return resultArray(['data'=>$data]);
 	}
 
+
 }

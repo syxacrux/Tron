@@ -101,6 +101,7 @@ class Upload extends Controller
 		$host_excels_path = 'uploads' . DS . 'Projects' . DS . 'excels' . DS . 'import';
 		//移动文件
 		$info = $file->validate(['ext' => 'xls,xlsx,xltx'])->move($excels_dir);
+		$excel_file_name = $host_excels_path . DS . $info->getSaveName();
 		if ($info) {
 			return resultArray(['data' => $host_excels_path . DS . $info->getSaveName()]);
 		}
