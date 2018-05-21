@@ -27,7 +27,7 @@
             </el-select>
           </el-col>
           <el-col :span="7">
-            <el-input placeholder="请输入成员" v-model="search.name">
+            <el-input placeholder="请输入成员" v-model.trim="search.name">
               <el-button slot="append" icon="el-icon-search" @click="searches()"></el-button>
             </el-input>
           </el-col>
@@ -35,21 +35,11 @@
       </div>
     </div>
     <el-table v-if="listShow" class="w-100p" :data="tableData" @selection-change="selectItem">
-      <el-table-column type="expand">
-        <template slot-scope="props">
-          <el-form label-position="left" inline class="demo-table-expand">
-            <el-form-item label="所属工作室">
-              <span>{{ props.row.studio_name }}</span>
-            </el-form-item>
-            <el-form-item label="所属环节">
-              <span>{{ props.row.tache_name }}</span>
-            </el-form-item>
-          </el-form>
-        </template>
-      </el-table-column>
-      <!--<el-table-column type="selection" width="50"></el-table-column>-->
+      <el-table-column type="selection" width="50"></el-table-column>
       <el-table-column label="成员姓名" prop="realname"></el-table-column>
       <el-table-column label="用户名" prop="username"></el-table-column>
+      <el-table-column label="所属工作室" prop="studio_name"></el-table-column>
+      <el-table-column label="所属环节" prop="tache_name"></el-table-column>
       <el-table-column label="角色" prop="role_name"></el-table-column>
       <el-table-column label="操作" width="200" v-if="editShow || deleteShow">
         <template slot-scope="scope">

@@ -9,7 +9,7 @@
       </el-breadcrumb>
     </div>
     <div class="m-r-30 m-b-20 m-t-30 tx-r">
-      <!--<el-button type="primary" size="small" plain v-if="importAddShow" @click="isImportShot = true">批量导入</el-button>-->
+      <el-button type="primary" size="small" plain v-if="importAddShow" @click="isImportShot = true">批量导入</el-button>
       <el-button type="text" size="mini" class="fz-12 m-0" @click="getShotTemplate">点击获取模板</el-button>
     </div>
     <div class="m-l-50 m-t-30 w-1000">
@@ -338,21 +338,23 @@
     </el-dialog>
     <el-dialog title="批量导入镜头" :visible.sync="isImportShot" width="30%" center>
       <el-form :model="importForm" :rules="importShotRules" label-width="130px">
-        <el-form-item label="项目名称：" prop="project_id">
-          <el-select v-model="importForm.project_id" placeholder="请选择项目" class="w-200">
-            <el-option v-for="item in projectList" :label="item.project_name" :value="item.id"
-                       :key="item.id"></el-option>
-          </el-select>
-        </el-form-item>
+        <!--<el-form-item label="项目名称：" prop="project_id">-->
+          <!--<el-select v-model="importForm.project_id" placeholder="请选择项目" class="w-200">-->
+            <!--<el-option v-for="item in projectList" :label="item.project_name" :value="item.id"-->
+                       <!--:key="item.id"></el-option>-->
+          <!--</el-select>-->
+        <!--</el-form-item>-->
         <!--<el-form-item label="场号/集号：" prop="name">-->
           <!--<el-input v-model.trim="importForm.name" class="w-200"></el-input>-->
         <!--</el-form-item>-->
         <el-form-item label="镜头文件：" prop="shot_file">
           <el-upload class="upload_shotFile" ref="upload"
-                     action="https://jsonplaceholder.typicode.com/posts/"
-                     :on-preview="handlePreview"
+                     name="excel_file"
+                     :action="importShotUrl"
+                     :on-success="importShotSuccess"
                      :file-list="fileList"
                      :limit="1"
+                     accept="xls/xlsx"
                      :auto-upload="false">
             <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
             <div slot="tip" class="el-upload__tip">只能上传一个xls/xlsx格式文件</div>
@@ -487,6 +489,7 @@
         isImportShot: false,
         isLoading: false,
         uploadImageUrl: window.HOST + '/admin/upload_image',
+        importShotUrl: window.HOST + 'admin/import_excel',
         projectList: [],
         studiosList: [],
         fieldList: [],
@@ -557,9 +560,8 @@
           name: [{required: true, message: '请输入场号/集号'}]
         },
         importShotRules: {
-          project_id: [{required: true, message: '请选择项目'}],
-          shot_file: [{required: true, message: '请输入场号/集号'}]
-//          name: [{required: true, message: '请输入场号/集号'}]
+//          project_id: [{required: true, message: '请选择项目'}],
+//          shot_file: [{required: true, message: '请输入场号/集号'}]
         }
       }
     },
@@ -597,14 +599,17 @@
           })
         }
       },
-      handlePreview(file) {
-        console.log(file);
+      importShotSuccess(res, file) {
+        if(res.code === 200) {
+          _g.toastMsg('success', '导入成功')
+          this.isImportShot = false
+        }
       },
 //      批量导入镜头
       importShot() {
-        console.log(this.$refs.upload.uploadFiles)
+        console.log(this.$refs.upload.uploadFiles[0])
 
-//        this.$refs.upload.submit();
+        this.$refs.upload.submit();
       },
 //      获取镜头模板
       getShotTemplate() {

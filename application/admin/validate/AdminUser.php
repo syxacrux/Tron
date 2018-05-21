@@ -8,7 +8,7 @@ use think\Validate;
 class AdminUser extends Validate{
 
 	protected $rule = array(
-		'username'  		=> 'require|length:6,12|unique:user',
+		'username'  		=> 'require|length:6,12',
 		'password'      	=> 'require',
 		'realname'      	=> 'require',
 	);
