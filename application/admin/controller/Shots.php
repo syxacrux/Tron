@@ -69,6 +69,17 @@ class Shots extends BaseCommon
 		return resultArray(['data' => $data]);
 	}
 
+	//接口 - 镜头看板 - 等待制作
+	public function waiting_shots_data(){
+		$shot_model = mode('Shot');
+		$param = $this->param;
+		$keywords = !empty($param['keywords']) ? json_decode($param['keywords'],true) : '';
+		$page = !empty($param['page']) ? $param['page'] : '';
+		$limit = !empty($param['limit']) ? $param['limit'] : '';
+		$data = $shot_model->getList_byStatus($keywords,$page,$limit,1,2,1);
+		return resultArray(['data'=>$data]);
+	}
+
 	//接口 - 镜头看板 - 暂停
 	public function pause_data()
 	{

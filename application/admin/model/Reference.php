@@ -1,7 +1,6 @@
 <?php
 namespace app\admin\model;
 
-use think\Db;
 use app\common\model\Common;
 
 class Reference extends Common{
@@ -49,15 +48,21 @@ class Reference extends Common{
 				$this->error = $this->getError();
 				return false;
 			}else{
-				//调用python脚本
+				//组合python 所用命令行数据
 				$tmp = "'Reference' '{$project_byname}' '{$directory}' ";
 				$str = "$ip|/$project_byname/$directory|{$file_name}|$this->id";
 				$cmd = $tmp." '".$str."'";
+				$python_str = "python /usr/local/httpd/htdocs/tron/tronPipelineScript/createDirPath/parser.py $cmd ";
+				//存储执行python脚本记录表 按当前年
+				$python_param['resource_type'] = 1;	//参考库类型
+				$python_param['resource_id'] = $this->id;
+				$python_param['python_str'] = $python_str;
+				$curr_year_table = 'python_log_'.date("Y");
+				DB::table($curr_year_table)->insert($python_param);
 				//执行外部程序-开启队列
 				/*
 				$redis = new RedisPackage();
-				$str = "python /usr/local/httpd/htdocs/tron/tronPipelineScript/createDirPath/parser.py $cmd ";
-				$redis::LPush("pyFile",$str);
+				$redis::LPush("pyFile",$python_str);
 				*/
 				return true;
 			}
@@ -83,6 +88,11 @@ class Reference extends Common{
 			return false;
 		}
 		return $data;
+	}
+
+	//参考库列表
+	public function directory_list(){
+		//$shots_data['shots'][] =
 	}
 
 	//编辑基本信息

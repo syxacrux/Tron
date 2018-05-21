@@ -96,6 +96,8 @@ return [
 	'shot/feedback'         =>      ['admin/shots/feedback_data',['method'=>'GET']],
 	// [镜头] 等待资产列表
 	'shot/waiting_assets'   =>      ['admin/shots/waiting_assets_data',['method'=>'GET']],
+	// [镜头] 等待制作列表
+	'shot/waiting_shots'   =>      ['admin/shots/waiting_shots_data',['method'=>'GET']],
 	// [镜头] 暂停列表
 	'shot/pause'            =>      ['admin/shots/pause_data',['method'=>'GET']],
 	// [镜头] 完成列表
