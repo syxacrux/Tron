@@ -195,7 +195,7 @@ class Workbench extends Common
 		}
 		$dataCount = $this->where($where)->count('id'); //全部数量
 		//对分页设置为40时 四个数组平均重组数据
-		/*if ($page && $limit) {
+		if ($page && $limit) {
 			//暂定为总页数为40 /每列显示10条数据 $limit 10
 			$every_limit = intval($limit) / 4;
 			$in_production_list = $this->where($where)->where('task_status', 5)->page($page, $every_limit)->select(); //制作中 in_production
@@ -221,10 +221,10 @@ class Workbench extends Common
 			$list_data[$key]['create_timestamp'] = $value['create_time'];
 			$list_data[$key]['create_time'] = !empty($value['update_time']) ? '读任务状态记录表的最新时间' : date("Y-m-d H:i:s", $value['create_time']);
 			$list_data[$key]['task_finish_degree'] = $this->rate_of_progress($value['task_status'], $value['tache_id']);//任务完成度
-		}*/
+		}
 
 		//分页设置是10条，重新组合为 四个数组
-		if($page && $limit){
+		/*if($page && $limit){
 			$in_production_list = $this->where($where)->where('task_status', 5)->page($page, $limit)->select(); //制作中 in_production
 			$feedback_list = $this->where($where)->where('task_status', 'in', '10,15')->page($page, $limit)->select();   //反馈中 feedback  等待审核 反馈中
 			$submit_list = $this->where($where)->where('task_status', 25)->page($page, $limit)->select();  //提交发布 submit
@@ -234,13 +234,13 @@ class Workbench extends Common
 			$feedback_list = $this->where($where)->where('task_status', 'in', '10,15')->select();
 			$submit_list = $this->where($where)->where('task_status', 25)->select();
 			$wait_production_list = $this->where($where)->where('task_status', 1)->select();
-		}
+		}*/
 
-		//$data['list'] = $list_data;
-		$data['in_production_list'] = $in_production_list;
+		$data['list'] = $list_data;
+		/*$data['in_production_list'] = $in_production_list;
 		$data['feedback_list'] = $feedback_list;
 		$data['submit_list'] = $submit_list;
-		$data['wait_production_list'] = $wait_production_list;
+		$data['wait_production_list'] = $wait_production_list;*/
 		$data['dataCount'] = $dataCount;
 		return $data;
 	}

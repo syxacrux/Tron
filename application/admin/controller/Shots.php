@@ -241,6 +241,13 @@ class Shots extends BaseCommon
 		return resultArray(['data'=>$data]);
 	}
 
+	public function template(){
+		$shot_model = model('Shot');
+		$param = $this->param;
+		$data = $shot_model->shot_template($param);
+		return resultArray(['data'=>$data]);
+	}
+
 	//获取模版
 	public function import(){
 		header('Access-Control-Allow-Origin: *');
@@ -249,8 +256,11 @@ class Shots extends BaseCommon
 		header("content-type:text/html;charset=utf-8");
 		//上传excel文件
 		$file = request()->file('excel_file');
-		//移到/public/uploads/excel/下
-		$info = $file->move(ROOT_PATH.'public'.DS.'uploads'.DS.'excel');
+		if (!$file) {
+			return resultArray(['error' => '请上传Excel文件']);
+		}
+		//移到/uploads/Projects/excel/下
+		$info = $file->move(ROOT_PATH.'public'.DS.'uploads'.DS.'excel'.DS.'import');
 		//上传文件成功
 		if ($info) {
 			//引入PHPExcel类
