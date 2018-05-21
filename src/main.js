@@ -6,14 +6,15 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import store from './vuex/store'
 import filter from './assets/js/filter'
-import Vddl from 'vddl'
+import vueKanban from 'vue-kanban'
+import 'assets/css/kanban.css'
 import 'assets/css/global.css'
 import 'assets/css/base.css'
 import './.htaccess'
 // import $ from 'jquery'
 // Vue.prototype.$ = jquery
 Vue.use(ElementUI)
-Vue.use(Vddl)
+Vue.use(vueKanban)
 
 new Vue({
   el: '#app',

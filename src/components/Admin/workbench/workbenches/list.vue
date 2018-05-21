@@ -71,95 +71,72 @@
     <div class="m-b-20 ovf-hd">
       <el-tabs v-if="isTaskLIst" v-model="activeName" @tab-click="handleClick" class="fl">
         <el-tab-pane label="任务" name="task">
-          <!--<div v-for="(list, listName) in blocks" class="v-col&#45;&#45;auto">-->
-            <!--<div class="panel">-->
-              <!--<div class="panel__heading">-->
-                <!--<h3>List {{listName}}</h3>-->
-              <!--</div>-->
-              <!--<div class="panel__body">-->
-                <vddl-list class="panel__body--list"
-                           :list="blocks"
-                           :inserted="handleInserted"
-                           :dragover="handleDragover"
-                           :drop="handleDrop"
-                           :horizontal="false">
-                  <vddl-draggable class="panel__body--item" v-for="(block, index) in blocks" :key="block.id"
-                                  :draggable="block"
-                                  :index="index"
-                                  :wrapper="blocks"
-                                  effect-allowed="move"
-                                  :selected="selectedEvent"
-                                  :dragstart="handleDragstart"
-                                  :dragend="handleDragend"
-                                  :canceled="handleCanceled"
-                                  :moved="handleMoved"
-                                  v-bind:class="{'selected': selected === block}">
-                    <el-card class="work-box box-card box-texts">
-                      <div class="text" @click="taskDetail(block.id)">
-                        <div class="text-Lens pos-rel">
-                          <p class="text-Lens-name">
-                            {{block.project_name}}：<span>{{block.shot_number}}:{{block.task_byname}}</span></p>
-                          <p class="text-Lens-rank pos-abs">
-                            <el-tag type="danger" v-if="block.difficulty != '' ">
-                              <el-tooltip class="pointer" effect="dark" content="难度"
-                                          placement="bottom-start">
-                                <span>{{block.difficulty}}</span>
-                              </el-tooltip>
-                            </el-tag>
-                            <el-tag type="warning" v-if="block.task_priority_level != '' ">
-                              <el-tooltip class=" pointer" effect="dark" content="优先级"
-                                          placement="bottom-start">
-                                <span>{{block.task_priority_level}}</span>
-                              </el-tooltip>
-                            </el-tag>
-                          </p>
-                        </div>
-                        <div class="text-Lens m-t-10">
-                          <p class="task-Lens-assets text-p">
-                            <el-tag type="info" v-if="block.id > 0">37次</el-tag>
-                          </p>
-                          <p class="text-Lens-time tx-r">
-                            <span>
-                              <el-tooltip class=" pointer" effect="dark" content="任务剩余天数"
-                                          placement="bottom-start">
-                                <span>{{shotRemainDay(block.plan_end_timestamp)}}天</span>
-                              </el-tooltip>
-                              <el-tooltip class=" pointer" effect="dark" content="任务在次状态时间"
-                                          placement="bottom-start">
-                                <span>{{ shotCreateTime(block.create_timestamp) }}天</span>
-                              </el-tooltip>
-                              <el-tooltip class=" pointer" effect="dark" content="任务分配时间"
-                                          placement="bottom-start">
-                                <span>{{block.task_allot_days}}</span>
-                              </el-tooltip>
-                            </span>
-                            <span>
-                              <el-tooltip class=" pointer" effect="dark" content="预计结束时间"
-                                          placement="bottom-start">
-                                <span>{{ j2time(block.plan_end_timestamp) }}</span>
-                              </el-tooltip>
-                            </span>
-                          </p>
-                        </div>
-                        <div class="text-Lens-link m-t-10">
-                          <el-button size="small" @click="submitDailies">提交Dailies</el-button>
-                          <el-button size="small" @click="render">渲染</el-button>
-                          <el-tag type="warn">资产</el-tag>
-                          <el-tag type="danger" v-if="block.task_finish_degree.finish_degree < 100">
-                            {{block.task_finish_degree.tache_byname}}:{{block.task_finish_degree.finish_degree}}%
-                          </el-tag>
-                          <el-tag type="success" v-else>
-                            {{block.task_finish_degree.tache_byname}}:{{block.task_finish_degree.finish_degree}}%
-                          </el-tag>
-                        </div>
-                      </div>
-                    </el-card>
-                  </vddl-draggable>
-                  <vddl-placeholder class="red">Custom placeholder</vddl-placeholder>
-                </vddl-list>
-              <!--</div>-->
-            <!--</div>-->
-          <!--</div>-->
+          <kanban-board :stages="stages" :blocks="blocks" @update-block="updateBlock">
+            <el-card class="box-card point" v-for="block in blocks" :slot="block.id" :key="block.id">
+              <div>
+                <el-card class="work-box box-card box-texts">
+                  <div class="text" @click="taskDetail(block.id)">
+                    <div class="text-Lens pos-rel">
+                      <p class="text-Lens-name">
+                        {{block.project_name}}：<span>{{block.shot_number}}:{{block.task_byname}}</span></p>
+                      <p class="text-Lens-rank pos-abs">
+                        <el-tag type="danger" v-if="block.difficulty != '' ">
+                          <el-tooltip class="pointer" effect="dark" content="难度"
+                                      placement="bottom-start">
+                            <span>{{block.difficulty}}</span>
+                          </el-tooltip>
+                        </el-tag>
+                        <el-tag type="warning" v-if="block.task_priority_level != '' ">
+                          <el-tooltip class=" pointer" effect="dark" content="优先级"
+                                      placement="bottom-start">
+                            <span>{{block.task_priority_level}}</span>
+                          </el-tooltip>
+                        </el-tag>
+                      </p>
+                    </div>
+                    <div class="text-Lens m-t-10">
+                      <p class="task-Lens-assets text-p">
+                        <el-tag type="info" v-if="block.id > 0">37次</el-tag>
+                      </p>
+                      <p class="text-Lens-time tx-r">
+                        <span>
+                          <el-tooltip class=" pointer" effect="dark" content="任务剩余天数"
+                                      placement="bottom-start">
+                            <span>{{shotRemainDay(block.plan_end_timestamp)}}天</span>
+                          </el-tooltip>
+                          <el-tooltip class=" pointer" effect="dark" content="任务在次状态时间"
+                                      placement="bottom-start">
+                            <span>{{ shotCreateTime(block.create_timestamp) }}天</span>
+                          </el-tooltip>
+                          <el-tooltip class=" pointer" effect="dark" content="任务分配时间"
+                                      placement="bottom-start">
+                            <span>{{block.task_allot_days}}</span>
+                          </el-tooltip>
+                        </span>
+                        <span>
+                          <el-tooltip class=" pointer" effect="dark" content="预计结束时间"
+                                      placement="bottom-start">
+                            <span>{{ j2time(block.plan_end_timestamp) }}</span>
+                          </el-tooltip>
+                        </span>
+                      </p>
+                    </div>
+                    <div class="text-Lens-link m-t-10">
+                      <el-button size="small" @click="submitDailies">提交Dailies</el-button>
+                      <el-button size="small" @click="render">渲染</el-button>
+                      <el-tag type="warn">资产</el-tag>
+                      <el-tag type="danger" v-if="block.task_finish_degree.finish_degree < 100">
+                        {{block.task_finish_degree.tache_byname}}:{{block.task_finish_degree.finish_degree}}%
+                      </el-tag>
+                      <el-tag type="success" v-else>
+                        {{block.task_finish_degree.tache_byname}}:{{block.task_finish_degree.finish_degree}}%
+                      </el-tag>
+                    </div>
+                  </div>
+                </el-card>
+              </div>
+            </el-card>
+          </kanban-board>
           <div class="block task-block">
             <el-pagination
                 @current-change="taskCurrentChange"
@@ -520,7 +497,6 @@
   export default {
     data () {
       return {
-        selected: null,
         // isTaskLIst:true,
         isTaskLIst: true,//是否显示任务
         isTaskDetailShow: false,//是否显示详情
@@ -564,44 +540,6 @@
       render() {
 
       },
-
-      selectedEvent: function(item){
-        this.selected = item;
-      },
-      handleDragstart() {
-        console.log(':v-draggable: dragstart');
-      },
-      handleDragend() {
-        console.log(':v-draggable: dragend');
-      },
-      handleCanceled() {
-        console.log(':v-draggable: canceled');
-      },
-      handleInserted() {
-        console.log(':v-list: inserted');
-      },
-      handleDrop(data) {
-        console.log(':v-list: drop');
-        console.log(data);
-        const { index, list, item } = data;
-        // change the id
-        item.id = new Date().getTime();
-        list.splice(index, 0, item);
-      },
-      handleMoved(item) {
-        console.log(':v-draggable: moved');
-        console.log(item);
-        const { index, list } = item;
-        list.splice(index, 1);
-      },
-      handleDragover() {
-        console.log(':v-list: handleDragover');
-      },
-
-
-
-
-
       editWorkbench () {
         this.$refs.editWorkbenches.open()
       },

@@ -50,6 +50,8 @@ return [
 	'admin/image_base64'    =>      ['admin/upload/images_base64_add', ['method' => 'POST']],
 	// [基础]	上传excel文件用于获取模板
 	'admin/upload_excel'		=>			['admin/upload/excels_add',	['method' => 'POST']],
+    //[基础]	上传excel文件用于导入数据表
+	'admin/import_excel'		=>			['admin/upload/import_excel',	['method' => 'POST']],
 	// 保存系统配置
 	'admin/systemConfigs'   =>      ['admin/systemConfigs/save', ['method' => 'POST']],
 	// [规则] 批量删除
