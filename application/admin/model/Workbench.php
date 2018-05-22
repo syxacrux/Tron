@@ -213,6 +213,7 @@ class Workbench extends Common
 		foreach ($list_data as $key => $value) {
 			$list_data[$key]['project_name'] = Project::get($value['project_id'])->project_byname;
 			$list_data[$key]['shot_number'] = ($value['task_type'] == 1) ? Field::get($value['field_id'])->name . Shot::get($value['resource_id'])->shot_number : Asset::get($value['resource_id'])->asset_name;
+			$list_data[$key]['studio_name'] = Studio::get($value['studio_id'])->name;
 			$list_data[$key]['task_priority_level'] = $this->task_priority_level_arr[$value['task_priority_level']];    //任务优先级
 			$list_data[$key]['difficulty'] = $this->difficulty_arr[$value['difficulty']];   //任务难度
 			$list_data[$key]['surplus_days'] = floatval(sprintf("%.2f", ($value['plan_end_timestamp'] - time()) / 86400)) . "天";   //剩余天数
