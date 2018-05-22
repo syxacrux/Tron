@@ -21,50 +21,47 @@
     <div class="w-700 help_question">
       <h2>提&nbsp;&nbsp;问</h2>
       <el-form ref="form" :model="form" label-width="120px" :rules="rules">
-        <el-form-item label="标题：" prop="title">
-          <el-input v-model="form.title" class="h-40 w-200" @input="change"></el-input>
+        <el-form-item label="标题" prop="title">
+          <el-input v-model="form.title" @input="change" placeholder="请输入标题"></el-input>
+          <transition name="el-zoom-in-top">
+            <div v-show="show1" class="transition-box">
+              <ul>
+                <li v-for="item in keywordList">
+                  <router-link :to="{ name: 'helpsResolve', params: {id: item.id} }">
+                    {{ item.title }}
+                  </router-link>
+                  <p class="fz-12 space_nowr">
+                    {{ item.content }}
+                  </p>
+                </li>
+                <div @click="getKeywordList">查看所有相关...</div>
+              </ul>
+            </div>
+          </transition>
         </el-form-item>
-        <el-form-item label="问题类型：" prop="category_id">
+        <el-form-item label="问题类型" prop="category_id">
           <el-select v-model="form.category_id" placeholder="请选择问题类型" @change="getCategories">
             <el-option v-for="item in typeOptions" :label="item.category" :value="item.id" :key="item.id"></el-option>
           </el-select>
         </el-form-item>
-        <!--<el-form-item label="不知道：" prop="category_id">-->
+        <!--<el-form-item label="不知道" prop="category_id">-->
           <!--<el-select v-model="form.category_id" placeholder="请选择buzhdiao">-->
             <!--<el-option v-for="item in categoryOptions" :label="item.category" :value="item.id" :key="item.id"></el-option>-->
           <!--</el-select>-->
         <!--</el-form-item>-->
-        <el-form-item label="紧急程度：" prop="degree">
+        <el-form-item label="紧急程度" prop="degree">
           <el-select v-model="form.degree" placeholder="请选择紧急程度">
             <el-option v-for="item in degreeOptions" :label="item.category" :value="item.id" :key="item.id"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="问题描述：" prop="content">
+        <el-form-item label="问题描述" prop="content">
           <el-input
               type="textarea"
-              :autosize="{ minRows: 2, maxRows: 4}"
               placeholder="请输入问题内容"
               v-model="form.content">
           </el-input>
         </el-form-item>
-        <transition name="el-zoom-in-top">
-          <div v-show="show1" class="transition-box">
-            <ul>
-              <li v-for="item in keywordList">
-                <router-link :to="{ name: 'helpsResolve', params: {id: item.id} }">
-                  {{ item.title }}
-                </router-link>
-                <div class="h-40 w-1000 fz-12 c-black space_nowr">
-                  {{ item.content }}
-                </div>
-              </li>
-              <div @click="getKeywordList">查看所有相关</div>
-            </ul>
-          </div>
-        </transition>
-        <el-form-item>
-          <el-button type="primary" @click="addHelps(form)">确 定</el-button>
-        </el-form-item>
+        <el-button type="primary" @click="addHelps(form)">提 交</el-button>
       </el-form>
     </div>
   </div>
@@ -242,11 +239,74 @@
         height: 50px;
         margin-bottom: 0;
         border-bottom: 1px solid #c2c2c3;
+        .transition-box {
+          position: absolute;
+          top: 50px;
+          left: 0;
+          width: 100%;
+          background: #fff;
+          z-index: 1;
+          ul {
+            border: 1px solid #c2c2c3;
+            li {
+              padding: 5px 10px;
+              border-radius: 8px;
+              a{
+                display: block;
+                line-height: 20px;
+                color: #333;
+
+              }
+              p {
+                height: 25px;
+                line-height: 30px;
+                margin: 0;
+                color: #666;
+              };
+              &:hover {
+                a{
+                  text-decoration: underline;
+                }
+                background: #eef1f7;
+              }
+            }
+            div {
+              padding: 0 20px;
+              text-align: right;
+              line-height: 30px;
+              background: #eef1f7;
+              color: #333;
+              &:hover {
+                text-decoration: underline;
+                cursor: pointer;
+              }
+            }
+          }
+        }
         &:nth-child(2n+1) {
           background: #fff;
         }
         &:nth-child(2n) {
           background: #eef1f7;
+        }
+        &:last-of-type {
+          height: 135px;
+          .el-form-item__label {
+            line-height: 115px;
+          }
+          .el-form-item__content {
+            .el-textarea {
+              height: 135px;
+              .el-textarea__inner {
+                height: 100%;
+                resize: none;
+                border: none;
+                outline: none;
+                background: transparent;
+                font-size: 14px;
+              }
+            }
+          }
         }
         .el-form-item__label {
           line-height: 30px;
@@ -254,6 +314,35 @@
           border-right: 1px solid #c2c2c3;
           box-sizing: border-box;
         }
+        .el-form-item__content {
+          .el-input {
+            height: 50px;
+            .el-input__inner {
+              height: 100%;
+              border: none;
+              outline: none;
+              font-size: 14px;
+            }
+          }
+          .el-select {
+            width: 100%;
+            .el-input__inner {
+              background: transparent;
+            }
+          }
+          .el-form-item__error {
+            left: initial;
+            right: 40px;
+            top: 50%;
+            transform: translateY(-50%);
+          }
+        }
+      }
+      .el-button {
+        width: 100%;
+        font-size: 16px;
+        background: #9db0d1;
+        border-color: #9db0d1;
       }
     }
   }
