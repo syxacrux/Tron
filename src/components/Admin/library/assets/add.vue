@@ -534,34 +534,34 @@
 
         let obj = {}
         if(this.isArt) {
-          obj[3] = this.artOfStudio
+          obj[14] = this.artOfStudio
         }
         if(this.isModel) {
-          obj[4] = this.modelOfStudio
+          obj[18] = this.modelOfStudio
         }
         if(this.isMap) {
-          obj[5] = this.mapOfStudio
+          obj[21] = this.mapOfStudio
         }
         if(this.isBind) {
-          obj[6] = this.bindOfStudio
+          obj[16] = this.bindOfStudio
         }
         if(this.isTrack) {
-          obj[7] = this.trackOfStudio
+          obj[19] = this.trackOfStudio
         }
         if(this.isAni) {
-          obj[8] = this.animateOfStudio
+          obj[22] = this.animateOfStudio
         }
         if(this.isPaint) {
-          obj[9] = this.paintOfStudio
+          obj[20] = this.paintOfStudio
         }
         if(this.isSpec) {
-          obj[10] = this.specialOfStudio
+          obj[23] = this.specialOfStudio
         }
         if(this.isLight) {
-          obj[11] = this.lightOfStudio
+          obj[24] = this.lightOfStudio
         }
         if(this.isSynch) {
-          obj[12] = this.synchOfStudio
+          obj[25] = this.synchOfStudio
         }
         this.form.tache = obj
         if (!this.form.asset_image) {

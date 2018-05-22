@@ -90,8 +90,8 @@ class Asset extends Common
 	 * @param $keywords
 	 * @param $page
 	 * @param $limit
-	 * @param $status  int 状态
-	 * @param $is_pause  int 是否暂停
+	 * @param string $status 状态
+	 * @param string $is_pause 是否暂停
 	 * @return mixed
 	 */
 	public function getList_byStatus($keywords, $page, $limit, $status = '', $is_pause = '')
@@ -173,8 +173,7 @@ class Asset extends Common
 							$task_data['user_id'] = 0;   //所属用户ID
 							$task_data['project_id'] = $curr_asset_obj->project_id;  //所属项目ID
 							$task_data['field_id'] = $curr_asset_obj->field_id;      //资产类型ID
-							$task_data['shot_id'] = 0;	//镜头ID 默认为0
-							$task_data['asset_id'] = $asset_id;  //资产ID
+							$task_data['resource_id'] = $asset_id;  //资产ID
 							$task_data['tache_id'] = $key;  //环节ID
 							$task_data['tache_sort'] = Tache::get($key)->sort;  //环节排序
 							$task_data['studio_id'] = $v;   //工作室ID
@@ -197,7 +196,7 @@ class Asset extends Common
 						$task_data['user_id'] = 0;   //所属用户ID
 						$task_data['project_id'] = $curr_asset_obj->project_id;  //所属项目ID
 						$task_data['field_id'] = $curr_asset_obj->field_id;      //资产类型ID
-						$task_data['asset_id'] = $asset_id;  //资产ID
+						$task_data['resource_id'] = $asset_id;  //资产ID
 						$task_data['tache_id'] = $key;  //环节ID
 						$task_data['tache_sort'] = Tache::get($key)->sort;  //环节排序
 						$task_data['studio_id'] = 0;   //工作室ID
@@ -264,7 +263,7 @@ class Asset extends Common
 					}
 				}
 				//获取当前镜头下的所有环节
-				$tache_by_task = array_unique(Workbench::where('asset_id',$id)->column('tache_id'));
+				$tache_by_task = array_unique(Workbench::where('resource_id',$id)->column('tache_id'));
 				//弹出相同的环节
 				foreach($tache_by_task as $key=>$value){
 					foreach($tache_empty_data as $k=>$v){
@@ -283,7 +282,7 @@ class Asset extends Common
 							$task_data['user_id'] = 0;
 							$task_data['project_id'] = $param['project_id'];   //所属项目ID
 							$task_data['field_id'] = $param['field_id'];   //资产类型ID
-							$task_data['asset_id'] = $id;  //资产ID
+							$task_data['resource_id'] = $id;  //资产ID
 							$task_data['tache_id'] = $key;  //环节ID
 							$task_data['tache_sort'] = Tache::get($key)->sort;  //环节排序
 							$task_data['studio_id'] = $v;   //工作室ID
@@ -311,7 +310,7 @@ class Asset extends Common
 						$task_data['user_id'] = 0;
 						$task_data['project_id'] = $param['project_id'];   //所属项目ID
 						$task_data['field_id'] = $param['field_id'];   //资产类型ID
-						$task_data['asset_id'] = $id;  //资产ID
+						$task_data['resource_id'] = $id;  //资产ID
 						$task_data['tache_id'] = $value;  //环节ID
 						$task_data['tache_sort'] = Tache::get($key)->sort;  //环节排序
 						$task_data['studio_id'] = 0;   //工作室ID
@@ -374,7 +373,7 @@ class Asset extends Common
 				return false;
 			} else {
 				//删除所属资产的所有任务
-				$taskBy_assetDel_result = Workbench::destroy(['asset_id' => $id]);
+				$taskBy_assetDel_result = Workbench::destroy(['resource_id' => $id]);
 				if (false === $taskBy_assetDel_result) {
 					$this->error = '资产所属任务删除失败';
 					$this->rollback();
@@ -394,9 +393,9 @@ class Asset extends Common
 	//根据资产ID获取所属环节下的工作室
 	public function get_studio_byTache($asset_id)
 	{
-		$tache_ids_arr = array_unique(Workbench::where('asset_id', $asset_id)->column('tache_id'));
+		$tache_ids_arr = array_unique(Workbench::where('resource_id', $asset_id)->column('tache_id'));
 		foreach ($tache_ids_arr as $key => $value) {
-			$data[$this->tache_byname_arr[$value]] = $this->get_studio_name(Workbench::where(['asset_id' => $asset_id, 'tache_id' => $value])->column('studio_id'));
+			$data[$this->tache_byname_arr[$value]] = $this->get_studio_name(Workbench::where(['resource_id' => $asset_id, 'tache_id' => $value])->column('studio_id'));
 		}
 		return $data;
 	}
@@ -420,10 +419,10 @@ class Asset extends Common
 	//获取当前资产各环节进度
 	public function rate_of_progress($asset_id)
 	{
-		$tache_data = array_unique(Workbench::where(['pid' => 0, 'asset_id' => $asset_id])->column('tache_id'));  //获取所属资产的环节
+		$tache_data = array_unique(Workbench::where(['pid' => 0, 'resource_id' => $asset_id])->column('tache_id'));  //获取所属资产的环节
 		foreach ($tache_data as $key => $value) {
 			//根据当前资产ID与环节ID查询是否有其任务
-			$curr_task_data = Workbench::where(['asset_id' => $asset_id, 'tache_id' => $value])->find();
+			$curr_task_data = Workbench::where(['resource_id' => $asset_id, 'tache_id' => $value])->find();
 			$finish_degree[$key]['tache_id'] = $value;
 			$finish_degree[$key]['tache_byname'] = $this->tache_byname_arr[$value];
 			$finish_degree[$key]['finish_degree'] = !empty($curr_task_data) ? $this->get_finish_degree_by_task($asset_id, $value) : 0;
@@ -436,15 +435,15 @@ class Asset extends Common
 	public function get_finish_degree_by_task($asset_id, $tache_id)
 	{
 		//获取当前环节下有几个工作室ID
-		$studio_ids_arr = Workbench::where(['asset_id' => $asset_id, 'tache_id' => $tache_id])->column('studio_id');
+		$studio_ids_arr = Workbench::where(['resource_id' => $asset_id, 'tache_id' => $tache_id])->column('studio_id');
 		//多工作室
 		if (count($studio_ids_arr) > 1) {
 			foreach ($studio_ids_arr as $key => $value) {
-				$studio_degree[] = $this->task_status_arr[Workbench::where(['pid' => 0, 'asset_id' => $asset_id, 'studio_id' => $value])->value('task_status')];
+				$studio_degree[] = $this->task_status_arr[Workbench::where(['pid' => 0, 'resource_id' => $asset_id, 'studio_id' => $value])->value('task_status')];
 			}
 			$curr_tache_degree = (array_sum($studio_degree) == 0) ? 0 : intval(array_sum($studio_degree) / count($studio_ids_arr));
 		} else {//一个工作室 他的状态即是当前环节的进度
-			$curr_tache_degree = $this->task_status_arr[Workbench::where(['pid' => 0, 'asset_id' => $asset_id, 'studio_id' => $studio_ids_arr[0]])->value('task_status')];    //获取这个任务的状态转化的进度值
+			$curr_tache_degree = $this->task_status_arr[Workbench::where(['pid' => 0, 'resource_id' => $asset_id, 'studio_id' => $studio_ids_arr[0]])->value('task_status')];    //获取这个任务的状态转化的进度值
 		}
 		return $curr_tache_degree;
 	}
@@ -457,7 +456,7 @@ class Asset extends Common
 		unset($studio_data[1]); //制片工作室
 		$studio_data = array_values($studio_data);
 		if (!empty($param)) {
-			$studio_id_temp = Workbench::where(['asset_id' => $param['asset_id'], 'tache_id' => $param['tache_id']])->column('studio_id');
+			$studio_id_temp = Workbench::where(['resource_id' => $param['asset_id'], 'tache_id' => $param['tache_id']])->column('studio_id');
 			foreach ($studio_data as $key => $value) {
 				foreach ($studio_id_temp as $k => $v) {
 					if ($v == $value['id']) unset($studio_data[$key]);
@@ -480,7 +479,7 @@ class Asset extends Common
 		}
 		try {
 			$tache_id = array_flip($this->tache_byname_arr)[$tache_name];
-			$result = Workbench::destroy(['asset_id' => $asset_id, 'tache_id' => $tache_id]);
+			$result = Workbench::destroy(['resource_id' => $asset_id, 'tache_id' => $tache_id]);
 			if ($result === false) {
 				$this->error = '删除失败';
 				return false;
@@ -503,7 +502,7 @@ class Asset extends Common
 		}
 		try {
 			$tache_id = array_flip($this->tache_byname_arr)[$tache_name];
-			$result = Workbench::destroy(['asset_id' => $asset_id, 'tache_id' => $tache_id, 'studio_id' => $studio_id]);
+			$result = Workbench::destroy(['resource_id' => $asset_id, 'tache_id' => $tache_id, 'studio_id' => $studio_id]);
 			if (false === $result) {
 				$this->error = '删除失败';
 				return false;

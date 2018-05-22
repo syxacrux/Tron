@@ -402,8 +402,8 @@
       changeTache() {
 //        美术环节
         if(this.isArt){
-          if(this.studiosListArt.length === 0){  //美术环节id为3
-            this.apiGet(`asset/get_studio?asset_id=${this.id}&tache_id=3`).then((res) => {
+          if(this.studiosListArt.length === 0){  //美术环节id为14
+            this.apiGet(`asset/get_studio?asset_id=${this.id}&tache_id=14`).then((res) => {
               this.handelResponse(res, (data) => {
                 this.studiosListArt = data.list
               })
@@ -415,8 +415,8 @@
         }
 //        模型环节
         if(this.isModel){
-          if(this.studiosListModel.length === 0){  //模型环节id为4
-            this.apiGet(`asset/get_studio?asset_id=${this.id}&tache_id=4`).then((res) => {
+          if(this.studiosListModel.length === 0){  //模型环节id为18
+            this.apiGet(`asset/get_studio?asset_id=${this.id}&tache_id=18`).then((res) => {
               this.handelResponse(res, (data) => {
                 this.studiosListModel = data.list
               })
@@ -428,8 +428,8 @@
         }
 //        贴图环节
         if(this.isMap){
-          if(this.studiosListMap.length === 0){  //贴图环节id为5
-            this.apiGet(`asset/get_studio?asset_id=${this.id}&tache_id=5`).then((res) => {
+          if(this.studiosListMap.length === 0){  //贴图环节id为21
+            this.apiGet(`asset/get_studio?asset_id=${this.id}&tache_id=21`).then((res) => {
               this.handelResponse(res, (data) => {
                 this.studiosListMap = data.list
               })
@@ -441,8 +441,8 @@
         }
 //        绑定环节
         if(this.isBind){
-          if(this.studiosListBind.length === 0){  //绑定环节id为6
-            this.apiGet(`asset/get_studio?asset_id=${this.id}&tache_id=6`).then((res) => {
+          if(this.studiosListBind.length === 0){  //绑定环节id为16
+            this.apiGet(`asset/get_studio?asset_id=${this.id}&tache_id=16`).then((res) => {
               this.handelResponse(res, (data) => {
                 this.studiosListBind = data.list
               })
@@ -454,8 +454,8 @@
         }
 //        跟踪环节
         if(this.isTrack){
-          if(this.studiosListTrack.length === 0){  //跟踪环节id为7
-            this.apiGet(`asset/get_studio?asset_id=${this.id}&tache_id=7`).then((res) => {
+          if(this.studiosListTrack.length === 0){  //跟踪环节id为19
+            this.apiGet(`asset/get_studio?asset_id=${this.id}&tache_id=19`).then((res) => {
               this.handelResponse(res, (data) => {
                 this.studiosListTrack = data.list
               })
@@ -467,8 +467,8 @@
         }
 //        动画环节
         if(this.isAni){
-          if(this.studiosListAnimate.length === 0){  //动画环节id为8
-            this.apiGet(`asset/get_studio?asset_id=${this.id}&tache_id=8`).then((res) => {
+          if(this.studiosListAnimate.length === 0){  //动画环节id为22
+            this.apiGet(`asset/get_studio?asset_id=${this.id}&tache_id=22`).then((res) => {
               this.handelResponse(res, (data) => {
                 this.studiosListAnimate = data.list
               })
@@ -480,8 +480,8 @@
         }
 //        数字绘景环节
         if(this.isPaint){
-          if(this.studiosListPaint.length === 0){  //数字绘景环节id为9
-            this.apiGet(`asset/get_studio?asset_id=${this.id}&tache_id=9`).then((res) => {
+          if(this.studiosListPaint.length === 0){  //数字绘景环节id为20
+            this.apiGet(`asset/get_studio?asset_id=${this.id}&tache_id=20`).then((res) => {
               this.handelResponse(res, (data) => {
                 this.studiosListPaint = data.list
               })
@@ -493,8 +493,8 @@
         }
 //        特效环节
         if(this.isSpec){
-          if(this.studiosListSpecial.length === 0){  //特效环节id为10
-            this.apiGet(`asset/get_studio?asset_id=${this.id}&tache_id=10`).then((res) => {
+          if(this.studiosListSpecial.length === 0){  //特效环节id为23
+            this.apiGet(`asset/get_studio?asset_id=${this.id}&tache_id=23`).then((res) => {
               this.handelResponse(res, (data) => {
                 this.studiosListSpecial = data.list
               })
@@ -506,8 +506,8 @@
         }
 //        灯光环节
         if(this.isLight){
-          if(this.studiosListLight.length === 0){  //灯光环节id为11
-            this.apiGet(`asset/get_studio?asset_id=${this.id}&tache_id=11`).then((res) => {
+          if(this.studiosListLight.length === 0){  //灯光环节id为24
+            this.apiGet(`asset/get_studio?asset_id=${this.id}&tache_id=24`).then((res) => {
               this.handelResponse(res, (data) => {
                 this.studiosListLight = data.list
               })
@@ -519,8 +519,8 @@
         }
 //        合成环节
         if(this.isSynch){
-          if(this.studiosListSynch.length === 0){  //灯光环节id为12
-            this.apiGet(`asset/get_studio?asset_id=${this.id}&tache_id=12`).then((res) => {
+          if(this.studiosListSynch.length === 0){  //合成环节id为25
+            this.apiGet(`asset/get_studio?asset_id=${this.id}&tache_id=25`).then((res) => {
               this.handelResponse(res, (data) => {
                 this.studiosListSynch = data.list
               })
@@ -543,34 +543,34 @@
         }
         let obj = {}
         if(this.isArt) {
-          obj[3] = this.artOfStudio
+          obj[14] = this.artOfStudio
         }
         if(this.isModel) {
-          obj[4] = this.modelOfStudio
+          obj[18] = this.modelOfStudio
         }
         if(this.isMap) {
-          obj[5] = this.mapOfStudio
+          obj[21] = this.mapOfStudio
         }
         if(this.isBind) {
-          obj[6] = this.bindOfStudio
+          obj[16] = this.bindOfStudio
         }
         if(this.isTrack) {
-          obj[7] = this.trackOfStudio
+          obj[19] = this.trackOfStudio
         }
         if(this.isAni) {
-          obj[8] = this.animateOfStudio
+          obj[22] = this.animateOfStudio
         }
         if(this.isPaint) {
-          obj[9] = this.paintOfStudio
+          obj[20] = this.paintOfStudio
         }
         if(this.isSpec) {
-          obj[10] = this.specialOfStudio
+          obj[23] = this.specialOfStudio
         }
         if(this.isLight) {
-          obj[11] = this.lightOfStudio
+          obj[24] = this.lightOfStudio
         }
         if(this.isSynch) {
-          obj[12] = this.synchOfStudio
+          obj[25] = this.synchOfStudio
         }
         this.form.tache = obj
 //        必填项

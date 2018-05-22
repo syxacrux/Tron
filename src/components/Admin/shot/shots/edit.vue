@@ -505,7 +505,7 @@
       changeTache() {
 //        美术环节
         if(this.isArt){
-          if(this.studiosListArt.length === 0){  //美术环节id为3
+          if(this.studiosListArt.length === 0){  //美术环节id为14
             this.apiGet(`shot/get_studio?shot_id=${this.id}&tache_id=14`).then((res) => {
               this.handelResponse(res, (data) => {
                 this.studiosListArt = data.list
