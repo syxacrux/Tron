@@ -195,4 +195,14 @@ class Workbenches extends BaseCommon
 		return resultArray(['data' => $data]);
 	}
 
+	//上传dailies
+	public function upload_dailies(){
+		$workbench_model = model('Workbench');
+		$param = $this->param;
+		$task_id = !empty($param['task_id']) ? $param['task_id'] : '';
+		$uid = $this->uid;
+		$data = $workbench_model->submit_dailies($task_id,$param,$uid);
+		return resultArray(['data'=>$data]);
+	}
+
 }

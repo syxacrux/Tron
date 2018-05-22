@@ -3,12 +3,11 @@
 namespace app\admin\model;
 
 use think\Db;
+use redis\RedisPackage;
 use app\common\model\Common;
 
 class Workbench extends Common
 {
-
-	protected $table = 'oa_task';
 	protected $name = 'task';
 
 	protected $task_priority_level_arr = [1 => 'D', 2 => 'C', 3 => 'B', 4 => 'A'];   //任务优先级
@@ -65,7 +64,7 @@ class Workbench extends Common
 		for ($i = 0; $i < count($list); $i++) {
 			$list[$i]['project_name'] = Project::get($list[$i]['project_id'])->project_name;
 			$list[$i]['field_number'] = Db::name('field')->where('id', $list[$i]['field_id'])->value('name');
-			$list[$i]['shot_number'] = ($list[$i]['task_type'] == 1) ? Shot::get($list[$i]['shot_id'])->shot_number : Asset::get($list[$i]['asset_id'])->asset_name;
+			$list[$i]['shot_number'] = ($list[$i]['task_type'] == 1) ? Shot::get($list[$i]['resource_id'])->shot_number : Asset::get($list[$i]['resource_id'])->asset_name;
 			$list[$i]['difficulty'] = $this->difficulty_arr[$list[$i]['difficulty']];
 			$list[$i]['task_priority_level'] = $this->task_priority_level_arr[$list[$i]['task_priority_level']];
 			$list[$i]['status_cn'] = $this->status_arr[$list[$i]['task_status']];
@@ -147,7 +146,7 @@ class Workbench extends Common
 			$where['field_id'] = $keywords['field_id'];
 		}
 		if (!empty($keywords['shot_id'])) {
-			$where['shot_id'] = $keywords['shot_id'];
+			$where['resource_id'] = $keywords['shot_id'];
 		}
 		//file_put_contents('aa.txt',var_export($where,true));
 		//手写输入
@@ -165,7 +164,7 @@ class Workbench extends Common
 					$config_field_len = intval(Parameter::get(3)->explain);
 					//后期可对3 镜头号长度进行配置 暂时未用上
 					if ($shot_number_len == 3) {
-						$where['shot_id'] = $shot_id;
+						$where['resource_id'] = $shot_id;
 					}
 					//后期可对场号长度进行配置  场号+镜头号  暂定为6
 
@@ -178,7 +177,7 @@ class Workbench extends Common
 							return $data;
 						}
 						$where['field_id'] = $field_id;
-						$where['shot_id'] = $shot_id;
+						$where['resource_id'] = $shot_id;
 					}
 					break;
 				case 2:	//资产
@@ -189,7 +188,7 @@ class Workbench extends Common
 						$data['dataCount'] = 0;
 						return $data;
 					}
-					$where['asset_id'] = $asset_id;
+					$where['resource_id'] = $asset_id;
 					break;
 			}
 		}
@@ -213,7 +212,7 @@ class Workbench extends Common
 		//重组数组
 		foreach ($list_data as $key => $value) {
 			$list_data[$key]['project_name'] = Project::get($value['project_id'])->project_byname;
-			$list_data[$key]['shot_number'] = ($value['task_type'] == 1) ? Field::get($value['field_id'])->name . Shot::get($value['shot_id'])->shot_number : Asset::get($value['asset_id'])->asset_name;
+			$list_data[$key]['shot_number'] = ($value['task_type'] == 1) ? Field::get($value['field_id'])->name . Shot::get($value['resource_id'])->shot_number : Asset::get($value['resource_id'])->asset_name;
 			$list_data[$key]['task_priority_level'] = $this->task_priority_level_arr[$value['task_priority_level']];    //任务优先级
 			$list_data[$key]['difficulty'] = $this->difficulty_arr[$value['difficulty']];   //任务难度
 			$list_data[$key]['surplus_days'] = floatval(sprintf("%.2f", ($value['plan_end_timestamp'] - time()) / 86400)) . "天";   //剩余天数
@@ -263,17 +262,17 @@ class Workbench extends Common
 		if (!empty($keywords['field_id'])) {
 			$where['field_id'] = $keywords['field_id'];
 		}
-		if (!empty($keywords['shot_id'])) {
-			$where['shot_id'] = $keywords['shot_id'];
+		if (!empty($keywords['resource_id'])) {
+			$where['resource_id'] = $keywords['resource_id'];
 		}
 		//根据当前用户获取所属的所有镜头ID 去重
 		$where['user_id'] = $uid;
-		$shot_ids_arr = array_unique($this->where($where)->column('shot_id'));
+		$shot_ids_arr = array_unique($this->where($where)->column('resource_id'));
 		if (!empty($shot_ids_arr)) {
 			//对每个镜头进行分页处理 ，似乎无法进行在循环外进行分页 需要优化
 			foreach ($shot_ids_arr as $key => $shot_id) {
 				//每个镜头
-				$min_tache_sort = min($this->where(['shot_id' => $shot_id, 'user_id' => $uid])->column('tache_sort'));
+				$min_tache_sort = min($this->where(['resource_id' => $shot_id, 'user_id' => $uid])->column('tache_sort'));
 				if ($min_tache_sort == 1) {
 					$list_data = [];
 					$dataCount[] = 0;
@@ -281,12 +280,12 @@ class Workbench extends Common
 					$range_tache_sort = $min_tache_sort - 1;
 					$first_tache_sort = 1;
 					if ($first_tache_sort == $range_tache_sort) {  //if 2 2-1 = 1
-						$foreach_where['shot_id'] = $shot_id;
+						$foreach_where['resource_id'] = $shot_id;
 						$foreach_where['tache_sort'] = 1;
 						$dataCount[] = $this->where($foreach_where)->count('id');
 						$list_data[] = $this->where($foreach_where)->page($page, $limit)->select();
 					} else {
-						$foreach_where['shot_id'] = $shot_id;
+						$foreach_where['resource_id'] = $shot_id;
 						$foreach_where['tache_sort'] = ['between', [1, $range_tache_sort]];
 						$dataCount[] = $this->where($foreach_where)->count('id');
 						$list_data[] = $this->where($foreach_where)->page($page, $limit)->select();
@@ -336,8 +335,8 @@ class Workbench extends Common
 		if (!empty($keywords['field_id']) && empty($keywords['shot_number'])) {
 			$where['field_id'] = $keywords['field_id'];
 		}
-		if (!empty($keywords['shot_id']) && empty($keywords['shot_number'])) {
-			$where['shot_id'] = $keywords['shot_id'];
+		if (!empty($keywords['resource_id']) && empty($keywords['shot_number'])) {
+			$where['resource_id'] = $keywords['resource_id'];
 		}
 		if (!empty($keywords['shot_number'])) {
 			$shot_number_len = strlen($keywords['shot_number']);
@@ -347,8 +346,8 @@ class Workbench extends Common
 			if ($shot_number_len == 6) {
 				$shot_number = substr($keywords['shot_number'], 3, 3);
 			}
-			$shot_id = Shot::where('shot_number', $shot_number)->value('id');
-			if (!$shot_id) {
+			$resource_id = Shot::where('shot_number', $shot_number)->value('id');
+			if (!$resource_id) {
 				$data['list'] = [];
 				$data['dataCount'] = 0;
 				return $data;
@@ -357,11 +356,11 @@ class Workbench extends Common
 			//后期可对3 镜头号长度进行配置
 			if ($shot_number_len == 3) {
 				$where['field_id'] = $keywords['field_id'];
-				$where['shot_id'] = $shot_id;
+				$where['resource_id'] = $resource_id;
 			}
 			//后期可对场号长度进行配置  场号+镜头号  暂定为6
 			if ($shot_number_len == 6) {
-				$field_id = Db::name('field')->where('name', substr($keywords['shot_number'], 1, 3))->value('id');
+				$field_id = Field::where('name', substr($keywords['shot_number'], 1, 3))->value('id');
 				//场号不匹配，则数据直接返回空
 				if (!$field_id) {
 					$data['list'] = [];
@@ -369,7 +368,7 @@ class Workbench extends Common
 					return $data;
 				}
 				$where['field_id'] = $field_id;
-				$where['shot_id'] = $shot_id;
+				$where['resource_id'] = $resource_id;
 			}
 		}
 
@@ -387,7 +386,7 @@ class Workbench extends Common
 		$list = $list->select();
 		foreach ($list as $key => $value) {
 			$list[$key]['project_name'] = Project::get($value['project_id'])->project_byname;
-			$list[$key]['shot_number'] = Db::name('field')->where('id', $value['field_id'])->value('name') . Shot::get($value['shot_id'])->shot_number;
+			$list[$key]['shot_number'] = Db::name('field')->where('id', $value['field_id'])->value('name') . Shot::get($value['resource_id'])->shot_number;
 			$list[$key]['task_priority_level'] = $this->task_priority_level_arr[$value['task_priority_level']];    //任务优先级
 			$list[$key]['difficulty'] = $this->difficulty_arr[$value['difficulty']];   //任务难度
 			$list[$key]['surplus_days'] = floatval(sprintf("%.2f", ($value['plan_end_timestamp'] - time()) / 86400)) . "天";   //剩余天数
@@ -451,7 +450,7 @@ class Workbench extends Common
 			//获取所属任务当前状态值
 			$curr_task_status = $curr_task_data->task_status;
 			//查询所属镜头的状态值
-			$shot_id = $curr_task_data->shot_id;
+			$shot_id = $curr_task_data->resource_id;
 			$shot_status = Shot::get($shot_id)->status;
 			if(($curr_task_status == 1) && ($task_data['task_status'] == 5) && ($curr_task_data->user_id!=0)){
 				//更改状态时将当前时间加入实际开始时间
@@ -494,7 +493,7 @@ class Workbench extends Common
 			return false;
 		}
 		$project_obj = Project::get($task_obj->project_id);
-		$shot_obj = Shot::get($task_obj->shot_id);
+		$shot_obj = Shot::get($task_obj->resource_id);
 		$user_ids_arr = $this->where('pid', $task_id)->column('user_id');
 		//组合当前任务所属制作人数据
 		if ($task_obj->user_id == 0) {
@@ -548,8 +547,7 @@ class Workbench extends Common
 					$task_data['user_id'] = $value;
 					$task_data['project_id'] = $task_obj->project_id;
 					$task_data['field_id'] = $task_obj->field_id;
-					$task_data['shot_id'] = !empty($task_obj->shot_id) ? $task_obj->shot_id : 0;
-					$task_data['asset_id'] = !empty($task_obj->asset_id) ? $task_obj->asset_id : 0;
+					$task_data['resource_id'] = !empty($task_obj->resource_id) ? $task_obj->resource_id : 0;
 					$task_data['tache_id'] = $task_obj->tache_id;
 					$task_data['tache_sort'] = $task_obj->tache_sort;
 					$task_data['studio_id'] = User::get($value)->studio_id; //所属用户的工作室ID
@@ -640,6 +638,87 @@ class Workbench extends Common
 		}
 		$data['list'] = $user_data;
 		return $data;
+	}
+
+	/**
+	 * 提交dailies 审批表
+	 * @param $task_id int 任务ID
+	 * @param $param :type int 类型类型 1上传文件 2上传序列
+	 * @param $uid  int 提交的用户
+	 * @return bool
+	 */
+	public function submit_dailies($task_id,$param,$uid)
+	{
+		$task_obj = $this->get($task_id);
+		if (!$task_obj) {
+			$this->error = '暂无此数据';
+			return false;
+		}
+		$time = date('Ymd',time()+(6*3600));	//提交的文件默认为
+		$project_byname = Project::get($task_obj->project_id)->project_byname; //项目简称
+		$field_name = Field::get($task_obj->field_id)->name();
+		$tache_name = Tache::get($task_obj->tache_id)->tache_name;  //环节名称 LGT 灯光
+		$user_name = User::get($task_obj->user_id)->username;  //用户名
+		$task_byname = $task_obj->task_byname;  //任务简称
+		//根据任务Id获取上传文件最新记录 状态为python 1和2 版本最大的号为版本号 只取一条
+		$approval_obj = Approval::where('task_id',$task_id)->where('submit_status','in',[1,2])->order('version desc')->find();
+		/**
+		 * 根据类型 [是否为客户升级版本] 组合版本号
+		 * 是 v0201
+		 * 否 v0102
+		 */
+		//客户升级版本 客户要求升级的版本
+		if (!empty($approval_obj)) {
+			if (!empty($param['is_customer'])) {
+				$customer_version = substr($approval_obj->version, 1, 2) + 1;
+				$version_number = 'v' . str_pad($customer_version, 2, 0, STR_PAD_LEFT) . '01';
+			} else {
+				$version_number = 'v' . str_pad(substr($approval_obj->version, 1, 4) + 1, 4, 0, STR_PAD_LEFT);
+			}
+		} else {
+			$version_number = "v0101";
+		}
+		switch ($task_obj->task_type) {
+			case 1:  //镜头
+				$shot_number = Shot::get($task_obj->resource_id)->shot_number;	//镜头号
+				$file_name = strtolower($project_byname) . $field_name . $shot_number . '_' . strtolower($tache_name) . '_' . $user_name . '_' . $task_byname . '_' . $version_number;
+				$path = '/' . $project_byname . '/' . $time . '|';
+				break;
+			case 2:  //资产
+				$asset_name = Asset::get($task_obj->resource_id)->asset_name;	//资产名称
+				$file_name = strtolower($project_byname) . '_' . strtolower($tache_name) . '_' . $user_name . '_' . $task_byname . '_' . $version_number;
+				$path = '/' . $project_byname . '/' . $time . '|';
+				break;
+		}
+
+		$approval_param['project_id'] = $task_obj->project_id;
+		$python_log['resource_type'] = $approval_param['resource_type'] = $task_obj->task_type;
+		$python_log['resource_id'] = $approval_param['resource_id'] = $task_obj->resource_id;
+		$approval_param['task_id'] = $task_obj->id;
+		$approval_param['user_id'] = $uid;
+		$approval_param['file_dir_name'] = $time;
+		$approval_param['explain'] = '这是我最新提交的'.$project_byname.$field_name.($task_obj->task_type == 1) ? $shot_number.'镜头的'.$shot_number:$asset_name.'资产的'.$asset_name.'，接下来的马上会提交';
+		$approval_param['file_type'] = $param['file_type'];
+		$python_log['create_time'] = $approval_param['create_timestamp'] = time();
+		$approval_model = new Approval();
+		$result = $approval_model->save($approval_param);
+		if($result === false){
+			$this->error = $this->getError();
+			return false;
+		}else{
+			$tmp = "'Dailies{$param['file_type']}' '{$project_byname}' '{$file_name}'";
+			$str = $tmp." '".osname()['ip'].'|'.$path.$file_name.'|'.$approval_model->id."'";
+			//记录python命令行
+			$python_log['python_str'] = $str;
+			Db::name('python_log_'.date("Y"))->insert($python_log);
+			//执行外部程序-开启队列
+			/*
+			$redis = new RedisPackage();
+			$cmd = "python /usr/local/httpd/htdocs/tron/tronPipelineScript/createDirPath/parser.py $str ";
+			$redis::LPush("pyFile",$cmd);
+			*/
+			return true;
+		}
 	}
 
 }

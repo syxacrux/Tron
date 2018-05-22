@@ -13,7 +13,7 @@ class ExecPython extends Common{
 		$tache_name = Tache::get($task_obj->tache_id)->tache_name;	//所属环节 prd
 		$project_byname = Project::get($task_obj->project_id)->project_byname;	// 项目简称 FUY
 		$field_num = Field::get($task_obj->field_id)->name;	//场号 006
-		$shot_num = Shot::get($task_obj->shot_id)->shot_number; //镜头号 001
+		$shot_num = Shot::get($task_obj->resource_id)->shot_number; //镜头号 001
 		$user_name = User::get($task_obj->user_id)->username;	//分配的制作人 用户名 zhaojs
 
 		if($type == 1){	//镜头

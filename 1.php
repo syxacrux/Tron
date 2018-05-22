@@ -31,6 +31,7 @@ date_default_timezone_set('PRC'); //设置中国时区
 
 //print_r(read_dir_queue('/Users/zhaojiusi/Code/tron/public/References/'));exit;
 
+
 function recurDir($pathName)
 {
 	//将结果保存在result变量中
@@ -70,4 +71,9 @@ function recurDir($pathName)
 //验证一下这个函数是否好用！
 $tree = recurDir('/Users/zhaojiusi/Code/tron/public/References/');
 //var_dump($tree)."<br/>";
+
+
+$vnu = 'v0101';
+$vnu = 'v'.str_pad(substr($vnu,1,4) + 1,4,0,STR_PAD_LEFT) ;
+echo $vnu;
 
