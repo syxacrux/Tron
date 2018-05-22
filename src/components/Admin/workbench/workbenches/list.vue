@@ -9,7 +9,6 @@
     </div>
     <div class="m-b-20 ovf-hd">
       <div class="fl w-1500">
-        <!-- <template> -->
         <el-row :gutter="10" class="m-b-5">
           <el-col :span="4">
             <el-select v-model="search.project_id" placeholder="请选择项目" @change="screenChange(1)">
@@ -39,7 +38,7 @@
             </el-select>
           </el-col>
           <el-col :span="5">
-            <el-select v-model="search.shot_id" style="margin-left: 10px;" placeholder="请选择镜头号或资产简称"
+            <el-select v-model="search.resource_id" style="margin-left: 10px;" placeholder="请选择镜头号或资产简称"
                        @change="screenChange()">
               <el-option
                   v-for="item in screeningShot"
@@ -55,7 +54,6 @@
             </el-input>
           </el-col>
         </el-row>
-        <!-- </template> -->
       </div>
       <div class="tx-r">
         <el-tooltip v-if="kanbanShow" effect="dark" content="工作台进度" placement="bottom-start">
@@ -78,31 +76,31 @@
                   <div class="text" @click="taskDetail(block.id)">
                     <div class="text-Lens pos-rel">
                       <p class="text-Lens-name">
-                        {{block.project_name}}：<span>{{block.shot_number}}:{{block.task_byname}}</span></p>
+                        {{ block.project_name }}：<span>{{ block.shot_number }}:{{ block.task_byname }}</span></p>
                       <p class="text-Lens-rank pos-abs">
                         <el-tag type="danger" v-if="block.difficulty != '' ">
                           <el-tooltip class="pointer" effect="dark" content="难度"
                                       placement="bottom-start">
-                            <span>{{block.difficulty}}</span>
+                            <span>{{ block.difficulty }}</span>
                           </el-tooltip>
                         </el-tag>
                         <el-tag type="warning" v-if="block.task_priority_level != '' ">
                           <el-tooltip class=" pointer" effect="dark" content="优先级"
                                       placement="bottom-start">
-                            <span>{{block.task_priority_level}}</span>
+                            <span>{{ block.task_priority_level }}</span>
                           </el-tooltip>
                         </el-tag>
                       </p>
                     </div>
                     <div class="text-Lens m-t-10">
-                      <p class="task-Lens-assets text-p">
-                        <el-tag type="info" v-if="block.id > 0">37次</el-tag>
-                      </p>
+                      <!--<p class="task-Lens-assets text-p">-->
+                        <!--<el-tag type="info" v-if="block.id > 0">37次</el-tag>-->
+                      <!--</p>-->
                       <p class="text-Lens-time tx-r">
                         <span>
                           <el-tooltip class=" pointer" effect="dark" content="任务剩余天数"
                                       placement="bottom-start">
-                            <span>{{shotRemainDay(block.plan_end_timestamp)}}天</span>
+                            <span>{{ shotRemainDay(block.plan_end_timestamp) }}天</span>
                           </el-tooltip>
                           <el-tooltip class=" pointer" effect="dark" content="任务在次状态时间"
                                       placement="bottom-start">
@@ -110,7 +108,7 @@
                           </el-tooltip>
                           <el-tooltip class=" pointer" effect="dark" content="任务分配时间"
                                       placement="bottom-start">
-                            <span>{{block.task_allot_days}}</span>
+                            <span>{{ block.task_allot_days }}</span>
                           </el-tooltip>
                         </span>
                         <span>
@@ -122,14 +120,14 @@
                       </p>
                     </div>
                     <div class="text-Lens-link m-t-10">
-                      <el-button size="small" @click="submitDailies">提交Dailies</el-button>
-                      <el-button size="small" @click="render">渲染</el-button>
-                      <el-tag type="warn">资产</el-tag>
+                      <!--<el-button size="small" @click="submitDailies">提交Dailies</el-button>-->
+                      <!--<el-button size="small" @click="render">渲染</el-button>-->
+                      <!--<el-tag type="warn">资产</el-tag>-->
                       <el-tag type="danger" v-if="block.task_finish_degree.finish_degree < 100">
-                        {{block.task_finish_degree.tache_byname}}:{{block.task_finish_degree.finish_degree}}%
+                        {{ block.task_finish_degree.tache_byname }}:{{ block.task_finish_degree.finish_degree }}%
                       </el-tag>
                       <el-tag type="success" v-else>
-                        {{block.task_finish_degree.tache_byname}}:{{block.task_finish_degree.finish_degree}}%
+                        {{ block.task_finish_degree.tache_byname }}:{{ block.task_finish_degree.finish_degree }}%
                       </el-tag>
                     </div>
                   </div>
@@ -137,7 +135,7 @@
               </div>
             </el-card>
           </kanban-board>
-          <div class="block task-block">
+          <div class="block task-block" v-if="blocksDataCount.length">
             <el-pagination
                 @current-change="taskCurrentChange"
                 layout="prev, pager, next, jumper"
@@ -151,57 +149,52 @@
           <div class="waiting ovf-hd">
             <el-col v-if="assetShow" :span="12">
               <div class="grid-content bg-purple">
-                <h2 class="m-0 h-40 tx-c c-white">资产</h2>
+                <h2 class="m-0 h-40">资产</h2>
                 <ul class="p-l-0 m-0">
-                  <li v-for="block in upstreamListTask" :key="block.id" class="text"
-                      @click="isTaskDetailShow = !isTaskDetailShow">
+                  <li v-for="block in upstreamListTask" :key="block.id" class="text"@click="taskDetail(block.id)">
                     <el-card class="box-card">
-                      <!-- <div v-for="o in 4" :key="o" class="text item">
-                        {{'列表内容 ' + o }}
-                      </div> -->
-                      <div class="text item">
+                      <div class="text">
                         <div class="text-Lens pos-rel">
                           <p class="text-Lens-name">
-                            {{block.project_name}}：<span>{{block.shot_number}}:{{block.task_byname}}</span></p>
+                            {{ block.project_name }}：<span>{{ block.shot_number }}:{{ block.task_byname }}</span></p>
                           <p class="text-Lens-rank pos-abs">
                             <el-tag type="danger" v-if="block.difficulty != '' ">
                               <el-tooltip class=" pointer" effect="dark" content="难度"
                                           placement="bottom-start">
-                                <span>{{block.difficulty}}</span>
+                                <span>{{ block.difficulty }}</span>
                               </el-tooltip>
                             </el-tag>
                             <el-tag type="warning" v-if="block.task_priority_level != '' ">
                               <el-tooltip class=" pointer" effect="dark" content="优先级"
                                           placement="bottom-start">
-                                <span>{{block.task_priority_level}}</span>
+                                <span>{{ block.task_priority_level }}</span>
                               </el-tooltip>
                             </el-tag>
                           </p>
                         </div>
                         <div class="text-Lens m-t-10 task-reaches">
                           <p class="text-Lens-time tx-r task-r">
-                                  <span>
-                                    <el-tooltip class=" pointer" effect="dark" content="任务剩余天数"
-                                                placement="bottom-start">
-                                      <span>{{block.surplus_days}}</span>
-                                    </el-tooltip>
-                                    <el-tooltip class=" pointer" effect="dark" content="任务在此状态时间"
-                                                placement="bottom-start">
-                                      <span>无</span>
-                                    </el-tooltip>
-                                    <el-tooltip class=" pointer" effect="dark" content="任务分配时间"
-                                                placement="bottom-start">
-                                      <span>{{block.task_allot_days}}</span>
-                                    </el-tooltip>
-                                  </span>
-
+                            <span>
+                              <el-tooltip class=" pointer" effect="dark" content="任务剩余天数"
+                                          placement="bottom-start">
+                                <span>{{ block.surplus_days }}</span>
+                              </el-tooltip>
+                              <el-tooltip class=" pointer" effect="dark" content="任务在此状态时间"
+                                          placement="bottom-start">
+                                <span>无</span>
+                              </el-tooltip>
+                              <el-tooltip class=" pointer" effect="dark" content="任务分配时间"
+                                          placement="bottom-start">
+                                <span>{{ block.task_allot_days }}</span>
+                              </el-tooltip>
+                            </span>
                           </p>
                           <p>
                             <span>
-                                <el-tooltip class=" pointer" effect="dark" content="预计结束时间"
-                                            placement="bottom-start">
+                              <el-tooltip class=" pointer" effect="dark" content="预计结束时间"
+                                          placement="bottom-start">
                                 <span>{{ j2time(block.plan_end_timestamp) }}</span>
-                                    </el-tooltip>
+                              </el-tooltip>
                             </span>
                           </p>
                         </div>
@@ -214,8 +207,7 @@
                   </li>
                 </ul>
                 <div class="pos-rel p-t-20">
-                  <!-- <btnGroup :selectedData="multipleSelection" :type="'studios'"></btnGroup> -->
-                  <div class="block pages">
+                  <div class="block pages" v-if="upstreamDataCountTask.length">
                     <el-pagination
                         @current-change="upstreamTaskCurrentChange"
                         layout="prev, pager, next, jumper"
@@ -228,16 +220,16 @@
               </div>
             </el-col>
             <el-col v-if="shotShow" :span="12">
-              <div class="grid-content bg-purple-light">
-                <h2 class="m-0 h-40 tx-c c-white" style="background: yellowgreen">镜头</h2>
+              <div class="grid-content">
+                <h2 class="m-0 h-40">镜头</h2>
                 <ul class="p-l-0 m-0">
                   <li v-for="block in upstreamListShot" :key="block.id" class="text"
-                      @click="isTaskDetailShow = !isTaskDetailShow">
+                      @click="taskDetail(block.id)">
                     <el-card class="box-card">
-                      <div class="text item">
+                      <div class="text">
                         <div class="text-Lens pos-rel">
                           <p class="text-Lens-name">
-                            {{block.project_name}}：<span>{{block.shot_number}}:{{block.task_byname}}</span></p>
+                            {{ block.project_name }}：<span>{{ block.shot_number }}:{{ block.task_byname }}</span></p>
                           <p class="text-Lens-rank pos-abs">
                             <el-tag type="danger" v-if="block.difficulty != '' ">
                               <el-tooltip class=" pointer" effect="dark" content="难度"
@@ -255,20 +247,20 @@
                         </div>
                         <div class="text-Lens m-t-10 task-reaches">
                           <p class="text-Lens-time tx-r task-r">
-                                  <span>
-                                    <el-tooltip class=" pointer" effect="dark" content="任务剩余天数"
-                                                placement="bottom-start">
-                                      <span>{{block.surplus_days}}</span>
-                                    </el-tooltip>
-                                    <el-tooltip class=" pointer" effect="dark" content="任务在此状态时间"
-                                                placement="bottom-start">
-                                      <span>{{ shotCreateTime(block.create_timestamp) }}天</span>
-                                    </el-tooltip>
-                                    <el-tooltip class=" pointer" effect="dark" content="任务分配时间"
-                                                placement="bottom-start">
-                                      <span>{{block.task_allot_days}}</span>
-                                    </el-tooltip>
-                                  </span>
+                            <span>
+                              <el-tooltip class=" pointer" effect="dark" content="任务剩余天数"
+                                          placement="bottom-start">
+                                <span>{{ block.surplus_days }}</span>
+                              </el-tooltip>
+                              <el-tooltip class=" pointer" effect="dark" content="任务在此状态时间"
+                                          placement="bottom-start">
+                                <span>{{ shotCreateTime(block.create_timestamp) }}天</span>
+                              </el-tooltip>
+                              <el-tooltip class=" pointer" effect="dark" content="任务分配时间"
+                                          placement="bottom-start">
+                                <span>{{ block.task_allot_days }}</span>
+                              </el-tooltip>
+                            </span>
                           </p>
                           <p>
                             <span>
@@ -287,7 +279,7 @@
                     </el-card>
                   </li>
                 </ul>
-                <div class="block task-block">
+                <div class="block task-block" v-if="upstreamDataCountShot.length">
                   <el-pagination
                       @current-change="upstreamShotCurrentChange"
                       layout="prev, pager, next, jumper"
@@ -355,7 +347,6 @@
                       </p>
                     </div>
                     <div class="text-Lens-link m-t-10">
-                      <!-- <el-tag type="warn"></el-tag> -->
                       <el-tag type="success">已完成</el-tag>
                     </div>
                   </div>
@@ -363,7 +354,7 @@
               </div>
             </el-col>
           </div>
-          <div class="block task-block">
+          <div class="block task-block" v-if="completeDataCount.length">
             <el-pagination
                 @current-change="completeCurrentChange"
                 layout="prev, pager, next, jumper"
@@ -515,7 +506,7 @@
           project_id: '',//项目下拉框选中的值
           type: '',//类型
           field_id: '',//场号下拉框选中的值
-          shot_id: '',//镜头选中的值
+          resource_id: '',//镜头选中的值
           shot_number: ''//输入狂的值
         },
         stages: ['制作中', '反馈中', '等待制作', '提交发布'],
@@ -595,11 +586,11 @@
         }
         this.blocks.find(b => b.id === Number(id)).status = status;
         this.apiPost('task/change_status', data).then((res) => {
+          _g.shallowRefresh(this.$route.name)
           this.handelResponse(res, (data) => {
-
           }, () => {
-            this.isLoading = !this.isLoading
-            getAllWorkbenches('admin/workbenches', this.currentPage, 1, 40)
+//            this.getAllWorkbenches('admin/workbenches', this.currentPage, 1, 40)
+//            this.isLoading = !this.isLoading
           })
         })
       },
@@ -658,12 +649,11 @@
       },
       //等待上游镜头切换页码
       upstreamShotCurrentChange (page) {
-        // this.getAllWorkbenches(page)
         this.getAllWorkbenches('task/upper_shots', page, 2, 10)
       },
       //等待上游资产切换页码
       upstreamTaskCurrentChange (page) {
-        //  this.getAllWorkbenches('task/upper_shots',page,2,10)
+        this.getAllWorkbenches('task/upper_assets',page,2,10)
       },
       //完成切换页码
       completeCurrentChange (page) {
@@ -685,7 +675,6 @@
        *     }
        *   }
        * */
-
       getAllWorkbenches (state, page, status, limit) {
         this.loading = true
         const data = {
@@ -734,7 +723,7 @@
         switch (svuel) {
           case 1://请求场号
             this.search.field_id = ''
-            this.search.shot_id = ''
+            this.search.resource_id = ''
             const data = {
               params: {
                 project_id: this.search.project_id
@@ -748,7 +737,7 @@
             break
           case 2://请求类型
             this.search.field_id = ''
-            this.search.shot_id = ''
+            this.search.resource_id = ''
             const datatype = {
               params: {
                 project_id: this.search.project_id,
@@ -763,7 +752,7 @@
             })
             break
           case 3://请求镜头号
-            this.search.shot_id = ''
+            this.search.resource_id = ''
             const datas = {
               params: {
                 field_id: this.search.field_id
@@ -785,14 +774,14 @@
         if (this.search.shot_number.length === 6) {
           // this.search.project_id = ''
           this.search.field_id = ''
-          this.search.shot_id = ''
+          this.search.resource_id = ''
           this.screeningPublic()
         }
         if (!this.search.field_id && this.search.shot_number.length === 3) {
           _g.toastMsg('warning', '请选择所属项目及场号')
           return
         } else {
-          this.search.shot_id = ''
+          this.search.resource_id = ''
           this.screeningPublic()
         }
       },
@@ -887,12 +876,6 @@
     margin-top: 55px;
   }
 
-  .waiting h2 {
-    font-size: .8rem;
-    background: lightpink;
-
-  }
-
   .drag-container {
     margin: 0;
     max-width: initial;
@@ -909,11 +892,6 @@
     text-align: center;
   }
 
-  .drag-container .drag-column .drag-column-header h2 {
-    width: 100%;
-    color: #fff;
-  }
-
   .drag-item {
     height: inherit;
     padding: 0;
@@ -925,21 +903,26 @@
     background: none;
   }
 
-  .drag-column-制作中 .drag-column-header, .drag-column-制作中 .drag-options, .drag-column-制作中 .is-moved {
-    background: #fb7d44;
-  }
-
-  .drag-column-反馈中 .drag-column-header, .drag-column-反馈中 .drag-options, .drag-column-反馈中 .is-moved {
-    /*background: #2a92bf;*/
-    background: #f4ce46;
-  }
-
-  .drag-column-提交发布 .drag-column-header, .drag-column-提交发布 .drag-options, .drag-column-提交发布 .is-moved {
-    background: #2a92bf;
-  }
-
-  .drag-column-等待制作 .drag-column-header, .drag-column-等待制作 .drag-options, .drag-column-等待制作 .is-moved {
-    background: #00b961;
+  .waiting h2,
+  .drag-column-制作中 .drag-column-header,
+  .drag-column-制作中 .drag-options,
+  .drag-column-制作中 .is-moved,
+  .drag-column-反馈中 .drag-column-header,
+  .drag-column-反馈中 .drag-options,
+  .drag-column-反馈中 .is-moved,
+  .drag-column-提交发布 .drag-column-header,
+  .drag-column-提交发布 .drag-options,
+  .drag-column-提交发布 .is-moved,
+  .drag-column-等待制作 .drag-column-header,
+  .drag-column-等待制作 .drag-options,
+  .drag-column-等待制作 .is-moved{
+    font-size: .8rem;
+    background: #fff;
+    color: #666;
+    border-left: 2px solid #409eff;
+    padding-left: 10px;
+    border-bottom-right-radius: 5px;
+    border-top-right-radius: 5px;
   }
 
   .workbench_list .task_detail .task-xing .el-card__body {

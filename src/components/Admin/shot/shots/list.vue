@@ -65,18 +65,18 @@
               <!--<p>时间：20180207-14：52</p>-->
             <!--</div>-->
           <!--</div>-->
-        <!--</el-card>-->
-        <div class="pos-rel p-t-20">
-          <div class="block pages">
-            <el-pagination
-                @current-change="handleCurrentChange"
-                layout="prev, pager, next"
-                :page-size="limit"
-                :current-page="currentPage"
-                :total="dataCount">
-            </el-pagination>
-          </div>
-        </div>
+        <!--&lt;!&ndash;</el-card>&ndash;&gt;-->
+        <!--<div class="pos-rel p-t-20">-->
+          <!--<div class="block pages">-->
+            <!--<el-pagination-->
+                <!--@current-change="handleCurrentChange"-->
+                <!--layout="prev, pager, next"-->
+                <!--:page-size="limit"-->
+                <!--:current-page="currentPage"-->
+                <!--:total="dataCount">-->
+            <!--</el-pagination>-->
+          <!--</div>-->
+        <!--</div>-->
       </el-col>
       <el-col class="" :span="12">
         <!--<el-card class="box-card">-->
@@ -100,17 +100,17 @@
             <!--</div>-->
           <!--</div>-->
         <!--</el-card>-->
-        <div class="pos-rel p-t-20">
-          <div class="block pages">
-            <el-pagination
-                @current-change="handleCurrentChange"
-                layout="prev, pager, next"
-                :page-size="limit"
-                :current-page="currentPage"
-                :total="dataCount">
-            </el-pagination>
-          </div>
-        </div>
+        <!--<div class="pos-rel p-t-20">-->
+          <!--<div class="block pages">-->
+            <!--<el-pagination-->
+                <!--@current-change="handleCurrentChange"-->
+                <!--layout="prev, pager, next"-->
+                <!--:page-size="limit"-->
+                <!--:current-page="currentPage"-->
+                <!--:total="dataCount">-->
+            <!--</el-pagination>-->
+          <!--</div>-->
+        <!--</div>-->
       </el-col>
     </div>
   </div>
