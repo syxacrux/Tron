@@ -229,7 +229,7 @@ class Shot extends Common
 							$task_data['user_id'] = 0;   //所属用户ID
 							$task_data['project_id'] = $curr_shot_obj->project_id;   //所属项目ID
 							$task_data['field_id'] = $curr_shot_obj->field_id;   //场号ID
-							$task_data['shot_id'] = $shot_id;  //镜头ID
+							$task_data['resource_id'] = $shot_id;  //镜头ID
 							$task_data['tache_id'] = $key;  //环节ID
 							$task_data['tache_sort'] = Tache::get($key)->sort;  //环节排序
 							$task_data['studio_id'] = $v;   //工作室ID
@@ -252,7 +252,7 @@ class Shot extends Common
 						$task_data['user_id'] = 0;   //所属用户ID
 						$task_data['project_id'] = $curr_shot_obj->project_id;   //所属项目ID
 						$task_data['field_id'] = $curr_shot_obj->field_id;   //场号ID
-						$task_data['shot_id'] = $shot_id;  //镜头ID
+						$task_data['resource_id'] = $shot_id;  //镜头ID
 						$task_data['asset_id'] = 0;  //资产ID默认为0
 						$task_data['tache_id'] = $key;  //环节ID
 						$task_data['tache_sort'] = Tache::get($key)->sort;  //环节排序
@@ -349,7 +349,7 @@ class Shot extends Common
 							$task_data['user_id'] = 0;
 							$task_data['project_id'] = $param['project_id'];   //所属项目ID
 							$task_data['field_id'] = $param['field_id'];   //场号ID
-							$task_data['shot_id'] = $id;  //镜头ID
+							$task_data['resource_id'] = $id;  //镜头ID
 							$task_data['asset_id'] = 0;
 							$task_data['tache_id'] = $key;  //环节ID
 							$task_data['tache_sort'] = Tache::get($key)->sort;  //环节排序
@@ -379,7 +379,7 @@ class Shot extends Common
 						$task_data['user_id'] = 0;
 						$task_data['project_id'] = $param['project_id'];   //所属项目ID
 						$task_data['field_id'] = $param['field_id'];   //场号ID
-						$task_data['shot_id'] = $id;  //镜头ID
+						$task_data['resource_id'] = $id;  //镜头ID
 						$task_data['asset_id'] = 0;
 						$task_data['tache_id'] = $value;  //环节ID
 						$task_data['tache_sort'] = Tache::get($value)->sort;  //环节排序
@@ -486,9 +486,9 @@ class Shot extends Common
 	//根据镜头ID获取所属环节下的工作室
 	public function get_studio_byTache($shot_id)
 	{
-		$tache_ids_arr = array_unique(Workbench::where('shot_id', $shot_id)->column('tache_id'));
+		$tache_ids_arr = array_unique(Workbench::where('resource_id', $shot_id)->column('tache_id'));
 		foreach ($tache_ids_arr as $key => $value) {
-			$data[$this->tache_byname_arr[$value]] = $this->get_studio_name(Workbench::where(['shot_id' => $shot_id, 'tache_id' => $value])->column('studio_id'));
+			$data[$this->tache_byname_arr[$value]] = $this->get_studio_name(Workbench::where(['resource_id' => $shot_id, 'tache_id' => $value])->column('studio_id'));
 		}
 		return $data;
 	}
@@ -526,10 +526,10 @@ class Shot extends Common
 	//获取当前镜头各环节进度
 	public function rate_of_progress($shot_id)
 	{
-		$tache_data = array_unique(Workbench::where(['pid' => 0, 'shot_id' => $shot_id])->column('tache_id'));  //获取所属镜头的环节
+		$tache_data = array_unique(Workbench::where(['pid' => 0, 'resource_id' => $shot_id])->column('tache_id'));  //获取所属镜头的环节
 		foreach ($tache_data as $key => $value) {
 			//根据当前镜头ID与环节ID查询是否有其任务
-			$curr_task_data = Workbench::where(['shot_id' => $shot_id, 'tache_id' => $value])->find();
+			$curr_task_data = Workbench::where(['resource_id' => $shot_id, 'tache_id' => $value])->find();
 			$finish_degree[$key]['tache_id'] = $value;
 			$finish_degree[$key]['tache_byname'] = $this->tache_byname_arr[$value];
 			$finish_degree[$key]['finish_degree'] = !empty($curr_task_data) ? $this->get_finish_degree_by_task($shot_id, $value) : '';
@@ -542,15 +542,15 @@ class Shot extends Common
 	public function get_finish_degree_by_task($shot_id, $tache_id)
 	{
 		//获取当前环节下有几个工作室ID
-		$studio_ids_arr = Workbench::where(['shot_id' => $shot_id, 'tache_id' => $tache_id])->column('studio_id');
+		$studio_ids_arr = Workbench::where(['resource_id' => $shot_id, 'tache_id' => $tache_id])->column('studio_id');
 		//多工作室
 		if (count($studio_ids_arr) > 1) {
 			foreach ($studio_ids_arr as $key => $value) {
-				$studio_degree[] = $this->task_status_arr[Workbench::where(['pid' => 0, 'shot_id' => $shot_id, 'studio_id' => $value])->value('task_status')];
+				$studio_degree[] = $this->task_status_arr[Workbench::where(['pid' => 0, 'resource_id' => $shot_id, 'studio_id' => $value])->value('task_status')];
 			}
 			$curr_tache_degree = (array_sum($studio_degree) == 0) ? 0 : intval(array_sum($studio_degree) / count($studio_ids_arr));
 		} else {//一个工作室 他的状态即是当前环节的进度
-			$curr_tache_degree = $this->task_status_arr[Workbench::where(['pid' => 0, 'shot_id' => $shot_id, 'studio_id' => $studio_ids_arr[0]])->value('task_status')];    //获取这个任务的状态转化的进度值
+			$curr_tache_degree = $this->task_status_arr[Workbench::where(['pid' => 0, 'resource_id' => $shot_id, 'studio_id' => $studio_ids_arr[0]])->value('task_status')];    //获取这个任务的状态转化的进度值
 		}
 		return $curr_tache_degree;
 	}
@@ -563,7 +563,7 @@ class Shot extends Common
 		unset($studio_data[1]); //制片工作室
 		$studio_data = array_values($studio_data);
 		if (!empty($param)) {
-			$studio_id_temp = Workbench::where(['shot_id' => $param['shot_id'], 'tache_id' => $param['tache_id']])->column('studio_id');
+			$studio_id_temp = Workbench::where(['resource_id' => $param['shot_id'], 'tache_id' => $param['tache_id']])->column('studio_id');
 			foreach ($studio_data as $key => $value) {
 				foreach ($studio_id_temp as $k => $v) {
 					if ($v == $value['id']) unset($studio_data[$key]);
@@ -586,7 +586,7 @@ class Shot extends Common
 		}
 		try {
 			$tache_id = array_flip($this->tache_byname_arr)[$tache_name];
-			$result = Workbench::destroy(['shot_id' => $shot_id, 'tache_id' => $tache_id]);
+			$result = Workbench::destroy(['resource_id' => $shot_id, 'tache_id' => $tache_id]);
 			if ($result === false) {
 				$this->error = '删除失败';
 				return false;
@@ -613,13 +613,13 @@ class Shot extends Common
 		}
 		try {
 			$tache_id = array_flip($this->tache_byname_arr)[$tache_name];
-			$result = Workbench::destroy(['shot_id' => $shot_id, 'tache_id' => $tache_id, 'studio_id' => $studio_id]);
+			$result = Workbench::destroy(['resource_id' => $shot_id, 'tache_id' => $tache_id, 'studio_id' => $studio_id]);
 			if (false === $result) {
 				$this->error = '删除失败';
 				return false;
 			} else {
 				//更新所属项目任务数量 过滤未分配工作室的任务
-				$taskCount['task_count'] = Workbench::where('shot_id',$shot_obj->id)->where('studio_id','neq',0)->count('id');
+				$taskCount['task_count'] = Workbench::where('resource_id',$shot_obj->id)->where('studio_id','neq',0)->count('id');
 				$project_obj = new Project();
 				$project_obj->where('id',$shot_obj->project_id)->udpate($taskCount);
 				return true;

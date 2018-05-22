@@ -631,6 +631,7 @@ class Workbench extends Common
 		$task_obj = $this->get($task_id);
 		$user_where['studio_id'] = $task_obj->studio_id;
 		$user_where['tache_ids'] = ['in',$task_obj->tache_id];
+		var_dump($user_where);die;
 		$user_arr = User::where($user_where)->select();
 		for($i = 0;$i < count($user_arr);$i++){
 			$user_data[$i]['id'] = $user_arr[$i]['id'];
