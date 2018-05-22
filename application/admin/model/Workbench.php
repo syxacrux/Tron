@@ -515,6 +515,7 @@ class Workbench extends Common
 		$task_obj->project_byname = $project_obj->project_byname;
 		$task_obj->field_number = Db::name('field')->where('id', $task_obj->field_id)->value('name');
 		$task_obj->tache_name = Tache::get($task_obj->tache_id)->explain;
+		$task_obj->studio_name = Studio::get($task_obj->studio_id)->name;
 		$task_obj->shot_number = $shot_obj->shot_number;
 		$task_obj->shot_byname = $shot_obj->shot_byname;
 		$task_obj->shot_name = $shot_obj->shot_name;

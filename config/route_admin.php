@@ -128,6 +128,8 @@ return [
 	'task/get_user'					=>			['admin/workbenches/get_user_list',['method'=>'GET']],
 	// [工作台] 删除制作人
 	'task/user_del'					=>			['admin/workbenches/delete_userid',['method'=>'POST']],
+	// [工作台] 提交dailies
+	'task/submit_dailies'		=>			['admin/workbenches/upload_dailies',['method'=>'POST']],
 	// [资产库] 获取资产中文名称
 	'asset/get_asset_name'	=>			['admin/assets/get_asset_name',['method' => 'GET']],
 	// [资产库] 校验资产类型名称是否重复
