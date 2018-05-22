@@ -145,8 +145,8 @@ class Workbench extends Common
 		if (!empty($keywords['field_id'])) {
 			$where['field_id'] = $keywords['field_id'];
 		}
-		if (!empty($keywords['shot_id'])) {
-			$where['resource_id'] = $keywords['shot_id'];
+		if (!empty($keywords['resource_id'])) {
+			$where['resource_id'] = $keywords['resource_id'];
 		}
 		//file_put_contents('aa.txt',var_export($where,true));
 		//手写输入
