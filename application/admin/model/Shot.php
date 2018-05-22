@@ -253,7 +253,6 @@ class Shot extends Common
 						$task_data['project_id'] = $curr_shot_obj->project_id;   //所属项目ID
 						$task_data['field_id'] = $curr_shot_obj->field_id;   //场号ID
 						$task_data['resource_id'] = $shot_id;  //镜头ID
-						$task_data['asset_id'] = 0;  //资产ID默认为0
 						$task_data['tache_id'] = $key;  //环节ID
 						$task_data['tache_sort'] = Tache::get($key)->sort;  //环节排序
 						$task_data['studio_id'] = 0;   //工作室ID
@@ -272,9 +271,6 @@ class Shot extends Common
 						$task_model->data($task_data)->save();
 					}
 				}
-//				//更新所属镜头 所属项目的任务数量
-//				$task_count['task_count'] = Workbench::where('project_id', $param['project_id'])->where('pid','!=',0)->count('id');
-//				Db::name('admin_project')->where('id', $param['project_id'])->update($task_count);
 				$this->commit();
 				return true;
 			}
@@ -326,7 +322,7 @@ class Shot extends Common
 					}
 				}
 				//获取当前镜头下的所有环节
-				$tache_by_task = array_unique(Workbench::where('shot_id', $id)->column('tache_id'));
+				$tache_by_task = array_unique(Workbench::where('resource_id', $id)->column('tache_id'));
 
 				//弹出相同的环节
 				if (!empty($tache_empty_data)) {
@@ -350,7 +346,6 @@ class Shot extends Common
 							$task_data['project_id'] = $param['project_id'];   //所属项目ID
 							$task_data['field_id'] = $param['field_id'];   //场号ID
 							$task_data['resource_id'] = $id;  //镜头ID
-							$task_data['asset_id'] = 0;
 							$task_data['tache_id'] = $key;  //环节ID
 							$task_data['tache_sort'] = Tache::get($key)->sort;  //环节排序
 							$task_data['studio_id'] = $v;   //工作室ID
@@ -380,7 +375,6 @@ class Shot extends Common
 						$task_data['project_id'] = $param['project_id'];   //所属项目ID
 						$task_data['field_id'] = $param['field_id'];   //场号ID
 						$task_data['resource_id'] = $id;  //镜头ID
-						$task_data['asset_id'] = 0;
 						$task_data['tache_id'] = $value;  //环节ID
 						$task_data['tache_sort'] = Tache::get($value)->sort;  //环节排序
 						$task_data['studio_id'] = 0;   //工作室ID
@@ -555,13 +549,12 @@ class Shot extends Common
 		return $curr_tache_degree;
 	}
 
-	//获取工作室列表 弹出视效、制片工作室
+	//获取工作室列表 弹出视效、研发工作室
 	public function getStudio_byShot($param)
 	{
-		$studio_data = Studio::where('pid', 1)->select();
-		unset($studio_data[0]); //弹出视效工作室
-		unset($studio_data[1]); //制片工作室
-		$studio_data = array_values($studio_data);
+		$studio_ids_arr = array_unique(User::where('company_id',1)->where('studio_id','in',[2,5,6,7,8,9])->column('studio_id'));	//未来加外包公司 以所属项目 所属镜头的公司ID获取工作室
+
+		$studio_data = Studio::where('id','in',$studio_ids_arr)->select();
 		if (!empty($param)) {
 			$studio_id_temp = Workbench::where(['resource_id' => $param['shot_id'], 'tache_id' => $param['tache_id']])->column('studio_id');
 			foreach ($studio_data as $key => $value) {
