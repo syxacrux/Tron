@@ -451,10 +451,9 @@ class Asset extends Common
 	//获取工作室列表 弹出视效、制片工作室
 	public function getStudio_byAsset($param)
 	{
-		$studio_data = Studio::where('pid', 1)->select();
-		unset($studio_data[0]); //弹出视效工作室
-		unset($studio_data[1]); //制片工作室
-		$studio_data = array_values($studio_data);
+		//弹出了视效工作室
+		$studio_ids_arr = array_unique(User::where('company_id',1)->where('studio_id','in',[2,5,6,7,8,9])->column('studio_id'));	//未来加外包公司 以所属项目 所属镜头的公司ID获取工作室
+		$studio_data = Studio::where('id','in',$studio_ids_arr)->select();
 		if (!empty($param)) {
 			$studio_id_temp = Workbench::where(['resource_id' => $param['asset_id'], 'tache_id' => $param['tache_id']])->column('studio_id');
 			foreach ($studio_data as $key => $value) {
