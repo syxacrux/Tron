@@ -18,9 +18,12 @@
         </router-link>
       </el-tooltip>
     </div>
-    <div class="m-l-50 m-t-30 w-900">
-      <h2>提问</h2>
+    <div class="w-700 help_question">
+      <h2>提&nbsp;&nbsp;问</h2>
       <el-form ref="form" :model="form" label-width="120px" :rules="rules">
+        <el-form-item label="标题：" prop="title">
+          <el-input v-model="form.title" class="h-40 w-200" @input="change"></el-input>
+        </el-form-item>
         <el-form-item label="问题类型：" prop="category_id">
           <el-select v-model="form.category_id" placeholder="请选择问题类型" @change="getCategories">
             <el-option v-for="item in typeOptions" :label="item.category" :value="item.id" :key="item.id"></el-option>
@@ -35,9 +38,6 @@
           <el-select v-model="form.degree" placeholder="请选择紧急程度">
             <el-option v-for="item in degreeOptions" :label="item.category" :value="item.id" :key="item.id"></el-option>
           </el-select>
-        </el-form-item>
-        <el-form-item label="标题：" prop="title">
-          <el-input v-model="form.title" class="h-40 w-200" @input="change"></el-input>
         </el-form-item>
         <el-form-item label="问题描述：" prop="content">
           <el-input
@@ -207,7 +207,7 @@
     }
   }
 </script>
-<style lang="less" scoped>
+<style lang="less">
   .help_index{
     .add_article {
       border: 2px solid #000;
@@ -223,6 +223,37 @@
       img{
         width: 100%;
         vertical-align: middle;
+      }
+    }
+    .help_question {
+      margin: 0 auto;
+      border: 1px solid #c2c2c3;
+      h2{
+        margin: 0;
+        height: 70px;
+        line-height: 70px;
+        text-align: center;
+        font-weight: normal;
+        color: #77787b;
+        background: #eef1f7;
+        border-bottom: 1px solid #c2c2c3;
+      }
+      .el-form-item {
+        height: 50px;
+        margin-bottom: 0;
+        border-bottom: 1px solid #c2c2c3;
+        &:nth-child(2n+1) {
+          background: #fff;
+        }
+        &:nth-child(2n) {
+          background: #eef1f7;
+        }
+        .el-form-item__label {
+          line-height: 30px;
+          margin: 10px 0;
+          border-right: 1px solid #c2c2c3;
+          box-sizing: border-box;
+        }
       }
     }
   }

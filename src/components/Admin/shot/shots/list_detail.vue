@@ -109,7 +109,7 @@
                       <div>
                         <div class="text-Lens pos-rel">
                           <p class="text-Lens-name h-28 ">
-                            {{item.project_name}}/<span>{{item.shot_number}}</span>
+                            {{item.project_name}} / <span>{{item.shot_number}}</span>
                           </p>
                           <p class="text-Lens-rank pos-abs">
                             <el-tooltip class="pointer" effect="dark" content="镜头难度" placement="bottom-start">
@@ -256,7 +256,7 @@
                         <div class="">
                           <div class="text-Lens pos-rel">
                             <p class="text-Lens-name h-28 ">
-                              {{item.project_name}}/<span>{{item.shot_number}}</span>
+                              {{item.project_name}} / <span>{{item.shot_number}}</span>
                             </p>
                             <p class="text-Lens-rank pos-abs">
                               <el-tooltip class="pointer" effect="dark" content="镜头难度" placement="bottom-start">
@@ -320,7 +320,7 @@
             </el-col>
             <el-col :span="12">
               <div class="grid-content">
-                <h2 class="m-0">等待中</h2>
+                <h2 class="m-0">等待制作</h2>
                 <div class="ovf-hd">
                   <el-col v-for="item in waitingShotList" :key="item.id" @click="shotDetail(item.id)">
                     <div class="grid-content p-b-5">
@@ -328,7 +328,7 @@
                         <div class="">
                           <div class="text-Lens pos-rel">
                             <p class="text-Lens-name h-28 ">
-                              {{item.project_name}}/<span>{{item.shot_number}}</span>
+                              {{item.project_name}} / <span>{{item.shot_number}}</span>
                             </p>
                             <p class="text-Lens-rank pos-abs">
                               <el-tooltip class="pointer" effect="dark" content="镜头难度" placement="bottom-start">
@@ -399,7 +399,7 @@
                 <el-card>
                   <div class="text-Lens pos-rel">
                     <p class="text-Lens-name h-28 ">
-                      {{item.project_name}}/<span>{{item.shot_number}}</span>
+                      {{item.project_name}} / <span>{{item.shot_number}}</span>
                     </p>
                     <p class="text-Lens-rank pos-abs">
                       <el-tooltip class="pointer" effect="dark" content="镜头难度" placement="bottom-start">
@@ -465,7 +465,7 @@
                 <el-card>
                   <div class="text-Lens pos-rel">
                     <p class="text-Lens-name h-28 ">
-                      {{item.project_name}}/<span>{{item.shot_number}}</span>
+                      {{item.project_name}} / <span>{{item.shot_number}}</span>
                     </p>
                     <p class="text-Lens-rank pos-abs">
                       <el-tooltip class="pointer" effect="dark" content="镜头难度" placement="bottom-start">

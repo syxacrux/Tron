@@ -76,9 +76,8 @@
                   <div class="text" @click="taskDetail(block.id)">
                     <div class="text-Lens pos-rel">
                       <p class="text-Lens-name">
-                        {{ block.project_name }}/
-                        <span>{{ block.shot_number }}/{{ block.task_byname }}</span>
-                        <el-tag type="success" size="small">研发工作室</el-tag>
+                        <span>{{ block.project_name }} / {{ block.shot_number }} / {{ block.task_byname }}</span>
+                        <el-tag type="success" size="small">{{ block.studio_name }}</el-tag>
                       </p>
                       <p class="text-Lens-rank pos-abs">
                         <el-tag type="danger" v-if="block.difficulty != '' ">
@@ -123,7 +122,7 @@
                       </p>
                     </div>
                     <div class="text-Lens-link m-t-10">
-                      <el-button size="small" @click="submitDailies">提交Dailies</el-button>
+                      <el-button size="small" @click="openDailies(block.id)">提交Dailies</el-button>
                       <!--<el-button size="small" @click="render">渲染</el-button>-->
                       <!--<el-tag type="warn">资产</el-tag>-->
                       <el-tag type="danger" v-if="block.task_finish_degree.finish_degree < 100">
@@ -159,7 +158,7 @@
                       <div class="text">
                         <div class="text-Lens pos-rel">
                           <p class="text-Lens-name">
-                            {{ block.project_name }}：<span>{{ block.shot_number }}:{{ block.task_byname }}</span></p>
+                            <span>{{ block.project_name }} / {{ block.shot_number }} / {{ block.task_byname }}</span></p>
                           <p class="text-Lens-rank pos-abs">
                             <el-tag type="danger" v-if="block.difficulty != '' ">
                               <el-tooltip class=" pointer" effect="dark" content="难度"
@@ -232,7 +231,7 @@
                       <div class="text">
                         <div class="text-Lens pos-rel">
                           <p class="text-Lens-name">
-                            {{ block.project_name }}：<span>{{ block.shot_number }}:{{ block.task_byname }}</span></p>
+                            <span>{{ block.project_name }} / {{ block.shot_number }} / {{ block.task_byname }}</span></p>
                           <p class="text-Lens-rank pos-abs">
                             <el-tag type="danger" v-if="block.difficulty != '' ">
                               <el-tooltip class=" pointer" effect="dark" content="难度"
@@ -303,7 +302,7 @@
                   <div class="text">
                     <div class="text-Lens pos-rel">
                       <p class="text-Lens-name">
-                        {{block.project_name}}：<span>{{block.shot_number}}:{{block.task_byname}}</span></p>
+                        <span>{{block.project_name}} / {{block.shot_number}} / {{block.task_byname}}</span></p>
                       <p class="text-Lens-rank pos-abs">
                         <el-tag type="danger" v-if="block.difficulty != '' ">
                           <el-tooltip class=" pointer" effect="dark" content="难度"
@@ -410,6 +409,12 @@
               <el-col :span="12">
                 <p class="m-0">任务缩略图：<img :src="finishList.task_image" alt="" class="vtcal-mid h-40"></p>
               </el-col>
+              <el-col :span="12">
+                <p class="m-0">
+                  任务所属工作室：
+                  <el-tag size="mini" type="warning">{{ finishList.studio_name }}</el-tag>
+                </p>
+              </el-col>
             </el-row>
             <el-row :gutter="20" class="m-b-5">
               <el-col :span="12">
@@ -483,6 +488,20 @@
           </el-card>
         </div>
       </transition>
+      <el-dialog
+          title="提交dailies"
+          :visible.sync="isSubmitDailies"
+          width="30%" center>
+        <el-checkbox v-model="isUpdateVision">客户是否升级版本</el-checkbox>
+        <p class="m-t-30">
+          <span>
+          <el-button type="primary" icon="el-icon-picture" round @click="submitDailies(1)">上传</el-button>
+        </span>
+          <span>
+          <el-button type="primary" icon="el-icon-document" round @click="submitDailies(2)">序列</el-button>
+        </span>
+        </p>
+      </el-dialog>
     </div>
     <editWorkbenches ref="editWorkbenches" @updataTaskdetail="dataTaskdetail" :message="finishList"></editWorkbenches>
   </div>
@@ -497,11 +516,13 @@
   export default {
     data () {
       return {
-        // isTaskLIst:true,
+        isSubmitDailies: false,
+        isUpdateVision: false,
         isTaskLIst: true,//是否显示任务
         isTaskDetailShow: false,//是否显示详情
         limit: 40,
         id: 0,
+        dailies_id: 0,
         currentPage: 1,
         activeName: 'task',//默认任务页面显示
         address: window.baseUrl + '/',
@@ -534,8 +555,25 @@
       }
     },
     methods: {
-      submitDailies() {
+      openDailies(id) {
+        event.stopPropagation();
+        this.isSubmitDailies = true;
+        this.dailies_id = id
+      },
+      submitDailies(status) {
+        console.log(this.isUpdateVision)
+        const data = {
+          task_id: this.dailies_id,
+          is_customer: this.isUpdateVision ? 1 : '',
+          file_type: status
+        }
+        this.apiPost('task/submit_dailies ', data).then((res) => {
+          _g.shallowRefresh(this.$route.name)
+          this.handelResponse(res, (data) => {
+          }, () => {
 
+          })
+        })
       },
       render() {
 
@@ -878,6 +916,10 @@
 
   .el-tabs {
     width: 95%;
+  }
+
+  .el-dialog__body {
+    text-align: center !important;
   }
 
   .task_detail {
