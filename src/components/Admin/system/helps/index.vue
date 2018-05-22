@@ -236,7 +236,7 @@
         border-bottom: 1px solid #c2c2c3;
       }
       .el-form-item {
-        height: 50px;
+        /*height: 50px;*/
         margin-bottom: 0;
         border-bottom: 1px solid #c2c2c3;
         .transition-box {
@@ -290,7 +290,7 @@
           background: #eef1f7;
         }
         &:last-of-type {
-          height: 135px;
+          /*height: 135px;*/
           .el-form-item__label {
             line-height: 115px;
           }
@@ -331,7 +331,8 @@
             }
           }
           .el-form-item__error {
-            left: initial;
+            position: relative;
+            /*left: initial;*/
             right: 40px;
             top: 50%;
             transform: translateY(-50%);
