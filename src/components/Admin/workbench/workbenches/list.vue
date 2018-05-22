@@ -76,7 +76,10 @@
                   <div class="text" @click="taskDetail(block.id)">
                     <div class="text-Lens pos-rel">
                       <p class="text-Lens-name">
-                        {{ block.project_name }}：<span>{{ block.shot_number }}:{{ block.task_byname }}</span></p>
+                        {{ block.project_name }}/
+                        <span>{{ block.shot_number }}/{{ block.task_byname }}</span>
+                        <el-tag type="success" size="small">研发工作室</el-tag>
+                      </p>
                       <p class="text-Lens-rank pos-abs">
                         <el-tag type="danger" v-if="block.difficulty != '' ">
                           <el-tooltip class="pointer" effect="dark" content="难度"
@@ -102,7 +105,7 @@
                                       placement="bottom-start">
                             <span>{{ shotRemainDay(block.plan_end_timestamp) }}天</span>
                           </el-tooltip>
-                          <el-tooltip class=" pointer" effect="dark" content="任务在次状态时间"
+                          <el-tooltip class=" pointer" effect="dark" content="任务制作天数"
                                       placement="bottom-start">
                             <span>{{ shotCreateTime(block.create_timestamp) }}天</span>
                           </el-tooltip>
@@ -120,7 +123,7 @@
                       </p>
                     </div>
                     <div class="text-Lens-link m-t-10">
-                      <!--<el-button size="small" @click="submitDailies">提交Dailies</el-button>-->
+                      <el-button size="small" @click="submitDailies">提交Dailies</el-button>
                       <!--<el-button size="small" @click="render">渲染</el-button>-->
                       <!--<el-tag type="warn">资产</el-tag>-->
                       <el-tag type="danger" v-if="block.task_finish_degree.finish_degree < 100">
@@ -412,6 +415,12 @@
               <el-col :span="12">
                 <p class="m-0">任务简称：<span>{{ finishList.task_byname }}</span></p>
               </el-col>
+              <el-col :span="12">
+                <p class="m-0">
+                  任务所属环节：
+                  <el-tag size="mini" type="warning">{{ finishList.tache_name }}</el-tag>
+                </p>
+              </el-col>
             </el-row>
             <el-row :gutter="20" class="m-b-5">
               <el-col :span="12">
@@ -419,6 +428,30 @@
               </el-col>
               <el-col :span="12">
                 <p class="m-0">任务难度：<span>{{ finishList.difficulty_name }}</span></p>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20" class="m-b-5">
+              <el-col :span="12">
+                <p class="m-0">所属项目：<span>{{ finishList.project_name }}</span></p>
+              </el-col>
+              <el-col :span="12">
+                <p class="m-0">项目简称：<span>{{ finishList.project_byname }}</span></p>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20" class="m-b-5">
+              <el-col :span="12">
+                <p class="m-0">镜头名称/资产名称：<span>{{ finishList.shot_name }}</span></p>
+              </el-col>
+              <el-col :span="12">
+                <p class="m-0">镜头简称/资产简称：<span>{{ finishList.shot_byname }}</span></p>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20" class="m-b-5">
+              <el-col :span="12">
+                <p class="m-0">镜头编号：<span>{{ finishList.shot_number }}</span></p>
+              </el-col>
+              <el-col :span="12">
+                <p class="m-0">场号/集号：<span>{{ finishList.field_number }}</span></p>
               </el-col>
             </el-row>
             <el-row :gutter="20" class="m-b-5">
@@ -435,9 +468,6 @@
               <el-col :span="24">
                 <p class="m-0">
                   环节制作人：
-                  <!-- <span class="" v-for="(item, index) in finishList.user_data" :key="index">
-                    {{item.realname}}
-                  </span> -->
                   <el-tag size="mini" v-for="(item, index) in finishList.user_data" :closable="deleteTaskTacheStudio"
                           type="info" @close="deletetLink(index, item)" :key="item.id">
                     {{item.realname}}
@@ -448,27 +478,6 @@
             <el-row :gutter="20" class="m-b-5">
               <el-col :span="24">
                 <p class="m-0">任务制作要求：<span>{{ finishList.make_demand }}</span></p>
-              </el-col>
-            </el-row>
-            <el-row :gutter="20" class="m-b-5">
-              <el-col :span="12">
-                <p class="m-0">所属项目：<span>{{ finishList.project_name }}</span></p>
-              </el-col>
-              <el-col :span="12">
-                <p class="m-0">镜头名称/资产名称：<span>{{ finishList.shot_name }}</span></p>
-              </el-col>
-            </el-row>
-            <el-row :gutter="20" class="m-b-5">
-              <el-col :span="12">
-                <p class="m-0">镜头简称/资产简称：<span>{{ finishList.shot_byname }}</span></p>
-              </el-col>
-              <el-col :span="12">
-                <p class="m-0">场号/集号：<span>{{ finishList.field_number }}</span></p>
-              </el-col>
-            </el-row>
-            <el-row :gutter="20" class="m-b-5">
-              <el-col :span="12">
-                <p class="m-0">镜头编号：<span>{{ finishList.shot_number }}</span></p>
               </el-col>
             </el-row>
           </el-card>
@@ -906,16 +915,12 @@
   .waiting h2,
   .drag-column-制作中 .drag-column-header,
   .drag-column-制作中 .drag-options,
-  .drag-column-制作中 .is-moved,
   .drag-column-反馈中 .drag-column-header,
   .drag-column-反馈中 .drag-options,
-  .drag-column-反馈中 .is-moved,
   .drag-column-提交发布 .drag-column-header,
   .drag-column-提交发布 .drag-options,
-  .drag-column-提交发布 .is-moved,
   .drag-column-等待制作 .drag-column-header,
-  .drag-column-等待制作 .drag-options,
-  .drag-column-等待制作 .is-moved{
+  .drag-column-等待制作 .drag-options {
     font-size: .8rem;
     background: #fff;
     color: #666;
@@ -923,6 +928,13 @@
     padding-left: 10px;
     border-bottom-right-radius: 5px;
     border-top-right-radius: 5px;
+  }
+
+  .drag-column-制作中 .is-moved,
+  .drag-column-反馈中 .is-moved,
+  .drag-column-提交发布 .is-moved,
+  .drag-column-等待制作 .is-moved {
+
   }
 
   .workbench_list .task_detail .task-xing .el-card__body {
