@@ -8,7 +8,7 @@
     </div>
     <div class="m-b-20 pos-rel tx-r">
       <el-tooltip class="item" effect="dark" content="列表" placement="bottom">
-        <router-link to="add_article" class="list_btn m-r-10">
+        <router-link to="list" class="list_btn m-r-10">
           <img src="@/assets/images/helps/help_list.png">
         </router-link>
       </el-tooltip>
@@ -223,7 +223,7 @@
       }
     }
     .help_question {
-      margin: 0 auto;
+      margin: 100px auto;
       border: 1px solid #c2c2c3;
       h2{
         margin: 0;
@@ -343,6 +343,7 @@
         font-size: 16px;
         background: #9db0d1;
         border-color: #9db0d1;
+        border-radius: 0;
       }
     }
   }
