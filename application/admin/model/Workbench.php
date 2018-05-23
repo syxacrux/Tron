@@ -713,7 +713,7 @@ class Workbench extends Common
 			$str = $tmp." '".osname()['ip'].'|'.$path.$file_name.'|'.$approval_model->id."'";
 			//记录python命令行
 			$python_log['resource_id'] = $approval_model->id;	//自增ID
-			$python_log['resource_type'] = 1;	//审批类型
+			$python_log['resource_type'] = 2;	//审批类型
 			$python_log['python_str'] = $str;
 			Db::name('python_log_'.date("Y"))->insert($python_log);
 			//执行外部程序-开启队列

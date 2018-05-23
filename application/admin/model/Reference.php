@@ -54,11 +54,12 @@ class Reference extends Common{
 				$cmd = $tmp." '".$str."'";
 				$python_str = "python /usr/local/httpd/htdocs/tron/tronPipelineScript/createDirPath/parser.py $cmd ";
 				//存储执行python脚本记录表 按当前年
-				$python_param['resource_type'] = 1;	//参考库类型
-				$python_param['resource_id'] = $this->id;
-				$python_param['python_str'] = $python_str;
+				$python_log['resource_type'] = 1;	//参考库类型
+				$python_log['resource_id'] = $this->id;
+				$python_log['python_str'] = $python_str;
+				$python_log['create_time'] = time();
 				$curr_year_table = 'python_log_'.date("Y");
-				DB::table($curr_year_table)->insert($python_param);
+				DB::table($curr_year_table)->insert($python_log);
 				//执行外部程序-开启队列
 				/*
 				$redis = new RedisPackage();
