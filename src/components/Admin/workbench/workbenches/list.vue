@@ -137,7 +137,7 @@
               </div>
             </el-card>
           </kanban-board>
-          <div class="block task-block" v-if="blocksDataCount.length">
+          <div class="block task-block" v-if="blocks.length">
             <el-pagination
                 @current-change="taskCurrentChange"
                 layout="prev, pager, next, jumper"
@@ -209,7 +209,7 @@
                   </li>
                 </ul>
                 <div class="pos-rel p-t-20">
-                  <div class="block pages" v-if="upstreamDataCountTask.length">
+                  <div class="block pages" v-if="upstreamListTask.length">
                     <el-pagination
                         @current-change="upstreamTaskCurrentChange"
                         layout="prev, pager, next, jumper"
@@ -281,7 +281,7 @@
                     </el-card>
                   </li>
                 </ul>
-                <div class="block task-block" v-if="upstreamDataCountShot.length">
+                <div class="block task-block" v-if="upstreamListShot.length">
                   <el-pagination
                       @current-change="upstreamShotCurrentChange"
                       layout="prev, pager, next, jumper"
@@ -356,7 +356,7 @@
               </div>
             </el-col>
           </div>
-          <div class="block task-block" v-if="completeDataCount.length">
+          <div class="block task-block" v-if="completeList.length">
             <el-pagination
                 @current-change="completeCurrentChange"
                 layout="prev, pager, next, jumper"
@@ -633,11 +633,11 @@
         }
         this.blocks.find(b => b.id === Number(id)).status = status;
         this.apiPost('task/change_status', data).then((res) => {
-          _g.shallowRefresh(this.$route.name)
+          this.getAllWorkbenches('admin/workbenches', this.currentPage, 1, 40)
           this.handelResponse(res, (data) => {
+
           }, () => {
-//            this.getAllWorkbenches('admin/workbenches', this.currentPage, 1, 40)
-//            this.isLoading = !this.isLoading
+
           })
         })
       },
@@ -735,10 +735,18 @@
           this.handelResponse(res, (data) => {
             switch (status) {
               case 1:
-                this.blocks = data.list
-                _(this.blocks).forEach((res1, res2) => {
-                  this.blocks[res2].status = res1.task_status == 1? '等待制作': (res1.task_status == 5? '制作中': (res1.task_status == 15? '反馈中': '提交发布'))
+                _(data.list).forEach((res1, res2) => {
+                  if(res1.task_status === 1) {
+                    data.list[res2].status = '等待制作'
+                  } else if(res1.task_status === 5 || res1.task_status === 10) {
+                    data.list[res2].status = '制作中'
+                  } else if(res1.task_status === 15) {
+                    data.list[res2].status = '反馈中'
+                  } else if(res1.task_status === 20 || res1.task_status === 25 || res1.task_status === 30) {
+                    data.list[res2].status = '提交发布'
+                  }
                 })
+                this.blocks = data.list
                 this.blocksDataCount = data.dataCount
                 break;
               case 2://等待上游列表
@@ -918,8 +926,8 @@
     width: 95%;
   }
 
-  .el-dialog__body {
-    text-align: center !important;
+  .workbench_list .el-dialog__body {
+    text-align: center;
   }
 
   .task_detail {

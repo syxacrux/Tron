@@ -76,7 +76,7 @@
         </el-col>
       </el-row>
       <el-row :gutter="20">
-        <el-col :span="24">
+        <el-col :span="12">
           <div class="grid-content">
             <el-form-item label="计划起止时间:" prop="plan_time" class="is-required">
               <el-date-picker
@@ -91,7 +91,7 @@
         </el-col>
       </el-row>
       <el-row :gutter="20">
-          <el-col :span="8">
+        <el-col :span="8">
           <div class="grid-content">
             <el-form-item label="制作要求:" prop="make_demand">
               <el-input type="textarea" :rows="3" placeholder="请输入制作要求" v-model="form.make_demand"
@@ -235,7 +235,7 @@ export default {
 }
 </script>
 <style>
-    .avatar-uploader .el-upload {
+  .avatar-uploader .el-upload {
     border: 1px dashed #d9d9d9;
     border-radius: 6px;
     cursor: pointer;
@@ -271,8 +271,7 @@ export default {
     text-align: center;
   }
 
-
-    .avatar-uploader .el-upload {
+  .avatar-uploader .el-upload {
     border: 1px dashed #d9d9d9;
     border-radius: 6px;
     cursor: pointer;
@@ -286,10 +285,6 @@ export default {
 
   .el-upload {
     width: 300px;
-  }
-
-  .shot_edit .el-tag__close{
-    display: none;
   }
 
   .avatar-uploader-icon {
