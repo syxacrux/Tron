@@ -240,7 +240,6 @@ class Asset extends Common
 			$param['plan_end_timestamp'] = strtotime($param['plan_end_timestamp']);
 			$param['create_time'] = time();
 
-
 			$asset_model = new Asset();
 			$asset_model->allowField(true)->save($param, [$this->getPk() => $id]);//更新当前镜头行记录
 			$project_byname = Project::get($param['project_id'])->project_byname;
@@ -451,8 +450,11 @@ class Asset extends Common
 	//获取工作室列表 弹出制片、研发工作室
 	public function getStudio_byAsset($param)
 	{
-		//弹出了制片工作室
-		$studio_ids_arr = array_unique(User::where('company_id',1)->where('studio_id','in',[2,5,6,7,8,9])->column('studio_id'));	//未来加外包公司 以所属项目 所属镜头的公司ID获取工作室
+		//弹出了制片 研发工作室
+		$user_where['company_id'] = 1;
+		$user_where['studio_id'] = ['in',[2,5,6,7,8,9]];
+		$user_where['tache_ids'] = ['in',$param['tache_id']];
+		$studio_ids_arr = array_unique(User::where($user_where)->column('studio_id'));	//未来加外包公司 以所属项目 所属镜头的公司ID获取工作室
 		$studio_data = Studio::where('id','in',$studio_ids_arr)->select();
 		if (!empty($param)) {
 			$studio_id_temp = Workbench::where(['resource_id' => $param['asset_id'], 'tache_id' => $param['tache_id']])->column('studio_id');
