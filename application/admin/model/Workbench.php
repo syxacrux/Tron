@@ -526,6 +526,7 @@ class Workbench extends Common
 		$task_obj->actually_start_time = date("Y-m-d H:i:s", $task_obj->actually_start_timestamp);
 		$task_obj->actually_end_time = date("Y-m-d H:i:s", $task_obj->actually_end_timestamp);
 		$task_obj->user_data = $user_ids_data;
+		$task_obj->pid_name = ($task_obj->pid==0) ? '父任务' : '子任务';
 		return $task_obj;
 	}
 
