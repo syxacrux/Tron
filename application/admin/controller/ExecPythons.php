@@ -20,5 +20,12 @@ class ExecPythons extends Common
 		return resultArray(['data' => $data]);
 	}
 
+	//更新任务 回调python dailies
+	public function update_task_byDailies(){
+		$callback_model = model('ExecPython');
+		$param = $this->param;
+		$data = $callback_model->callback_dailies($param);
+		return resultArray(['data'=>$data]);
+	}
 
 }
