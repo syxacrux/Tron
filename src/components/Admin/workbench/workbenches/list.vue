@@ -122,7 +122,7 @@
                       </p>
                     </div>
                     <div class="text-Lens-link m-t-10">
-                      <el-button size="small" @click="openDailies(block.id)">提交Dailies</el-button>
+                      <el-button size="small" v-if="block.pid !== 0 && (block.task_status === 5 || block.task_status === 10)" @click="openDailies(block.id)">提交Dailies</el-button>
                       <!--<el-button size="small" @click="render">渲染</el-button>-->
                       <!--<el-tag type="warn">资产</el-tag>-->
                       <el-tag type="danger" v-if="block.task_finish_degree.finish_degree < 100">
