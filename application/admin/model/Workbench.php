@@ -694,8 +694,8 @@ class Workbench extends Common
 		}
 
 		$approval_param['project_id'] = $task_obj->project_id;
-		$python_log['resource_type'] = $approval_param['resource_type'] = $task_obj->task_type;
-		$python_log['resource_id'] = $approval_param['resource_id'] = $task_obj->resource_id;
+		$approval_param['resource_type'] = $task_obj->task_type;
+		$approval_param['resource_id'] = $task_obj->resource_id;
 		$approval_param['task_id'] = $task_obj->id;
 		$approval_param['user_id'] = $uid;
 		$approval_param['file_dir_name'] = $time;
@@ -711,6 +711,8 @@ class Workbench extends Common
 			$tmp = "'Dailies{$param['file_type']}' '{$project_byname}' '{$file_name}'";
 			$str = $tmp." '".osname()['ip'].'|'.$path.$file_name.'|'.$approval_model->id."'";
 			//记录python命令行
+			$python_log['resource_id'] = $approval_model->id;	//自增ID
+			$python_log['resource_type'] = 1;	//审批类型
 			$python_log['python_str'] = $str;
 			Db::name('python_log_'.date("Y"))->insert($python_log);
 			//执行外部程序-开启队列

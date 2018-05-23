@@ -94,11 +94,32 @@ class ExecPython extends Common{
 			*/
 			return true;
 		}catch(\Exception $e){
-			$this->error = '分配制作人失败';
 			return false;
 		}
 
 	}
 
+	//dailies回调更新任务表状态 审批表状态 日志表状态
+	public function callback_dailies($param){
+		try{
+			$id = $param['id'];//审批表主键
+			$approval_obj = Approval::get($id);
+			$approval_param['file'] = $param['path'].'/'.$param['filename'];
+			$approval_param['submit_status'] = 2;
+			$approval_param['thumbnail'] = '.'.explode('.',$param['filename'])[0].'jpg'; //缩略图
+			$approval_param['update_timestamp'] = time();
+			//更新审批表数据
+			$approval_model = new Approval();
+			$approval_model->save($approval_param,['id'=>$id]);
+			//更新任务表状态
+			$task_model = new Workbench();
+			$task_model->save(['task_status'=>10],['id'=>$approval_obj->task_id]);	//状态更新为等待审核
+			//更新日志表状态
+			Db::table('python_log_'.date("Y"))->where('resource_id',$id)->udpate(['update_time'=>time(),'exec_status'=>2]);
+			return true;
+		}catch(\Exception $e){
+			return false;
+		}
+	}
 
 }

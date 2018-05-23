@@ -552,8 +552,10 @@ class Shot extends Common
 	//获取工作室列表 弹出视效、研发工作室
 	public function getStudio_byShot($param)
 	{
-		$studio_ids_arr = array_unique(User::where('company_id',1)->where('studio_id','in',[2,5,6,7,8,9])->column('studio_id'));	//未来加外包公司 以所属项目 所属镜头的公司ID获取工作室
-
+		$user_where['company_id'] = 1;
+		$user_where['studio_id'] = ['in',[2,5,6,7,8,9]];
+		$user_where['tache_ids'] = ['in',$param['tache_id']];
+		$studio_ids_arr = array_unique(User::where($user_where)->column('studio_id'));	//未来加外包公司 以所属项目 所属镜头的公司ID获取工作室
 		$studio_data = Studio::where('id','in',$studio_ids_arr)->select();
 		if (!empty($param)) {
 			$studio_id_temp = Workbench::where(['resource_id' => $param['shot_id'], 'tache_id' => $param['tache_id']])->column('studio_id');
